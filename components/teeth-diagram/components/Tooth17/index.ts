@@ -1,1 +1,3 @@
-export { Tooth17 } from './Tooth17';
+import dynamic from "next/dynamic";
+
+export const Tooth17 = dynamic(() => import("./Tooth17").then((comp) => comp.Tooth17), { ssr: false });

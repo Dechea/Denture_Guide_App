@@ -1,9 +1,8 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { View } from '../../Reshaped/Reshaped';
+import { Tooth11 } from '../../teeth-diagram/components/Tooth11';
 
-const Tooth11 = dynamic(() => import('../../teeth-diagram/components/Tooth11').then((comp) => comp.Tooth11), {ssr: false});
 
 export const ImplantIcon = () => (
   <View height="32px" width="32px" justify="center" align="center">
