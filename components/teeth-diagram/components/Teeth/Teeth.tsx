@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { View } from 'reshaped';
-import { teethMapping } from '../../teethMapping';
 import { TeethProps, ToothProps } from '../../types/types';
+import { teethMapping } from "../../teethMapping";
 
 const Tooth = ({ tooth, ...props }: ToothProps) => {
   const Tooth: React.FC = teethMapping[tooth as keyof typeof teethMapping];

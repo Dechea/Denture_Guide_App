@@ -1,21 +1,24 @@
-
 'use client';
 
-import dynamic from 'next/dynamic';
-const Tooth = dynamic(() => import('@dechea/hes.ui.foundations.teeth.areas.tooth').then((tooth) => tooth.Tooth18), { ssr: false });
-const Root18 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.areas.root').then((roots) => roots.Root18), { ssr: false });
-const Root18Left = dynamic(() => import('@dechea/hes.ui.foundations.teeth.areas.root').then((roots) => roots.Root18Left), { ssr: false });
-const Root18Middle = dynamic(() => import('@dechea/hes.ui.foundations.teeth.areas.root').then((roots) => roots.Root18Middle), { ssr: false });
-const Root18Right = dynamic(() => import('@dechea/hes.ui.foundations.teeth.areas.root').then((roots) => roots.Root18Right), { ssr: false });
-const CrownSideView18 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.areas.crown-side-view').then((crownSideView) => crownSideView.CrownSideView18), { ssr: false });
-const ImplantUpperJaw = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.implant').then((implant) => implant.ImplantUpperJaw), { ssr: false });
-const MissingRoot18 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.missing-root').then((missingRoot) => missingRoot.MissingRoot18), { ssr: false });
-const MissingRoot18Left = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.missing-root').then((missingRoot) => missingRoot.MissingRoot18Left), { ssr: false });
-const MissingRoot18Middle = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.missing-root').then((missingRoot) => missingRoot.MissingRoot18Middle), { ssr: false });
-const MissingRoot18Right = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.missing-root').then((missingRoot) => missingRoot.MissingRoot18Right), { ssr: false });
-const ArtificialCrown18 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.artificial-crown').then((artificialCrowns) => artificialCrowns.ArtificialCrown18), { ssr: false });
-const Prosthesis18 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.prosthesis').then((prosthesis) => prosthesis.Prosthesis18), { ssr: false });
-const MissingCrown18 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.missing-crown').then((missingCrowns) => missingCrowns.MissingCrown18), { ssr: false });
+import React from 'react';
+import { Tooth18 as Tooth } from '@dechea/hes.ui.foundations.teeth.areas.tooth';
+import {
+  Root18,
+  Root18Middle,
+  Root18Left,
+  Root18Right,
+} from '@dechea/hes.ui.foundations.teeth.areas.root';
+import { CrownSideView18 } from '@dechea/hes.ui.foundations.teeth.areas.crown-side-view';
+import { ImplantUpperJaw } from '@dechea/hes.ui.foundations.teeth.visualizations.implant';
+import {
+  MissingRoot18,
+  MissingRoot18Middle,
+  MissingRoot18Left,
+  MissingRoot18Right,
+} from '@dechea/hes.ui.foundations.teeth.visualizations.missing-root';
+import { ArtificialCrown18 } from '@dechea/hes.ui.foundations.teeth.visualizations.artificial-crown';
+import { Prosthesis18 } from '@dechea/hes.ui.foundations.teeth.visualizations.prosthesis';
+import { MissingCrown18 } from '@dechea/hes.ui.foundations.teeth.visualizations.missing-crown';
 
 import { Container } from '../Container';
 // import {

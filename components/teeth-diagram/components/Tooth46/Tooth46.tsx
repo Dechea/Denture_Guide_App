@@ -1,19 +1,21 @@
-
 'use client';
 
-import dynamic from 'next/dynamic';
-const Tooth = dynamic(() => import('@dechea/hes.ui.foundations.teeth.areas.tooth').then((tooth) => tooth.Tooth46), { ssr: false });
-const Root46 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.areas.root').then((roots) => roots.Root46), { ssr: false });
-const Root46Left = dynamic(() => import('@dechea/hes.ui.foundations.teeth.areas.root').then((roots) => roots.Root46Left), { ssr: false });
-const Root46Right = dynamic(() => import('@dechea/hes.ui.foundations.teeth.areas.root').then((roots) => roots.Root46Right), { ssr: false });
-const CrownSideView46 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.areas.crown-side-view').then((crownSideView) => crownSideView.CrownSideView46), { ssr: false });
-const ImplantLowerJaw = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.implant').then((implant) => implant.ImplantLowerJaw), { ssr: false });
-const MissingRoot46 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.missing-root').then((missingRoot) => missingRoot.MissingRoot46), { ssr: false });
-const MissingRoot46Left = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.missing-root').then((missingRoot) => missingRoot.MissingRoot46Left), { ssr: false });
-const MissingRoot46Right = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.missing-root').then((missingRoot) => missingRoot.MissingRoot46Right), { ssr: false });
-const ArtificialCrown46 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.artificial-crown').then((artificialCrowns) => artificialCrowns.ArtificialCrown46), { ssr: false });
-const Prosthesis46 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.prosthesis').then((prosthesis) => prosthesis.Prosthesis46), { ssr: false });
-const MissingCrown46 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.missing-crown').then((missingCrowns) => missingCrowns.MissingCrown46), { ssr: false });
+import { Tooth46 as Tooth } from '@dechea/hes.ui.foundations.teeth.areas.tooth';
+import {
+  Root46,
+  Root46Left,
+  Root46Right,
+} from '@dechea/hes.ui.foundations.teeth.areas.root';
+import { CrownSideView46 } from '@dechea/hes.ui.foundations.teeth.areas.crown-side-view';
+import { ImplantLowerJaw } from '@dechea/hes.ui.foundations.teeth.visualizations.implant';
+import {
+  MissingRoot46,
+  MissingRoot46Left,
+  MissingRoot46Right,
+} from '@dechea/hes.ui.foundations.teeth.visualizations.missing-root';
+import { ArtificialCrown46 } from '@dechea/hes.ui.foundations.teeth.visualizations.artificial-crown';
+import { Prosthesis46 } from '@dechea/hes.ui.foundations.teeth.visualizations.prosthesis';
+import { MissingCrown46 } from '@dechea/hes.ui.foundations.teeth.visualizations.missing-crown';
 
 import { Container } from '../Container';
 

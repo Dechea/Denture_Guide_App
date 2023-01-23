@@ -1,38 +1,39 @@
 'use client'
 
-import { Tooth11 } from './components/Tooth11';
-import { Tooth12 } from './components/Tooth12';
-import { Tooth13 } from './components/Tooth13';
-import { Tooth14 } from './components/Tooth14';
-import { Tooth15 } from './components/Tooth15';
-import { Tooth16 } from './components/Tooth16';
-import { Tooth17 } from './components/Tooth17';
-import { Tooth18 } from './components/Tooth18';
-import { Tooth21 } from './components/Tooth21';
-import { Tooth22 } from './components/Tooth22';
-import { Tooth23 } from './components/Tooth23';
-import { Tooth24 } from './components/Tooth24';
-import { Tooth25 } from './components/Tooth25';
-import { Tooth26 } from './components/Tooth26';
-import { Tooth27 } from './components/Tooth27';
-import { Tooth28 } from './components/Tooth28';
+import dynamic from 'next/dynamic';
+const Tooth11 = dynamic(() => import('./components/Tooth11').then((comp) => comp.Tooth11), {ssr: false});
+const Tooth12 = dynamic(() => import('./components/Tooth12').then((comp) => comp.Tooth12), {ssr: false});
+const Tooth13 = dynamic(() => import('./components/Tooth13').then((comp) => comp.Tooth13), {ssr: false});
+const Tooth14 = dynamic(() => import('./components/Tooth14').then((comp) => comp.Tooth14), {ssr: false});
+const Tooth15 = dynamic(() => import('./components/Tooth15').then((comp) => comp.Tooth15), {ssr: false});
+const Tooth16 = dynamic(() => import('./components/Tooth16').then((comp) => comp.Tooth16), {ssr: false});
+const Tooth17 = dynamic(() => import('./components/Tooth17').then((comp) => comp.Tooth17), {ssr: false});
+const Tooth18 = dynamic(() => import('./components/Tooth18').then((comp) => comp.Tooth18), {ssr: false});
+const Tooth21 = dynamic(() => import('./components/Tooth21').then((comp) => comp.Tooth21), {ssr: false});
+const Tooth22 = dynamic(() => import('./components/Tooth22').then((comp) => comp.Tooth22), {ssr: false});
+const Tooth23 = dynamic(() => import('./components/Tooth23').then((comp) => comp.Tooth23), {ssr: false});
+const Tooth24 = dynamic(() => import('./components/Tooth24').then((comp) => comp.Tooth24), {ssr: false});
+const Tooth25 = dynamic(() => import('./components/Tooth25').then((comp) => comp.Tooth25), {ssr: false});
+const Tooth26 = dynamic(() => import('./components/Tooth26').then((comp) => comp.Tooth26), {ssr: false});
+const Tooth27 = dynamic(() => import('./components/Tooth27').then((comp) => comp.Tooth27), {ssr: false});
+const Tooth28 = dynamic(() => import('./components/Tooth28').then((comp) => comp.Tooth28), {ssr: false});
 
-import { Tooth31 } from './components/Tooth31';
-import { Tooth32 } from './components/Tooth32';
-import { Tooth33 } from './components/Tooth33';
-import { Tooth34 } from './components/Tooth34';
-import { Tooth35 } from './components/Tooth35';
-import { Tooth36 } from './components/Tooth36';
-import { Tooth37 } from './components/Tooth37';
-import { Tooth38 } from './components/Tooth38';
-import { Tooth41 } from './components/Tooth41';
-import { Tooth42 } from './components/Tooth42';
-import { Tooth43 } from './components/Tooth43';
-import { Tooth44 } from './components/Tooth44';
-import { Tooth45 } from './components/Tooth45';
-import { Tooth46 } from './components/Tooth46';
-import { Tooth47 } from './components/Tooth47';
-import { Tooth48 } from './components/Tooth48';
+const Tooth31 = dynamic(() => import('./components/Tooth31').then((comp) => comp.Tooth31), {ssr: false});
+const Tooth32 = dynamic(() => import('./components/Tooth32').then((comp) => comp.Tooth32), {ssr: false});
+const Tooth33 = dynamic(() => import('./components/Tooth33').then((comp) => comp.Tooth33), {ssr: false});
+const Tooth34 = dynamic(() => import('./components/Tooth34').then((comp) => comp.Tooth34), {ssr: false});
+const Tooth35 = dynamic(() => import('./components/Tooth35').then((comp) => comp.Tooth35), {ssr: false});
+const Tooth36 = dynamic(() => import('./components/Tooth36').then((comp) => comp.Tooth36), {ssr: false});
+const Tooth37 = dynamic(() => import('./components/Tooth37').then((comp) => comp.Tooth37), {ssr: false});
+const Tooth38 = dynamic(() => import('./components/Tooth38').then((comp) => comp.Tooth38), {ssr: false});
+const Tooth41 = dynamic(() => import('./components/Tooth41').then((comp) => comp.Tooth41), {ssr: false});
+const Tooth42 = dynamic(() => import('./components/Tooth42').then((comp) => comp.Tooth42), {ssr: false});
+const Tooth43 = dynamic(() => import('./components/Tooth43').then((comp) => comp.Tooth43), {ssr: false});
+const Tooth44 = dynamic(() => import('./components/Tooth44').then((comp) => comp.Tooth44), {ssr: false});
+const Tooth45 = dynamic(() => import('./components/Tooth45').then((comp) => comp.Tooth45), {ssr: false});
+const Tooth46 = dynamic(() => import('./components/Tooth46').then((comp) => comp.Tooth46), {ssr: false});
+const Tooth47 = dynamic(() => import('./components/Tooth47').then((comp) => comp.Tooth47), {ssr: false});
+const Tooth48 = dynamic(() => import('./components/Tooth48').then((comp) => comp.Tooth48), {ssr: false});
 
 export const teethMapping: object = {
   11: Tooth11,

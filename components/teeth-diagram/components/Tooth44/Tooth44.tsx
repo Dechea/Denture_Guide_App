@@ -1,15 +1,13 @@
-
 'use client';
 
-import dynamic from 'next/dynamic';
-const Tooth = dynamic(() => import('@dechea/hes.ui.foundations.teeth.areas.tooth').then((tooth) => tooth.Tooth44), { ssr: false });
-const Root44 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.areas.root').then((roots) => roots.Root44), { ssr: false });
-const CrownSideView44 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.areas.crown-side-view').then((crownSideView) => crownSideView.CrownSideView44), { ssr: false });
-const ImplantLowerJaw = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.implant').then((implant) => implant.ImplantLowerJaw), { ssr: false });
-const MissingRoot44 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.missing-root').then((missingRoot) => missingRoot.MissingRoot44), { ssr: false });
-const ArtificialCrown44 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.artificial-crown').then((artificialCrowns) => artificialCrowns.ArtificialCrown44), { ssr: false });
-const Prosthesis44 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.prosthesis').then((prosthesis) => prosthesis.Prosthesis44), { ssr: false });
-const MissingCrown44 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.missing-crown').then((missingCrowns) => missingCrowns.MissingCrown44), { ssr: false });
+import { Tooth44 as Tooth } from '@dechea/hes.ui.foundations.teeth.areas.tooth';
+import { Root44 } from '@dechea/hes.ui.foundations.teeth.areas.root';
+import { CrownSideView44 } from '@dechea/hes.ui.foundations.teeth.areas.crown-side-view';
+import { ImplantLowerJaw } from '@dechea/hes.ui.foundations.teeth.visualizations.implant';
+import { MissingRoot44 } from '@dechea/hes.ui.foundations.teeth.visualizations.missing-root';
+import { ArtificialCrown44 } from '@dechea/hes.ui.foundations.teeth.visualizations.artificial-crown';
+import { Prosthesis44 } from '@dechea/hes.ui.foundations.teeth.visualizations.prosthesis';
+import { MissingCrown44 } from '@dechea/hes.ui.foundations.teeth.visualizations.missing-crown';
 
 import { Container } from '../Container';
 

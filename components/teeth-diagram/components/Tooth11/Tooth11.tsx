@@ -1,21 +1,18 @@
 'use client';
 
-import dynamic from 'next/dynamic';
+import React from 'react';
+import { Tooth11 as Tooth } from '@dechea/hes.ui.foundations.teeth.areas.tooth';
+import { Root11 } from '@dechea/hes.ui.foundations.teeth.areas.root';
+import { CrownSideView11 } from '@dechea/hes.ui.foundations.teeth.areas.crown-side-view';
+import { ImplantUpperJaw } from '@dechea/hes.ui.foundations.teeth.visualizations.implant';
+import { MissingRoot11 } from '@dechea/hes.ui.foundations.teeth.visualizations.missing-root';
+import { ArtificialCrown11 } from '@dechea/hes.ui.foundations.teeth.visualizations.artificial-crown';
+import { Prosthesis11 } from '@dechea/hes.ui.foundations.teeth.visualizations.prosthesis';
+import { MissingCrown11 } from '@dechea/hes.ui.foundations.teeth.visualizations.missing-crown';
+
 import { Container } from '../Container';
 
-const Tooth = dynamic(() => import('@dechea/hes.ui.foundations.teeth.areas.tooth').then((tooth) => tooth.Tooth11), { ssr: false });
-const Root11 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.areas.root').then((roots) => roots.Root11), { ssr: false });
-const CrownSideView11 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.areas.crown-side-view').then((crownSideView) => crownSideView.CrownSideView11), { ssr: false });
-const ImplantUpperJaw = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.implant').then((implant) => implant.ImplantUpperJaw), { ssr: false });
-const MissingRoot11 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.missing-root').then((missingRoot) => missingRoot.MissingRoot11), { ssr: false });
-const ArtificialCrown11 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.artificial-crown').then((artificialCrowns) => artificialCrowns.ArtificialCrown11), { ssr: false });
-const Prosthesis11 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.prosthesis').then((prosthesis) => prosthesis.Prosthesis11), { ssr: false });
-const MissingCrown11 = dynamic(() => import('@dechea/hes.ui.foundations.teeth.visualizations.missing-crown').then((missingCrowns) => missingCrowns.MissingCrown11), { ssr: false });
-
-
-
-export const Tooth11 = ({ implant = false, artificial = false, root = true }: { implant: boolean, artificial: boolean, root: boolean }) => {
-
+export const Tooth11 = ({ implant = false, artificial = false, root=true }: { implant: boolean, artificial: boolean, root: boolean }) => {
   return (
     <Container>
       <Tooth>
