@@ -20,28 +20,31 @@ const queryFetcher: QueryFetcher = async function (
   fetchOptions
 ) {
 
-  let token;
-  let customHeaders;
-  if (typeof window !== "undefined") {
-    token = JSON.stringify(window.localStorage.getItem('clerk-db-fauna-jwt'));
-    if (token) {
-      customHeaders = {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      }
+  // let token;
+  // let customHeaders;
+  // if (typeof window !== "undefined") {
+  //   token = JSON.stringify(window.localStorage.getItem('clerk-db-fauna-jwt'));
+  //   if (token) {
+  //     customHeaders = {
+  //       "Content-Type": "application/json",
+  //       "Authorization": `Bearer ${token}`
+  //     }
 
-    }
-  } else {
-    customHeaders = {
-      "Content-Type": "application/json",
-    }
-  }
+  //   }
+  // } else {
+  //   customHeaders = {
+  //     "Content-Type": "application/json",
+  //   }
+  // }
 
 
   // Modify "/api/graphql" if needed
-  const response = await fetch(`${process.env.NEXT_PUBLIC_FAUNA_URL_GRAPHQL}`, {
+  const response = await fetch("https://api-eu-central-1.hygraph.com/v2/cl1krj2ov7rl001z6bbold2ti/master", {
     method: "POST",
-    headers: customHeaders,
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${process.env.NEXT_PUBLIC_HYGRAPH_DECHEA_TOKEN}`
+    },
     body: JSON.stringify({
       query,
       variables,

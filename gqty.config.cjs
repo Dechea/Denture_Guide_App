@@ -5,8 +5,8 @@ const config = {
   react: true,
   scalarTypes: { DateTime: "string" },
   introspection: {
-    endpoint: process.env.FAUNA_URL_GRAPHQL,
-    headers: {"Authorization": `Bearer ${process.env.FAUNA_DECHEA_ENV__ADMIN__TOKEN}`},
+    endpoint: "https://api-eu-central-1.hygraph.com/v2/cl1krj2ov7rl001z6bbold2ti/master",
+    headers: {"Authorization": `Bearer ${process.env.NEXT_PUBLIC_HYGRAPH_DECHEA_TOKEN}`},
   },
   destination: "./src/gqty/index.ts",
   subscriptions: false,
