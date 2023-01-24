@@ -1,0 +1,980 @@
+# -----------USR SCHEMA -------------
+
+type USR_User {
+  birthdate: Time
+  email: String
+  firstName: String!
+  lastName: String!
+  gender: String
+  image: String
+  phone: String
+  profession: String
+  createdAt: Time
+  employee: USR_Employee
+  patient: USR_Patient
+  addresses: [USR_Address]
+  deletedAt: Time
+  auth0Id: String
+}
+
+type USR_Employee {
+  licenceId: String
+  user: USR_User!
+  status: USR_EmployeeStatus!
+  createdAt: Time
+  deletedAt: Time
+}
+
+type USR_Patient {
+  careLevel: Int
+  familyDoctor: String
+
+  isWard: Boolean
+  nextAppointment: Time
+  status: USR_PatientStatus!
+
+  primaryInsurance: USR_InsuranceContract @relation(name: "patient_insurance")
+
+  user: USR_User!
+  createdAt: Time
+  lastAnamnesisAt: Time
+  deletedAt: Time
+}
+
+type USR_Address {
+  street: String!
+  streetNo: String!
+  postalCode: String!
+  user: USR_User!
+  city: String!
+  country: String!
+  createdAt: Time
+  deletedAt: Time
+}
+
+type USR_InsuranceContract {
+  id: String!
+  type: USR_LegalInsuredType
+
+  coverageStart: Time
+  coverageEnd: Time
+
+  costReimbursement: USR_CostReimbursement_E
+  settlingCostBearer: Int
+
+  coPaymentStatus: USR_CoPaymentStatus_E
+
+  selectiveContract: USR_SelectiveContract_E
+
+  dormantEntitlement: USR_DormantEntitlement_E
+
+  company: USR_InsuranceCompany!
+  examinationCertificates: [USR_ExaminationCertificate]
+
+  patient: USR_Patient! @relation(name: "patient_insurance")
+}
+
+type USR_CostReimbursement_E @embedded {
+  someField: String
+}
+
+type USR_CoPaymentStatus_E @embedded {
+  status: Boolean!
+  validTo: Time
+}
+
+type USR_SelectiveContract_E @embedded {
+  medical: Int
+  dentist: Int
+  type: String
+}
+
+type USR_DormantEntitlement_E @embedded {
+  start: Time
+  end: Time
+  type: USR_DormantType
+}
+
+type USR_InsuranceCompany {
+  "Insurance company id"
+  id: String!
+  type: USR_InsuranceType!
+
+  "Name of insurance company"
+  name: String!
+
+  wop: USR_WOP!
+
+  country: String
+  createdAt: Time
+  deletedAt: Time
+}
+
+type USR_ExaminationCertificate {
+  "Available as 'pz' in examination certificate object"
+  hash: String
+
+  "Time when certificate was generated"
+  ts: Time
+
+  "Error codes"
+  error: USR_ExaminationCertificationResult
+
+  insuranceContract: USR_InsuranceContract
+}
+
+type PatientFile {
+  patient: USR_Patient!
+  teeth: [Tooth]
+}
+
+type TreatmentDoc {
+  # treatment: Treatment ---TODO--- Reffers to different schema
+  selectedProducts: [SelectedProduct]
+  selectedCategory: SelectedCategory
+}
+
+type SelectedCategory {
+  # category: Category! ---TODO--- Reffers to different schema
+  selectedCategory: SelectedCategory @relation(name: "selected_category")
+}
+
+type SelectedProduct {
+  # selectedProduct: Product! ---TODO--- Reffers to different schema
+  quantity: Int!
+}
+
+type FindingDoc {
+  # finding: Finding ---TODO--- Reffers to different schema
+  configs: TreatmentConfig
+}
+
+type TreatmentConfig {
+  # selectedCategory: Category ---TODO--- Reffers to different schema
+  # selectedProduct: Product ---TODO--- Reffers to different schema
+  quantity: Int
+}
+
+type Tooth @embedded {
+  id: String!
+  root: Root
+  crown: Crown
+}
+
+type Root @embedded {
+  findingDoc: FindingDoc
+  treatmentDoc: TreatmentDoc
+  addon: RootAddOn
+  leftRoot: LeftRoot
+  middleRoot: MiddleRoot
+  rightRoot: RightRoot
+}
+
+type Crown @embedded {
+  findingDoc: FindingDoc
+  treatmentDoc: TreatmentDoc
+  toothNeck: ToothNeck
+  left: LeftCrown
+  center: CenterCrown
+  outside: OutsideCrown
+  inside: InsideCrown
+  right: RightCrown
+}
+
+type RootAddOn @embedded {
+  findings: [FindingDoc]
+  treatments: [TreatmentDoc]
+}
+
+type LeftRoot @embedded {
+  findings: [FindingDoc]
+  treatments: [TreatmentDoc]
+}
+
+type MiddleRoot @embedded {
+  findings: [FindingDoc]
+  treatments: [TreatmentDoc]
+}
+
+type RightRoot @embedded {
+  findings: [FindingDoc]
+  treatments: [TreatmentDoc]
+}
+
+type CrownAddOn @embedded {
+  findings: [FindingDoc]
+  treatments: [TreatmentDoc]
+}
+
+type LeftCrown @embedded {
+  findings: [FindingDoc]
+  treatments: [TreatmentDoc]
+}
+
+type CenterCrown @embedded {
+  findings: [FindingDoc]
+  treatments: [TreatmentDoc]
+}
+
+type OutsideCrown @embedded {
+  findings: [FindingDoc]
+  treatments: [TreatmentDoc]
+}
+
+type InsideCrown @embedded {
+  findings: [FindingDoc]
+  treatments: [TreatmentDoc]
+}
+
+type RightCrown @embedded {
+  findings: [FindingDoc]
+  treatments: [TreatmentDoc]
+}
+
+enum USR_EmployeeStatus {
+  APPROVED
+  PENDING
+  DEACTIVATED
+}
+
+enum USR_PatientStatus {
+  WAITROOM
+  NOT_PRESENT
+  TREATMENT
+  NOTIFIED_DELAY
+  NOT_ARRIVED
+}
+
+enum USR_LegalInsuredType {
+  "Insurance contract code: 1"
+  MEMBER
+
+  "Insurance contract code: 3"
+  FAMILY_INSURED
+
+  "Insurance contract code: 5"
+  PENSIONERS_AND_FAMILY
+}
+
+enum USR_DormantType {
+  "Code: 1"
+  COMPLETE
+
+  "Code: 2"
+  PARTIAL
+}
+
+enum USR_InsuranceType {
+  PRIVATE
+  LEGAL
+}
+
+"Residence registration number"
+enum USR_WOP {
+  "Code: 52"
+  BADEN_WUERTTEMBERG
+
+  "Code: 17"
+  NIEDERSACHSEN
+
+  "Code: 51"
+  RHEINLAND_PFALZ
+
+  "Code: 71"
+  BAYERNS
+
+  "Code: 38"
+  NORDRHEIN
+
+  "Code: 46"
+  HESSEN
+
+  "Code: 72"
+  BERLIN
+
+  "Code: 03"
+  LAND_BREMEN
+
+  "Code: 02"
+  HAMBURG
+
+  "Code: 73"
+  SAARLAND
+
+  "Code: 01"
+  SCHLESWIG_HOLSTEIN
+
+  "Code: 20"
+  WESTFALEN_LIPPE
+
+  "Code: 78"
+  MECKLENBURG_VORPOMMERN
+
+  "Code: 83"
+  LAND_BRANDENBURG
+
+  "Code: 88"
+  SACHSEN_ANHALT
+
+  "Code: 93"
+  THUERINGEN
+
+  "Code: 98"
+  SACHSEN
+}
+
+enum USR_ExaminationCertificationResult {
+  """
+  Code: 1
+
+  Update successful with latest data from insurance company's server
+  """
+  UPDATE_SUCCESSFUL
+
+  """
+  Code: 2
+
+  Data on your insurance card is already up to date with insurance company server
+  """
+  UPDATE_NOT_REQUIRED
+
+  """
+  Code: 3
+
+  Update orders for the eGK could not be successfully determined or executed, because e.g. the specialist service of the is not available
+  """
+  NO_ONLINE_CONNECTION
+
+  "Code: 4"
+  AUTHENTICATION_CERTIFICATE_NOT_VALID
+
+  """
+  Code: 5
+
+  Online verification of the certificate is not technically possible
+  """
+  UNSUPPORTED_CERTIFICATE
+
+  """
+  Code: 6
+
+  maximum offline period of the connector exceeded
+  """
+  REQUEST_TIMEOUT
+}
+
+input USR_User_Input {
+  birthdate: Time
+  email: String
+  firstName: String!
+  lastName: String!
+  gender: String
+  image: String
+  phone: String
+  profession: String
+  createdAt: Time
+  employee: USR_Employee_Input
+  patient: USR_Patient_Input
+  addresses: [USR_Address_Input]
+  deletedAt: Time
+  auth0Id: String
+}
+
+input USR_Employee_Input {
+  licenceId: String
+  user: USR_User_Input!
+  status: USR_EmployeeStatus!
+  createdAt: Time
+  deletedAt: Time
+}
+
+input USR_Employee_Update_Input {
+  licenceId: String
+  user: USR_User_Input!
+  status: USR_EmployeeStatus!
+  createdAt: Time
+  deletedAt: Time
+}
+
+input USR_Patient_Input {
+  careLevel: Int
+  familyDoctor: String
+
+  isWard: Boolean
+  nextAppointment: Time
+  status: USR_PatientStatus!
+
+  primaryInsurance: USR_InsuranceContract_Input @relation(name: "patient_insurance")
+
+  user: USR_User_Input!
+  createdAt: Time
+  lastAnamnesisAt: Time
+  deletedAt: Time
+}
+
+input USR_Patient_Update_Input {
+  careLevel: Int
+  familyDoctor: String
+
+  isWard: Boolean
+  nextAppointment: Time
+  status: USR_PatientStatus!
+
+  primaryInsurance: USR_InsuranceContract_Input @relation(name: "patient_insurance")
+
+  user: USR_User_Input!
+  createdAt: Time
+  lastAnamnesisAt: Time
+  deletedAt: Time
+}
+
+input USR_Address_Input {
+  street: String!
+  streetNo: String!
+  postalCode: String!
+  user: USR_User_Input!
+  city: String!
+  country: String!
+  createdAt: Time
+  deletedAt: Time
+}
+
+input USR_InsuranceContract_Input {
+  id: String!
+  type: USR_LegalInsuredType
+
+  coverageStart: Time
+  coverageEnd: Time
+
+  costReimbursement: USR_CostReimbursement_Input_E
+  settlingCostBearer: Int
+
+  coPaymentStatus: USR_CoPaymentStatus_Input_E
+
+  selectiveContract: USR_SelectiveContract_Input_E
+
+  dormantEntitlement: USR_DormantEntitlement_Input_E
+
+  company: USR_InsuranceCompany_Input!
+  examinationCertificates: [USR_ExaminationCertificate_Input]
+
+  patient: USR_Patient_Input! @relation(name: "patient_insurance")
+}
+
+input USR_CostReimbursement_Input_E @embedded {
+  someField: String
+}
+
+input USR_CoPaymentStatus_Input_E @embedded {
+  status: Boolean!
+  validTo: Time
+}
+
+input USR_SelectiveContract_Input_E @embedded {
+  medical: Int
+  dentist: Int
+  type: String
+}
+
+input USR_DormantEntitlement_Input_E @embedded {
+  start: Time
+  end: Time
+  type: USR_DormantType
+}
+
+input USR_InsuranceCompany_Input {
+  "Insurance company id"
+  id: String!
+  type: USR_InsuranceType!
+
+  "Name of insurance company"
+  name: String!
+
+  wop: USR_WOP!
+
+  country: String
+  createdAt: Time
+  deletedAt: Time
+}
+
+input USR_ExaminationCertificate_Input {
+  "Available as 'pz' in examination certificate object"
+  hash: String
+
+  "Time when certificate was generated"
+  ts: Time
+
+  "Error codes"
+  error: USR_ExaminationCertificationResult
+
+  insuranceContract: USR_InsuranceContract_Input
+}
+
+# -----------HES SCHEMA-----------
+
+type HES_DentalStatus {
+  createdAt: Time
+  editedAt: Time
+  deletedAt: Time
+  createdBy: USR_User!
+  editedBy: USR_User
+  findings: [HES_Findings_E]!
+  patient: USR_User!
+  # event: CAL_Event  #TODO
+}
+
+type HES_MedicalFinding {
+  name: String!
+  criticality: Int!
+  availableLocations: [String]!
+  availablePositions: [String]!
+  zIndex: String!
+  availableMaterials: [String]
+  availableAreas: [String]
+  availableModifiers: [String]
+  airtableId: String
+  # replaces: [HES_MedicalFinding]
+  # complements: [HES_MedicalFinding]
+}
+
+type HES_Findings_E @embedded {
+  position: String
+  material: String
+  area: String
+  values: String # TODO, When we have specific value.
+  modifiers: [String]
+  note: HES_Note_E
+  medicalFinding: HES_MedicalFinding!
+  areaPrefixes: [String]
+}
+
+type HES_Note_E @embedded {
+  createdAt: Time
+  editedAt: Time
+  deletedAt: Time
+  createdBy: USR_User!
+  editedBy: USR_User
+  description: String!
+}
+
+input HES_AddMedicalFindingToDentalStatusInput {
+  patient: ID!
+  createdBy: ID!
+  findings: [HES_Findings_EInput]!
+}
+
+input HES_CreateMedicalFindingInput {
+  name: String!
+  availablePositions: [String]!
+  availableAreas: [String]!
+  criticality: Int
+  availableMaterials: [String]
+  airtableId: String!
+  complements: [ID]
+  replaces: [ID]
+  zIndex: String!
+}
+
+# ---------CLS SCHEMA-----------
+
+type CLS_AssignedOrganizationalUnit {
+  organizationalUnits: [CLS_OrganizationalUnits_E]
+  user: USR_User
+  tenant: CLS_OrganizationalUnit
+}
+
+type CLS_OrganizationalUnits_E @embedded {
+  organizationalUnit: CLS_OrganizationalUnit
+  roles: [CLS_Role]
+  auth0InvitationId: String
+}
+
+type CLS_OrganizationalUnit {
+  isLegalEntity: Boolean!
+  patientServing: CLS_PatientServing
+  name: String!
+  address: CLS_Address_E
+  phone: String
+  email: String
+  legalEntityMasterData: CLS_LegalEntityMasterData_E
+  parentOrganizationalUnit: CLS_OrganizationalUnit
+    @relation(name: "organizational_unit")
+  childOrganizationalUnits: String
+  type: CLS_Type
+}
+
+type CLS_Address_E @embedded {
+  street: String!
+  streetNo: String!
+  postalCode: String!
+  city: String!
+  country: String!
+}
+
+type CLS_Role {
+  type: CLS_RoleType!
+  auth0Id: String!
+  organizationalUnitE: CLS_OrganizationalUnits_E
+}
+
+type CLS_LegalEntityMasterData_E @embedded {
+  settlementNumber: String
+  taxID: String
+  insuranceAlliance: CLS_InsuranceAlliance
+}
+
+type CLS_InsuranceAlliance {
+  name: String!
+  id: String!
+  address: CLS_Address_E
+  phone: String
+  email: String
+}
+
+enum CLS_RoleType {
+  OWNER
+  ADMINISTRATOR
+  ANALYST
+  DOCTOR
+  ASSISTANT
+  RECEPTIONIST
+  TRAINEE
+}
+
+enum CLS_PatientServing {
+  LEGAL_AND_PRIVATE
+  PRIVATE
+  NONE
+}
+
+enum CLS_Type {
+  LOCATION
+  PRACTICE
+  ORGANIZATIONAL_UNIT
+}
+
+input CLS_OrganizationalUnit_Input {
+  isLegalEntity: Boolean!
+  patientServing: CLS_PatientServing
+  name: String!
+  address: CLS_Address_Input_E
+  phone: String
+  email: String
+  legalEntityMasterData: CLS_LegalEntityMasterData_Input_E
+  parentOrganizationalUnit: CLS_OrganizationalUnit_Input
+  @relation(name: "organizational_unit")
+  childOrganizationalUnits: String
+  type: CLS_Type
+}
+
+input CLS_Address_Input_E @embedded {
+  street: String!
+  streetNo: String!
+  postalCode: String!
+  city: String!
+  country: String!
+}
+
+input CLS_LegalEntityMasterData_Input_E @embedded {
+  settlementNumber: String
+  taxID: String
+  insuranceAlliance: CLS_InsuranceAlliance_Input
+}
+
+input CLS_InsuranceAlliance_Input {
+  name: String!
+  id: String!
+  address: CLS_Address_Input_E
+  phone: String
+  email: String
+}
+
+# --------------TRP SCHEMA---------------
+
+type TRP_Treatments {
+ name: String!
+ availableAreas: [String]! # TODO: replace [String]! with [Area]!, Currently TRP_Treatments documents create with airtable automation, and in airtable we have areas with . notation
+ airtableId: String!
+ localizations: [TRP_Treatments_Localizations_E]!
+ deletedAt: Time
+ availablePositions: [String]! # TODO: replace [String]! with [Position]!, Currently TRP_Treatments documents create with airtable automation, and in airtable we have positions with . notation
+ depth: String!
+}
+
+type TRP_TreatmentPlans {
+ name: String!
+ patient: USR_User!
+ history: ORC_History_E!
+ treatments: [TRP_Treatments_E]
+}
+
+enum Position {
+ TEETH__18
+ TEETH__17
+ TEETH__16
+ TEETH__15
+ TEETH__14
+ TEETH__13
+ TEETH__12
+ TEETH__11
+ TEETH__21
+ TEETH__22
+ TEETH__23
+ TEETH__24
+ TEETH__25
+ TEETH__26
+ TEETH__27
+ TEETH__28
+ TEETH__38
+ TEETH__37
+ TEETH__36
+ TEETH__35
+ TEETH__34
+ TEETH__33
+ TEETH__32
+ TEETH__31
+ TEETH__41
+ TEETH__42
+ TEETH__43
+ TEETH__44
+ TEETH__45
+ TEETH__46
+ TEETH__47
+ TEETH__48
+}
+
+enum Area {
+ TOOTH
+ TOOTH__CROWN
+ TOOTH__CROWN__MESIAL
+ TOOTH__CROWN__DISTAL
+ TOOTH__CROWN__FACIAL
+ TOOTH__CROWN__TOP
+ TOOTH__CROWN__ORAL
+ TOOTH__CROWN__CERVICAL
+ TOOTH__ROOT
+ TOOTH__ROOT__MESIAL
+ TOOTH__ROOT__DISTAL
+ TOOTH__ROOT__ORAL
+ TOOTH__ROOT__MESIO_BUCCAL
+ TOOTH__ROOT__DISTO_BUCCAL
+ TOOTH__ROOT__APICAL
+ TOOTH__GUM
+ TOOTH__GUM__MESIAL
+ TOOTH__GUM__DISTAL
+ TOOTH__GUM__FACIAL
+ TOOTH__GUM__ORAL
+ TOOTH__BONE
+ TOOTH__BONE__MESIAL
+ TOOTH__BONE__DISTAL
+ TOOTH__BONE__FACIAL
+ TOOTH__BONE__ORAL
+ TOOTH__BONE__HORICONTAL
+ TOOTH__BONE__VERTICAL
+}
+
+type TRP_Treatments_E @embedded {
+ position: Position!
+ area: Area!
+ treatment: TRP_Treatments!
+}
+
+type TRP_Treatments_Localizations_E @embedded {
+ name: String!
+ synonyms: [String]
+ locale: Locale!
+}
+
+enum Locale {
+ DE
+ EN
+}
+
+enum Depth {
+ DEPTH__LVL_1
+ DEPTH__LVL_2
+ DEPTH__LVL_3
+ DEPTH__LVL_4
+ DEPTH__LVL_5
+ DEPTH__LVL_6
+ DEPTH__LVL_7
+ DEPTH__LVL_8
+ DEPTH__LVL_9
+ DEPTH__LVL_10
+ DEPTH__LVL_11
+ DEPTH__LVL_12
+ DEPTH__LVL_13
+}
+
+input TRP_AddTreatmentsToPlan_Data_Input {
+ name: String!
+ patient: ID!
+ history: TRP_AddTreatmentsToPlan_History_Input!
+ treatments: [TRP_Treatments_EInput]
+}
+
+input TRP_AddTreatmentsToPlan_History_Input {
+ createdBy: ID!
+}
+
+# -----------ORC SCHEMA -------------
+
+type ORC_History_E @embedded {
+ createdAt: Time!
+ createdBy: USR_User!
+ updatedAt: Time
+ updatedBy: USR_User
+ deletedAt: Time
+ deletedBy: USR_User
+}
+
+enum ORC_History {
+ CREATED_AT
+ CREATED_BY
+ UPDATED_AT
+ UPDATED_BY
+ DELETED_AT
+ DELETED_BY
+}
+
+type Query {
+ HES_GetMedicalFindings(isDeleted: Boolean): [HES_MedicalFinding]
+  @resolver(name: "HES_GetMedicalFindings_GQL", paginated: true)
+ HES_GetDentalStatusByPatientRef(patientId: ID!): [HES_DentalStatus]
+  @resolver(name: "HES_GetDentalStatusByPatient_GQL", paginated: true)
+
+ # TRP UDFs
+ TRP_GetTreatments_GQL(isDeleted: Boolean): [TRP_Treatments]
+  @resolver(name: "TRP_GetTreatments_GQL", paginated: true)
+ TRP_GetTreatmentPlansByPatient_GQL(patientId: ID!): [TRP_TreatmentPlans]
+  @resolver(name: "TRP_GetTreatmentPlansByPatient_GQL", paginated: true)
+
+ # USR Indexes
+ #  USR_GetEmployees: [USR_Employee]
+ #    @index(name: "USR_GetEmployees")
+ USR_GetInsuranceCompanyById(id: String): USR_InsuranceCompany
+  @index(name: "USR_GetInsuranceCompanyById")
+ #  USR_GetPatients: [USR_Patient]
+ #    @index(name: "USR_GetPatients")
+ USR_GetUserByAuth0Id(auth0Id: String): USR_User
+  @index(name: "USR_GetUserByAuth0Id")
+ USR_GetUserByEmail(email: String): USR_User @index(name: "USR_GetUserByEmail")
+ USR_GetUsers: [USR_User] @index(name: "USR_GetUsers")
+
+ # HES Indexes
+ HES_GetDentalStatuses: [HES_DentalStatus] @index(name: "HES_GetDentalStatuses")
+ #  HES_GetMedicalFindings: [HES_MedicalFinding]
+ #    @index(name: "HES_GetMedicalFindings")
+ HES_GetMedicalFindingsByAirtableId(airtableId: String): [HES_MedicalFinding]
+  @index(name: "HES_GetMedicalFindingsByAirtableId")
+
+ # CLS Indexes
+ CLS_GetAllOrganizationalUnits: [CLS_OrganizationalUnit]
+  @index(name: "CLS_GetAllOrganizationalUnits")
+ CLS_GetAllRoles: [CLS_Role] @index(name: "CLS_GetAllRoles")
+
+ # CLS_AssignedOrganizationalUnit
+ CLS_GetAssignedOrganizationalUnitsByAuth0Id(
+  auth0Id: ID!
+ ): [CLS_AssignedOrganizationalUnit]
+  @resolver(name: "CLS_GetAssignedOrganizationalUnitsByAuth0Id_GQL")
+
+ # USR_Employee
+ USR_GetEmployees(
+  collectionName: String!
+  size: Int!
+  afterCursorId: ID!
+ ): [USR_Employee] @resolver(name: "USR_GetEmployees", paginated: true)
+
+ # USR_InsuranceContract
+ USR_CheckIfInsuranceContractExists(
+  insuranceContractData: USR_InsuranceContract_Input!
+ ): USR_InsuranceContract @resolver(name: "USR_CheckIfInsuranceContractExists")
+
+ # USR_Patient
+ USR_GetPatients(
+  isArchived: Boolean!
+  size: Int!
+  afterCursorId: ID!
+ ): [USR_Patient] @resolver(name: "USR_GetPatients", paginated: true)
+
+ # USR_TelematicInfrastructureInput
+ USR_GetInsuranceIdFromTiInput(tiId: ID!): [String]
+  @resolver(name: "USR_GetInsuranceIdFromTiInput")
+
+ # USR_User
+ USR_GetUserByInsuranceContract(insuranceId: ID!): [USR_User]
+  @resolver(name: "USR_GetUserByInsuranceContract")
+}
+
+type Mutation {
+ # HES_DentalStatus
+ HES_AddMedicalFindingToDentalStatus(
+  data: HES_AddMedicalFindingToDentalStatusInput
+ ): HES_DentalStatus @resolver(name: "HES_AddMedicalFindingToDentalStatus")
+ HES_RemoveMedicalFindingFromDentalStatus(
+  dentalStatusRef: ID
+  removeMedicalFindingList: [HES_Findings_EInput]
+ ): HES_DentalStatus @resolver(name: "HES_RemoveMedicalFindingFromDentalStatus")
+
+ # HES_MedicalFinding
+ HES_CreateMedicalFinding(
+  data: HES_CreateMedicalFindingInput
+ ): HES_MedicalFinding @resolver(name: "HES_CreateMedicalFinding")
+ HES_DeleteMedicalFinding(airtableId: String): HES_MedicalFinding
+  @resolver(name: "HES_DeleteMedicalFinding")
+
+ # CLS_OrganizationalUnit
+ CLS_CreateOrganizationalUnit(
+  organizationalUnitData: CLS_OrganizationalUnit_Input!
+ ): CLS_OrganizationalUnit @resolver(name: "CLS_CreateOrganizationalUnit")
+ CLS_DeleteOrganizationalUnit(
+  organizationalUnitId: ID!
+  recursiveFlag: Boolean!
+ ): String @resolver(name: "CLS_DeleteOrganizationalUnit")
+
+ # USR_Employee
+ USR_CreateEmployee(employeeData: USR_Employee_Input!): USR_User
+  @resolver(name: "USR_CreateEmployee")
+ USR_DeleteEmployee(employeeId: ID!): String
+  @resolver(name: "USR_DeleteEmployee")
+ USR_UpdateEmployee(
+  employeeData: USR_Employee_Update_Input!
+  Refs: String!
+ ): USR_Employee @resolver(name: "USR_UpdateEmployee")
+
+ # USR_InsuranceCompany
+ USR_GetOrCreateInsuranceCompany(
+  insuranceCompanyData: USR_InsuranceCompany_Input!
+ ): USR_InsuranceCompany @resolver(name: "USR_GetOrCreateInsuranceCompany")
+
+ # USR_Patient
+ USR_ArchiveOrRestorePatient(
+  userId: ID!
+  archiveRestoreFlag: Boolean!
+ ): USR_Patient @resolver(name: "USR_ArchiveOrRestorePatient")
+ USR_CreatePatient(patientData: USR_Patient_Input!): USR_User
+  @resolver(name: "USR_CreatePatient")
+ USR_DeletePatient(patientId: ID!): String @resolver(name: "USR_DeletePatient")
+ USR_UpdatePatient(
+  patientData: USR_Patient_Update_Input!
+  Refs: String!
+ ): USR_Patient @resolver(name: "USR_UpdatePatient")
+ USR_UpdatePatientStatus(patientRef: String!, status: String!): USR_Patient
+  @resolver(name: "USR_UpdatePatientStatus")
+
+ # USR_User
+ USR_UpsertUserFromTiInput(tiId: ID!): USR_User
+  @resolver(name: "USR_UpsertUserFromTiInput")
+
+ # TRP_PlanTreatment
+ TRP_AddTreatmentsToPlan(
+  data: TRP_AddTreatmentsToPlan_Data_Input!
+  treatmentPlanId: ID
+ ): TRP_TreatmentPlans @resolver(name: "TRP_AddTreatmentsToPlan")
+ TRP_RemoveTreatmentFromTreatmentPlan(
+  treatmentPlanId: ID!
+  removeTreatmentPlanList: [TRP_Treatments_EInput]
+  newTreatmentPlanList: [TRP_Treatments_EInput]
+ ): TRP_TreatmentPlans @resolver(name: "TRP_RemoveTreatmentsFromTreatmentPlan")
+}
