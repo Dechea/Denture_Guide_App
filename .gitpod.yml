@@ -9,7 +9,6 @@ tasks:
       doppler setup --project dechea --config dev
       npm config set '@dechea:registry' https://node.bit.dev
       doppler run --command='npm config set "//node.bit.dev/:_authToken" $BIT_TOKEN'
-      doppler run --command='echo fauna token $FAUNA_DECHEA_ENV__ADMIN__TOKEN'
 
     init: |
       npm install
