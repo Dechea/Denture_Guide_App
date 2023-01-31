@@ -6,8 +6,8 @@ type notes = {
   text: string;
 };
 
-export const NotesList = ({ notes }: { notes: notes[] }) => {
-  const [tempNotes, setTempNotes] = useState(notes);
+export const NotesList = ({ data }: { data: notes[] }) => {
+  const [tempNotes, setTempNotes] = useState(data);
   const [note, setNote] = useState('');
 
   const onChangeNote = (e: ChangeEvent<HTMLInputElement>) => {
@@ -31,8 +31,8 @@ export const NotesList = ({ notes }: { notes: notes[] }) => {
 
   return (
     <>
-      {tempNotes.map((note) => (
-        <div>{note.text}</div>
+      {tempNotes?.map((note, index) => (
+        <div key={index}>{note.text}</div>
       ))}
 
       <div>
