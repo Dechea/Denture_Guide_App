@@ -3,15 +3,7 @@ import { client } from '../../src/fauna';
 import { NotesList } from './NotesList';
 
 export default async function Notes() {
-  const notes = (await client.query(fql`Note.all`)).data?.data;
-  const handleAddNote = (text: string) => {
-    const noteData = {
-      text,
-    };
-
-    console.log({ text });
-    return client.query(fql`Note.create(${noteData})`);
-  };
+  const notes = (await client.query(fql`Note.all.paginate(500)`)).data?.data;
 
   // console.log({ notes });
   // const collections = async () => {

@@ -6,13 +6,7 @@ type notes = {
   text: string;
 };
 
-export const NotesList = ({
-  notes,
-  onAddNote,
-}: {
-  notes: notes[];
-  onAddNote?: Function;
-}) => {
+export const NotesList = ({ notes }: { notes: notes[] }) => {
   const [tempNotes, setTempNotes] = useState(notes);
   const [note, setNote] = useState('');
 
@@ -23,8 +17,13 @@ export const NotesList = ({
   const onClickCreateNoteButton = async () => {
     setTempNotes([...tempNotes, { text: note }]);
     try {
-      // const res = await onAddNote(note);
-      // console.log({ res });
+      fetch('/api/notes', {
+        method: 'POST',
+        body: JSON.stringify({ text: note }),
+      })
+        .then((res) => res.json())
+        .then((data) => console.log({ data }))
+        .catch((err) => console.log({ err }));
     } catch (error) {
       console.log({ error });
     }
