@@ -6,32 +6,41 @@ type notes = {
   text: string;
 };
 
-export const NotesList = ({ data }: { data: notes[] }) => {
-  const [tempNotes, setTempNotes] = useState(data);
+export const NotesList = ({
+  data,
+  addData,
+  resetData,
+}: {
+  data: notes[];
+  addData: Function;
+  resetData: Function;
+}) => {
   const [note, setNote] = useState('');
 
   const onChangeNote = (e: ChangeEvent<HTMLInputElement>) => {
     setNote(e.target.value);
   };
 
-  const onClickCreateNoteButton = async () => {
-    setTempNotes([...tempNotes, { text: note }]);
-    try {
-      fetch('/api/notes', {
-        method: 'POST',
-        body: JSON.stringify({ text: note }),
+  const onClickCreateNoteButton = () => {
+    addData([...data, { text: note }]);
+
+    fetch('/api/notes/createNote', {
+      method: 'POST',
+      body: JSON.stringify({ text: note }),
+    })
+      .then((res) => res.json())
+      .catch((error) => {
+        resetData(data, note, 'text');
+        console.log({ error });
       })
-        .then((res) => res.json())
-        .then((data) => console.log({ data }))
-        .catch((err) => console.log({ err }));
-    } catch (error) {
-      console.log({ error });
-    }
+      .finally(() => {
+        setNote('');
+      });
   };
 
   return (
     <>
-      {tempNotes?.map((note, index) => (
+      {data?.map((note, index) => (
         <div key={index}>{note.text}</div>
       ))}
 

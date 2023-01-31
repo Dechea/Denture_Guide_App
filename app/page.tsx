@@ -1,3 +1,5 @@
+'use client';
+
 export const runtime = 'nodejs';
 
 import { Suspense } from 'react';

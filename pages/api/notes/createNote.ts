@@ -2,7 +2,7 @@ export const runtime = 'nodejs';
 
 import { fql } from 'fauna';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { client } from '../../src/fauna';
+import { client } from '../../../src/fauna';
 
 export default async function handler(
   req: NextApiRequest,
