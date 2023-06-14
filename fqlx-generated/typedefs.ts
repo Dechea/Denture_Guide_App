@@ -116,6 +116,18 @@ export interface PatientFile {
  * name for the Patient
  */
  name: string;
+/**
+ * date for the Patient
+ */
+ date: string;
+/**
+ * avatar for the Patient
+ */
+ avatar: string;
+/**
+ * status for the Patient
+ */
+ status: string;
 
   }
 
@@ -125,6 +137,18 @@ export interface PatientFile {
  * name for the Patient
  */
  name: string;
+/**
+ * date for the Patient
+ */
+ date: string;
+/**
+ * avatar for the Patient
+ */
+ avatar: string;
+/**
+ * status for the Patient
+ */
+ status: string;
 
   } 
 
@@ -149,12 +173,18 @@ export interface PatientFile {
        * 
        * @param {PatientInput} input - will be the Patient which you want to add.
          * @param { string } input.name Name for the Patient
+* @param { string } input.date Date for the Patient
+* @param { string } input.avatar Avatar for the Patient
+* @param { string } input.status Status for the Patient
        *
        * @returns {CreateMethods<Patient>} return new document.
        * 
        * @example
        * query.Patient.create({  
  * name: "Value of the name"   
+ * date: "Value of the date"   
+ * avatar: "Value of the avatar"   
+ * status: "Value of the status"   
        * }).exec()
        * 
        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}

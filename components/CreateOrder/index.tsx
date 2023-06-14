@@ -4,10 +4,12 @@ import { useRouter } from 'next/navigation';
 import { SyntheticEvent, useState } from 'react';
 import { Button, Icon, Modal, Text, TextField, View } from 'reshaped';
 import CrossIcon from '../Icons/Cross';
+import { useQuery } from 'fqlx-client';
+import { Query } from '../../fqlx-generated/typedefs';
 
-interface CreatePatientProps {
+interface CreateOrderProps {
   activeModal: boolean;
-  deactivateModal: (() => void) | undefined;
+  deactivateModal: () => void;
 }
 
 interface onChangeEventHandler {
@@ -16,20 +18,31 @@ interface onChangeEventHandler {
   event?: SyntheticEvent;
 }
 
-export default function CreatePatient({
+export default function CreateOrder({
   activeModal,
   deactivateModal,
-}: CreatePatientProps) {
+}: CreateOrderProps) {
   const [patientName, setPatientName] = useState('');
   const router = useRouter();
+  const query = useQuery<Query>();
 
   const handlePatientNameChange = ({ value }: onChangeEventHandler): void => {
     setPatientName(value);
   };
 
-  const onCreatePatientButtonClick = () => {
-    // TODO: use dynamic PatientFile Id
-    router.push('/366051179773296849/treatments');
+  const onCreatePatientFileButtonClick = async () => {
+    try {
+      const patient = await query.PatientFile.create({
+        patient: { name: patientName, date: '', status: '', avatar: '' },
+        teeth: [],
+      }).exec();
+
+      router.push(`/${patient.id}/treatments`);
+    } catch (err) {
+      console.log('Failed to create PatientFile; Error: ', err);
+    } finally {
+      deactivateModal();
+    }
   };
 
   return (
@@ -39,22 +52,25 @@ export default function CreatePatient({
       padding={4}
       size='509px'
     >
-
-      <View gap={11} className="cursor-default">
-        <View gap={2} direction='row' align='center' >
+      <View gap={11} className='cursor-default'>
+        <View gap={2} direction='row' align='center'>
           <View.Item grow>
-
-            <Text variant='featured-2' weight='bold' color='neutral' >
+            <Text variant='featured-2' weight='bold' color='neutral'>
               Create Order for...
             </Text>
           </View.Item>
-
-
-          <Button onClick={deactivateModal} icon={<Icon size={5} svg={CrossIcon} />} variant='ghost' size='large' />
+          <Button
+            onClick={deactivateModal}
+            icon={<Icon size={5} svg={CrossIcon} />}
+            variant='ghost'
+            size='large'
+          />
         </View>
 
         <View gap={1}>
-          <Text variant='body-3' weight='medium' color='neutral'>Patient’s Name</Text>
+          <Text variant='body-3' weight='medium' color='neutral'>
+            Patient’s Name
+          </Text>
           <View direction='row' gap={3} align='center'>
             <View.Item grow>
               <TextField
@@ -69,8 +85,7 @@ export default function CreatePatient({
               <Button
                 color='primary'
                 size='large'
-                disabled={!patientName}
-                onClick={onCreatePatientButtonClick}
+                onClick={onCreatePatientFileButtonClick}
                 fullWidth
               >
                 Create

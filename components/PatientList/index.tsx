@@ -1,21 +1,21 @@
 'use client';
 
 import { Avatar, Badge, Text, View, Card, Divider } from 'reshaped';
-import { PatientListProps } from '../../interfaces/patients';
-import { useRouter } from 'next/navigation';
+import { useQuery } from 'fqlx-client';
+import moment from 'moment';
+import { Query } from '../../fqlx-generated/typedefs';
 
-const mapStatus: { [key: string]: 'positive' | 'critical' } = {
+const mapStatus: { [key: string]: 'positive' | 'critical' | undefined } = {
   'Waiting for Lab': 'critical',
   Shipping: 'positive',
   'Arriving Today': 'positive',
+  default: undefined,
 };
 
-export default function PatientList({
-  patientOrders,
-}: {
-  patientOrders: PatientListProps[];
-}) {
-  const router = useRouter();
+export default function PatientList() {
+  const query = useQuery<Query>();
+
+  const patientFiles = query.PatientFile.all().exec().data;
 
   return (
     <View direction='column' padding={10} height={'100%'}>
@@ -46,26 +46,23 @@ export default function PatientList({
       </View.Item>
       <View.Item>
         <View direction='column' align={'stretch'} height={'100%'}>
-          {patientOrders.map((patient, index) => (
-            <View key={patient.id}>
+          {patientFiles.map((patientFile, index) => (
+            <View key={patientFile.id}>
               <Card
-                onClick={() => {
-                  // TODO: use dynamic PatientFile Id
-                  router.push('/366051179773296849/treatments');
-                }}
-                className="w-[100%]"
+                href={`/${patientFile.id}/treatments`}
                 padding={4}
-                attributes={{
-                  style: { border: 'none', paddingLeft: 0, paddingRight: 0 },
-                }}
+                className='w-[100%] !px-0 !border-0'
               >
                 <View direction='row' align='center' justify='start'>
                   <View.Item columns={4}>
                     <View direction='row' gap={4} align='center'>
-                      <Avatar src={patient.avatar} size={9} />
+                      <Avatar
+                        src={patientFile.patient.avatar || '/defaultAvatar.svg'}
+                        size={9}
+                      />
 
                       <Text variant='body-2' color='neutral' weight='medium'>
-                        {patient.name}
+                        {patientFile.patient.name}
                       </Text>
                     </View>
                   </View.Item>
@@ -74,12 +71,18 @@ export default function PatientList({
                     <View direction='row' align='center' width='100%'>
                       <View.Item grow>
                         <Badge
-                          color={mapStatus[patient.status]}
-                          variant='faded'
-                        > 
-                        <Text variant='caption-1' color='neutral' weight='medium'>
-                          {patient.status}
-                        </Text>
+                          color={
+                            mapStatus[patientFile.patient?.status || 'default']
+                          }
+                        >
+                          <Text
+                            variant='caption-1'
+                            color='neutral'
+                            weight='medium'
+                          >
+                            {patientFile.patient?.status ||
+                              'Status will be here'}
+                          </Text>
                         </Badge>
                       </View.Item>
                     </View>
@@ -87,13 +90,16 @@ export default function PatientList({
 
                   <View.Item columns={4}>
                     <Text variant='body-3' color='neutral' weight='regular'>
-                      {patient.date}
+                      {/* @ts-expect-error */}
+                      {moment(patientFile?.ts?.isoString).format(
+                        'MMM DD, YYYY'
+                      )}
                     </Text>
                   </View.Item>
                 </View>
               </Card>
 
-              {index < patientOrders.length - 1 && <Divider />}
+              {index < patientFiles.length - 1 && <Divider />}
             </View>
           ))}
         </View>

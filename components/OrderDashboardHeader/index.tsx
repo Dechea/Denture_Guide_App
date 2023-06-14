@@ -3,13 +3,13 @@
 import { Button, Text, View } from 'reshaped';
 import PlusIcon from '../Icons/Plus';
 
-interface PatientDashboardHeaderProps {
-  activateNewPatientModal: () => void;
+interface OrderDashboardHeaderProps {
+  activateNewOrderModal: () => void;
 }
 
-export default function PatientDashboardHeader({
-  activateNewPatientModal,
-}: PatientDashboardHeaderProps) {
+export default function OrderDashboardHeader({
+  activateNewOrderModal,
+}: OrderDashboardHeaderProps) {
   return (
     <View>
       <View
@@ -17,12 +17,11 @@ export default function PatientDashboardHeader({
         align='center'
         backgroundColor='neutral-faded'
         paddingInline={10}
-        
       >
         <View.Item columns={6}>
           <View paddingBlock={8}>
             <Text color='neutral' variant='featured-2' weight='bold'>
-               Orders
+              Orders
             </Text>
           </View>
         </View.Item>
@@ -35,12 +34,11 @@ export default function PatientDashboardHeader({
             wrap={false}
             height='48px'
           >
-            
             <Button
               icon={<PlusIcon />}
               color='primary'
               size='large'
-              onClick={activateNewPatientModal}
+              onClick={activateNewOrderModal}
             >
               Create Order
             </Button>
