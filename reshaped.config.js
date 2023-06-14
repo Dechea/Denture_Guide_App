@@ -1,6 +1,6 @@
 const config = {
   themes: {
-    decheaTheme: {
+    dechea: {
       color: {
         toothBackgroundEnabled: { hex: '#FFFFFF' },
         toothBorderEnabled: { hex: '#A7BBDF' },

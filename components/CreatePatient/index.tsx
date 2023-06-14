@@ -2,7 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { SyntheticEvent, useState } from 'react';
-import { Button, Divider, Modal, Text, TextField, View } from 'reshaped';
+import { Button, Icon, Modal, Text, TextField, View } from 'reshaped';
+import CrossIcon from '../Icons/Cross';
 
 interface CreatePatientProps {
   activeModal: boolean;
@@ -35,41 +36,48 @@ export default function CreatePatient({
     <Modal
       active={activeModal}
       onClose={deactivateModal}
-      padding={6}
-      size={{ l: '640px' }}
+      padding={4}
+      size='509px'
     >
-      <View direction='column' gap={9}>
-        <Text variant='title-2' color='neutral'>
-          New Patient
-        </Text>
 
-        <TextField
-          size='medium'
-          name='patientName'
-          placeholder='Patient’s name'
-          onChange={handlePatientNameChange}
-        />
+      <View gap={11} className="cursor-default">
+        <View gap={2} direction='row' align='center' >
+          <View.Item grow>
 
-        <Divider />
-      </View>
+            <Text variant='featured-2' weight='bold' color='neutral' >
+              Create Order for...
+            </Text>
+          </View.Item>
 
-      <View direction='row' paddingBlock={3} paddingInline={4} gap={3} justify='end'>
-        <Button
-          color='white'
-          size='medium'
-          variant='outline'
-          onClick={deactivateModal}
-        >
-          Cancel
-        </Button>
-        <Button
-          color='primary'
-          size='medium'
-          disabled={!patientName}
-          onClick={onCreatePatientButtonClick}
-        >
-          Create
-        </Button>
+
+          <Button onClick={deactivateModal} icon={<Icon size={5} svg={CrossIcon} />} variant='ghost' size='large' />
+        </View>
+
+        <View gap={1}>
+          <Text variant='body-3' weight='medium' color='neutral'>Patient’s Name</Text>
+          <View direction='row' gap={3} align='center'>
+            <View.Item grow>
+              <TextField
+                size='large'
+                name='patientName'
+                placeholder='Patient’s name'
+                onChange={handlePatientNameChange}
+                inputAttributes={{ autoComplete: 'off' }}
+              />
+            </View.Item>
+            <View width={21}>
+              <Button
+                color='primary'
+                size='large'
+                disabled={!patientName}
+                onClick={onCreatePatientButtonClick}
+                fullWidth
+              >
+                Create
+              </Button>
+            </View>
+          </View>
+        </View>
       </View>
     </Modal>
   );

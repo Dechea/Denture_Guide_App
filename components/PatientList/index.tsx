@@ -24,7 +24,7 @@ export default function PatientList({
           <View direction='row' align='center' justify='start'>
             <View.Item columns={4}>
               <Text variant='body-3' color='neutral-faded' weight='medium'>
-                Patient order
+                Patient
               </Text>
             </View.Item>
             <View.Item columns={4}>
@@ -53,6 +53,7 @@ export default function PatientList({
                   // TODO: use dynamic PatientFile Id
                   router.push('/366051179773296849/treatments');
                 }}
+                className="w-[100%]"
                 padding={4}
                 attributes={{
                   style: { border: 'none', paddingLeft: 0, paddingRight: 0 },
@@ -61,7 +62,7 @@ export default function PatientList({
                 <View direction='row' align='center' justify='start'>
                   <View.Item columns={4}>
                     <View direction='row' gap={4} align='center'>
-                      <Avatar src={patient.avatar} size={6} />
+                      <Avatar src={patient.avatar} size={9} />
 
                       <Text variant='body-2' color='neutral' weight='medium'>
                         {patient.name}

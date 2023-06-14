@@ -27,7 +27,7 @@ const CartPopoverButton = () => {
       </Popover.Trigger>
       <Popover.Content>
         <View gap={4}>
-          <Text variant='body-1' color='neutral'>
+          <Text variant='body-2' color='neutral'>
             Here you can order selected items that are not in your Local Storage
           </Text>
           <Button

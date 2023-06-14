@@ -1,29 +1,26 @@
 'use client';
 
-import { ChangeHandler } from 'reshaped/types/global';
-import { Button, Text, TextField, View } from 'reshaped';
+import { Button, Text, View } from 'reshaped';
 import PlusIcon from '../Icons/Plus';
-import SearchIcon from '../Icons/Search';
+
+interface PatientDashboardHeaderProps {
+  activateNewPatientModal: () => void;
+}
 
 export default function PatientDashboardHeader({
-  onSearchPatientOrder,
-  disableSearch,
   activateNewPatientModal,
-}: {
-  onSearchPatientOrder: ChangeHandler<string>;
-  disableSearch: boolean;
-  activateNewPatientModal: () => void;
-}) {
+}: PatientDashboardHeaderProps) {
   return (
     <View>
       <View
         direction='row'
         align='center'
-        backgroundColor='neutral'
-        padding={10}
+        backgroundColor='neutral-faded'
+        paddingInline={10}
+        
       >
         <View.Item columns={6}>
-          <View>
+          <View paddingBlock={8}>
             <Text color='neutral' variant='featured-2' weight='bold'>
                Orders
             </Text>
@@ -34,8 +31,9 @@ export default function PatientDashboardHeader({
             direction='row'
             justify='end'
             align='center'
-            gap={4}
+            paddingBlock={8}
             wrap={false}
+            height='48px'
           >
             
             <Button
