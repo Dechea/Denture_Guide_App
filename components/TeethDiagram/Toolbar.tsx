@@ -29,7 +29,7 @@ export default function Toolbar({ onUndo, onRedo }: ToolbarProps) {
       <Tooltip
         text={
           <View direction='row' align='center'>
-            Undo <Hotkey>⌘Z</Hotkey>
+            Undo <Hotkey>mod + Z</Hotkey>
           </View>
         }
       >
@@ -47,7 +47,7 @@ export default function Toolbar({ onUndo, onRedo }: ToolbarProps) {
       <Tooltip
         text={
           <View direction='row' align='center'>
-            Redo <Hotkey>⌘Y</Hotkey>
+            Redo <Hotkey>mod + Y</Hotkey>
           </View>
         }
       >
