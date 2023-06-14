@@ -1,19 +1,19 @@
 image:
   file: .gitpod.Dockerfile
-  
+
 tasks:
   - name: Start development environment
     before: |
       eval $(command gp env -e)
-      doppler configure set token $DOPPLER_LOCAL_TOKEN
-      doppler setup --project dechea --config dev
-      npm config set '@dechea:registry' https://node.bit.dev
-      doppler run --command='npm config set "//node.bit.dev/:_authToken" $BIT_TOKEN'
-
+      doppler configure set token $DOPPLER_LOCAL_TOKEN --no-check-version
+      doppler setup --project dechea --config dev --no-check-version
+      pnpm config set auto-install-peers true
+      pnpm config set '@dechea:registry' https://node.bit.dev
+      doppler run --command='pnpm config set "//node.bit.dev/:_authToken" $BIT_TOKEN' --no-check-version
     init: |
-      npm install
+      pnpm i
     command: |
-      npm run dev
+      pnpm dev
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
 ports:
@@ -27,11 +27,21 @@ github:
     branches: true
     pullRequests: true
     pullRequestsFromForks: false
-# add a check to pull requests (defaults to true)
+    # add a check to pull requests (defaults to true)
     addCheck: prevent-merge-on-error
-# add a "Review in Gitpod" button as a comment to pull requests (defaults to false)
+    # add a "Review in Gitpod" button as a comment to pull requests (defaults to false)
     addComment: true
 vscode:
   extensions:
     - christian-kohler.npm-intellisense
     - eamodio.gitlens
+    - genuitecllc.codetogether
+    - esbenp.prettier-vscode
+    - christian-kohler.path-intellisense
+    - aaron-bond.better-comments
+    - leodevbro.blockman
+    - meganrogge.template-string-converter
+    - rangav.vscode-thunder-client
+    - Gruntfuggly.todo-tree
+    - PulkitGangwar.nextjs-snippets
+    - bradlc.vscode-tailwindcss

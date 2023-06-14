@@ -1,9 +1,17 @@
 import './globals.css';
-import 'reshaped/themes/reshaped/theme.css';
+import '../themes/dechea/theme.css';
+import { Reshaped, View } from 'reshaped';
+import Navbar from '../components/Navbar';
+import FqlxClientProvider from './FqlxClientProvider';
+import { ClerkProvider } from '@clerk/nextjs';
 
-import { Reshaped, View } from '../components/Reshaped/Reshaped';
-import RootStyleRegistry from './registry';
-import { SideNavigationBar } from '../components/UI/SideNavigationBar';
+export const metadata = {
+  title: 'Material Planner',
+  description: 'Implant and prothetics guided buy and cost estimations',
+  icons: {
+    icon: './favicon.ico',
+  },
+};
 
 export default function RootLayout({
   children,
@@ -11,26 +19,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      {/*
-            <head /> will contain the components returned by the nearest parent
-            head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
-          */}
-        <head />
+    <html lang='en'>
+      <ClerkProvider>
         <body>
-          <RootStyleRegistry>
-              <Reshaped theme="reshaped">
-                <View direction="row" height="100%" width="100%">
-                  <View width="64px">
-                    <SideNavigationBar />
-                  </View>
-                  <View width="calc(100% - 64px)" padding={4}>
-                    {children}
-                  </View>
-                </View>
-              </Reshaped>
-          </RootStyleRegistry>
+          <Reshaped theme='dechea'>
+            <FqlxClientProvider>
+              <View direction='row' height='100vh' align='stretch'>
+                <View.Item>
+                  <Navbar />
+                </View.Item>
+                <View.Item grow>{children}</View.Item>
+              </View>
+            </FqlxClientProvider>
+          </Reshaped>
         </body>
-      </html>
+      </ClerkProvider>
+    </html>
   );
 }
