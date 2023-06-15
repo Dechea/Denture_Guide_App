@@ -9,18 +9,11 @@ interface ComposedToothProps {
 }
 
 export const ComposedTooth = ({ treatment }: ComposedToothProps) => {
-  const customStyles = '[&_svg>*]:!pointer-events-none';
-
   return (
-    <ToothContainer customStyles='!w-[64px] !aspect-[64/64]'>
+    <ToothContainer customStyles='!w-[64px] !aspect-[64/64] pointer-events-none [&_svg>*]:!pointer-events-none'>
       <Tooth tooth={0} className='!h-[90%]' variant={treatment.toothVariant}>
-        <Root
-          customStyles={customStyles}
-          variant={treatment.rootVariant}
-          tooth={0}
-        />
+        <Root variant={treatment.rootVariant} tooth={0} />
         <Crown
-          customStyles={customStyles}
           variant={treatment.crownVariant}
           tooth={0}
           leftAnchor={treatment.leftAnchor}
