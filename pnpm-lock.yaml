@@ -17,7 +17,7 @@ dependencies:
     specifier: 0.2.0
     version: 0.2.0
   moment:
-    specifier: ^2.29.4
+    specifier: 2.29.4
     version: 2.29.4
   next:
     specifier: 13.4.5
