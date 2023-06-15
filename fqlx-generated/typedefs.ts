@@ -120,10 +120,6 @@ export interface Ts {
 
   export interface PatientFileInput {
     /**
- * ts for the PatientFile
- */
- ts: Ts;
-/**
  * patient for the PatientFile
  */
  patient: Patient;
@@ -1582,62 +1578,62 @@ export interface Ts {
     /**
  * @returns This return fqlx methods for the PatientFile 
  */ 
-PatientFile: PaginateData<PatientFile> & PatientFileMethods;
+PatientFile: PatientFileMethods;
 /**
  * @returns This return fqlx methods for the Ts 
  */ 
- Ts:  PaginateData<Ts> & TsMethods;
+ Ts:  TsMethods;
 /**
  * @returns This return fqlx methods for the Patient 
  */ 
-Patient: PaginateData<Patient> & PatientMethods;
+Patient: PatientMethods;
 /**
  * @returns This return fqlx methods for the Tooth 
  */ 
-Tooth: PaginateData<Tooth> & ToothMethods;
+Tooth: ToothMethods;
 /**
  * @returns This return fqlx methods for the Root 
  */ 
- Root:  PaginateData<Root> & RootMethods;
+ Root:  RootMethods;
 /**
  * @returns This return fqlx methods for the Crown 
  */ 
- Crown:  PaginateData<Crown> & CrownMethods;
+ Crown:  CrownMethods;
 /**
  * @returns This return fqlx methods for the BodyPartLeaf 
  */ 
-BodyPartLeaf: PaginateData<BodyPartLeaf> & BodyPartLeafMethods;
+BodyPartLeaf: BodyPartLeafMethods;
 /**
  * @returns This return fqlx methods for the Finding 
  */ 
-Finding: PaginateData<Finding> & FindingMethods;
+Finding: FindingMethods;
 /**
  * @returns This return fqlx methods for the TreatmentDoc 
  */ 
-TreatmentDoc: PaginateData<TreatmentDoc> & TreatmentDocMethods;
+TreatmentDoc: TreatmentDocMethods;
 /**
  * @returns This return fqlx methods for the SelectedProduct 
  */ 
-SelectedProduct: PaginateData<SelectedProduct> & SelectedProductMethods;
+SelectedProduct: SelectedProductMethods;
 /**
  * @returns This return fqlx methods for the Product 
  */ 
-Product: PaginateData<Product> & ProductMethods;
+Product: ProductMethods;
 /**
  * @returns This return fqlx methods for the TreatmentGroup 
  */ 
-TreatmentGroup: PaginateData<TreatmentGroup> & TreatmentGroupMethods;
+TreatmentGroup: TreatmentGroupMethods;
 /**
  * @returns This return fqlx methods for the Treatment 
  */ 
-Treatment: PaginateData<Treatment> & TreatmentMethods;
+Treatment: TreatmentMethods;
 /**
  * @returns This return fqlx methods for the Area 
  */ 
-Area: PaginateData<Area> & AreaMethods;
+Area: AreaMethods;
 /**
  * @returns This return fqlx methods for the TreatmentLocalization 
  */ 
-TreatmentLocalization: PaginateData<TreatmentLocalization> & TreatmentLocalizationMethods;
+TreatmentLocalization: TreatmentLocalizationMethods;
 
   }

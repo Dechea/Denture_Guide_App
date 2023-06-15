@@ -58,13 +58,11 @@ const Header = ({ patientFileId }: HeaderProps) => {
               size='small'
               startSlot={
                 <Avatar
-                  // @ts-expect-error
                   src={patientFile.patient.avatar || '/defaultAvatar.svg'}
                   size={8}
                 />
               }
             >
-              {/* @ts-expect-error */}
               <Text variant='body-2'>{patientFile.patient.name}</Text>
             </MenuItem>
           </View>
