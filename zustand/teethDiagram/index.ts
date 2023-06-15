@@ -18,8 +18,11 @@ export const useTeethDiagramStore = create<TeethDiagramState>()(
       ...initialState,
       setActiveToothParts: (toothParts) =>
         set(() => ({ activeToothParts: toothParts })),
-      onClick: (event) => {
-        handleClickOnToothArea(event);
+      onClick: (event, toothId) => {
+        handleClickOnToothArea(
+          event as React.MouseEvent<SVGPathElement, MouseEvent>,
+          toothId
+        );
       },
       setTreatments: (treatments) => set(() => ({ treatments })),
       setAvailableTreatments: (availableTreatments) =>
