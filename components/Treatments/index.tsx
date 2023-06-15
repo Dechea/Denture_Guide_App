@@ -13,7 +13,7 @@ export default function Treatments({ onSelectTreatment }: TreatmentsProps) {
     <>
       {availableTreatments.map((treatment, index) => (
         <TreatmentOptionCard
-          key={treatment?.id}
+          key={treatment?.id || index}
           Icon={<ComposedTooth treatment={treatment.visualization} />}
           label={treatment.localizations[0].name}
           onClick={() => onSelectTreatment(treatment)}

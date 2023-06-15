@@ -44,7 +44,12 @@ export interface TeethDiagramState {
   history: History[];
   historyIndex: number;
   setActiveToothParts: (toothParts: string[]) => void;
-  onClick: (event: React.MouseEvent<SVGPathElement, MouseEvent>) => void;
+  onClick: (
+    event:
+      | React.MouseEvent<SVGPathElement, MouseEvent>
+      | React.MouseEvent<HTMLDivElement, MouseEvent>,
+    toothId?: string
+  ) => void;
   setTreatments: (treatments: {
     [key: string]: TreatmentVisualization;
   }) => void;
