@@ -1,3 +1,5 @@
+'use client';
+
 import { ComposedTooth } from './ComposedTooth';
 import { useTeethDiagramStore } from '../../zustand/teethDiagram';
 import { TreatmentProps } from '../../zustand/teethDiagram/interface';

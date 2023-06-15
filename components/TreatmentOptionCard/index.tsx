@@ -21,9 +21,9 @@ export default function TreatmentOptionCard({
   useEffect(() => {
     if (cardRef) {
       // @ts-expect-error
-      cardRef.current.tabIndex = -1
+      cardRef.current.tabIndex = -1;
     }
-  }, [cardRef])
+  }, [cardRef]);
 
   return (
     <View justify='center' align='center'>
