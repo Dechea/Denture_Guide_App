@@ -90,10 +90,7 @@ export default function PatientList() {
 
                   <View.Item columns={4}>
                     <Text variant='body-3' color='neutral' weight='regular'>
-                      {/* @ts-expect-error */}
-                      {moment(patientFile?.ts?.isoString).format(
-                        'MMM DD, YYYY'
-                      )}
+                      {moment(patientFile.ts.isoString).format('MMM DD, YYYY')}
                     </Text>
                   </View.Item>
                 </View>
