@@ -8,7 +8,7 @@ import AbutmentForm from '../../../../components/AbutmentForm';
 import ShareButton from '../../../../components/ShareButton';
 import { abutmentProductList } from '../../../../__mocks__/abutment';
 import InfoIcon from '../../../../components/Icons/Info';
-import { useProductStore } from '../../../../store/productStore';
+import { useProductStore } from '../../../../zustand/product';
 
 export default function Abutment({
   params,

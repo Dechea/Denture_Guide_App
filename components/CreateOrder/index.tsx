@@ -33,7 +33,7 @@ export default function CreateOrder({
   const onCreatePatientFileButtonClick = async () => {
     try {
       const patient = await query.PatientFile.create({
-        patient: { name: patientName, date: '', status: '', avatar: '' },
+        patient: { name: patientName, status: '', avatar: '' },
         teeth: [],
       }).exec();
 

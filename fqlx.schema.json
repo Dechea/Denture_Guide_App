@@ -1,97 +1,98 @@
 {
-    "PatientFile": {
-      "fields": {
-        "id": "string",
-        "patient": "Patient",
-        "teeth": "Tooth[]"
-      }
-    },
-    "Patient": {
-      "fields": {
-        "name": "string",
-        "date": "string",
-        "avatar": "string",
-        "status": "string"
-      }
-    },
-    "Tooth": {
-      "fields": {
-        "name": "string",
-        "root": {
-          "findings": "Finding[]",
-          "treatmentDoc": "TreatmentDoc",
-          "addon": "BodyPartLeaf",
-          "leftRoot": "BodyPartLeaf",
-          "middleRoot": "BodyPartLeaf",
-          "rightRoot": "BodyPartLeaf"
-        },
-        "crown": {
-          "findings": "Finding[]",
-          "treatmentDoc": "TreatmentDoc",
-          "addon": "BodyPartLeaf",
-          "toothNeck": "BodyPartLeaf",
-          "left": "BodyPartLeaf",
-          "right": "BodyPartLeaf",
-          "center": "BodyPartLeaf",
-          "outside": "BodyPartLeaf",
-          "inside": "BodyPartLeaf"
-        }
-      }
-    },
-    "BodyPartLeaf": {
-      "fields": {
+  "PatientFile": {
+    "fields": {
+      "id": "string",
+      "ts": {
+        "isoString": "string"
+      },
+      "patient": "Patient",
+      "teeth": "Tooth[]"
+    }
+  },
+  "Patient": {
+    "fields": {
+      "name": "string",
+      "avatar": "string",
+      "status": "string"
+    }
+  },
+  "Tooth": {
+    "fields": {
+      "name": "string",
+      "root": {
         "findings": "Finding[]",
-        "treatmentDocs": "TreatmentDoc[]"
-      }
-    },
-    "Finding": {
-      "fields": {
-        "name": "string",
-        "value": "string",
-        "areas": "Area[]",
-        "localizations": "TreatmentLocalization[]"
-      }
-    },
-    "TreatmentDoc": {
-      "fields": {
-        "treatment": "Treatment",
-        "selectedProducts": "SelectedProduct[]"
-      }
-    },
-    "SelectedProduct": {
-      "fields": {
-        "selectedProduct": "Product",
-        "quantity": "number"
-      }
-    },
-    "Product": {
-      "fields": {}
-    },
-    "TreatmentGroup": {
-      "fields": {
-        "name": "string",
-        "treatments": "Treatment[]",
-        "localizations": "TreatmentLocalization[]"
-      }
-    },
-    "Treatment": {
-      "fields": {
-        "name": "string",
-        "areas": "Area[]",
-        "localizations": "TreatmentLocalization[]"
-      }
-    },
-    "Area": {
-      "fields": {
-        "name": "string"
-      }
-    },
-    "TreatmentLocalization": {
-      "fields": {
-        "name": "string",
-        "synonyms": "string[]",
-        "locale": "string"
+        "treatmentDoc": "TreatmentDoc",
+        "addon": "BodyPartLeaf",
+        "leftRoot": "BodyPartLeaf",
+        "middleRoot": "BodyPartLeaf",
+        "rightRoot": "BodyPartLeaf"
+      },
+      "crown": {
+        "findings": "Finding[]",
+        "treatmentDoc": "TreatmentDoc",
+        "addon": "BodyPartLeaf",
+        "toothNeck": "BodyPartLeaf",
+        "left": "BodyPartLeaf",
+        "right": "BodyPartLeaf",
+        "center": "BodyPartLeaf",
+        "outside": "BodyPartLeaf",
+        "inside": "BodyPartLeaf"
       }
     }
+  },
+  "BodyPartLeaf": {
+    "fields": {
+      "findings": "Finding[]",
+      "treatmentDocs": "TreatmentDoc[]"
+    }
+  },
+  "Finding": {
+    "fields": {
+      "name": "string",
+      "value": "string",
+      "areas": "Area[]",
+      "localizations": "TreatmentLocalization[]"
+    }
+  },
+  "TreatmentDoc": {
+    "fields": {
+      "treatment": "Treatment",
+      "selectedProducts": "SelectedProduct[]"
+    }
+  },
+  "SelectedProduct": {
+    "fields": {
+      "selectedProduct": "Product",
+      "quantity": "number"
+    }
+  },
+  "Product": {
+    "fields": {}
+  },
+  "TreatmentGroup": {
+    "fields": {
+      "name": "string",
+      "treatments": "Treatment[]",
+      "localizations": "TreatmentLocalization[]"
+    }
+  },
+  "Treatment": {
+    "fields": {
+      "name": "string",
+      "areas": "Area[]",
+      "localizations": "TreatmentLocalization[]"
+    }
+  },
+  "Area": {
+    "fields": {
+      "name": "string"
+    }
+  },
+  "TreatmentLocalization": {
+    "fields": {
+      "name": "string",
+      "synonyms": "string[]",
+      "locale": "string"
+    }
   }
-  
+}

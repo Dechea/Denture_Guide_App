@@ -13,7 +13,8 @@ const Cart = () => {
 
   return (
     <View>
-      <Header />
+      {/* TODO: Use PatientFileId from params */}
+      <Header patientFileId='367517616975118544' />
 
       <View
         backgroundColor='neutral-faded'

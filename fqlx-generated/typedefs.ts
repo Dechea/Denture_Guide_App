@@ -13,11 +13,99 @@
     FirstWhereMethods
   } from 'fqlx-client'
   
-export interface PatientFile {
+export interface Ts {
+    /**
+ * isoString for the Ts
+ */
+ isoString: string;
+
+  }
+
+
+  export interface TsInput {
+    /**
+ * isoString for the Ts
+ */
+ isoString: string;
+
+  } 
+
+
+  export interface TsMethods {
+      /**
+       * all method get the set of all documents in the Ts collection.
+       * 
+       * @param
+       * 
+       * @returns {AllMethods<Ts>} method returns the set of all documents in Ts collection for the given range.
+       * 
+       * @example
+       * query.Ts.all().exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
+       */
+      all(): AllMethods<Ts>;
+
+      /**
+       * create method creates a Ts document in the collection with the provided property values.
+       * 
+       * @param {TsInput} input - will be the Ts which you want to add.
+         * @param { string } input.isoString IsoString for the Ts
+       *
+       * @returns {CreateMethods<Ts>} return new document.
+       * 
+       * @example
+       * query.Ts.create({  
+ * isoString: "Value of the isoString"   
+       * }).exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
+       */
+    create(input: TsInput): CreateMethods<Ts>;
+
+      /**
+       * byId method get a Ts document by its document ID.
+       * This will returns available Fqlx byId methods
+       * 
+       * @param {string} id - The ID of the document to retrieve
+       * 
+       * @returns {ByIdMethods<Ts, TsInput>} return document when it exists and is accessible, else return
+       * null when the document does not exist or is inaccessible.
+       * 
+       * @example
+       * query.Ts.byId("21545645646554").exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
+       */
+       byId(id: string): ByIdMethods<Ts, TsInput>
+
+       /**
+        * first where method get the first matching value from the Set.
+        * 
+        * @param {(inputCondition: ((data: T) => boolean) | string)} function takes in a document of type T and returns a boolean
+        * 
+        * @returns {FirstWhereMethods<T>}  returns the first matching value in the Set, or null if the Set is empty or no values match.
+        * 
+        * @example
+        * query.Address.all().firstWhere((data) => data.country == 'uk').exec();
+        * OR
+        * query.Address.all().firstWhere(`(data) => data.${dynamicKey} == "${dynamicValueToCheck}"`).exec();
+        * 
+        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
+        */
+       firstWhere(inputCondition: ((data: Ts) => boolean) | string): FirstWhereMethods<Ts>;
+    }
+
+
+  export interface PatientFile {
     /**
  * id for the PatientFile
  */
  id: string;
+/**
+ * ts for the PatientFile
+ */
+ ts: Ts;
 /**
  * patient for the PatientFile
  */
@@ -62,13 +150,15 @@ export interface PatientFile {
        * create method creates a PatientFile document in the collection with the provided property values.
        * 
        * @param {PatientFileInput} input - will be the PatientFile which you want to add.
-         * @param { Patient } input.patient Patient for the PatientFile
+         * @param { Ts } input.ts Ts for the PatientFile
+* @param { Patient } input.patient Patient for the PatientFile
 * @param { Tooth[] } input.teeth Teeth for the PatientFile
        *
        * @returns {CreateMethods<PatientFile>} return new document.
        * 
        * @example
        * query.PatientFile.create({  
+ * ts: "Value of the ts"   
  * patient: "Value of the patient"   
  * teeth: "Value of the teeth"   
        * }).exec()
@@ -117,10 +207,6 @@ export interface PatientFile {
  */
  name: string;
 /**
- * date for the Patient
- */
- date: string;
-/**
  * avatar for the Patient
  */
  avatar: string;
@@ -137,10 +223,6 @@ export interface PatientFile {
  * name for the Patient
  */
  name: string;
-/**
- * date for the Patient
- */
- date: string;
 /**
  * avatar for the Patient
  */
@@ -173,7 +255,6 @@ export interface PatientFile {
        * 
        * @param {PatientInput} input - will be the Patient which you want to add.
          * @param { string } input.name Name for the Patient
-* @param { string } input.date Date for the Patient
 * @param { string } input.avatar Avatar for the Patient
 * @param { string } input.status Status for the Patient
        *
@@ -182,7 +263,6 @@ export interface PatientFile {
        * @example
        * query.Patient.create({  
  * name: "Value of the name"   
- * date: "Value of the date"   
  * avatar: "Value of the avatar"   
  * status: "Value of the status"   
        * }).exec()
@@ -1498,58 +1578,62 @@ export interface PatientFile {
     /**
  * @returns This return fqlx methods for the PatientFile 
  */ 
-PatientFile: PaginateData<PatientFile> & PatientFileMethods;
+PatientFile: PatientFileMethods;
+/**
+ * @returns This return fqlx methods for the Ts 
+ */ 
+ Ts:  TsMethods;
 /**
  * @returns This return fqlx methods for the Patient 
  */ 
-Patient: PaginateData<Patient> & PatientMethods;
+Patient: PatientMethods;
 /**
  * @returns This return fqlx methods for the Tooth 
  */ 
-Tooth: PaginateData<Tooth> & ToothMethods;
+Tooth: ToothMethods;
 /**
  * @returns This return fqlx methods for the Root 
  */ 
- Root:  PaginateData<Root> & RootMethods;
+ Root:  RootMethods;
 /**
  * @returns This return fqlx methods for the Crown 
  */ 
- Crown:  PaginateData<Crown> & CrownMethods;
+ Crown:  CrownMethods;
 /**
  * @returns This return fqlx methods for the BodyPartLeaf 
  */ 
-BodyPartLeaf: PaginateData<BodyPartLeaf> & BodyPartLeafMethods;
+BodyPartLeaf: BodyPartLeafMethods;
 /**
  * @returns This return fqlx methods for the Finding 
  */ 
-Finding: PaginateData<Finding> & FindingMethods;
+Finding: FindingMethods;
 /**
  * @returns This return fqlx methods for the TreatmentDoc 
  */ 
-TreatmentDoc: PaginateData<TreatmentDoc> & TreatmentDocMethods;
+TreatmentDoc: TreatmentDocMethods;
 /**
  * @returns This return fqlx methods for the SelectedProduct 
  */ 
-SelectedProduct: PaginateData<SelectedProduct> & SelectedProductMethods;
+SelectedProduct: SelectedProductMethods;
 /**
  * @returns This return fqlx methods for the Product 
  */ 
-Product: PaginateData<Product> & ProductMethods;
+Product: ProductMethods;
 /**
  * @returns This return fqlx methods for the TreatmentGroup 
  */ 
-TreatmentGroup: PaginateData<TreatmentGroup> & TreatmentGroupMethods;
+TreatmentGroup: TreatmentGroupMethods;
 /**
  * @returns This return fqlx methods for the Treatment 
  */ 
-Treatment: PaginateData<Treatment> & TreatmentMethods;
+Treatment: TreatmentMethods;
 /**
  * @returns This return fqlx methods for the Area 
  */ 
-Area: PaginateData<Area> & AreaMethods;
+Area: AreaMethods;
 /**
  * @returns This return fqlx methods for the TreatmentLocalization 
  */ 
-TreatmentLocalization: PaginateData<TreatmentLocalization> & TreatmentLocalizationMethods;
+TreatmentLocalization: TreatmentLocalizationMethods;
 
   }
