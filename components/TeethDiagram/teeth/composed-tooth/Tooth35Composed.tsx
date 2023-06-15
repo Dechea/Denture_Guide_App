@@ -10,7 +10,7 @@ function Tooth35Composed({ customStyles }: ComposesToothProps) {
   const toothData = treatments['35' as keyof typeof treatments] || {};
 
   return (
-    <ToothContainer customStyles={customStyles}>
+    <ToothContainer tooth={35} customStyles={customStyles}>
       <ToothNumber tooth={35} jawType={JawType.LOWER} />
       <Tooth tooth={35} variant={toothData.toothVariant}>
         <Root tooth={35} variant={toothData.rootVariant} />

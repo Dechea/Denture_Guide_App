@@ -1,8 +1,12 @@
 import { useTeethDiagramStore } from '.';
 
 export const handleClickOnToothArea = (
-  event: React.MouseEvent<SVGPathElement, MouseEvent>
+  event: React.MouseEvent<SVGPathElement, MouseEvent>,
+  toothId?: string
 ) => {
+  event.stopPropagation();
+  event.preventDefault();
+
   const store = useTeethDiagramStore.getState();
   const {
     history,
@@ -16,7 +20,7 @@ export const handleClickOnToothArea = (
   } = store;
 
   const target = event.target as HTMLBodyElement;
-  const id: string = target?.parentElement?.id as string;
+  const id: string = toothId || (target?.parentElement?.id as string);
 
   let selectedTeethData: string[] = [];
 
@@ -25,7 +29,9 @@ export const handleClickOnToothArea = (
   }
 
   if (selectedTeethData.includes(id)) {
-    selectedTeethData = selectedTeethData.filter((toothId) => toothId !== id);
+    selectedTeethData = selectedTeethData.filter(
+      (selectedToothId) => selectedToothId !== id
+    );
     setActiveToothParts(selectedTeethData);
     return;
   }

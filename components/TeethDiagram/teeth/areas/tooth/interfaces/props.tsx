@@ -8,12 +8,13 @@ export interface Tooth {
 export interface ToothComponentProps {
   children?: React.ReactNode;
   customStyles?: string;
-  tooth?: number;
+  tooth: number;
 }
 
 export interface ToothContainerProps {
   children: React.ReactNode;
   customStyles?: string;
+  tooth?: number;
 }
 
 export interface ToothNumberProps {
