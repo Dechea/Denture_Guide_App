@@ -29,7 +29,7 @@ const NoPatientOrder = ({ activateNewOrderModal }: NoPatientOrderProps) => {
           Create Order for Patient
         </Text>
         <Text variant='body-2' color='neutral-faded'>
-          Here you will store and manage all your patient's orders
+          Here you will store and manage all your patient&apos;s orders
         </Text>
       </View>
 

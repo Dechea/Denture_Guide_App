@@ -12,7 +12,8 @@ const CostEstimation = () => {
 
   return (
     <View>
-      <Header />
+      {/* TODO: Use PatientFileId from params */}
+      <Header patientFileId='367517616975118544' />
 
       <View
         backgroundColor='neutral-faded'
@@ -27,9 +28,8 @@ const CostEstimation = () => {
           variant='ghost'
           size='small'
         />
-         
 
-        <Text color='neutral-faded'variant='featured-1' weight='bold'>
+        <Text color='neutral-faded' variant='featured-1' weight='bold'>
           {' '}
           Cost Estimation
         </Text>
@@ -68,7 +68,12 @@ const CostEstimation = () => {
 
           {cartItems.map((data, index) => (
             <View key={data.id}>
-              <View direction='row' width='100%' paddingBlock={4} paddingInline={0}>
+              <View
+                direction='row'
+                width='100%'
+                paddingBlock={4}
+                paddingInline={0}
+              >
                 <View.Item columns={2}>
                   <Text color='neutral-faded' variant='caption-1'>
                     {data.count}

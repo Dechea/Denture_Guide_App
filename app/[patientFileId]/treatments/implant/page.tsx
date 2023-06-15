@@ -8,7 +8,7 @@ import { ImplantForm } from '../../../../components/ImplantForm';
 import SelectTeeth from '../../../../components/SelectedTeeth';
 import { implantProductList } from '../../../../__mocks__/implant';
 import AlertCard from '../../../../components/Alert';
-import { useProductStore } from '../../../../store/productStore';
+import { useProductStore } from '../../../../zustand/product';
 
 export default function Implant({
   params,
