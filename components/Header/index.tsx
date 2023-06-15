@@ -5,10 +5,23 @@ import { useRouter, usePathname } from 'next/navigation';
 import CartPopoverButton from '../CartPopoverButton';
 import BackwardIcon from '../Icons/Backward';
 import CostEst from '../Icons/Cost Est';
+import { useQuery } from 'fqlx-client';
+import { Query } from '../../fqlx-generated/typedefs';
 
-const Header = () => {
+interface HeaderProps {
+  patientFileId: string;
+}
+
+const Header = ({ patientFileId }: HeaderProps) => {
   const router = useRouter();
   const pathname = usePathname();
+  const query = useQuery<Query>();
+
+  const patientFile = query.PatientFile.firstWhere(
+    `(patientFile) => patientFile.id == "${patientFileId}"`
+  )
+    .project({ patient: { name: true, avatar: true } })
+    .exec();
 
   return (
     <View
@@ -43,11 +56,16 @@ const Header = () => {
             <MenuItem
               roundedCorners
               size='small'
-              startSlot={<Avatar color='neutral' initials='DB' size={8} />}
+              startSlot={
+                <Avatar
+                  // @ts-expect-error
+                  src={patientFile.patient.avatar || '/defaultAvatar.svg'}
+                  size={8}
+                />
+              }
             >
-              <Text variant='body-2'>
-                Joan Cyrus
-              </Text>
+              {/* @ts-expect-error */}
+              <Text variant='body-2'>{patientFile.patient.name}</Text>
             </MenuItem>
           </View>
         </View.Item>
