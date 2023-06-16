@@ -3,6 +3,7 @@
 import { useAuth } from '@clerk/nextjs';
 import { FqlxProvider } from 'fqlx-client';
 import { useEffect, useState } from 'react';
+import Loader from '../components/Loader';
 
 const FAUNA_ENDPOINT = 'https://db.fauna.com';
 
@@ -44,7 +45,7 @@ export default function FqlxClientProvider({
 
   useEffect(() => {
     fetchToken();
-  }, [userId])
+  }, [userId]);
 
   return (
     <>
@@ -54,12 +55,12 @@ export default function FqlxClientProvider({
             fqlxSecret: token,
             endpoint: new URL(FAUNA_ENDPOINT),
           }}
-          loader={<div>Loading...</div>}
+          loader={<Loader />}
         >
           <>{children}</>
         </FqlxProvider>
       ) : (
-        <div>Loading...</div>
+        <Loader />
       )}
     </>
   );
