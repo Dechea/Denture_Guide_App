@@ -1,9 +1,10 @@
 'use client';
 
-import { useAuth, SignIn } from '@clerk/nextjs';
+import { useAuth } from '@clerk/nextjs';
 import { FqlxProvider } from 'fqlx-client';
 import { useEffect, useState } from 'react';
 import { View } from 'reshaped';
+import { useRouter, usePathname } from 'next/navigation';
 import Loader from '../components/Loader';
 import Navbar from '../components/Navbar';
 
@@ -18,6 +19,8 @@ export default function FqlxClientProvider({
 }: FqlxClientProviderProps) {
   const [token, setToken] = useState('');
   const { userId, getToken } = useAuth();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const fetchToken = async () => {
     const localToken = await getToken({ template: 'fauna' });
@@ -49,15 +52,19 @@ export default function FqlxClientProvider({
     fetchToken();
   }, [userId]);
 
+  useEffect(() => {
+    // Redirect to sign-in screen, If clerk token has invalid
+    if (token === 'invalid') {
+      router.push('/sign-in');
+    }
+  }, [token]);
+
   return (
     <>
       {!token && <Loader />}
 
-      {token === 'invalid' && (
-        <View height='100%' width='100%' justify='center' align='center'>
-          <SignIn signUpUrl='/sign-up' />
-        </View>
-      )}
+      {/* Only render children when sign-in route active */}
+      {pathname === '/sign-in' && children}
 
       {token && token !== 'invalid' && (
         <FqlxProvider
