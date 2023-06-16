@@ -1,9 +1,11 @@
 'use client';
 
-import { useAuth } from '@clerk/nextjs';
+import { useAuth, SignIn } from '@clerk/nextjs';
 import { FqlxProvider } from 'fqlx-client';
 import { useEffect, useState } from 'react';
+import { View } from 'reshaped';
 import Loader from '../components/Loader';
+import Navbar from '../components/Navbar';
 
 const FAUNA_ENDPOINT = 'https://db.fauna.com';
 
@@ -21,7 +23,7 @@ export default function FqlxClientProvider({
     const localToken = await getToken({ template: 'fauna' });
     if (localToken !== token) {
       console.log('new token ', localToken);
-      setToken(localToken);
+      setToken(localToken || 'invalid');
     }
   };
 
@@ -49,7 +51,15 @@ export default function FqlxClientProvider({
 
   return (
     <>
-      {token ? (
+      {!token && <Loader />}
+
+      {token === 'invalid' && (
+        <View height='100%' width='100%' justify='center' align='center'>
+          <SignIn signUpUrl='/sign-up' />
+        </View>
+      )}
+
+      {token && token !== 'invalid' && (
         <FqlxProvider
           config={{
             fqlxSecret: token,
@@ -57,10 +67,13 @@ export default function FqlxClientProvider({
           }}
           loader={<Loader />}
         >
-          <>{children}</>
+          <View direction='row' height='100vh' align='stretch'>
+            <View.Item>
+              <Navbar />
+            </View.Item>
+            <View.Item grow>{children}</View.Item>
+          </View>
         </FqlxProvider>
-      ) : (
-        <Loader />
       )}
     </>
   );
