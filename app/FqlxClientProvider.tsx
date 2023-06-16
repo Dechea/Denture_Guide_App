@@ -21,7 +21,7 @@ export default function FqlxClientProvider({
     const localToken = await getToken({ template: 'fauna' });
     if (localToken !== token) {
       console.log('new token ', localToken);
-      setToken(localToken || 'failed');
+      setToken(localToken);
     }
   };
 
