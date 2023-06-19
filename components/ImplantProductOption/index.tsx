@@ -1,82 +1,56 @@
 import { useState } from 'react';
-import { Accordion, Button, Checkbox, Text, View } from 'reshaped';
-import ToothIcon from '../../components/Icons/Tooth';
+import { Icon, Text, View, MenuItem } from 'reshaped';
 import { implantProductOptionProps } from '../../interfaces/implant';
+import TreatmentOptionIcon from '../Icons/TreatmentOption';
 
-const ImplantProductOption = ({
-  selectedTeeth,
-  size,
-  productId,
-  optionId,
-  onSelectImplant,
-  selectedImplants,
-}: implantProductOptionProps) => {
-  const [check, setCheck] = useState<boolean>(false);
-  const [selectedItemId, setSelectedItemId] = useState<boolean>(false);
+const ImplantProductOption = ({ selectedTeeth }: implantProductOptionProps) => {
+  // const [check, setCheck] = useState<boolean>(false);
+  // const [selectedItemId, setSelectedItemId] = useState<boolean>(false);
 
-  const checkToothButtonDisable = (tooth: number): boolean =>
-    !selectedImplants.hasOwnProperty(`${productId}-${optionId}-${tooth}`) &&
-    Object.keys(selectedImplants).some(
-      (implant) => implant.endsWith(`-${tooth}`) && selectedImplants[implant]
-    );
+  // const checkToothButtonDisable = (tooth: number): boolean =>
+  //   !selectedImplants.hasOwnProperty(`${productId}-${optionId}-${tooth}`) &&
+  //   Object.keys(selectedImplants).some(
+  //     (implant) => implant.endsWith(`-${tooth}`) && selectedImplants[implant]
+  //   );
 
-  const getToothButtonColor = (tooth: number) =>
-    selectedImplants?.[`${productId}-${optionId}-${tooth}`]
-      ? 'primary'
-      : 'white';
+  // const getToothButtonColor = (tooth: number) =>
+  //   selectedImplants?.[`${productId}-${optionId}-${tooth}`]
+  //     ? 'primary'
+  //     : 'white';
 
-  const handleCheckBox = () => {
-    setCheck(!check);
-    setSelectedItemId(!selectedItemId);
+  // const handleCheckBox = () => {
+  //   setCheck(!check);
+  //   setSelectedItemId(!selectedItemId);
+  // };
+
+  // console.log({ selectedTeeth });
+
+  const [activeOption, setActiveOption] = useState<number>();
+
+  const setActiveTeeth = (selectedTeeth: number) => {
+    selectedTeeth !== activeOption
+      ? setActiveOption(selectedTeeth)
+      : setActiveOption(-1);
   };
 
   return (
-    <View
-      backgroundColor={check ? 'neutral-faded' : 'white'}
-      paddingBlock={2} paddingInline={3}
-      direction='row'
-    >
-      <Accordion onToggle={handleCheckBox}>
-        <Accordion.Trigger>
-          <View gap={3} direction='row' align='center'>
-            <Checkbox value='3' checked={check} />
-            <View.Item grow>
-              <View width={'220px'}>
-                <Text color='neutral-faded' variant='body-3' weight='medium'>
-                  {`${size} mm`}
-                </Text>
-              </View>
-            </View.Item>
-          </View>
-        </Accordion.Trigger>
-        <Accordion.Content>
-          <View
-            direction='row'
-            align='center'
-            paddingTop={2}
-            paddingEnd={3}
-            paddingStart={3}
-            gap={2}
-            width='100%'
-            justify='center'
-          >
-            {selectedTeeth.map((tooth: number) => (
-              <View.Item grow key={tooth}>
-                <Button
-                  fullWidth
-                  disabled={checkToothButtonDisable(tooth)}
-                  onClick={() => onSelectImplant(productId, optionId, tooth)}
-                  color={getToothButtonColor(tooth)}
-                  size='small'
-                  icon={<ToothIcon />}
-                >
-                  {tooth}
-                </Button>
-              </View.Item>
-            ))}
-          </View>
-        </Accordion.Content>
-      </Accordion>
+    <View backgroundColor={selectedTeeth === activeOption ? 'primary' : 'page'}>
+      <MenuItem size={'small'} onClick={() => setActiveTeeth(selectedTeeth)}>
+        <View
+          direction='row'
+          align='center'
+          gap={1}
+          width='100%'
+          paddingStart={2}
+          paddingBlock={2}
+        >
+          <Icon svg={TreatmentOptionIcon} size={4} />
+          <Text variant='body-3' weight='medium'>
+            {' '}
+            {selectedTeeth}
+          </Text>
+        </View>
+      </MenuItem>
     </View>
   );
 };

@@ -22,7 +22,7 @@ const Header = ({ patientFileId }: HeaderProps) => {
   )
     .project({ patient: { name: true, avatar: true } })
     .exec();
-
+  console.log('patientFile ', patientFile);
   return (
     <View
       align='stretch'
@@ -53,18 +53,18 @@ const Header = ({ patientFileId }: HeaderProps) => {
             </View>
 
             {/* Patient Indicator */}
-            <MenuItem
+            {/* <MenuItem
               roundedCorners
               size='small'
               startSlot={
                 <Avatar
-                  src={patientFile.patient.avatar || '/defaultAvatar.svg'}
+                  src={patientFile?.patient?.avatar || '/defaultAvatar.svg'}
                   size={8}
                 />
               }
             >
-              <Text variant='body-2'>{patientFile.patient.name}</Text>
-            </MenuItem>
+              <Text variant='body-2'>{patientFile?.patient.name}</Text>
+            </MenuItem> */}
           </View>
         </View.Item>
 
