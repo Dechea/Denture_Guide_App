@@ -1,9 +1,8 @@
 import './globals.css';
 import '../themes/dechea/theme.css';
-import { Reshaped, View } from 'reshaped';
-import Navbar from '../components/Navbar';
-import FqlxClientProvider from './FqlxClientProvider';
+import { Reshaped } from 'reshaped';
 import { ClerkProvider } from '@clerk/nextjs';
+import FqlxClientProvider from './FqlxClientProvider';
 
 export const metadata = {
   title: 'Material Planner',
@@ -23,14 +22,7 @@ export default function RootLayout({
       <ClerkProvider>
         <body>
           <Reshaped theme='dechea'>
-            <FqlxClientProvider>
-              <View direction='row' height='100vh' align='stretch'>
-                <View.Item>
-                  <Navbar />
-                </View.Item>
-                <View.Item grow>{children}</View.Item>
-              </View>
-            </FqlxClientProvider>
+            <FqlxClientProvider>{children}</FqlxClientProvider>
           </Reshaped>
         </body>
       </ClerkProvider>
