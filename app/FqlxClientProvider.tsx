@@ -25,7 +25,6 @@ export default function FqlxClientProvider({
   const fetchToken = async () => {
     const localToken = await getToken({ template: 'fauna' });
     if (localToken !== token) {
-      console.log('new token ', localToken);
       setToken(localToken || 'invalid');
     }
   };
@@ -53,7 +52,7 @@ export default function FqlxClientProvider({
   }, [userId]);
 
   useEffect(() => {
-    // Redirect to sign-in screen, If clerk token has invalid
+    // Redirect to sign-in screen, If clerk token invalid
     if (token === 'invalid') {
       router.push('/sign-in');
     }
