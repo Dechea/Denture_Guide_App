@@ -120,6 +120,10 @@ export interface Ts {
 
   export interface PatientFileInput {
     /**
+ * ts for the PatientFile
+ */
+ ts: Ts;
+/**
  * patient for the PatientFile
  */
  patient: Patient;
@@ -1103,13 +1107,1313 @@ export interface Ts {
     }
 
 
+  export interface Price {
+    /**
+ * amount for the Price
+ */
+ amount: number;
+/**
+ * currency for the Price
+ */
+ currency: string;
+
+  }
+
+
+  export interface PriceInput {
+    /**
+ * amount for the Price
+ */
+ amount: number;
+/**
+ * currency for the Price
+ */
+ currency: string;
+
+  } 
+
+
+  export interface PriceMethods {
+      /**
+       * all method get the set of all documents in the Price collection.
+       * 
+       * @param
+       * 
+       * @returns {AllMethods<Price>} method returns the set of all documents in Price collection for the given range.
+       * 
+       * @example
+       * query.Price.all().exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
+       */
+      all(): AllMethods<Price>;
+
+      /**
+       * create method creates a Price document in the collection with the provided property values.
+       * 
+       * @param {PriceInput} input - will be the Price which you want to add.
+         * @param { number } input.amount Amount for the Price
+* @param { string } input.currency Currency for the Price
+       *
+       * @returns {CreateMethods<Price>} return new document.
+       * 
+       * @example
+       * query.Price.create({  
+ * amount: "Value of the amount"   
+ * currency: "Value of the currency"   
+       * }).exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
+       */
+    create(input: PriceInput): CreateMethods<Price>;
+
+      /**
+       * byId method get a Price document by its document ID.
+       * This will returns available Fqlx byId methods
+       * 
+       * @param {string} id - The ID of the document to retrieve
+       * 
+       * @returns {ByIdMethods<Price, PriceInput>} return document when it exists and is accessible, else return
+       * null when the document does not exist or is inaccessible.
+       * 
+       * @example
+       * query.Price.byId("21545645646554").exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
+       */
+       byId(id: string): ByIdMethods<Price, PriceInput>
+
+       /**
+        * first where method get the first matching value from the Set.
+        * 
+        * @param {(inputCondition: ((data: T) => boolean) | string)} function takes in a document of type T and returns a boolean
+        * 
+        * @returns {FirstWhereMethods<T>}  returns the first matching value in the Set, or null if the Set is empty or no values match.
+        * 
+        * @example
+        * query.Address.all().firstWhere((data) => data.country == 'uk').exec();
+        * OR
+        * query.Address.all().firstWhere(`(data) => data.${dynamicKey} == "${dynamicValueToCheck}"`).exec();
+        * 
+        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
+        */
+       firstWhere(inputCondition: ((data: Price) => boolean) | string): FirstWhereMethods<Price>;
+    }
+
+
+  export interface ProductLocalization {
+    /**
+ * name for the ProductLocalization
+ */
+ name: string;
+/**
+ * locale for the ProductLocalization
+ */
+ locale: string;
+/**
+ * description for the ProductLocalization
+ */
+ description: string;
+/**
+ * price for the ProductLocalization
+ */
+ price: Price;
+
+  }
+
+
+  export interface ProductLocalizationInput {
+    /**
+ * name for the ProductLocalization
+ */
+ name: string;
+/**
+ * locale for the ProductLocalization
+ */
+ locale: string;
+/**
+ * description for the ProductLocalization
+ */
+ description: string;
+/**
+ * price for the ProductLocalization
+ */
+ price: Price;
+
+  } 
+
+
+  export interface ProductLocalizationMethods {
+      /**
+       * all method get the set of all documents in the ProductLocalization collection.
+       * 
+       * @param
+       * 
+       * @returns {AllMethods<ProductLocalization>} method returns the set of all documents in ProductLocalization collection for the given range.
+       * 
+       * @example
+       * query.ProductLocalization.all().exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
+       */
+      all(): AllMethods<ProductLocalization>;
+
+      /**
+       * create method creates a ProductLocalization document in the collection with the provided property values.
+       * 
+       * @param {ProductLocalizationInput} input - will be the ProductLocalization which you want to add.
+         * @param { string } input.name Name for the ProductLocalization
+* @param { string } input.locale Locale for the ProductLocalization
+* @param { string } input.description Description for the ProductLocalization
+* @param { Price } input.price Price for the ProductLocalization
+       *
+       * @returns {CreateMethods<ProductLocalization>} return new document.
+       * 
+       * @example
+       * query.ProductLocalization.create({  
+ * name: "Value of the name"   
+ * locale: "Value of the locale"   
+ * description: "Value of the description"   
+ * price: "Value of the price"   
+       * }).exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
+       */
+    create(input: ProductLocalizationInput): CreateMethods<ProductLocalization>;
+
+      /**
+       * byId method get a ProductLocalization document by its document ID.
+       * This will returns available Fqlx byId methods
+       * 
+       * @param {string} id - The ID of the document to retrieve
+       * 
+       * @returns {ByIdMethods<ProductLocalization, ProductLocalizationInput>} return document when it exists and is accessible, else return
+       * null when the document does not exist or is inaccessible.
+       * 
+       * @example
+       * query.ProductLocalization.byId("21545645646554").exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
+       */
+       byId(id: string): ByIdMethods<ProductLocalization, ProductLocalizationInput>
+
+       /**
+        * first where method get the first matching value from the Set.
+        * 
+        * @param {(inputCondition: ((data: T) => boolean) | string)} function takes in a document of type T and returns a boolean
+        * 
+        * @returns {FirstWhereMethods<T>}  returns the first matching value in the Set, or null if the Set is empty or no values match.
+        * 
+        * @example
+        * query.Address.all().firstWhere((data) => data.country == 'uk').exec();
+        * OR
+        * query.Address.all().firstWhere(`(data) => data.${dynamicKey} == "${dynamicValueToCheck}"`).exec();
+        * 
+        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
+        */
+       firstWhere(inputCondition: ((data: ProductLocalization) => boolean) | string): FirstWhereMethods<ProductLocalization>;
+    }
+
+
+  export interface Manafacturer {
+    /**
+ * name for the Manafacturer
+ */
+ name: string;
+
+  }
+
+
+  export interface ManafacturerInput {
+    /**
+ * name for the Manafacturer
+ */
+ name: string;
+
+  } 
+
+
+  export interface ManafacturerMethods {
+      /**
+       * all method get the set of all documents in the Manafacturer collection.
+       * 
+       * @param
+       * 
+       * @returns {AllMethods<Manafacturer>} method returns the set of all documents in Manafacturer collection for the given range.
+       * 
+       * @example
+       * query.Manafacturer.all().exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
+       */
+      all(): AllMethods<Manafacturer>;
+
+      /**
+       * create method creates a Manafacturer document in the collection with the provided property values.
+       * 
+       * @param {ManafacturerInput} input - will be the Manafacturer which you want to add.
+         * @param { string } input.name Name for the Manafacturer
+       *
+       * @returns {CreateMethods<Manafacturer>} return new document.
+       * 
+       * @example
+       * query.Manafacturer.create({  
+ * name: "Value of the name"   
+       * }).exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
+       */
+    create(input: ManafacturerInput): CreateMethods<Manafacturer>;
+
+      /**
+       * byId method get a Manafacturer document by its document ID.
+       * This will returns available Fqlx byId methods
+       * 
+       * @param {string} id - The ID of the document to retrieve
+       * 
+       * @returns {ByIdMethods<Manafacturer, ManafacturerInput>} return document when it exists and is accessible, else return
+       * null when the document does not exist or is inaccessible.
+       * 
+       * @example
+       * query.Manafacturer.byId("21545645646554").exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
+       */
+       byId(id: string): ByIdMethods<Manafacturer, ManafacturerInput>
+
+       /**
+        * first where method get the first matching value from the Set.
+        * 
+        * @param {(inputCondition: ((data: T) => boolean) | string)} function takes in a document of type T and returns a boolean
+        * 
+        * @returns {FirstWhereMethods<T>}  returns the first matching value in the Set, or null if the Set is empty or no values match.
+        * 
+        * @example
+        * query.Address.all().firstWhere((data) => data.country == 'uk').exec();
+        * OR
+        * query.Address.all().firstWhere(`(data) => data.${dynamicKey} == "${dynamicValueToCheck}"`).exec();
+        * 
+        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
+        */
+       firstWhere(inputCondition: ((data: Manafacturer) => boolean) | string): FirstWhereMethods<Manafacturer>;
+    }
+
+
+  export interface Implant {
+    /**
+ * implantLine for the Implant
+ */
+ implantLine: string;
+/**
+ * material for the Implant
+ */
+ material: string;
+/**
+ * level for the Implant
+ */
+ level: string;
+/**
+ * engaging for the Implant
+ */
+ engaging: boolean;
+/**
+ * platformSwitch for the Implant
+ */
+ platformSwitch: boolean;
+/**
+ * guided for the Implant
+ */
+ guided: boolean;
+/**
+ * insertionPost for the Implant
+ */
+ insertionPost: string;
+/**
+ * sterile for the Implant
+ */
+ sterile: boolean;
+/**
+ * length for the Implant
+ */
+ length: number;
+/**
+ * lengthNeck for the Implant
+ */
+ lengthNeck: number;
+/**
+ * diameterPlatform for the Implant
+ */
+ diameterPlatform: number;
+/**
+ * singleUse for the Implant
+ */
+ singleUse: boolean;
+
+  }
+
+
+  export interface ImplantInput {
+    /**
+ * implantLine for the Implant
+ */
+ implantLine: string;
+/**
+ * material for the Implant
+ */
+ material: string;
+/**
+ * level for the Implant
+ */
+ level: string;
+/**
+ * engaging for the Implant
+ */
+ engaging: boolean;
+/**
+ * platformSwitch for the Implant
+ */
+ platformSwitch: boolean;
+/**
+ * guided for the Implant
+ */
+ guided: boolean;
+/**
+ * insertionPost for the Implant
+ */
+ insertionPost: string;
+/**
+ * sterile for the Implant
+ */
+ sterile: boolean;
+/**
+ * length for the Implant
+ */
+ length: number;
+/**
+ * lengthNeck for the Implant
+ */
+ lengthNeck: number;
+/**
+ * diameterPlatform for the Implant
+ */
+ diameterPlatform: number;
+/**
+ * singleUse for the Implant
+ */
+ singleUse: boolean;
+
+  } 
+
+
+  export interface ImplantMethods {
+      /**
+       * all method get the set of all documents in the Implant collection.
+       * 
+       * @param
+       * 
+       * @returns {AllMethods<Implant>} method returns the set of all documents in Implant collection for the given range.
+       * 
+       * @example
+       * query.Implant.all().exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
+       */
+      all(): AllMethods<Implant>;
+
+      /**
+       * create method creates a Implant document in the collection with the provided property values.
+       * 
+       * @param {ImplantInput} input - will be the Implant which you want to add.
+         * @param { string } input.implantLine ImplantLine for the Implant
+* @param { string } input.material Material for the Implant
+* @param { string } input.level Level for the Implant
+* @param { boolean } input.engaging Engaging for the Implant
+* @param { boolean } input.platformSwitch PlatformSwitch for the Implant
+* @param { boolean } input.guided Guided for the Implant
+* @param { string } input.insertionPost InsertionPost for the Implant
+* @param { boolean } input.sterile Sterile for the Implant
+* @param { number } input.length Length for the Implant
+* @param { number } input.lengthNeck LengthNeck for the Implant
+* @param { number } input.diameterPlatform DiameterPlatform for the Implant
+* @param { boolean } input.singleUse SingleUse for the Implant
+       *
+       * @returns {CreateMethods<Implant>} return new document.
+       * 
+       * @example
+       * query.Implant.create({  
+ * implantLine: "Value of the implantLine"   
+ * material: "Value of the material"   
+ * level: "Value of the level"   
+ * engaging: "Value of the engaging"   
+ * platformSwitch: "Value of the platformSwitch"   
+ * guided: "Value of the guided"   
+ * insertionPost: "Value of the insertionPost"   
+ * sterile: "Value of the sterile"   
+ * length: "Value of the length"   
+ * lengthNeck: "Value of the lengthNeck"   
+ * diameterPlatform: "Value of the diameterPlatform"   
+ * singleUse: "Value of the singleUse"   
+       * }).exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
+       */
+    create(input: ImplantInput): CreateMethods<Implant>;
+
+      /**
+       * byId method get a Implant document by its document ID.
+       * This will returns available Fqlx byId methods
+       * 
+       * @param {string} id - The ID of the document to retrieve
+       * 
+       * @returns {ByIdMethods<Implant, ImplantInput>} return document when it exists and is accessible, else return
+       * null when the document does not exist or is inaccessible.
+       * 
+       * @example
+       * query.Implant.byId("21545645646554").exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
+       */
+       byId(id: string): ByIdMethods<Implant, ImplantInput>
+
+       /**
+        * first where method get the first matching value from the Set.
+        * 
+        * @param {(inputCondition: ((data: T) => boolean) | string)} function takes in a document of type T and returns a boolean
+        * 
+        * @returns {FirstWhereMethods<T>}  returns the first matching value in the Set, or null if the Set is empty or no values match.
+        * 
+        * @example
+        * query.Address.all().firstWhere((data) => data.country == 'uk').exec();
+        * OR
+        * query.Address.all().firstWhere(`(data) => data.${dynamicKey} == "${dynamicValueToCheck}"`).exec();
+        * 
+        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
+        */
+       firstWhere(inputCondition: ((data: Implant) => boolean) | string): FirstWhereMethods<Implant>;
+    }
+
+
+  export interface Abutment {
+    /**
+ * implantLine for the Abutment
+ */
+ implantLine: string;
+/**
+ * abutmentLine for the Abutment
+ */
+ abutmentLine: string;
+/**
+ * guided for the Abutment
+ */
+ guided: string;
+/**
+ * platformSwitch for the Abutment
+ */
+ platformSwitch: boolean;
+/**
+ * workflow for the Abutment
+ */
+ workflow: string[];
+/**
+ * retention for the Abutment
+ */
+ retention: string;
+/**
+ * material for the Abutment
+ */
+ material: string;
+/**
+ * sterile for the Abutment
+ */
+ sterile: boolean;
+/**
+ * connectionType for the Abutment
+ */
+ connectionType: string;
+/**
+ * heightProsthetic for the Abutment
+ */
+ heightProsthetic: number;
+/**
+ * maxTorque for the Abutment
+ */
+ maxTorque: number;
+/**
+ * angle for the Abutment
+ */
+ angle: string;
+/**
+ * diameterPlatform for the Abutment
+ */
+ diameterPlatform: number;
+/**
+ * gingivaHeight for the Abutment
+ */
+ gingivaHeight: number;
+/**
+ * indication for the Abutment
+ */
+ indication: string;
+/**
+ * singleUse for the Abutment
+ */
+ singleUse: boolean;
+
+  }
+
+
+  export interface AbutmentInput {
+    /**
+ * implantLine for the Abutment
+ */
+ implantLine: string;
+/**
+ * abutmentLine for the Abutment
+ */
+ abutmentLine: string;
+/**
+ * guided for the Abutment
+ */
+ guided: string;
+/**
+ * platformSwitch for the Abutment
+ */
+ platformSwitch: boolean;
+/**
+ * workflow for the Abutment
+ */
+ workflow: string[];
+/**
+ * retention for the Abutment
+ */
+ retention: string;
+/**
+ * material for the Abutment
+ */
+ material: string;
+/**
+ * sterile for the Abutment
+ */
+ sterile: boolean;
+/**
+ * connectionType for the Abutment
+ */
+ connectionType: string;
+/**
+ * heightProsthetic for the Abutment
+ */
+ heightProsthetic: number;
+/**
+ * maxTorque for the Abutment
+ */
+ maxTorque: number;
+/**
+ * angle for the Abutment
+ */
+ angle: string;
+/**
+ * diameterPlatform for the Abutment
+ */
+ diameterPlatform: number;
+/**
+ * gingivaHeight for the Abutment
+ */
+ gingivaHeight: number;
+/**
+ * indication for the Abutment
+ */
+ indication: string;
+/**
+ * singleUse for the Abutment
+ */
+ singleUse: boolean;
+
+  } 
+
+
+  export interface AbutmentMethods {
+      /**
+       * all method get the set of all documents in the Abutment collection.
+       * 
+       * @param
+       * 
+       * @returns {AllMethods<Abutment>} method returns the set of all documents in Abutment collection for the given range.
+       * 
+       * @example
+       * query.Abutment.all().exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
+       */
+      all(): AllMethods<Abutment>;
+
+      /**
+       * create method creates a Abutment document in the collection with the provided property values.
+       * 
+       * @param {AbutmentInput} input - will be the Abutment which you want to add.
+         * @param { string } input.implantLine ImplantLine for the Abutment
+* @param { string } input.abutmentLine AbutmentLine for the Abutment
+* @param { string } input.guided Guided for the Abutment
+* @param { boolean } input.platformSwitch PlatformSwitch for the Abutment
+* @param { string[] } input.workflow Workflow for the Abutment
+* @param { string } input.retention Retention for the Abutment
+* @param { string } input.material Material for the Abutment
+* @param { boolean } input.sterile Sterile for the Abutment
+* @param { string } input.connectionType ConnectionType for the Abutment
+* @param { number } input.heightProsthetic HeightProsthetic for the Abutment
+* @param { number } input.maxTorque MaxTorque for the Abutment
+* @param { string } input.angle Angle for the Abutment
+* @param { number } input.diameterPlatform DiameterPlatform for the Abutment
+* @param { number } input.gingivaHeight GingivaHeight for the Abutment
+* @param { string } input.indication Indication for the Abutment
+* @param { boolean } input.singleUse SingleUse for the Abutment
+       *
+       * @returns {CreateMethods<Abutment>} return new document.
+       * 
+       * @example
+       * query.Abutment.create({  
+ * implantLine: "Value of the implantLine"   
+ * abutmentLine: "Value of the abutmentLine"   
+ * guided: "Value of the guided"   
+ * platformSwitch: "Value of the platformSwitch"   
+ * workflow: "Value of the workflow"   
+ * retention: "Value of the retention"   
+ * material: "Value of the material"   
+ * sterile: "Value of the sterile"   
+ * connectionType: "Value of the connectionType"   
+ * heightProsthetic: "Value of the heightProsthetic"   
+ * maxTorque: "Value of the maxTorque"   
+ * angle: "Value of the angle"   
+ * diameterPlatform: "Value of the diameterPlatform"   
+ * gingivaHeight: "Value of the gingivaHeight"   
+ * indication: "Value of the indication"   
+ * singleUse: "Value of the singleUse"   
+       * }).exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
+       */
+    create(input: AbutmentInput): CreateMethods<Abutment>;
+
+      /**
+       * byId method get a Abutment document by its document ID.
+       * This will returns available Fqlx byId methods
+       * 
+       * @param {string} id - The ID of the document to retrieve
+       * 
+       * @returns {ByIdMethods<Abutment, AbutmentInput>} return document when it exists and is accessible, else return
+       * null when the document does not exist or is inaccessible.
+       * 
+       * @example
+       * query.Abutment.byId("21545645646554").exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
+       */
+       byId(id: string): ByIdMethods<Abutment, AbutmentInput>
+
+       /**
+        * first where method get the first matching value from the Set.
+        * 
+        * @param {(inputCondition: ((data: T) => boolean) | string)} function takes in a document of type T and returns a boolean
+        * 
+        * @returns {FirstWhereMethods<T>}  returns the first matching value in the Set, or null if the Set is empty or no values match.
+        * 
+        * @example
+        * query.Address.all().firstWhere((data) => data.country == 'uk').exec();
+        * OR
+        * query.Address.all().firstWhere(`(data) => data.${dynamicKey} == "${dynamicValueToCheck}"`).exec();
+        * 
+        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
+        */
+       firstWhere(inputCondition: ((data: Abutment) => boolean) | string): FirstWhereMethods<Abutment>;
+    }
+
+
+  export interface HealingAbutment {
+    /**
+ * implantLine for the HealingAbutment
+ */
+ implantLine: string;
+/**
+ * abutmentLine for the HealingAbutment
+ */
+ abutmentLine: string;
+/**
+ * shape for the HealingAbutment
+ */
+ shape: string;
+/**
+ * platformSwitch for the HealingAbutment
+ */
+ platformSwitch: boolean;
+/**
+ * material for the HealingAbutment
+ */
+ material: string;
+/**
+ * sterile for the HealingAbutment
+ */
+ sterile: boolean;
+/**
+ * maxTorque for the HealingAbutment
+ */
+ maxTorque: number;
+/**
+ * diameterPlatform for the HealingAbutment
+ */
+ diameterPlatform: number;
+/**
+ * gingivaHeight for the HealingAbutment
+ */
+ gingivaHeight: number;
+/**
+ * singleUse for the HealingAbutment
+ */
+ singleUse: boolean;
+
+  }
+
+
+  export interface HealingAbutmentInput {
+    /**
+ * implantLine for the HealingAbutment
+ */
+ implantLine: string;
+/**
+ * abutmentLine for the HealingAbutment
+ */
+ abutmentLine: string;
+/**
+ * shape for the HealingAbutment
+ */
+ shape: string;
+/**
+ * platformSwitch for the HealingAbutment
+ */
+ platformSwitch: boolean;
+/**
+ * material for the HealingAbutment
+ */
+ material: string;
+/**
+ * sterile for the HealingAbutment
+ */
+ sterile: boolean;
+/**
+ * maxTorque for the HealingAbutment
+ */
+ maxTorque: number;
+/**
+ * diameterPlatform for the HealingAbutment
+ */
+ diameterPlatform: number;
+/**
+ * gingivaHeight for the HealingAbutment
+ */
+ gingivaHeight: number;
+/**
+ * singleUse for the HealingAbutment
+ */
+ singleUse: boolean;
+
+  } 
+
+
+  export interface HealingAbutmentMethods {
+      /**
+       * all method get the set of all documents in the HealingAbutment collection.
+       * 
+       * @param
+       * 
+       * @returns {AllMethods<HealingAbutment>} method returns the set of all documents in HealingAbutment collection for the given range.
+       * 
+       * @example
+       * query.HealingAbutment.all().exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
+       */
+      all(): AllMethods<HealingAbutment>;
+
+      /**
+       * create method creates a HealingAbutment document in the collection with the provided property values.
+       * 
+       * @param {HealingAbutmentInput} input - will be the HealingAbutment which you want to add.
+         * @param { string } input.implantLine ImplantLine for the HealingAbutment
+* @param { string } input.abutmentLine AbutmentLine for the HealingAbutment
+* @param { string } input.shape Shape for the HealingAbutment
+* @param { boolean } input.platformSwitch PlatformSwitch for the HealingAbutment
+* @param { string } input.material Material for the HealingAbutment
+* @param { boolean } input.sterile Sterile for the HealingAbutment
+* @param { number } input.maxTorque MaxTorque for the HealingAbutment
+* @param { number } input.diameterPlatform DiameterPlatform for the HealingAbutment
+* @param { number } input.gingivaHeight GingivaHeight for the HealingAbutment
+* @param { boolean } input.singleUse SingleUse for the HealingAbutment
+       *
+       * @returns {CreateMethods<HealingAbutment>} return new document.
+       * 
+       * @example
+       * query.HealingAbutment.create({  
+ * implantLine: "Value of the implantLine"   
+ * abutmentLine: "Value of the abutmentLine"   
+ * shape: "Value of the shape"   
+ * platformSwitch: "Value of the platformSwitch"   
+ * material: "Value of the material"   
+ * sterile: "Value of the sterile"   
+ * maxTorque: "Value of the maxTorque"   
+ * diameterPlatform: "Value of the diameterPlatform"   
+ * gingivaHeight: "Value of the gingivaHeight"   
+ * singleUse: "Value of the singleUse"   
+       * }).exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
+       */
+    create(input: HealingAbutmentInput): CreateMethods<HealingAbutment>;
+
+      /**
+       * byId method get a HealingAbutment document by its document ID.
+       * This will returns available Fqlx byId methods
+       * 
+       * @param {string} id - The ID of the document to retrieve
+       * 
+       * @returns {ByIdMethods<HealingAbutment, HealingAbutmentInput>} return document when it exists and is accessible, else return
+       * null when the document does not exist or is inaccessible.
+       * 
+       * @example
+       * query.HealingAbutment.byId("21545645646554").exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
+       */
+       byId(id: string): ByIdMethods<HealingAbutment, HealingAbutmentInput>
+
+       /**
+        * first where method get the first matching value from the Set.
+        * 
+        * @param {(inputCondition: ((data: T) => boolean) | string)} function takes in a document of type T and returns a boolean
+        * 
+        * @returns {FirstWhereMethods<T>}  returns the first matching value in the Set, or null if the Set is empty or no values match.
+        * 
+        * @example
+        * query.Address.all().firstWhere((data) => data.country == 'uk').exec();
+        * OR
+        * query.Address.all().firstWhere(`(data) => data.${dynamicKey} == "${dynamicValueToCheck}"`).exec();
+        * 
+        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
+        */
+       firstWhere(inputCondition: ((data: HealingAbutment) => boolean) | string): FirstWhereMethods<HealingAbutment>;
+    }
+
+
+  export interface TemporaryAbutment {
+    /**
+ * implantLine for the TemporaryAbutment
+ */
+ implantLine: string;
+/**
+ * abutmentLine for the TemporaryAbutment
+ */
+ abutmentLine: string;
+/**
+ * guided for the TemporaryAbutment
+ */
+ guided: string;
+/**
+ * platformSwitch for the TemporaryAbutment
+ */
+ platformSwitch: boolean;
+/**
+ * retention for the TemporaryAbutment
+ */
+ retention: string;
+/**
+ * material for the TemporaryAbutment
+ */
+ material: string;
+/**
+ * sterile for the TemporaryAbutment
+ */
+ sterile: boolean;
+/**
+ * connectionType for the TemporaryAbutment
+ */
+ connectionType: string;
+/**
+ * heightProsthetic for the TemporaryAbutment
+ */
+ heightProsthetic: number;
+/**
+ * maxTorque for the TemporaryAbutment
+ */
+ maxTorque: number;
+/**
+ * angle for the TemporaryAbutment
+ */
+ angle: string;
+/**
+ * diameterPlatform for the TemporaryAbutment
+ */
+ diameterPlatform: number;
+/**
+ * gingivaHeight for the TemporaryAbutment
+ */
+ gingivaHeight: number;
+/**
+ * indication for the TemporaryAbutment
+ */
+ indication: string;
+/**
+ * singleUse for the TemporaryAbutment
+ */
+ singleUse: boolean;
+
+  }
+
+
+  export interface TemporaryAbutmentInput {
+    /**
+ * implantLine for the TemporaryAbutment
+ */
+ implantLine: string;
+/**
+ * abutmentLine for the TemporaryAbutment
+ */
+ abutmentLine: string;
+/**
+ * guided for the TemporaryAbutment
+ */
+ guided: string;
+/**
+ * platformSwitch for the TemporaryAbutment
+ */
+ platformSwitch: boolean;
+/**
+ * retention for the TemporaryAbutment
+ */
+ retention: string;
+/**
+ * material for the TemporaryAbutment
+ */
+ material: string;
+/**
+ * sterile for the TemporaryAbutment
+ */
+ sterile: boolean;
+/**
+ * connectionType for the TemporaryAbutment
+ */
+ connectionType: string;
+/**
+ * heightProsthetic for the TemporaryAbutment
+ */
+ heightProsthetic: number;
+/**
+ * maxTorque for the TemporaryAbutment
+ */
+ maxTorque: number;
+/**
+ * angle for the TemporaryAbutment
+ */
+ angle: string;
+/**
+ * diameterPlatform for the TemporaryAbutment
+ */
+ diameterPlatform: number;
+/**
+ * gingivaHeight for the TemporaryAbutment
+ */
+ gingivaHeight: number;
+/**
+ * indication for the TemporaryAbutment
+ */
+ indication: string;
+/**
+ * singleUse for the TemporaryAbutment
+ */
+ singleUse: boolean;
+
+  } 
+
+
+  export interface TemporaryAbutmentMethods {
+      /**
+       * all method get the set of all documents in the TemporaryAbutment collection.
+       * 
+       * @param
+       * 
+       * @returns {AllMethods<TemporaryAbutment>} method returns the set of all documents in TemporaryAbutment collection for the given range.
+       * 
+       * @example
+       * query.TemporaryAbutment.all().exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
+       */
+      all(): AllMethods<TemporaryAbutment>;
+
+      /**
+       * create method creates a TemporaryAbutment document in the collection with the provided property values.
+       * 
+       * @param {TemporaryAbutmentInput} input - will be the TemporaryAbutment which you want to add.
+         * @param { string } input.implantLine ImplantLine for the TemporaryAbutment
+* @param { string } input.abutmentLine AbutmentLine for the TemporaryAbutment
+* @param { string } input.guided Guided for the TemporaryAbutment
+* @param { boolean } input.platformSwitch PlatformSwitch for the TemporaryAbutment
+* @param { string } input.retention Retention for the TemporaryAbutment
+* @param { string } input.material Material for the TemporaryAbutment
+* @param { boolean } input.sterile Sterile for the TemporaryAbutment
+* @param { string } input.connectionType ConnectionType for the TemporaryAbutment
+* @param { number } input.heightProsthetic HeightProsthetic for the TemporaryAbutment
+* @param { number } input.maxTorque MaxTorque for the TemporaryAbutment
+* @param { string } input.angle Angle for the TemporaryAbutment
+* @param { number } input.diameterPlatform DiameterPlatform for the TemporaryAbutment
+* @param { number } input.gingivaHeight GingivaHeight for the TemporaryAbutment
+* @param { string } input.indication Indication for the TemporaryAbutment
+* @param { boolean } input.singleUse SingleUse for the TemporaryAbutment
+       *
+       * @returns {CreateMethods<TemporaryAbutment>} return new document.
+       * 
+       * @example
+       * query.TemporaryAbutment.create({  
+ * implantLine: "Value of the implantLine"   
+ * abutmentLine: "Value of the abutmentLine"   
+ * guided: "Value of the guided"   
+ * platformSwitch: "Value of the platformSwitch"   
+ * retention: "Value of the retention"   
+ * material: "Value of the material"   
+ * sterile: "Value of the sterile"   
+ * connectionType: "Value of the connectionType"   
+ * heightProsthetic: "Value of the heightProsthetic"   
+ * maxTorque: "Value of the maxTorque"   
+ * angle: "Value of the angle"   
+ * diameterPlatform: "Value of the diameterPlatform"   
+ * gingivaHeight: "Value of the gingivaHeight"   
+ * indication: "Value of the indication"   
+ * singleUse: "Value of the singleUse"   
+       * }).exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
+       */
+    create(input: TemporaryAbutmentInput): CreateMethods<TemporaryAbutment>;
+
+      /**
+       * byId method get a TemporaryAbutment document by its document ID.
+       * This will returns available Fqlx byId methods
+       * 
+       * @param {string} id - The ID of the document to retrieve
+       * 
+       * @returns {ByIdMethods<TemporaryAbutment, TemporaryAbutmentInput>} return document when it exists and is accessible, else return
+       * null when the document does not exist or is inaccessible.
+       * 
+       * @example
+       * query.TemporaryAbutment.byId("21545645646554").exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
+       */
+       byId(id: string): ByIdMethods<TemporaryAbutment, TemporaryAbutmentInput>
+
+       /**
+        * first where method get the first matching value from the Set.
+        * 
+        * @param {(inputCondition: ((data: T) => boolean) | string)} function takes in a document of type T and returns a boolean
+        * 
+        * @returns {FirstWhereMethods<T>}  returns the first matching value in the Set, or null if the Set is empty or no values match.
+        * 
+        * @example
+        * query.Address.all().firstWhere((data) => data.country == 'uk').exec();
+        * OR
+        * query.Address.all().firstWhere(`(data) => data.${dynamicKey} == "${dynamicValueToCheck}"`).exec();
+        * 
+        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
+        */
+       firstWhere(inputCondition: ((data: TemporaryAbutment) => boolean) | string): FirstWhereMethods<TemporaryAbutment>;
+    }
+
+
+  export interface Impression {
+    /**
+ * type for the Impression
+ */
+ type: string;
+/**
+ * implantLine for the Impression
+ */
+ implantLine: string;
+/**
+ * abutmentLine for the Impression
+ */
+ abutmentLine: string;
+/**
+ * diameterPlatform for the Impression
+ */
+ diameterPlatform: number;
+
+  }
+
+
+  export interface ImpressionInput {
+    /**
+ * type for the Impression
+ */
+ type: string;
+/**
+ * implantLine for the Impression
+ */
+ implantLine: string;
+/**
+ * abutmentLine for the Impression
+ */
+ abutmentLine: string;
+/**
+ * diameterPlatform for the Impression
+ */
+ diameterPlatform: number;
+
+  } 
+
+
+  export interface ImpressionMethods {
+      /**
+       * all method get the set of all documents in the Impression collection.
+       * 
+       * @param
+       * 
+       * @returns {AllMethods<Impression>} method returns the set of all documents in Impression collection for the given range.
+       * 
+       * @example
+       * query.Impression.all().exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
+       */
+      all(): AllMethods<Impression>;
+
+      /**
+       * create method creates a Impression document in the collection with the provided property values.
+       * 
+       * @param {ImpressionInput} input - will be the Impression which you want to add.
+         * @param { string } input.type Type for the Impression
+* @param { string } input.implantLine ImplantLine for the Impression
+* @param { string } input.abutmentLine AbutmentLine for the Impression
+* @param { number } input.diameterPlatform DiameterPlatform for the Impression
+       *
+       * @returns {CreateMethods<Impression>} return new document.
+       * 
+       * @example
+       * query.Impression.create({  
+ * type: "Value of the type"   
+ * implantLine: "Value of the implantLine"   
+ * abutmentLine: "Value of the abutmentLine"   
+ * diameterPlatform: "Value of the diameterPlatform"   
+       * }).exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
+       */
+    create(input: ImpressionInput): CreateMethods<Impression>;
+
+      /**
+       * byId method get a Impression document by its document ID.
+       * This will returns available Fqlx byId methods
+       * 
+       * @param {string} id - The ID of the document to retrieve
+       * 
+       * @returns {ByIdMethods<Impression, ImpressionInput>} return document when it exists and is accessible, else return
+       * null when the document does not exist or is inaccessible.
+       * 
+       * @example
+       * query.Impression.byId("21545645646554").exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
+       */
+       byId(id: string): ByIdMethods<Impression, ImpressionInput>
+
+       /**
+        * first where method get the first matching value from the Set.
+        * 
+        * @param {(inputCondition: ((data: T) => boolean) | string)} function takes in a document of type T and returns a boolean
+        * 
+        * @returns {FirstWhereMethods<T>}  returns the first matching value in the Set, or null if the Set is empty or no values match.
+        * 
+        * @example
+        * query.Address.all().firstWhere((data) => data.country == 'uk').exec();
+        * OR
+        * query.Address.all().firstWhere(`(data) => data.${dynamicKey} == "${dynamicValueToCheck}"`).exec();
+        * 
+        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
+        */
+       firstWhere(inputCondition: ((data: Impression) => boolean) | string): FirstWhereMethods<Impression>;
+    }
+
+
   export interface Product {
-    
+    /**
+ * id for the Product
+ */
+ id: string;
+/**
+ * manafacturerProductId for the Product
+ */
+ manafacturerProductId: string;
+/**
+ * manafacturer for the Product
+ */
+ manafacturer: Manafacturer;
+/**
+ * localizations for the Product
+ */
+ localizations: ProductLocalization[];
+/**
+ * implant for the Product
+ */
+ implant: Implant;
+/**
+ * abutment for the Product
+ */
+ abutment: Abutment;
+/**
+ * healingAbutment for the Product
+ */
+ healingAbutment: HealingAbutment;
+/**
+ * temporaryAbutment for the Product
+ */
+ temporaryAbutment: TemporaryAbutment;
+/**
+ * impression for the Product
+ */
+ impression: Impression;
+
   }
 
 
   export interface ProductInput {
-    
+    /**
+ * manafacturerProductId for the Product
+ */
+ manafacturerProductId: string;
+/**
+ * manafacturer for the Product
+ */
+ manafacturer: Manafacturer;
+/**
+ * localizations for the Product
+ */
+ localizations: ProductLocalization[];
+/**
+ * implant for the Product
+ */
+ implant: Implant;
+/**
+ * abutment for the Product
+ */
+ abutment: Abutment;
+/**
+ * healingAbutment for the Product
+ */
+ healingAbutment: HealingAbutment;
+/**
+ * temporaryAbutment for the Product
+ */
+ temporaryAbutment: TemporaryAbutment;
+/**
+ * impression for the Product
+ */
+ impression: Impression;
+
   } 
 
 
@@ -1132,12 +2436,27 @@ export interface Ts {
        * create method creates a Product document in the collection with the provided property values.
        * 
        * @param {ProductInput} input - will be the Product which you want to add.
-         
+         * @param { string } input.manafacturerProductId ManafacturerProductId for the Product
+* @param { Manafacturer } input.manafacturer Manafacturer for the Product
+* @param { ProductLocalization[] } input.localizations Localizations for the Product
+* @param { Implant } input.implant Implant for the Product
+* @param { Abutment } input.abutment Abutment for the Product
+* @param { HealingAbutment } input.healingAbutment HealingAbutment for the Product
+* @param { TemporaryAbutment } input.temporaryAbutment TemporaryAbutment for the Product
+* @param { Impression } input.impression Impression for the Product
        *
        * @returns {CreateMethods<Product>} return new document.
        * 
        * @example
        * query.Product.create({  
+ * manafacturerProductId: "Value of the manafacturerProductId"   
+ * manafacturer: "Value of the manafacturer"   
+ * localizations: "Value of the localizations"   
+ * implant: "Value of the implant"   
+ * abutment: "Value of the abutment"   
+ * healingAbutment: "Value of the healingAbutment"   
+ * temporaryAbutment: "Value of the temporaryAbutment"   
+ * impression: "Value of the impression"   
        * }).exec()
        * 
        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
@@ -1578,62 +2897,94 @@ export interface Ts {
     /**
  * @returns This return fqlx methods for the PatientFile 
  */ 
-PatientFile: PatientFileMethods;
+PatientFile: PaginateData<PatientFile> & PatientFileMethods;
 /**
  * @returns This return fqlx methods for the Ts 
  */ 
- Ts:  TsMethods;
+ Ts:  PaginateData<Ts> & TsMethods;
 /**
  * @returns This return fqlx methods for the Patient 
  */ 
-Patient: PatientMethods;
+Patient: PaginateData<Patient> & PatientMethods;
 /**
  * @returns This return fqlx methods for the Tooth 
  */ 
-Tooth: ToothMethods;
+Tooth: PaginateData<Tooth> & ToothMethods;
 /**
  * @returns This return fqlx methods for the Root 
  */ 
- Root:  RootMethods;
+ Root:  PaginateData<Root> & RootMethods;
 /**
  * @returns This return fqlx methods for the Crown 
  */ 
- Crown:  CrownMethods;
+ Crown:  PaginateData<Crown> & CrownMethods;
 /**
  * @returns This return fqlx methods for the BodyPartLeaf 
  */ 
-BodyPartLeaf: BodyPartLeafMethods;
+BodyPartLeaf: PaginateData<BodyPartLeaf> & BodyPartLeafMethods;
 /**
  * @returns This return fqlx methods for the Finding 
  */ 
-Finding: FindingMethods;
+Finding: PaginateData<Finding> & FindingMethods;
 /**
  * @returns This return fqlx methods for the TreatmentDoc 
  */ 
-TreatmentDoc: TreatmentDocMethods;
+TreatmentDoc: PaginateData<TreatmentDoc> & TreatmentDocMethods;
 /**
  * @returns This return fqlx methods for the SelectedProduct 
  */ 
-SelectedProduct: SelectedProductMethods;
+SelectedProduct: PaginateData<SelectedProduct> & SelectedProductMethods;
+/**
+ * @returns This return fqlx methods for the ProductLocalization 
+ */ 
+ProductLocalization: PaginateData<ProductLocalization> & ProductLocalizationMethods;
+/**
+ * @returns This return fqlx methods for the Price 
+ */ 
+ Price:  PaginateData<Price> & PriceMethods;
 /**
  * @returns This return fqlx methods for the Product 
  */ 
-Product: ProductMethods;
+Product: PaginateData<Product> & ProductMethods;
+/**
+ * @returns This return fqlx methods for the Manafacturer 
+ */ 
+ Manafacturer:  PaginateData<Manafacturer> & ManafacturerMethods;
+/**
+ * @returns This return fqlx methods for the Implant 
+ */ 
+ Implant:  PaginateData<Implant> & ImplantMethods;
+/**
+ * @returns This return fqlx methods for the Abutment 
+ */ 
+ Abutment:  PaginateData<Abutment> & AbutmentMethods;
+/**
+ * @returns This return fqlx methods for the HealingAbutment 
+ */ 
+ HealingAbutment:  PaginateData<HealingAbutment> & HealingAbutmentMethods;
+/**
+ * @returns This return fqlx methods for the TemporaryAbutment 
+ */ 
+ TemporaryAbutment:  PaginateData<TemporaryAbutment> & TemporaryAbutmentMethods;
+/**
+ * @returns This return fqlx methods for the Impression 
+ */ 
+ Impression:  PaginateData<Impression> & ImpressionMethods;
 /**
  * @returns This return fqlx methods for the TreatmentGroup 
  */ 
-TreatmentGroup: TreatmentGroupMethods;
+TreatmentGroup: PaginateData<TreatmentGroup> & TreatmentGroupMethods;
 /**
  * @returns This return fqlx methods for the Treatment 
  */ 
-Treatment: TreatmentMethods;
+Treatment: PaginateData<Treatment> & TreatmentMethods;
 /**
  * @returns This return fqlx methods for the Area 
  */ 
-Area: AreaMethods;
+Area: PaginateData<Area> & AreaMethods;
 /**
  * @returns This return fqlx methods for the TreatmentLocalization 
  */ 
-TreatmentLocalization: TreatmentLocalizationMethods;
+TreatmentLocalization: PaginateData<TreatmentLocalization> & TreatmentLocalizationMethods;
 
   }
