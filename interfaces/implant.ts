@@ -5,11 +5,10 @@ export interface implantFormProps {
 }
 [];
 
-export interface implantProductOptionsProps {
+export interface implantProductOptionProps {
   id: number;
   localStorageCount: number;
   selectedTeeth: number;
-  size: number;
 }
 
 interface ImplantDetailsProps {
@@ -17,46 +16,12 @@ interface ImplantDetailsProps {
 }
 
 export interface implantProductListProps {
-  id: number;
-  heading: string;
-  description: string;
-  image: string;
-  barcode: string;
-  price: string;
-  implantDetails: ImplantDetailsProps[];
-  inStorage?: boolean;
-  storageNumber?: number;
-  options: implantProductOptionsProps[];
-  onSelectImplant: Function;
-  selectedTeeth: number[];
-  selectedImplants: {
-    [key: string]: boolean;
-  };
+  id: string;
+  implant: any;
+  options: implantProductOptionProps[];
 }
 [];
-// export interface implantProductListProps {
-//   id: number;
-//   heading: string;
-//   price: string;
-//   image: string;
-//   options: implantProductOptionsProps[];
-//   description: string;
-//   onSelectImplant: Function;
-//   selectedTeeth: number[];
-//   selectedImplants: {
-//     [key: string]: boolean;
-//   };
-// }
-// [];
 
-export interface implantProductOptionProps {
-  productId: number;
-  optionId: number;
-  // localStorageCount: number;
+export interface implantProductOptionsProps {
   selectedTeeth: number;
-  // size: number;
-  // onSelectImplant: Function;
-  // selectedImplants: {
-  //   [key: string]: boolean;
-  // };
 }

@@ -1,9 +1,12 @@
 import { useState } from 'react';
-import { Icon, Text, View, MenuItem } from 'reshaped';
-import { implantProductOptionProps } from '../../interfaces/implant';
+import { Icon, Text, View, MenuItem, Card } from 'reshaped';
+import cx from 'classnames';
+import { implantProductOptionsProps } from '../../interfaces/implant';
 import TreatmentOptionIcon from '../Icons/TreatmentOption';
 
-const ImplantProductOption = ({ selectedTeeth }: implantProductOptionProps) => {
+const ImplantProductOption = ({
+  selectedTeeth,
+}: implantProductOptionsProps) => {
   // const [check, setCheck] = useState<boolean>(false);
   // const [selectedItemId, setSelectedItemId] = useState<boolean>(false);
 
@@ -25,33 +28,46 @@ const ImplantProductOption = ({ selectedTeeth }: implantProductOptionProps) => {
 
   // console.log({ selectedTeeth });
 
-  const [activeOption, setActiveOption] = useState<number>();
+  const [activeOption, setActiveOption] = useState<number>(0);
 
   const setActiveTeeth = (selectedTeeth: number) => {
     selectedTeeth !== activeOption
       ? setActiveOption(selectedTeeth)
-      : setActiveOption(-1);
+      : setActiveOption(0);
   };
 
+  // --rs-color-foreground-primary
+  // cx
   return (
-    <View backgroundColor={selectedTeeth === activeOption ? 'primary' : 'page'}>
-      <MenuItem size={'small'} onClick={() => setActiveTeeth(selectedTeeth)}>
+    <Card
+      padding={0}
+      className={cx(
+        '!shadow-[0px_2px_3px_rgba(0,0,0,0.1),_0px_1px_2px_-1px_rgba(0,0,0,0.1)]',
+
+        { '!border-[--rs-color-foreground-primary]': Boolean(activeOption) }
+      )}
+    >
+      <MenuItem
+        selected={Boolean(activeOption)}
+        size={'small'}
+        roundedCorners={true}
+        onClick={() => setActiveTeeth(selectedTeeth)}
+      >
         <View
           direction='row'
           align='center'
-          gap={1}
+          gap={3}
           width='100%'
           paddingStart={2}
           paddingBlock={2}
         >
-          <Icon svg={TreatmentOptionIcon} size={4} />
+          <Icon svg={TreatmentOptionIcon} size={5} />
           <Text variant='body-3' weight='medium'>
-            {' '}
             {selectedTeeth}
           </Text>
         </View>
       </MenuItem>
-    </View>
+    </Card>
   );
 };
 

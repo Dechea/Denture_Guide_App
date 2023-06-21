@@ -1,11 +1,11 @@
 'use client';
 
-import { View, Text, Checkbox } from 'reshaped';
+import { View, Text, Checkbox, Button, Icon } from 'reshaped';
 import { implantForm } from '../../__mocks__/implant';
 
 export const ImplantForm = () => {
   return (
-    <View gap={10} paddingBottom={10} paddingTop={2.5}>
+    <View gap={10} paddingBottom={10}>
       {implantForm.map((data) => (
         <View gap={4} direction='column' key={data.id}>
           <Text variant='body-3' weight='medium'>
