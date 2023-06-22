@@ -11,13 +11,16 @@ import { Query } from '../../fqlx-generated/typedefs';
 export default function OrderDashboard(): JSX.Element {
   const query = useQuery<Query>();
 
-  const patientFiles = query.PatientFile.all().exec().data;
-
   const {
     active: activeNewOrderModal,
     activate: activateNewOrderModal,
     deactivate: deactivateNewOrderModal,
   } = useToggle();
+
+  const patientFilesCount = query.PatientFile.all()
+    .where((product) => true)
+    .count()
+    .exec();
 
   return (
     <View direction='column' width='100%' height='100%' divided>
@@ -26,7 +29,7 @@ export default function OrderDashboard(): JSX.Element {
       </View.Item>
 
       <View.Item grow>
-        {patientFiles.length ? (
+        {patientFilesCount ? (
           <PatientList />
         ) : (
           <NoOrder activateNewOrderModal={activateNewOrderModal} />
