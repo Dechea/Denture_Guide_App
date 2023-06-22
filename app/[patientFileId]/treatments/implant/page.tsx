@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from 'react';
 import { Tabs, View } from 'reshaped';
 import { useRouter } from 'next/navigation';
-import { ImplantList } from '../../../../components/ImplantList';
+import ImplantList from '../../../../components/ImplantList';
 import { ImplantFilterForm } from '../../../../components/ImplantFilterForm';
 import SelectTeeth from '../../../../components/SelectedTeeth';
 import Loader from '../../../../components/Loader';
@@ -37,7 +37,13 @@ export default function Implant({
           </View.Item>
 
           <View.Item columns={9}>
-            <Suspense fallback={<Loader />}>
+            <Suspense
+              fallback={
+                <View height='70vh'>
+                  <Loader />
+                </View>
+              }
+            >
               <ImplantList />
             </Suspense>
           </View.Item>

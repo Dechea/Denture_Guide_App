@@ -7,6 +7,8 @@ import { PaginateData } from 'fqlx-client';
 interface ProductStore {
   product: IProduct;
   implants: PaginateData<Product>;
+  searchedImplantManufacturerId: string;
+  setSearchedImplantManufacturerId: (id: string) => void;
   setImplants: (implants: PaginateData<Product>) => void;
   setAbutment: (abutment: AbutmentInput) => void;
 }
@@ -14,16 +16,12 @@ interface ProductStore {
 export const useProductStore = create<ProductStore>()((set) => ({
   product: product,
   implants: { data: [] },
+  searchedImplantManufacturerId: '',
   setAbutment: (abutment) =>
     set((state) => ({
       product: { ...state.product, abutment: { ...abutment, id: '' } },
     })),
-  setImplants: (implants) =>
-    set((state) => ({
-      implants: {
-        data: [...state.implants.data, ...implants?.data],
-        after: implants?.after,
-        before: implants?.before,
-      },
-    })),
+  setImplants: (implants) => set({ implants }),
+  setSearchedImplantManufacturerId: (id) =>
+    set({ searchedImplantManufacturerId: id }),
 }));

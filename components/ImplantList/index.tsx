@@ -12,26 +12,43 @@ import NoImplantFound from '../../app/[patientFileId]/treatments/implant/NoImpla
 import ShareButton from '../ShareButton';
 import { useProductStore } from '../../zustand/product';
 
-export const ImplantList = ({}) => {
-  const { implants, setImplants } = useProductStore();
+const formWhereCondition = (searchedImplantManufacturerId: string) => {
+  const defaultCondition = '(product) => product.implant != null';
+
+  switch (true) {
+    case Boolean(searchedImplantManufacturerId):
+      return defaultCondition.concat(
+        ` && product.manufacturerProductId?.includes("${searchedImplantManufacturerId}")`
+      );
+
+    default:
+      return defaultCondition;
+  }
+};
+
+const ImplantList = ({}) => {
+  const { implants, setImplants, searchedImplantManufacturerId } =
+    useProductStore();
 
   const query = useQuery<Query>();
 
-  const implantProducts = query.Product.all()
-    .where((product) => product.implant != null)
-    .exec();
+  const implantQuery = query.Product.all().where(
+    formWhereCondition(searchedImplantManufacturerId)
+  );
 
-  const implantCount = query.Product.all()
-    .where((product) => product.implant != null)
-    .count()
-    .exec();
+  const implantProducts = implantQuery.exec();
+  const implantCount = implantQuery.count().exec();
 
   const fetchMoreImplants = async () => {
     const paginated = await query.Set.paginate<Product>(
       `${implants?.after}`
     ).exec();
 
-    setImplants(paginated);
+    setImplants({
+      data: [...implants.data, ...paginated.data],
+      after: paginated?.after,
+      before: paginated?.before,
+    });
   };
 
   useEffect(() => {
@@ -54,7 +71,7 @@ export const ImplantList = ({}) => {
                 color='neutral-faded'
                 align='end'
               >
-                {implantCount}
+                {typeof implantCount === 'object' ? 0 : implantCount}
               </Text>
             </View>
           </View>
@@ -97,11 +114,12 @@ export const ImplantList = ({}) => {
         </InfiniteScroll>
       ) : (
         <>
-          <NoImplantFound barcode={'P2211.4012'} />
+          <NoImplantFound barcode={searchedImplantManufacturerId} />
           <HelpFooter />
         </>
       )}
     </>
   );
 };
-u;
+
+export default ImplantList;

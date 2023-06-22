@@ -1,11 +1,19 @@
 'use client';
 
 import { View, Text, Checkbox, Icon, TextField } from 'reshaped';
+import { debounce } from 'reshaped/utilities/helpers';
 import { implantForm } from '../../__mocks__/implant';
 import FilterIcon from '../Icons/Filter';
 import BarCodeIcon from '../Icons/Barcode';
+import { useProductStore } from '../../zustand/product';
 
 export const ImplantFilterForm = () => {
+  const { setSearchedImplantManufacturerId } = useProductStore();
+
+  const handleManufacturerIdChange = debounce((id: string) => {
+    setSearchedImplantManufacturerId(id);
+  }, 300);
+
   return (
     <View gap={5.5}>
       <View direction='row' align='center' paddingBlock={2.5} gap={1}>
@@ -21,6 +29,9 @@ export const ImplantFilterForm = () => {
         name='email'
         placeholder='Search by code e.g K1043.XXXX '
         startSlot={<Icon svg={BarCodeIcon} color='neutral-faded' size={5} />}
+        onChange={({ value }: { value: string }) =>
+          handleManufacturerIdChange(value)
+        }
       />
 
       <View gap={10} paddingBottom={10}>
