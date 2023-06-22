@@ -18,7 +18,11 @@ interface Category {
 }
 
 export const ImplantFilterForm = () => {
-  const { setSearchedImplantManufacturerId } = useProductStore();
+  const {
+    setSearchedImplantManufacturerId,
+    implantFilters,
+    setImplantFilters,
+  } = useProductStore();
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
 
@@ -51,6 +55,20 @@ export const ImplantFilterForm = () => {
   const handleManufacturerIdChange = debounce((id: string) => {
     setSearchedImplantManufacturerId(id);
   }, 300);
+
+  const handleCategoryFieldClick = (field: string) => {
+    let filteredImplants = [...implantFilters];
+
+    if (filteredImplants.includes(field)) {
+      filteredImplants = filteredImplants.filter(
+        (implant) => implant !== field
+      );
+    } else {
+      filteredImplants.push(field);
+    }
+
+    setImplantFilters(filteredImplants);
+  };
 
   return (
     <View gap={5.5}>
@@ -101,7 +119,14 @@ export const ImplantFilterForm = () => {
                           <Checkbox
                             name={option}
                             value={option}
-                            onChange={(_event) => {}}
+                            checked={implantFilters.includes(
+                              `${category.name}.${option}`
+                            )}
+                            onChange={() =>
+                              handleCategoryFieldClick(
+                                `${category.name}.${option}`
+                              )
+                            }
                           >
                             <Text variant='body-3' weight='regular'>
                               {option}
