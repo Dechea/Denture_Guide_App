@@ -35,7 +35,7 @@ export default function Implant({
     .exec();
 
   const fetchMoreImplants = async () => {
-    const paginated = await query.Set.paginate(`"${implants?.after}"`).exec();
+    const paginated = await query.Set.paginate(`${implants?.after}`).exec();
 
     setImplants({
       after: paginated?.after,
@@ -103,7 +103,6 @@ export default function Implant({
                       color='neutral-faded'
                       align='end'
                     >
-                      {/* @ts-expect-error */}
                       {implantCount}
                     </Text>
                   </View>
