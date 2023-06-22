@@ -12,6 +12,7 @@ export interface abutmentOptionsProps {
   id: number;
   selectedTeeth: number;
   localStorageCount: number;
+  onClick?: () => void;
 }
 
 export interface abutmentFormProps {

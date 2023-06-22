@@ -11,7 +11,7 @@ import NoImplantFound from './NoImplantFound';
 import HelpFooter from './HelpFooter';
 import BarCodeIcon from '../../../../components/Icons/Barcode';
 import { PaginateData, useQuery } from 'fqlx-client';
-import { Product, Query } from '../../../../fqlx-generated/typedefs';
+import { Implant, Product, Query } from '../../../../fqlx-generated/typedefs';
 import ShareButton from '../../../../components/ShareButton';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Loader from '../../../../components/Loader';
@@ -39,7 +39,7 @@ export default function Implant({
 
     setImplants({
       after: paginated?.after,
-      data: [...(implants?.data || []), ...paginated.data],
+      data: [...(implants?.data || []), ...paginated.data] as Product[],
       before: paginated?.before,
     });
   };

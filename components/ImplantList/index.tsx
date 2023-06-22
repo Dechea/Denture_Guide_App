@@ -15,10 +15,10 @@ export const ImplantList = ({
   const implantData = {
     Material: implant?.implant?.material || '',
     'Insertion Post': implant?.implant?.insertionPost || '',
-    'Neck Height': implant?.implant?.lengthNeck || '',
+    'Neck Length': implant?.implant?.lengthNeck || '',
     Diameter: implant?.implant?.diameterPlatform || '',
     Length: implant?.implant?.length || '',
-    'Platform Switching': implant?.implant?.platformSwitch || '',
+    'Platform Switch': implant?.implant?.platformSwitch || '',
   };
 
   return (
@@ -41,7 +41,9 @@ export const ImplantList = ({
                     <Text variant='body-1' weight='bold'>
                       {implant?.localizations?.length
                         ? implant.localizations
-                            .find((item) => item.locale === 'EN')
+                            .find(
+                              (item: { locale: string }) => item.locale === 'EN'
+                            )
                             .name.split(',')[0]
                         : '-'}
                     </Text>
@@ -107,14 +109,6 @@ export const ImplantList = ({
                     : '-'}{' '}
                   €
                 </Text>
-                {true && (
-                  <View direction='row' gap={1} align='center'>
-                    <Icon svg={StorageIcon} color='primary' />
-                    <Text color='primary' variant='body-3' weight='medium'>
-                      2 in Local Storage
-                    </Text>
-                  </View>
-                )}
               </View>
             </View>
           </View.Item>

@@ -4,11 +4,9 @@ import { useState } from 'react';
 import { Card, Icon, MenuItem, Text, View } from 'reshaped';
 import cx from 'classnames';
 import TreatmentOptionIcon from '../Icons/TreatmentOption';
-import { AbutmentProductOptionsProps } from '../../interfaces/abutment';
+import { abutmentOptionsProps } from '../../interfaces/abutment';
 
-const AbutmentProductOption = ({
-  selectedTeeth,
-}: AbutmentProductOptionsProps) => {
+const AbutmentProductOption = ({ selectedTeeth }: abutmentOptionsProps) => {
   const [activeOption, setActiveOption] = useState<number>(0);
 
   const setActiveTeeth = (selectedTeeth: number) => {
