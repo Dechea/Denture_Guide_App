@@ -12,14 +12,41 @@ import NoImplantFound from '../../app/[patientFileId]/treatments/implant/NoImpla
 import ShareButton from '../ShareButton';
 import { useProductStore } from '../../zustand/product';
 
-const formWhereCondition = (searchedImplantManufacturerId: string) => {
+const formConditionForFilterKeys = (keys: string[]) => {
+  const condition = keys
+    .map((key) => {
+      const splitedKey = key.split('.');
+      const category = splitedKey[0];
+      const field = splitedKey[1];
+
+      return `product.implant.${category} == ${field}`;
+    })
+    .join(' || ');
+
+  return condition;
+};
+
+const formWhereCondition = (
+  searchedImplantManufacturerId: string,
+  implantFilters: string[]
+) => {
   const defaultCondition = '(product) => product.implant != null';
+  const hasFilterKeys = Boolean(implantFilters.length);
+  const hasManufacturerId = Boolean(searchedImplantManufacturerId);
 
   switch (true) {
-    case Boolean(searchedImplantManufacturerId):
-      return defaultCondition.concat(
-        ` && product.manufacturerProductId?.includes("${searchedImplantManufacturerId}")`
-      );
+    case hasManufacturerId && hasFilterKeys:
+      return `(product) => ( product.implant != null && product.manufacturerProductId?.includes("${searchedImplantManufacturerId}") ) && ( ${formConditionForFilterKeys(
+        implantFilters
+      )} )`;
+
+    case hasFilterKeys:
+      return `(product) => product.implant != null  && ( ${formConditionForFilterKeys(
+        implantFilters
+      )} )`;
+
+    case hasManufacturerId:
+      return `${defaultCondition} && product.manufacturerProductId?.includes("${searchedImplantManufacturerId}")`;
 
     default:
       return defaultCondition;
@@ -27,13 +54,17 @@ const formWhereCondition = (searchedImplantManufacturerId: string) => {
 };
 
 const ImplantList = ({}) => {
-  const { implants, setImplants, searchedImplantManufacturerId } =
-    useProductStore();
+  const {
+    implants,
+    setImplants,
+    searchedImplantManufacturerId,
+    implantFilters,
+  } = useProductStore();
 
   const query = useQuery<Query>();
 
   const implantQuery = query.Product.all().where(
-    formWhereCondition(searchedImplantManufacturerId)
+    formWhereCondition(searchedImplantManufacturerId, implantFilters)
   );
 
   const implantProducts = implantQuery.exec();
