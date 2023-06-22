@@ -6,31 +6,49 @@ import { useRouter } from 'next/navigation';
 import { ImplantList } from '../../../../components/ImplantList';
 import { ImplantForm } from '../../../../components/ImplantForm';
 import SelectTeeth from '../../../../components/SelectedTeeth';
-import { useProductStore } from '../../../../zustand/product';
 import FilterIcon from '../../../../components/Icons/Filter';
 import NoImplantFound from './NoImplantFound';
 import HelpFooter from './HelpFooter';
 import BarCodeIcon from '../../../../components/Icons/Barcode';
-import { useQuery } from 'fqlx-client';
-import { Query } from '../../../../fqlx-generated/typedefs';
+import { PaginateData, useQuery } from 'fqlx-client';
+import { Product, Query } from '../../../../fqlx-generated/typedefs';
 import ShareButton from '../../../../components/ShareButton';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import Loader from '../../../../components/Loader';
 
 export default function Implant({
   params,
 }: {
   params: { patientFileId: string };
 }) {
-  const [selectedImplants, setImplants] = useState<{
+  const [selectedImplants, _setImplants] = useState<{
     [key: string]: boolean;
   }>({});
-  const router = useRouter();
+  const [implants, setImplants] = useState<PaginateData<Product>>();
   const selectedTeeth = [14, 22];
 
+  const router = useRouter();
   const query = useQuery<Query>();
-  const implantProductList = query.Product.all()
+
+  const implantProducts = query.Product.all()
     .where((product) => product.implant != null)
-    .exec().data;
-  const numberOfImplantProducts = query.Product.all()
+    .exec();
+
+  const fetchMoreImplants = async () => {
+    const paginated = await query.Set.paginate(`"${implants?.after}"`).exec();
+
+    setImplants({
+      after: paginated?.after,
+      data: [...(implants?.data || []), ...paginated.data],
+      before: paginated?.before,
+    });
+  };
+
+  useEffect(() => {
+    setImplants(implantProducts);
+  }, [implantProducts.data]);
+
+  const implantCount = query.Product.all()
     .where((product) => product.implant != null)
     .count()
     .exec();
@@ -40,24 +58,6 @@ export default function Implant({
       router.push(`/${params.patientFileId}/treatments/abutment`);
     }
   }, [selectedImplants, selectedTeeth.length]);
-
-  // const onSelectImplant = (
-  //   productId: number,
-  //   optionId: number,
-  //   teethNumber: number
-  // ) => {
-  //   if (selectedImplants[`${productId}-${optionId}-${teethNumber}`]) {
-  //     const selectedImplantsClone = { ...selectedImplants };
-  //     delete selectedImplantsClone[`${productId}-${optionId}-${teethNumber}`];
-  //     setImplants(selectedImplantsClone);
-  //     return;
-  //   }
-
-  //   setImplants({
-  //     ...selectedImplants,
-  //     [`${productId}-${optionId}-${teethNumber}`]: true,
-  //   });
-  // };
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/implant`}>
@@ -103,7 +103,8 @@ export default function Implant({
                       color='neutral-faded'
                       align='end'
                     >
-                      {numberOfImplantProducts}
+                      {/* @ts-expect-error */}
+                      {implantCount}
                     </Text>
                   </View>
                 </View>
@@ -111,31 +112,45 @@ export default function Implant({
               <ShareButton />
             </View>
 
-            {implantProductList.length ? (
-              <Card padding={0}>
-                <View divided>
-                  {implantProductList.map((implant) => (
-                    <ImplantList
-                      key={implant.id}
-                      id={implant.id}
-                      implant={implant}
-                      options={[
-                        {
-                          id: 0,
-                          selectedTeeth: 14,
-                          localStorageCount: 0,
-                        },
-                        { id: 1, selectedTeeth: 43, localStorageCount: 2 },
-                      ]}
-                    />
-                  ))}
-                </View>
-              </Card>
+            {!!implants?.data?.length ? (
+              <InfiniteScroll
+                dataLength={implants.data.length}
+                next={fetchMoreImplants}
+                scrollThreshold={'100px'}
+                hasMore={!!implants?.after}
+                loader={
+                  <View paddingBlock={10}>
+                    <Loader />
+                  </View>
+                }
+                endMessage={<HelpFooter />}
+              >
+                <Card padding={0}>
+                  <View divided>
+                    {implants.data.map((implant) => (
+                      <ImplantList
+                        key={implant.id}
+                        id={implant.id}
+                        implant={implant}
+                        options={[
+                          {
+                            id: 0,
+                            selectedTeeth: 14,
+                            localStorageCount: 0,
+                          },
+                          { id: 1, selectedTeeth: 43, localStorageCount: 2 },
+                        ]}
+                      />
+                    ))}
+                  </View>
+                </Card>
+              </InfiniteScroll>
             ) : (
-              <NoImplantFound barcode={'P2211.4012'} />
+              <>
+                <NoImplantFound barcode={'P2211.4012'} />
+                <HelpFooter />
+              </>
             )}
-
-            <HelpFooter />
           </View.Item>
         </View>
       </View>
