@@ -1,12 +1,7 @@
-import { SignIn } from "@clerk/nextjs";
-import { View } from "reshaped";
+import { SignIn } from '@clerk/nextjs';
 
 const Page = () => {
-    return (
-        <View direction="row" align="center" justify="center" height="100vh">
-            <SignIn signUpUrl="/sign-up" />
-        </View >
-    );
-}
+  return <SignIn />;
+};
 
 export default Page;
