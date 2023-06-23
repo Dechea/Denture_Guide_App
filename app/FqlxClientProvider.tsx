@@ -33,7 +33,7 @@ export default function FqlxClientProvider({
     let intervalId: any = null;
 
     const startInterval = () => {
-      intervalId = setInterval(fetchToken, 60000);
+      intervalId = setInterval(fetchToken, 55000);
     };
 
     const stopInterval = () => {

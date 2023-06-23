@@ -1,48 +1,57 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Card, Tabs, Text, View } from 'reshaped';
+import { Card, Icon, Tabs, Text, TextField, View } from 'reshaped';
 import { useRouter } from 'next/navigation';
 import { ImplantList } from '../../../../components/ImplantList';
 import { ImplantForm } from '../../../../components/ImplantForm';
 import SelectTeeth from '../../../../components/SelectedTeeth';
-import { implantProductList } from '../../../../__mocks__/implant';
-import AlertCard from '../../../../components/Alert';
-import { useProductStore } from '../../../../zustand/product';
+import FilterIcon from '../../../../components/Icons/Filter';
+import ProductNotFound from '../../../../components/ProductNotFound';
+import ProductHelpFooter from '../../../../components/ProductHelpFooter';
+import BarCodeIcon from '../../../../components/Icons/Barcode';
+import { PaginateData, useQuery } from 'fqlx-client';
+import { Implant, Product, Query } from '../../../../fqlx-generated/typedefs';
+import ShareButton from '../../../../components/ShareButton';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import Loader from '../../../../components/Loader';
 
 export default function Implant({
   params,
 }: {
   params: { patientFileId: string };
 }) {
-  const [selectedImplants, setImplants] = useState<{
+  const [selectedImplants, _setImplants] = useState<{
     [key: string]: boolean;
   }>({});
-  const router = useRouter();
+  const [implants, setImplants] = useState<PaginateData<Product>>();
   const selectedTeeth = [14, 22];
 
-  const { setImplant, product } = useProductStore((state) => state);
+  const router = useRouter();
+  const query = useQuery<Query>();
+
+  const implantProducts = query.Product.all()
+    .where((product) => product.implant != null)
+    .exec();
+
+  const fetchMoreImplants = async () => {
+    const paginated = await query.Set.paginate(`${implants?.after}`).exec();
+
+    setImplants({
+      after: paginated?.after,
+      data: [...(implants?.data || []), ...paginated.data] as Product[],
+      before: paginated?.before,
+    });
+  };
 
   useEffect(() => {
-    setImplant({
-      implantLine: 'BioHorizons Tapered',
-      material: 'TITANIUM',
-      level: '',
-      engaging: false,
-      platformSwitch: true,
-      guided: true,
-      insertionPost: '',
-      sterile: true,
-      length: 9,
-      lengthNeck: 4,
-      diameterPlatform: 3,
-      singleUse: true,
-    });
+    setImplants(implantProducts);
+  }, [implantProducts.data]);
 
-    console.log('implant updated');
-  }, []);
-
-  console.log('product from implant tab', product);
+  const implantCount = query.Product.all()
+    .where((product) => product.implant != null)
+    .count()
+    .exec();
 
   useEffect(() => {
     if (Object.keys(selectedImplants).length === selectedTeeth.length) {
@@ -50,67 +59,97 @@ export default function Implant({
     }
   }, [selectedImplants, selectedTeeth.length]);
 
-  const onSelectImplant = (
-    productId: number,
-    optionId: number,
-    teethNumber: number
-  ) => {
-    if (selectedImplants[`${productId}-${optionId}-${teethNumber}`]) {
-      const selectedImplantsClone = { ...selectedImplants };
-      delete selectedImplantsClone[`${productId}-${optionId}-${teethNumber}`];
-      setImplants(selectedImplantsClone);
-      return;
-    }
-
-    setImplants({
-      ...selectedImplants,
-      [`${productId}-${optionId}-${teethNumber}`]: true,
-    });
-  };
-
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/implant`}>
       <SelectTeeth />
 
-      <View paddingBlock={0} paddingInline={8}>
-        {/* <View.Item>
-          <View paddingTop={6} justify='center'>
-            <Text variant='body-2'>25 Results</Text>
-          </View>
-        </View.Item> */}
-
-        <View direction='row' gap={23} paddingTop={6}>
+      <View paddingInline={16} paddingTop={18}>
+        <View direction='row' gap={11}>
           <View.Item columns={3}>
-            <View justify='center'>
-              <Text variant='body-3' color='neutral-faded'>
-                25 Results
-              </Text>
+            <View gap={5.5}>
+              <View direction='row' align='center' paddingBlock={2.5} gap={1}>
+                <Icon svg={FilterIcon} size={4} color='neutral-faded' />
+                <Text variant='body-3' color='neutral-faded'>
+                  Filters
+                </Text>
+              </View>
+
+              <TextField
+                size='large'
+                variant='faded'
+                name='email'
+                placeholder='Search by code e.g K1043.XXXX '
+                startSlot={
+                  <Icon svg={BarCodeIcon} color='neutral-faded' size={5} />
+                }
+              />
+
+              <ImplantForm />
             </View>
-            <ImplantForm />
           </View.Item>
 
           <View.Item columns={9}>
-            <View paddingBottom={6}>
-              <AlertCard />
+            <View direction='row' align='center' paddingBottom={6}>
+              <View.Item grow>
+                <View direction='row' gap={2} align='end'>
+                  <Text variant='featured-3' weight='bold'>
+                    Implants
+                  </Text>
+
+                  <View direction='row' align='center' paddingBottom={0.5}>
+                    <Text
+                      variant='body-3'
+                      weight='regular'
+                      color='neutral-faded'
+                      align='end'
+                    >
+                      {implantCount}
+                    </Text>
+                  </View>
+                </View>
+              </View.Item>
+              <ShareButton />
             </View>
-            <Card padding={0}>
-              <View divided>
-                {implantProductList.map((implantProductListData) => (
-                  <ImplantList
-                    key={implantProductListData.id}
-                    id={implantProductListData.id}
-                    options={implantProductListData.options}
-                    description={implantProductListData.description}
-                    heading={implantProductListData.heading}
-                    image={implantProductListData.image}
-                    price={implantProductListData.price}
-                    onSelectImplant={onSelectImplant}
-                    selectedTeeth={selectedTeeth}
-                    selectedImplants={selectedImplants}
-                  />
-                ))}
-              </View>
-            </Card>
+
+            {!!implants?.data?.length ? (
+              <InfiniteScroll
+                dataLength={implants.data.length}
+                next={fetchMoreImplants}
+                scrollThreshold={'100px'}
+                hasMore={!!implants?.after}
+                loader={
+                  <View paddingBlock={10}>
+                    <Loader />
+                  </View>
+                }
+                endMessage={<ProductHelpFooter />}
+              >
+                <Card padding={0}>
+                  <View divided>
+                    {implants.data.map((implant) => (
+                      <ImplantList
+                        key={implant.id}
+                        id={implant.id}
+                        implant={implant}
+                        options={[
+                          {
+                            id: 0,
+                            selectedTeeth: 14,
+                            localStorageCount: 0,
+                          },
+                          { id: 1, selectedTeeth: 43, localStorageCount: 2 },
+                        ]}
+                      />
+                    ))}
+                  </View>
+                </Card>
+              </InfiniteScroll>
+            ) : (
+              <>
+                <ProductNotFound barcode={'P2211.4012'} />
+                <ProductHelpFooter />
+              </>
+            )}
           </View.Item>
         </View>
       </View>

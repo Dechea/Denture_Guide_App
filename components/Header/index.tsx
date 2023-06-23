@@ -27,7 +27,7 @@ const Header = ({ patientFileId }: HeaderProps) => {
     <View
       align='stretch'
       width='100%'
-      position='sticky'
+      position='fixed'
       insetTop={0}
       zIndex={50}
       backgroundColor='white'
@@ -58,12 +58,12 @@ const Header = ({ patientFileId }: HeaderProps) => {
               size='small'
               startSlot={
                 <Avatar
-                  src={patientFile.patient.avatar || '/defaultAvatar.svg'}
+                  src={patientFile?.patient?.avatar || '/defaultAvatar.svg'}
                   size={8}
                 />
               }
             >
-              <Text variant='body-2'>{patientFile.patient.name}</Text>
+              <Text variant='body-2'>{patientFile?.patient?.name}</Text>
             </MenuItem>
           </View>
         </View.Item>

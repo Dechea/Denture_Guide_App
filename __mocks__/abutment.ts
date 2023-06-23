@@ -4,7 +4,18 @@ export const abutmentProductList = [
     image: '/AbutmentImage.svg',
     heading: 'Abutment PS',
     description: ['Type A', 'Gerade', 'GH 1.5 - 2.5'],
-    price: '55.00',
+    barcode: 'K1043.3011',
+    price: '55.00 €',
+    abutmentDetails: {
+      Material: 'Ceramic',
+      'Insertion Post': 'Snap-in',
+      'Neck Height': '0.4mm',
+      Diameter: 'Ø 4.3mm',
+      Length: '13mm',
+      'Platform Switching': 'Yes',
+    },
+    inStorage: true,
+    storageNumber: 2,
     options: [
       {
         id: 0,
@@ -19,7 +30,18 @@ export const abutmentProductList = [
     image: '/AbutmentImage2.svg',
     heading: 'Abutment PS',
     description: ['gewinkelt 15°', 'Typ B ', 'GH 1.5 - 2.5'],
-    price: '55.00',
+    barcode: 'K1043.3011',
+    price: '55.00 €',
+    abutmentDetails: {
+      Material: 'Ceramic',
+      'Insertion Post': 'Snap-in',
+      'Neck Height': '0.4mm',
+      Diameter: 'Ø 4.3mm',
+      Length: '13mm',
+      'Platform Switching': 'Yes',
+    },
+    inStorage: false,
+    storageNumber: 0,
     options: [
       {
         id: 0,
@@ -34,7 +56,18 @@ export const abutmentProductList = [
     image: '/AbutmentImage3.svg',
     heading: 'Abutment PS',
     description: ['Type B', 'Gerade', 'GH 1.5 - 2.5'],
-    price: '55.00',
+    barcode: 'K1043.3011',
+    price: '55.00 €',
+    abutmentDetails: {
+      Material: 'Ceramic',
+      'Insertion Post': 'Snap-in',
+      'Neck Height': '0.4mm',
+      Diameter: 'Ø 4.3mm',
+      Length: '13mm',
+      'Platform Switching': 'Yes',
+    },
+    inStorage: false,
+    storageNumber: 0,
     options: [
       {
         id: 0,
@@ -49,7 +82,18 @@ export const abutmentProductList = [
     image: '/AbutmentImage.svg',
     heading: 'Abutment PS',
     description: ['Type A', 'Gerade', 'GH 1.5 - 2.5'],
-    price: '55.00',
+    barcode: 'K1043.3011',
+    price: '55.00 €',
+    abutmentDetails: {
+      Material: 'Ceramic',
+      'Insertion Post': 'Snap-in',
+      'Neck Height': '0.4mm',
+      Diameter: 'Ø 4.3mm',
+      Length: '13mm',
+      'Platform Switching': 'Yes',
+    },
+    inStorage: false,
+    storageNumber: 0,
     options: [
       {
         id: 0,

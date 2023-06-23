@@ -6,7 +6,7 @@ import {
   healingProductListProps,
   healingOptionsProps,
 } from '../../interfaces/healing';
-import SelectionMenuItem from '../SelectionMenuItem';
+import AbutmentProductOption from '../SelectionMenuItem';
 
 const HealingList = ({
   image,
@@ -26,8 +26,16 @@ const HealingList = ({
         </View>
       </View.Item>
       <View.Item grow>
-        <View direction={'column'} height={'100%'} paddingBlock={6} paddingInline={0} gap={1}>
-          <Text variant='body-2' weight='bold'>{heading}</Text>
+        <View
+          direction={'column'}
+          height={'100%'}
+          paddingBlock={6}
+          paddingInline={0}
+          gap={1}
+        >
+          <Text variant='body-2' weight='bold'>
+            {heading}
+          </Text>
           <View paddingStart={6}>
             <ul>
               {description.map((listData: string, index: number) => (
@@ -60,7 +68,7 @@ const HealingList = ({
 
           <View borderColor='neutral-faded' borderRadius='small' divided>
             {options?.map((data: healingOptionsProps) => (
-              <SelectionMenuItem
+              <AbutmentProductOption
                 key={data.id}
                 id={data.id}
                 selectedTeeth={data.selectedTeeth}

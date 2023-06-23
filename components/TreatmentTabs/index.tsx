@@ -75,7 +75,7 @@ const TreatmentTabs = ({
       <Tabs onChange={onChangeTab} itemWidth='equal' value={path}>
         <View
           position='sticky'
-          insetTop={14.3}
+          insetTop={11.25}
           backgroundColor='white'
           zIndex={50}
         >

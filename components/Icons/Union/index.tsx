@@ -1,4 +1,6 @@
-export default function UnionIcon() {
+'use client';
+
+export default function UnionIcon() : JSX.Element {
   return (
     <svg
       width='33'

@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Divider, Image, Text, View } from 'reshaped';
-import SelectionMenuItem from '../SelectionMenuItem';
+import AbutmentProductOption from '../SelectionMenuItem';
 import {
   temporaryProductListProps,
   temporaryOptionsProps,
@@ -41,10 +41,13 @@ export const TemporaryList = ({
           direction='column'
           // width={"100%"}
           height={'100%'}
-          paddingBlock={6} paddingInline={0}
+          paddingBlock={6}
+          paddingInline={0}
           gap={1}
         >
-          <Text  variant='body-2' weight='bold'>{heading}</Text>
+          <Text variant='body-2' weight='bold'>
+            {heading}
+          </Text>
 
           <View.Item grow>
             <View direction='column' justify='end' height='100%'>
@@ -64,7 +67,7 @@ export const TemporaryList = ({
           </View>
           <View borderColor='neutral-faded' borderRadius='small' divided>
             {options.map((data: temporaryOptionsProps, index: number) => (
-              <SelectionMenuItem
+              <AbutmentProductOption
                 key={data.id}
                 id={data.id}
                 selectedTeeth={data.selectedTeeth}

@@ -1,85 +1,51 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  Actionable,
-  Badge,
-  Icon,
-  MenuItem,
-  Text,
-  Tooltip,
-  View,
-} from 'reshaped';
+import { Card, Icon, MenuItem, Text, View } from 'reshaped';
+import cx from 'classnames';
 import ToothIcon from '../Icons/Tooth';
-import StorageIcon from '../Icons/Storage';
+import { abutmentOptionsProps } from '../../interfaces/abutment';
 
-export interface SelectionMenuItemProps {
-  localStorageCount: number;
-  selectedTeeth: number;
-  id: number;
-  onClick: Function;
-}
+const AbutmentProductOption = ({ selectedTeeth }: abutmentOptionsProps) => {
+  const [activeOption, setActiveOption] = useState<number>(0);
 
-const SelectionMenuItem = ({
-  id,
-  localStorageCount,
-  selectedTeeth,
-  onClick,
-}: SelectionMenuItemProps) => {
-  const [selectedItemId, setSelectedItemId] = useState<boolean>(false);
-  const handleMenuItemClick = (selectedItemId: boolean) => {
-    onClick();
-    setSelectedItemId(selectedItemId);
+  const setActiveTeeth = (selectedTeeth: number) => {
+    selectedTeeth !== activeOption
+      ? setActiveOption(selectedTeeth)
+      : setActiveOption(0);
   };
 
   return (
-    <View direction='row' align='center' width='285px'>
-      <View.Item grow>
-        <MenuItem
-          selected={selectedItemId}
-          startSlot={
-            <Icon
-              svg={<ToothIcon />}
-              size={'20px'}
-              color={selectedItemId ? 'primary' : 'neutral-faded'}
-            />
-          }
-          roundedCorners
-          size='small'
-          fullWidth
-          onClick={() => handleMenuItemClick(!selectedItemId)}
-        >
-          <View direction='row' align='center'>
-            <View.Item grow>
-              <Text variant='body-3' weight='medium'>{selectedTeeth}</Text>
-            </View.Item>
+    <Card
+      padding={0}
+      className={cx(
+        '!shadow-[0px_2px_3px_rgba(0,0,0,0.1),_0px_1px_2px_-1px_rgba(0,0,0,0.1)]',
 
-            {localStorageCount && (
-              <Tooltip text='In Local Storage' position='top'>
-                {(attributes) => (
-                  <Actionable attributes={attributes} as='div'>
-                    <View direction='row' paddingEnd={1} gap={1} align='center'>
-                      <Icon
-                        size={5}
-                        svg={<StorageIcon />}
-                        color={selectedItemId ? 'primary' : 'neutral-faded'}
-                      />
-                      <Badge
-                        color={selectedItemId ? 'primary' : undefined}
-                        size='small'
-                      >
-                        {localStorageCount}
-                      </Badge>
-                    </View>
-                  </Actionable>
-                )}
-              </Tooltip>
-            )}
-          </View>
-        </MenuItem>
-      </View.Item>
-    </View>
+        { '!border-[--rs-color-foreground-primary]': Boolean(activeOption) }
+      )}
+    >
+      <MenuItem
+        selected={Boolean(activeOption)}
+        size={'small'}
+        roundedCorners={true}
+        onClick={() => setActiveTeeth(selectedTeeth)}
+      >
+        <View
+          direction='row'
+          align='center'
+          gap={3}
+          width='100%'
+          paddingStart={2}
+          paddingBlock={2}
+        >
+          <Icon svg={ToothIcon} size={5} />
+          <Text variant='body-3' weight='medium'>
+            {selectedTeeth}
+          </Text>
+        </View>
+      </MenuItem>
+    </Card>
   );
 };
 
-export default SelectionMenuItem;
+export default AbutmentProductOption;

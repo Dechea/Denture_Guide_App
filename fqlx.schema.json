@@ -66,8 +66,93 @@
       "quantity": "number"
     }
   },
+  "ProductLocalization": {
+    "fields": {
+      "name": "string",
+      "locale": "string",
+      "description": "string",
+      "price": {
+        "amount": "number",
+        "currency": "string"
+      }
+    }
+  },
   "Product": {
-    "fields": {}
+    "fields": {
+      "id": "string",
+      "manufacturerProductId": "string",
+      "manufacturer": {
+        "name": "string"
+      },
+      "localizations": "ProductLocalization[]",
+      "implant": {
+        "implantLine": "string",
+        "material": "string",
+        "level": "string",
+        "engaging": "boolean",
+        "platformSwitch": "boolean",
+        "guided": "boolean",
+        "insertionPost": "string",
+        "sterile": "boolean",
+        "length": "number",
+        "lengthNeck": "number",
+        "diameterPlatform": "number",
+        "singleUse": "boolean"
+      },
+      "abutment": {
+        "implantLine": "string",
+        "abutmentLine": "string",
+        "guided": "string",
+        "platformSwitch": "boolean",
+        "workflow": "string[]",
+        "retention": "string",
+        "material": "string",
+        "sterile": "boolean",
+        "connectionType": "string",
+        "heightProsthetic": "number",
+        "maxTorque": "number",
+        "angle": "string",
+        "diameterPlatform": "number",
+        "gingivaHeight": "number",
+        "indication": "string",
+        "singleUse": "boolean"
+      },
+      "healingAbutment": {
+        "implantLine": "string",
+        "abutmentLine": "string",
+        "shape": "string",
+        "platformSwitch": "boolean",
+        "material": "string",
+        "sterile": "boolean",
+        "maxTorque": "number",
+        "diameterPlatform": "number",
+        "gingivaHeight": "number",
+        "singleUse": "boolean"
+      },
+      "temporaryAbutment": {
+        "implantLine": "string",
+        "abutmentLine": "string",
+        "guided": "string",
+        "platformSwitch": "boolean",
+        "retention": "string",
+        "material": "string",
+        "sterile": "boolean",
+        "connectionType": "string",
+        "heightProsthetic": "number",
+        "maxTorque": "number",
+        "angle": "string",
+        "diameterPlatform": "number",
+        "gingivaHeight": "number",
+        "indication": "string",
+        "singleUse": "boolean"
+      },
+      "impression": {
+        "type": "string",
+        "implantLine": "string",
+        "abutmentLine": "string",
+        "diameterPlatform": "number"
+      }
+    }
   },
   "TreatmentGroup": {
     "fields": {
