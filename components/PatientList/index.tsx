@@ -44,7 +44,7 @@ export default function PatientList({
 
   return (
     <>
-      {!!!patientFiles?.data.length && (
+      {!!patientFiles?.data.length && (
         <View direction='column' padding={10} height={'100%'}>
           <View.Item>
             <View direction='row' align='center' justify='start'>
