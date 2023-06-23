@@ -15,7 +15,7 @@ import { useProductStore } from '../../zustand/product';
 const formConditionForFilterKeys = (keys: string[]) => {
   const condition = keys
     .map((key) => {
-      const splitedKey = key.split('.');
+      const splitedKey = key.split('$');
       const category = splitedKey[0];
       const field = splitedKey[1];
 

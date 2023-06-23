@@ -10,11 +10,58 @@ import { useProductStore } from '../../zustand/product';
 import { Query } from '../../fqlx-generated/typedefs';
 import EndIcon from '../Icons/End';
 
-const categoryList = ['length', 'implantLine', 'material', 'diameterPlatform'];
+const categoryList = [
+  {
+    displayName: 'Diameter',
+    fqlxKey: 'diameterPlatform',
+    prefix: 'Ø',
+    suffix: 'mm',
+    dataType: 'number',
+  },
+  {
+    displayName: 'Length',
+    fqlxKey: 'length',
+    prefix: '',
+    suffix: 'mm',
+    dataType: 'number',
+  },
+  {
+    displayName: 'Neck Height',
+    fqlxKey: 'lengthNeck',
+    prefix: '',
+    suffix: 'mm',
+    dataType: 'number',
+  },
+  {
+    displayName: 'Implant Line',
+    fqlxKey: 'implantLine',
+    prefix: '',
+    suffix: '',
+    dataType: 'string',
+  },
+  {
+    displayName: 'Type',
+    fqlxKey: 'level',
+    prefix: '',
+    suffix: '',
+    dataType: 'string',
+  },
+  {
+    displayName: 'Material',
+    fqlxKey: 'material',
+    prefix: '',
+    suffix: '',
+    dataType: 'string',
+  },
+];
 
 interface Category {
-  name: string;
+  displayName: string;
+  fqlxKey: string;
   options: string[];
+  suffix: string;
+  prefix: string;
+  dataType: string;
 }
 
 export const ImplantFilterForm = () => {
@@ -34,9 +81,9 @@ export const ImplantFilterForm = () => {
 
   useMemo(() => {
     const categoriesWithOptions = categoryList.map((category) => ({
-      name: category,
+      ...category,
       options: implantProducts
-        .map(`(product) => product.implant.${category}`)
+        .map(`(product) => product.implant.${category.fqlxKey}`)
         .distinct()
         .exec()
         .data?.filter((option) => option),
@@ -92,8 +139,13 @@ export const ImplantFilterForm = () => {
 
       <View gap={10} paddingBottom={10}>
         {categories.map((category) => {
-          const isExpanded = expandedCategories.includes(category.name);
+          const isExpanded = expandedCategories.includes(category.fqlxKey);
           const optionsLength = category.options?.length;
+
+          if (!optionsLength) {
+            return <></>;
+          }
+
           const sliceEndPointer = isExpanded
             ? optionsLength
             : Math.min(5, optionsLength);
@@ -102,11 +154,11 @@ export const ImplantFilterForm = () => {
             <View
               gap={4}
               direction='column'
-              key={category.name}
+              key={category.fqlxKey}
               paddingStart={0}
             >
               <Text variant='body-3' weight='medium'>
-                {category.name}
+                {category.displayName}
               </Text>
 
               <View gap={4}>
@@ -114,22 +166,25 @@ export const ImplantFilterForm = () => {
                   {category.options
                     ?.slice(0, sliceEndPointer)
                     .map((option, index) => {
+                      let optionKey = '';
+                      switch (category.dataType) {
+                        case 'number':
+                          optionKey = `${category.fqlxKey}$${option}`;
+                          break;
+                        case 'string':
+                          optionKey = `${category.fqlxKey}$"${option}"`;
+                          break;
+                      }
                       return (
                         <View key={index + `${option}`}>
                           <Checkbox
                             name={option}
                             value={option}
-                            checked={implantFilters.includes(
-                              `${category.name}.${option}`
-                            )}
-                            onChange={() =>
-                              handleCategoryFieldClick(
-                                `${category.name}.${option}`
-                              )
-                            }
+                            checked={implantFilters.includes(optionKey)}
+                            onChange={() => handleCategoryFieldClick(optionKey)}
                           >
                             <Text variant='body-3' weight='regular'>
-                              {option}
+                              {`${category.prefix} ${option} ${category.suffix}`}
                             </Text>
                           </Checkbox>
                         </View>
@@ -141,7 +196,7 @@ export const ImplantFilterForm = () => {
               {optionsLength > 5 && (
                 <View direction='row' align='center'>
                   <Button
-                    onClick={() => toggleCategoryOptions(category.name)}
+                    onClick={() => toggleCategoryOptions(category.fqlxKey)}
                     size={'small'}
                     variant='ghost'
                     endIcon={
@@ -149,12 +204,12 @@ export const ImplantFilterForm = () => {
                         svg={EndIcon}
                         color='primary'
                         size={4}
-                        className='ps-[1px]'
+                        className={`ps-[1px] ${isExpanded && 'rotate-180'}`}
                       />
                     }
                   >
                     <Text variant='body-3' weight='medium' color='primary'>
-                      {expandedCategories.includes(category.name)
+                      {expandedCategories.includes(category.fqlxKey)
                         ? 'Show Less'
                         : 'Show More'}
                     </Text>
