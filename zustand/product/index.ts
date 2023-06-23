@@ -8,10 +8,10 @@ interface ProductStore {
   product: IProduct;
   implants: PaginateData<Product>;
   searchedImplantManufacturerId: string;
-  implantFilters: string[];
+  implantFilters: { [key: string]: string[] };
   setSearchedImplantManufacturerId: (id: string) => void;
   setImplants: (implants: PaginateData<Product>) => void;
-  setImplantFilters: (filters: string[]) => void;
+  setImplantFilters: (filters: { [key: string]: string[] }) => void;
   setAbutment: (abutment: AbutmentInput) => void;
 }
 
@@ -19,7 +19,7 @@ export const useProductStore = create<ProductStore>()((set) => ({
   product: product,
   implants: { data: [] },
   searchedImplantManufacturerId: '',
-  implantFilters: [],
+  implantFilters: {},
   setAbutment: (abutment) =>
     set((state) => ({
       product: { ...state.product, abutment: { ...abutment, id: '' } },

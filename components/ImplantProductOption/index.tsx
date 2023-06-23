@@ -20,7 +20,6 @@ const ImplantProductOption = ({
       padding={0}
       className={cx(
         '!shadow-[0px_2px_3px_rgba(0,0,0,0.1),_0px_1px_2px_-1px_rgba(0,0,0,0.1)]',
-
         { '!border-[--rs-color-foreground-primary]': Boolean(activeOption) }
       )}
     >
