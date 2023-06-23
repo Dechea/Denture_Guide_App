@@ -61,7 +61,7 @@ const TreatmentTabs = ({
     // TODO: Remove to make corwn tab functionable`
     if (clickedTabIndex === 6) return;
 
-    if (activeTabIndex >= 2) {
+    if (activeTabIndex >= 2 || clickedTabIndex === 1) {
       router.push(value as __next_route_internal_types__.RouteImpl<string>);
       return;
     }
@@ -89,7 +89,8 @@ const TreatmentTabs = ({
             <Tabs.Item value={`/${patientFileId}/treatments/implant`}>
               <TabItemWithTooltip
                 tabText='Implants'
-                active={activeTabIndex >= 1}
+                active
+                // active={activeTabIndex >= 1}
                 tooltipText={toolTipMapping[activeTabIndex]}
               />
             </Tabs.Item>
