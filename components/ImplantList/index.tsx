@@ -1,9 +1,8 @@
 'use client';
 
-import { Card, Divider, Icon, Image, Text, View } from 'reshaped';
+import { Divider, Icon, Image, Text, View } from 'reshaped';
 import ImplantProductOption from '../ImplantProductOption';
 import { implantProductListProps } from '../../interfaces/implant';
-import StorageIcon from '../Icons/Storage';
 import ArrowDownIcon from '../Icons/ArrowDown';
 import BarCodeIcon from '../Icons/Barcode';
 
@@ -104,7 +103,7 @@ export const ImplantList = ({
               </View>
               <View direction='row' height='100%' gap={6} width='100%'>
                 <Text color='neutral' variant='body-3' weight='medium'>
-                  {implant?.localizations?.length
+                  {!isNaN(implant.localizations[1].price.amount)
                     ? implant.localizations[1].price.amount
                     : '-'}{' '}
                   €

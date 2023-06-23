@@ -80,8 +80,8 @@
   "Product": {
     "fields": {
       "id": "string",
-      "manafacturerProductId": "string",
-      "manafacturer": {
+      "manufacturerProductId": "string",
+      "manufacturer": {
         "name": "string"
       },
       "localizations": "ProductLocalization[]",

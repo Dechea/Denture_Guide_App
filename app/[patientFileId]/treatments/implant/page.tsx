@@ -7,8 +7,8 @@ import { ImplantList } from '../../../../components/ImplantList';
 import { ImplantForm } from '../../../../components/ImplantForm';
 import SelectTeeth from '../../../../components/SelectedTeeth';
 import FilterIcon from '../../../../components/Icons/Filter';
-import NoImplantFound from './NoImplantFound';
-import HelpFooter from './HelpFooter';
+import ProductNotFound from '../../../../components/ProductNotFound';
+import ProductHelpFooter from '../../../../components/ProductHelpFooter';
 import BarCodeIcon from '../../../../components/Icons/Barcode';
 import { PaginateData, useQuery } from 'fqlx-client';
 import { Implant, Product, Query } from '../../../../fqlx-generated/typedefs';
@@ -122,7 +122,7 @@ export default function Implant({
                     <Loader />
                   </View>
                 }
-                endMessage={<HelpFooter />}
+                endMessage={<ProductHelpFooter />}
               >
                 <Card padding={0}>
                   <View divided>
@@ -146,8 +146,8 @@ export default function Implant({
               </InfiniteScroll>
             ) : (
               <>
-                <NoImplantFound barcode={'P2211.4012'} />
-                <HelpFooter />
+                <ProductNotFound barcode={'P2211.4012'} />
+                <ProductHelpFooter />
               </>
             )}
           </View.Item>

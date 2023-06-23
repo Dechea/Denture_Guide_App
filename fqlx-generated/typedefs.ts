@@ -1312,71 +1312,71 @@ export interface Ts {
     }
 
 
-  export interface Manafacturer {
+  export interface Manufacturer {
     /**
- * name for the Manafacturer
+ * name for the Manufacturer
  */
  name: string;
 
   }
 
 
-  export interface ManafacturerInput {
+  export interface ManufacturerInput {
     /**
- * name for the Manafacturer
+ * name for the Manufacturer
  */
  name: string;
 
   } 
 
 
-  export interface ManafacturerMethods {
+  export interface ManufacturerMethods {
       /**
-       * all method get the set of all documents in the Manafacturer collection.
+       * all method get the set of all documents in the Manufacturer collection.
        * 
        * @param
        * 
-       * @returns {AllMethods<Manafacturer>} method returns the set of all documents in Manafacturer collection for the given range.
+       * @returns {AllMethods<Manufacturer>} method returns the set of all documents in Manufacturer collection for the given range.
        * 
        * @example
-       * query.Manafacturer.all().exec()
+       * query.Manufacturer.all().exec()
        * 
        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
        */
-      all(): AllMethods<Manafacturer>;
+      all(): AllMethods<Manufacturer>;
 
       /**
-       * create method creates a Manafacturer document in the collection with the provided property values.
+       * create method creates a Manufacturer document in the collection with the provided property values.
        * 
-       * @param {ManafacturerInput} input - will be the Manafacturer which you want to add.
-         * @param { string } input.name Name for the Manafacturer
+       * @param {ManufacturerInput} input - will be the Manufacturer which you want to add.
+         * @param { string } input.name Name for the Manufacturer
        *
-       * @returns {CreateMethods<Manafacturer>} return new document.
+       * @returns {CreateMethods<Manufacturer>} return new document.
        * 
        * @example
-       * query.Manafacturer.create({  
+       * query.Manufacturer.create({  
  * name: "Value of the name"   
        * }).exec()
        * 
        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
        */
-    create(input: ManafacturerInput): CreateMethods<Manafacturer>;
+    create(input: ManufacturerInput): CreateMethods<Manufacturer>;
 
       /**
-       * byId method get a Manafacturer document by its document ID.
+       * byId method get a Manufacturer document by its document ID.
        * This will returns available Fqlx byId methods
        * 
        * @param {string} id - The ID of the document to retrieve
        * 
-       * @returns {ByIdMethods<Manafacturer, ManafacturerInput>} return document when it exists and is accessible, else return
+       * @returns {ByIdMethods<Manufacturer, ManufacturerInput>} return document when it exists and is accessible, else return
        * null when the document does not exist or is inaccessible.
        * 
        * @example
-       * query.Manafacturer.byId("21545645646554").exec()
+       * query.Manufacturer.byId("21545645646554").exec()
        * 
        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
        */
-       byId(id: string): ByIdMethods<Manafacturer, ManafacturerInput>
+       byId(id: string): ByIdMethods<Manufacturer, ManufacturerInput>
 
        /**
         * first where method get the first matching value from the Set.
@@ -1392,7 +1392,7 @@ export interface Ts {
         * 
         * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
         */
-       firstWhere(inputCondition: ((data: Manafacturer) => boolean) | string): FirstWhereMethods<Manafacturer>;
+       firstWhere(inputCondition: ((data: Manufacturer) => boolean) | string): FirstWhereMethods<Manufacturer>;
     }
 
 
@@ -2342,13 +2342,13 @@ export interface Ts {
  */
  id: string;
 /**
- * manafacturerProductId for the Product
+ * manufacturerProductId for the Product
  */
- manafacturerProductId: string;
+ manufacturerProductId: string;
 /**
- * manafacturer for the Product
+ * manufacturer for the Product
  */
- manafacturer: Manafacturer;
+ manufacturer: Manufacturer;
 /**
  * localizations for the Product
  */
@@ -2379,13 +2379,13 @@ export interface Ts {
 
   export interface ProductInput {
     /**
- * manafacturerProductId for the Product
+ * manufacturerProductId for the Product
  */
- manafacturerProductId: string;
+ manufacturerProductId: string;
 /**
- * manafacturer for the Product
+ * manufacturer for the Product
  */
- manafacturer: Manafacturer;
+ manufacturer: Manufacturer;
 /**
  * localizations for the Product
  */
@@ -2433,8 +2433,8 @@ export interface Ts {
        * create method creates a Product document in the collection with the provided property values.
        * 
        * @param {ProductInput} input - will be the Product which you want to add.
-         * @param { string } input.manafacturerProductId ManafacturerProductId for the Product
-* @param { Manafacturer } input.manafacturer Manafacturer for the Product
+         * @param { string } input.manufacturerProductId ManufacturerProductId for the Product
+* @param { Manufacturer } input.manufacturer Manufacturer for the Product
 * @param { ProductLocalization[] } input.localizations Localizations for the Product
 * @param { Implant } input.implant Implant for the Product
 * @param { Abutment } input.abutment Abutment for the Product
@@ -2446,8 +2446,8 @@ export interface Ts {
        * 
        * @example
        * query.Product.create({  
- * manafacturerProductId: "Value of the manafacturerProductId"   
- * manafacturer: "Value of the manafacturer"   
+ * manufacturerProductId: "Value of the manufacturerProductId"   
+ * manufacturer: "Value of the manufacturer"   
  * localizations: "Value of the localizations"   
  * implant: "Value of the implant"   
  * abutment: "Value of the abutment"   
@@ -2945,9 +2945,9 @@ ProductLocalization: ProductLocalizationMethods;
  */ 
 Product: ProductMethods;
 /**
- * @returns This return fqlx methods for the Manafacturer 
+ * @returns This return fqlx methods for the Manufacturer 
  */ 
- Manafacturer:  ManafacturerMethods;
+ Manufacturer:  ManufacturerMethods;
 /**
  * @returns This return fqlx methods for the Implant 
  */ 
