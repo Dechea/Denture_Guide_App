@@ -1,7 +1,12 @@
 import { SignUp } from '@clerk/nextjs';
+import { View } from 'reshaped';
 
 const Page = () => {
-  return <SignUp />;
+  return (
+    <View direction='row' align='center' justify='center' height='100vh'>
+      <SignUp />
+    </View>
+  );
 };
 
 export default Page;
