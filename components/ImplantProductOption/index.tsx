@@ -2,32 +2,11 @@ import { useState } from 'react';
 import { Icon, Text, View, MenuItem, Card } from 'reshaped';
 import cx from 'classnames';
 import { implantProductOptionsProps } from '../../interfaces/implant';
-import TreatmentOptionIcon from '../Icons/TreatmentOption';
+import ToothIcon from '../Icons/Tooth';
 
 const ImplantProductOption = ({
   selectedTeeth,
 }: implantProductOptionsProps) => {
-  // const [check, setCheck] = useState<boolean>(false);
-  // const [selectedItemId, setSelectedItemId] = useState<boolean>(false);
-
-  // const checkToothButtonDisable = (tooth: number): boolean =>
-  //   !selectedImplants.hasOwnProperty(`${productId}-${optionId}-${tooth}`) &&
-  //   Object.keys(selectedImplants).some(
-  //     (implant) => implant.endsWith(`-${tooth}`) && selectedImplants[implant]
-  //   );
-
-  // const getToothButtonColor = (tooth: number) =>
-  //   selectedImplants?.[`${productId}-${optionId}-${tooth}`]
-  //     ? 'primary'
-  //     : 'white';
-
-  // const handleCheckBox = () => {
-  //   setCheck(!check);
-  //   setSelectedItemId(!selectedItemId);
-  // };
-
-  // console.log({ selectedTeeth });
-
   const [activeOption, setActiveOption] = useState<number>(0);
 
   const setActiveTeeth = (selectedTeeth: number) => {
@@ -36,8 +15,6 @@ const ImplantProductOption = ({
       : setActiveOption(0);
   };
 
-  // --rs-color-foreground-primary
-  // cx
   return (
     <Card
       padding={0}
@@ -61,7 +38,7 @@ const ImplantProductOption = ({
           paddingStart={2}
           paddingBlock={2}
         >
-          <Icon svg={TreatmentOptionIcon} size={5} />
+          <Icon svg={ToothIcon} size={5} />
           <Text variant='body-3' weight='medium'>
             {selectedTeeth}
           </Text>

@@ -9,7 +9,6 @@ import { JawType } from '../TeethDiagram/teeth/areas/tooth/interfaces/props';
 import TickIcon from '../Icons/Tick';
 import { useTeethDiagramStore } from '../../zustand/teethDiagram';
 
-// const selectedTeethData = ['11', '12'];
 const selectedTeethData = [
   { toothNumber: 11, isSelected: true },
   { toothNumber: 12, isSelected: false },

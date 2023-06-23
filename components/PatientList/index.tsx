@@ -6,7 +6,6 @@ import moment from 'moment';
 import { PatientFile, Query } from '../../fqlx-generated/typedefs';
 import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import HelpFooter from '../../app/[patientFileId]/treatments/implant/HelpFooter';
 import Loader from '../Loader';
 
 const mapStatus: { [key: string]: 'positive' | 'critical' | undefined } = {
@@ -73,7 +72,6 @@ export default function PatientList() {
                 <Loader />
               </View>
             }
-            endMessage={<HelpFooter />}
           >
             {patientFiles?.data?.map((patientFile, index) => (
               <View key={patientFile.id}>

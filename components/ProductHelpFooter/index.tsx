@@ -1,8 +1,8 @@
 import { Icon, Text, View } from 'reshaped';
-import EmailIcon from '../../../../components/Icons/Email';
-import PhoneIcon from '../../../../components/Icons/Phone';
+import EmailIcon from '../Icons/Email';
+import PhoneIcon from '../Icons/Phone';
 
-export default function HelpFooter() {
+export default function ProductHelpFooter() {
   return (
     <View paddingTop={24} paddingBottom={78} gap={12}>
       <View align='center' gap={1}>

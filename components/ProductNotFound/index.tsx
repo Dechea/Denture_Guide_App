@@ -1,12 +1,16 @@
 import { Icon, Skeleton, Text, View } from 'reshaped';
-import BarCodeIcon from '../../../../components/Icons/Barcode';
+import BarCodeIcon from '../Icons/Barcode';
 
-export default function NoImplantFound({ barcode }: { barcode: string }) {
+interface ProductNotFoundProps {
+  barcode: string;
+}
+
+export default function ProductNotFound({ barcode }: ProductNotFoundProps) {
   return (
     <View align='center' paddingTop={24} gap={6}>
       <View
-        width='172px'
-        height='48px'
+        width={43}
+        height={12}
         direction='row'
         gap={3}
         align='center'
