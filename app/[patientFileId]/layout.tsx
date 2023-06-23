@@ -1,6 +1,7 @@
+import { Suspense } from 'react';
+import { View } from 'reshaped';
 import Header from '../../components/Header';
 import TreatmentTabs from '../../components/TreatmentTabs';
-import { Suspense } from 'react';
 import Loader from '../../components/Loader';
 
 interface RootLayoutProps {
@@ -10,11 +11,19 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children, params }: RootLayoutProps) {
   return (
-    <Suspense fallback={<Loader />}>
-      <Header patientFileId={params.patientFileId} />
-      <TreatmentTabs patientFileId={params.patientFileId}>
-        {children}
-      </TreatmentTabs>
-    </Suspense>
+    <View>
+      <Suspense
+        fallback={
+          <View height='100vh' width='100%' justify='center' align='center'>
+            <Loader />
+          </View>
+        }
+      >
+        <Header patientFileId={params.patientFileId} />
+        <TreatmentTabs patientFileId={params.patientFileId}>
+          {children}
+        </TreatmentTabs>
+      </Suspense>
+    </View>
   );
 }

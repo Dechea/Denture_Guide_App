@@ -76,7 +76,7 @@ export default function SelectTeeth() {
     <View
       width='100%'
       position='sticky'
-      insetTop={22.25}
+      insetTop={25.3}
       zIndex={50}
       backgroundColor='neutral-faded'
       direction='row'

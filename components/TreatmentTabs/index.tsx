@@ -61,12 +61,7 @@ const TreatmentTabs = ({
     // TODO: Remove to make corwn tab functionable`
     if (clickedTabIndex === 6) return;
 
-    if (clickedTabIndex === 1) {
-      router.push(value as __next_route_internal_types__.RouteImpl<string>);
-      return;
-    }
-
-    if (activeTabIndex >= 2) {
+    if (activeTabIndex >= 2 || clickedTabIndex === 1) {
       router.push(value as __next_route_internal_types__.RouteImpl<string>);
       return;
     }
@@ -80,7 +75,7 @@ const TreatmentTabs = ({
       <Tabs onChange={onChangeTab} itemWidth='equal' value={path}>
         <View
           position='sticky'
-          insetTop={11.25}
+          insetTop={14.2}
           backgroundColor='white'
           zIndex={50}
         >

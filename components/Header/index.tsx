@@ -27,7 +27,7 @@ const Header = ({ patientFileId }: HeaderProps) => {
     <View
       align='stretch'
       width='100%'
-      position='fixed'
+      position='sticky'
       insetTop={0}
       zIndex={50}
       backgroundColor='white'
