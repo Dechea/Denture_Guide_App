@@ -84,7 +84,7 @@ export const ImplantFilterForm = () => {
       ...category,
       options: implantProducts
         .map(`(product) => product.implant.${category.fqlxKey}`)
-        .distinct()
+        .distinct<string>()
         .exec()
         .data?.filter((option) => option),
     }));
@@ -103,15 +103,29 @@ export const ImplantFilterForm = () => {
     setSearchedImplantManufacturerId(id);
   }, 300);
 
-  const handleCategoryFieldClick = (field: string) => {
-    let filteredImplants = [...implantFilters];
+  const getValueByType = (option: string, dataType: string) => {
+    switch (dataType) {
+      case 'string':
+        return `"${option}"`;
 
-    if (filteredImplants.includes(field)) {
-      filteredImplants = filteredImplants.filter(
+      case 'number':
+        return option;
+
+      default:
+        return option;
+    }
+  };
+
+  const handleCategoryFieldClick = (category: string, field: string) => {
+    let filteredImplants = { ...implantFilters };
+    const filterCategory = filteredImplants[category];
+
+    if (filterCategory?.includes(field)) {
+      filteredImplants[category] = filterCategory.filter(
         (implant) => implant !== field
       );
     } else {
-      filteredImplants.push(field);
+      filteredImplants[category] = [...(filterCategory || []), field];
     }
 
     setImplantFilters(filteredImplants);
@@ -166,22 +180,18 @@ export const ImplantFilterForm = () => {
                   {category.options
                     ?.slice(0, sliceEndPointer)
                     .map((option, index) => {
-                      let optionKey = '';
-                      switch (category.dataType) {
-                        case 'number':
-                          optionKey = `${category.fqlxKey}$${option}`;
-                          break;
-                        case 'string':
-                          optionKey = `${category.fqlxKey}$"${option}"`;
-                          break;
-                      }
+                      const value = getValueByType(option, category.dataType);
                       return (
                         <View key={index + `${option}`}>
                           <Checkbox
                             name={option}
                             value={option}
-                            checked={implantFilters.includes(optionKey)}
-                            onChange={() => handleCategoryFieldClick(optionKey)}
+                            checked={implantFilters[
+                              category.fqlxKey as keyof typeof implantFilters
+                            ]?.includes(value)}
+                            onChange={() =>
+                              handleCategoryFieldClick(category.fqlxKey, value)
+                            }
                           >
                             <Text variant='body-3' weight='regular'>
                               {`${category.prefix} ${option} ${category.suffix}`}

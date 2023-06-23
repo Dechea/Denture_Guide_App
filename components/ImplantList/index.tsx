@@ -11,47 +11,7 @@ import ShareButton from '../ShareButton';
 import { useProductStore } from '../../zustand/product';
 import ProductHelpFooter from '../ProductHelpFooter';
 import ProductNotFound from '../ProductNotFound';
-
-const formConditionForFilterKeys = (keys: string[]) => {
-  const condition = keys
-    .map((key) => {
-      const splitedKey = key.split('$');
-      const category = splitedKey[0];
-      const field = splitedKey[1];
-
-      return `product.implant.${category} == ${field}`;
-    })
-    .join(' || ');
-
-  return condition;
-};
-
-const formWhereCondition = (
-  searchedImplantManufacturerId: string,
-  implantFilters: string[]
-) => {
-  const defaultCondition = '(product) => product.implant != null';
-  const hasFilterKeys = Boolean(implantFilters.length);
-  const hasManufacturerId = Boolean(searchedImplantManufacturerId);
-
-  switch (true) {
-    case hasManufacturerId && hasFilterKeys:
-      return `(product) => ( product.implant != null && product.manufacturerProductId?.includes("${searchedImplantManufacturerId}") ) && ( ${formConditionForFilterKeys(
-        implantFilters
-      )} )`;
-
-    case hasFilterKeys:
-      return `(product) => product.implant != null  && ( ${formConditionForFilterKeys(
-        implantFilters
-      )} )`;
-
-    case hasManufacturerId:
-      return `${defaultCondition} && product.manufacturerProductId?.includes("${searchedImplantManufacturerId}")`;
-
-    default:
-      return defaultCondition;
-  }
-};
+import { formWhereCondition } from './helper';
 
 const ImplantList = ({}) => {
   const {
