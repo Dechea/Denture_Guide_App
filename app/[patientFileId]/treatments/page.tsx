@@ -10,7 +10,7 @@ export default function Treatment({
 }) {
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments`}>
-      <View paddingTop={4}>
+      <View paddingTop={12}>
         <TeethDiagramWithTreatments patientFileId={params.patientFileId} />
       </View>
     </Tabs.Panel>
