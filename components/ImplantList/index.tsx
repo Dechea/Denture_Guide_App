@@ -71,33 +71,40 @@ const ImplantList = ({}) => {
         <ShareButton />
       </View>
 
-      {!!implants?.data?.length ? (
-        <InfiniteScroll
-          dataLength={implants.data.length}
-          next={fetchMoreImplants}
-          scrollThreshold={'100px'}
-          hasMore={!!implants?.after}
-          loader={
-            <View paddingBlock={10}>
-              <Loader />
-            </View>
-          }
-          endMessage={<ProductHelpFooter />}
-        >
-          <Card padding={0}>
-            <View divided>
-              {implants.data.map((implant) => (
-                <ImplantProduct key={implant.id} product={implant} />
-              ))}
-            </View>
-          </Card>
-        </InfiniteScroll>
-      ) : (
-        <>
-          <ProductNotFound barcode={searchedImplantManufacturerId} />
-          <ProductHelpFooter />
-        </>
-      )}
+      <View
+        height='calc(100vh - 400px)'
+        className='overflow-y-auto'
+        attributes={{ id: 'scrollableImplantList' }}
+      >
+        {!!implants?.data?.length ? (
+          <InfiniteScroll
+            dataLength={implants.data.length}
+            next={fetchMoreImplants}
+            scrollThreshold={'100px'}
+            hasMore={!!implants?.after}
+            loader={
+              <View paddingBlock={10}>
+                <Loader />
+              </View>
+            }
+            endMessage={<ProductHelpFooter />}
+            scrollableTarget='scrollableImplantList'
+          >
+            <Card padding={0}>
+              <View divided>
+                {implants.data.map((implant) => (
+                  <ImplantProduct key={implant.id} product={implant} />
+                ))}
+              </View>
+            </Card>
+          </InfiniteScroll>
+        ) : (
+          <>
+            <ProductNotFound barcode={searchedImplantManufacturerId} />
+            <ProductHelpFooter />
+          </>
+        )}
+      </View>
     </>
   );
 };

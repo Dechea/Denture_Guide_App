@@ -151,7 +151,12 @@ export const ImplantFilterForm = () => {
         }
       />
 
-      <View gap={10} paddingBottom={10}>
+      <View
+        gap={10}
+        paddingBottom={10}
+        height='calc(100vh - 480px)'
+        className='overflow-y-auto'
+      >
         {categories.map((category) => {
           const isExpanded = expandedCategories.includes(category.fqlxKey);
           const optionsLength = category.options?.length;

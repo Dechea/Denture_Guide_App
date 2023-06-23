@@ -4,7 +4,7 @@ import PhoneIcon from '../Icons/Phone';
 
 export default function ProductHelpFooter() {
   return (
-    <View paddingTop={24} paddingBottom={78} gap={12}>
+    <View paddingTop={24} paddingBottom={10} gap={12}>
       <View align='center' gap={1}>
         <Text variant='body-1' weight='regular' color='neutral'>
           Need Help? Contact with us!
