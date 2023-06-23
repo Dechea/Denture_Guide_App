@@ -5,20 +5,29 @@ import ImplantProductOption from '../ImplantProductOption';
 import StorageIcon from '../Icons/Storage';
 import ArrowDownIcon from '../Icons/ArrowDown';
 import BarCodeIcon from '../Icons/Barcode';
+import { Product } from '../../fqlx-generated/typedefs';
 
 interface ImplantProductProps {
-  implant: any;
-  options: any;
+  product: Product;
 }
 
-export const ImplantProduct = ({ implant, options }: ImplantProductProps) => {
+export const ImplantProduct = ({ product }: ImplantProductProps) => {
+  const selectedTeeth = [
+    {
+      id: 0,
+      tooth: 14,
+      localStorageCount: 0,
+    },
+    { id: 1, tooth: 43, localStorageCount: 2 },
+  ];
+
   const implantData = {
-    Material: implant?.implant?.material || '',
-    'Insertion Post': implant?.implant?.insertionPost || '',
-    'Neck Height': implant?.implant?.lengthNeck || '',
-    Diameter: implant?.implant?.diameterPlatform || '',
-    Length: implant?.implant?.length || '',
-    'Platform Switching': implant?.implant?.platformSwitch || '',
+    Material: product?.implant?.material || '',
+    'Insertion Post': product?.implant?.insertionPost || '',
+    'Neck Height': product?.implant?.lengthNeck || '',
+    Diameter: product?.implant?.diameterPlatform || '',
+    Length: product?.implant?.length || '',
+    'Platform Switching': product?.implant?.platformSwitch || '',
   };
 
   return (
@@ -39,10 +48,12 @@ export const ImplantProduct = ({ implant, options }: ImplantProductProps) => {
                 <View gap={1}>
                   <View direction='row' align='center' gap={2}>
                     <Text variant='body-1' weight='bold'>
-                      {implant?.localizations?.length
-                        ? implant.localizations
-                            .find((item) => item.locale === 'EN')
-                            .name.split(',')[0]
+                      {product?.localizations?.length
+                        ? product?.localizations
+                            ?.find(
+                              (item: { locale: string }) => item.locale === 'EN'
+                            )
+                            ?.name?.split(',')[0]
                         : '-'}
                     </Text>
                     <Text
@@ -50,7 +61,7 @@ export const ImplantProduct = ({ implant, options }: ImplantProductProps) => {
                       weight='medium'
                       color='neutral-faded'
                     >
-                      {implant.manufacturer.name}
+                      {product.manufacturer.name}
                     </Text>
                   </View>
 
@@ -61,7 +72,7 @@ export const ImplantProduct = ({ implant, options }: ImplantProductProps) => {
                       variant='body-3'
                       weight='regular'
                     >
-                      {implant?.manufacturerProductId || '-'}
+                      {product?.manufacturerProductId || '-'}
                     </Text>
                   </View>
                 </View>
@@ -102,8 +113,8 @@ export const ImplantProduct = ({ implant, options }: ImplantProductProps) => {
               </View>
               <View direction='row' height='100%' gap={6} width='100%'>
                 <Text color='neutral' variant='body-3' weight='medium'>
-                  {!isNaN(implant.localizations[1].price.amount)
-                    ? implant.localizations[1].price.amount
+                  {!isNaN(product.localizations[1].price.amount)
+                    ? product.localizations[1].price.amount
                     : '-'}{' '}
                   €
                 </Text>
@@ -134,10 +145,10 @@ export const ImplantProduct = ({ implant, options }: ImplantProductProps) => {
             </View>
 
             <View direction='column' justify='start' gap={2} width='100%'>
-              {options?.map((data) => (
+              {selectedTeeth?.map((data) => (
                 <ImplantProductOption
                   key={data.id}
-                  selectedTeeth={data.selectedTeeth}
+                  selectedTeeth={data.tooth}
                 />
               ))}
             </View>

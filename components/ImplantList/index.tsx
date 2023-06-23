@@ -87,18 +87,7 @@ const ImplantList = ({}) => {
           <Card padding={0}>
             <View divided>
               {implants.data.map((implant) => (
-                <ImplantProduct
-                  key={implant.id}
-                  implant={implant}
-                  options={[
-                    {
-                      id: 0,
-                      selectedTeeth: 14,
-                      localStorageCount: 0,
-                    },
-                    { id: 1, selectedTeeth: 43, localStorageCount: 2 },
-                  ]}
-                />
+                <ImplantProduct key={implant.id} product={implant} />
               ))}
             </View>
           </Card>
