@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Card, Icon, MenuItem, Text, View } from 'reshaped';
 import cx from 'classnames';
-import TreatmentOptionIcon from '../Icons/TreatmentOption';
+import ToothIcon from '../Icons/Tooth';
 import { abutmentOptionsProps } from '../../interfaces/abutment';
 
 const AbutmentProductOption = ({ selectedTeeth }: abutmentOptionsProps) => {
@@ -38,7 +38,7 @@ const AbutmentProductOption = ({ selectedTeeth }: abutmentOptionsProps) => {
           paddingStart={2}
           paddingBlock={2}
         >
-          <Icon svg={TreatmentOptionIcon} size={5} />
+          <Icon svg={ToothIcon} size={5} />
           <Text variant='body-3' weight='medium'>
             {selectedTeeth}
           </Text>

@@ -63,7 +63,7 @@ const Header = ({ patientFileId }: HeaderProps) => {
                 />
               }
             >
-              <Text variant='body-2'>{patientFile?.patient.name}</Text>
+              <Text variant='body-2'>{patientFile?.patient?.name}</Text>
             </MenuItem>
           </View>
         </View.Item>

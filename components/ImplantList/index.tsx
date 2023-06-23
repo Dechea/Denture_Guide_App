@@ -6,11 +6,11 @@ import { useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Card, Text, View } from 'reshaped';
 import Loader from '../Loader';
-import HelpFooter from '../../app/[patientFileId]/treatments/implant/HelpFooter';
 import { ImplantProduct } from '../ImplantProduct';
-import NoImplantFound from '../../app/[patientFileId]/treatments/implant/NoImplantFound';
 import ShareButton from '../ShareButton';
 import { useProductStore } from '../../zustand/product';
+import ProductHelpFooter from '../ProductHelpFooter';
+import ProductNotFound from '../ProductNotFound';
 
 const formConditionForFilterKeys = (keys: string[]) => {
   const condition = keys
@@ -122,7 +122,7 @@ const ImplantList = ({}) => {
               <Loader />
             </View>
           }
-          endMessage={<HelpFooter />}
+          endMessage={<ProductHelpFooter />}
         >
           <Card padding={0}>
             <View divided>
@@ -145,8 +145,8 @@ const ImplantList = ({}) => {
         </InfiniteScroll>
       ) : (
         <>
-          <NoImplantFound barcode={searchedImplantManufacturerId} />
-          <HelpFooter />
+          <ProductNotFound barcode={searchedImplantManufacturerId} />
+          <ProductHelpFooter />
         </>
       )}
     </>
