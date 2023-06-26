@@ -30,13 +30,18 @@ export const ImplantProduct = ({ product }: ImplantProductProps) => {
     'Platform Switching': product?.implant?.platformSwitch || '',
   };
 
+  const productName =
+    product?.localizations?.find(
+      (item: { locale: string }) => item.locale === 'EN'
+    )?.name || '';
+
   return (
     <View direction='row' paddingBlock={6} paddingInline={4} gap={8}>
       <Image
         width='140px'
         height='140px'
-        src='/ImplantImage.svg'
-        alt='ImplantImage'
+        src={product.image}
+        alt={productName}
         borderRadius='medium'
       />
 
@@ -48,13 +53,7 @@ export const ImplantProduct = ({ product }: ImplantProductProps) => {
                 <View gap={1}>
                   <View direction='row' align='center' gap={2}>
                     <Text variant='body-1' weight='bold'>
-                      {product?.localizations?.length
-                        ? product?.localizations
-                            ?.find(
-                              (item: { locale: string }) => item.locale === 'EN'
-                            )
-                            ?.name?.split(',')[0]
-                        : '-'}
+                      {productName ? productName?.split(',')[0] : '-'}
                     </Text>
                     <Text
                       variant='caption-1'

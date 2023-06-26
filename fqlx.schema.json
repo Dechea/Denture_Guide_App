@@ -84,6 +84,7 @@
       "manufacturer": {
         "name": "string"
       },
+      "image": "string",
       "localizations": "ProductLocalization[]",
       "implant": {
         "implantLine": "string",
