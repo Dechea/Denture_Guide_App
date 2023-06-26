@@ -1,10 +1,10 @@
 'use client';
 
 import { useQuery } from 'fqlx-client';
-import { Product, Query } from '../../fqlx-generated/typedefs';
 import { useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Card, Text, View } from 'reshaped';
+import { Product, Query } from '../../fqlx-generated/typedefs';
 import Loader from '../Loader';
 import { ImplantProduct } from '../ImplantProduct';
 import ShareButton from '../ShareButton';
@@ -13,7 +13,7 @@ import ProductHelpFooter from '../ProductHelpFooter';
 import ProductNotFound from '../ProductNotFound';
 import { formWhereCondition } from './helper';
 
-const ImplantList = ({}) => {
+const ImplantList = () => {
   const {
     implants,
     setImplants,

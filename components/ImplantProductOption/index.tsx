@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Icon, Text, View, MenuItem, Card } from 'reshaped';
 import cx from 'classnames';
-import { implantProductOptionsProps } from '../../interfaces/implant';
 import ToothIcon from '../Icons/Tooth';
 
-const ImplantProductOption = ({
-  selectedTeeth,
-}: implantProductOptionsProps) => {
+interface ImplantProductOptionProps {
+  selectedTeeth: number;
+}
+
+const ImplantProductOption = ({ selectedTeeth }: ImplantProductOptionProps) => {
   const [activeOption, setActiveOption] = useState<number>(0);
 
   const setActiveTeeth = (selectedTeeth: number) => {

@@ -23,19 +23,20 @@ export default function Abutment({
     setAbutment({
       implantLine: 'BioHorizons Tapered',
       abutmentLine: 'Simple Solutions',
-      guided: true,
+      guided: 'true',
       platformSwitch: true,
       retention: '1266',
       material: 'TITANIUM',
       sterile: true,
       connectionType: 'INTERNAL',
-      prostheticHeight: 1268,
+      heightProsthetic: 1268,
       maxTorque: 1269,
-      angle: 1270,
+      angle: '1270',
       diameterPlatform: 3.5,
       gingivaHeight: 0.8,
       indication: '1271',
       singleUse: true,
+      workflow: [''],
     });
 
     console.log('abutment updated');

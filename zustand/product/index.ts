@@ -1,11 +1,10 @@
 import { create } from 'zustand';
-import { product } from '../../__mocks__/initialProductsState';
-import { AbutmentInput, Product as IProduct } from '../../interfaces/schema';
-import { Product } from '../../fqlx-generated/typedefs';
 import { PaginateData } from 'fqlx-client';
+import { product } from '../../__mocks__/initialProductsState';
+import { Product, AbutmentInput } from '../../fqlx-generated/typedefs';
 
 interface ProductStore {
-  product: IProduct;
+  product: Product;
   implants: PaginateData<Product>;
   searchedImplantManufacturerId: string;
   implantFilters: { [key: string]: string[] };

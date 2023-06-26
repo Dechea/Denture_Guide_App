@@ -9,51 +9,7 @@ import BarCodeIcon from '../Icons/Barcode';
 import { useProductStore } from '../../zustand/product';
 import { Query } from '../../fqlx-generated/typedefs';
 import EndIcon from '../Icons/End';
-
-const categoryList = [
-  {
-    displayName: 'Diameter',
-    fqlxKey: 'diameterPlatform',
-    prefix: 'Ø',
-    suffix: 'mm',
-    dataType: 'number',
-  },
-  {
-    displayName: 'Length',
-    fqlxKey: 'length',
-    prefix: '',
-    suffix: 'mm',
-    dataType: 'number',
-  },
-  {
-    displayName: 'Neck Height',
-    fqlxKey: 'lengthNeck',
-    prefix: '',
-    suffix: 'mm',
-    dataType: 'number',
-  },
-  {
-    displayName: 'Implant Line',
-    fqlxKey: 'implantLine',
-    prefix: '',
-    suffix: '',
-    dataType: 'string',
-  },
-  {
-    displayName: 'Type',
-    fqlxKey: 'level',
-    prefix: '',
-    suffix: '',
-    dataType: 'string',
-  },
-  {
-    displayName: 'Material',
-    fqlxKey: 'material',
-    prefix: '',
-    suffix: '',
-    dataType: 'string',
-  },
-];
+import { filterCategories } from './filterCategories';
 
 interface Category {
   displayName: string;
@@ -80,7 +36,7 @@ export const ImplantFilterForm = () => {
   );
 
   useMemo(() => {
-    const categoriesWithOptions = categoryList.map((category) => ({
+    const categoriesWithOptions = filterCategories.map((category) => ({
       ...category,
       options: implantProducts
         .map(`(product) => product.implant.${category.fqlxKey}`)
@@ -103,7 +59,7 @@ export const ImplantFilterForm = () => {
     setSearchedImplantManufacturerId(id);
   }, 300);
 
-  const getValueByType = (option: string, dataType: string) => {
+  const getFieldValueByType = (option: string, dataType: string) => {
     switch (dataType) {
       case 'string':
         return `"${option}"`;
@@ -185,7 +141,10 @@ export const ImplantFilterForm = () => {
                   {category.options
                     ?.slice(0, sliceEndPointer)
                     .map((option, index) => {
-                      const value = getValueByType(option, category.dataType);
+                      const value = getFieldValueByType(
+                        option,
+                        category.dataType
+                      );
                       return (
                         <View key={index + `${option}`}>
                           <Checkbox
