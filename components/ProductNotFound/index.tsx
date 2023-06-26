@@ -26,7 +26,7 @@ export default function ProductNotFound({ barcode }: ProductNotFoundProps) {
           Nothing was found for code
         </Text>
         <Text variant='featured-2' weight='medium' color='neutral'>
-          “{barcode}”
+          {barcode && `“${barcode}”`}
         </Text>
         <Text variant='body-2' weight='regular' color='neutral-faded'>
           Try another code

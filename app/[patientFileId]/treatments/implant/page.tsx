@@ -30,7 +30,7 @@ export default function Implant({
     <Tabs.Panel value={`/${params.patientFileId}/treatments/implant`}>
       <SelectTeeth />
 
-      <View paddingInline={16} paddingTop={18}>
+      <View paddingStart={16} paddingTop={18}>
         <View direction='row' gap={11}>
           <View.Item columns={3}>
             <Suspense
