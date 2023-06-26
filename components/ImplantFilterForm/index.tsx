@@ -80,6 +80,7 @@ export const ImplantFilterForm = () => {
   );
 
   useMemo(() => {
+    console.log({ implantProducts });
     const categoriesWithOptions = categoryList.map((category) => ({
       ...category,
       options: implantProducts
@@ -88,9 +89,11 @@ export const ImplantFilterForm = () => {
         .exec()
         .data?.filter((option) => option),
     }));
-
+    console.log({ categoriesWithOptions });
     setCategories(categoriesWithOptions);
   }, []);
+
+  console.log({ categories });
 
   const toggleCategoryOptions = (category: string) => {
     const localExpandedItems = expandedCategories.includes(category)
