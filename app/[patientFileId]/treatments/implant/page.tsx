@@ -33,7 +33,15 @@ export default function Implant({
       <View paddingInline={16} paddingTop={18}>
         <View direction='row' gap={11}>
           <View.Item columns={3}>
-            <ImplantFilterForm />
+            <Suspense
+              fallback={
+                <View height='70vh'>
+                  <Loader />
+                </View>
+              }
+            >
+              <ImplantFilterForm />
+            </Suspense>
           </View.Item>
 
           <View.Item columns={9}>
