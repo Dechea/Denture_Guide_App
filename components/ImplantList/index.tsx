@@ -46,15 +46,6 @@ const ImplantList = ({}) => {
     setImplants(implantProducts);
   }, [implantProducts.data]);
 
-  console.log({
-    implants,
-    implantQuery,
-    searchedImplantManufacturerId,
-    implantFilters,
-    implantProducts,
-    implantCount,
-  });
-
   return (
     <>
       <View direction='row' align='center' paddingBottom={6}>

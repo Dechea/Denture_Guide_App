@@ -52,7 +52,7 @@ export default function Implant({
                 </View>
               }
             >
-              {/* <ImplantList /> */}
+              <ImplantList />
             </Suspense>
           </View.Item>
         </View>
