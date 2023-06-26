@@ -81,6 +81,13 @@ export const ImplantFilterForm = () => {
 
   useMemo(() => {
     console.log({ implantProducts });
+    console.log(
+      'implantProducts query======',
+      implantProducts
+        .map(`(product) => product.implant.length`)
+        .distinct<string>()
+        .exec()
+    );
     const categoriesWithOptions = categoryList.map((category) => ({
       ...category,
       options: implantProducts
