@@ -75,71 +75,71 @@ export const ImplantFilterForm = () => {
 
   const query = useQuery<Query>();
 
-  const implantProducts = query.Product.all().where(
-    (product) => product.implant != null
-  );
+  const implantProducts = query.Product.all()
+    .where((product) => product.implant != null)
+    .exec();
+  console.log({ implantProducts });
+  // useMemo(() => {
+  //   console.log({ implantProducts });
+  //   console.log(
+  //     'implantProducts query======',
+  //     implantProducts
+  //       .map(`(product) => product.implant.length`)
+  //       .distinct<string>()
+  //       .exec()
+  //   );
+  //   const categoriesWithOptions = categoryList.map((category) => ({
+  //     ...category,
+  //     options: implantProducts
+  //       .map(`(product) => product.implant.${category.fqlxKey}`)
+  //       .distinct<string>()
+  //       .exec()
+  //       .data?.filter((option) => option),
+  //   }));
+  //   console.log({ categoriesWithOptions });
+  //   setCategories(categoriesWithOptions);
+  // }, []);
 
-  useMemo(() => {
-    console.log({ implantProducts });
-    console.log(
-      'implantProducts query======',
-      implantProducts
-        .map(`(product) => product.implant.length`)
-        .distinct<string>()
-        .exec()
-    );
-    const categoriesWithOptions = categoryList.map((category) => ({
-      ...category,
-      options: implantProducts
-        .map(`(product) => product.implant.${category.fqlxKey}`)
-        .distinct<string>()
-        .exec()
-        .data?.filter((option) => option),
-    }));
-    console.log({ categoriesWithOptions });
-    setCategories(categoriesWithOptions);
-  }, []);
+  // console.log({ categories });
 
-  console.log({ categories });
+  // const toggleCategoryOptions = (category: string) => {
+  //   const localExpandedItems = expandedCategories.includes(category)
+  //     ? expandedCategories.filter((id) => id !== category)
+  //     : [...expandedCategories, category];
+  //   setExpandedCategories(localExpandedItems);
+  // };
 
-  const toggleCategoryOptions = (category: string) => {
-    const localExpandedItems = expandedCategories.includes(category)
-      ? expandedCategories.filter((id) => id !== category)
-      : [...expandedCategories, category];
-    setExpandedCategories(localExpandedItems);
-  };
+  // const handleManufacturerIdChange = debounce((id: string) => {
+  //   setSearchedImplantManufacturerId(id);
+  // }, 300);
 
-  const handleManufacturerIdChange = debounce((id: string) => {
-    setSearchedImplantManufacturerId(id);
-  }, 300);
+  // const getValueByType = (option: string, dataType: string) => {
+  //   switch (dataType) {
+  //     case 'string':
+  //       return `"${option}"`;
 
-  const getValueByType = (option: string, dataType: string) => {
-    switch (dataType) {
-      case 'string':
-        return `"${option}"`;
+  //     case 'number':
+  //       return option;
 
-      case 'number':
-        return option;
+  //     default:
+  //       return option;
+  //   }
+  // };
 
-      default:
-        return option;
-    }
-  };
+  // const handleCategoryFieldClick = (category: string, field: string) => {
+  //   let filteredImplants = { ...implantFilters };
+  //   const filterCategory = filteredImplants[category];
 
-  const handleCategoryFieldClick = (category: string, field: string) => {
-    let filteredImplants = { ...implantFilters };
-    const filterCategory = filteredImplants[category];
+  //   if (filterCategory?.includes(field)) {
+  //     filteredImplants[category] = filterCategory.filter(
+  //       (implant) => implant !== field
+  //     );
+  //   } else {
+  //     filteredImplants[category] = [...(filterCategory || []), field];
+  //   }
 
-    if (filterCategory?.includes(field)) {
-      filteredImplants[category] = filterCategory.filter(
-        (implant) => implant !== field
-      );
-    } else {
-      filteredImplants[category] = [...(filterCategory || []), field];
-    }
-
-    setImplantFilters(filteredImplants);
-  };
+  //   setImplantFilters(filteredImplants);
+  // };
 
   return (
     <View gap={5.5}>
@@ -150,7 +150,7 @@ export const ImplantFilterForm = () => {
         </Text>
       </View>
 
-      <TextField
+      {/* <TextField
         size='large'
         variant='faded'
         name='email'
@@ -244,7 +244,7 @@ export const ImplantFilterForm = () => {
             </View>
           );
         })}
-      </View>
+      </View> */}
     </View>
   );
 };
