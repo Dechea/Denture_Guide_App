@@ -22,7 +22,6 @@ interface Category {
 
 export const ImplantFilterForm = () => {
   const {
-    searchedImplantManufacturerId,
     setSearchedImplantManufacturerId,
     implantFilters,
     setImplantFilters,
@@ -109,7 +108,6 @@ export const ImplantFilterForm = () => {
         size='large'
         variant='faded'
         name='manufacturerProductId'
-        value={searchedImplantManufacturerId}
         placeholder='Search by code e.g K1043.XXXX '
         startSlot={<Icon svg={BarCodeIcon} color='neutral-faded' size={5} />}
         onChange={({ value }: { value: string }) =>
@@ -117,12 +115,7 @@ export const ImplantFilterForm = () => {
         }
       />
 
-      <View
-        gap={10}
-        paddingBottom={10}
-        height='calc(100vh - 480px)'
-        className='overflow-y-auto scrollbar-0'
-      >
+      <View gap={10} paddingBottom={10}>
         {categories.map((category) => {
           const isExpanded = expandedCategories.includes(category.fqlxKey);
           const optionsLength = category.options?.length;

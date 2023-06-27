@@ -60,7 +60,7 @@ const ImplantList = () => {
 
   return (
     <>
-      <View direction='row' align='center' paddingBottom={6} paddingEnd={16}>
+      <View direction='row' align='center' paddingBottom={6}>
         <View.Item grow>
           <View direction='row' gap={2} align='end'>
             <Text variant='featured-3' weight='bold'>
@@ -83,41 +83,34 @@ const ImplantList = () => {
         <ShareButton />
       </View>
 
-      <View
-        height='calc(100vh - 400px)'
-        className='overflow-y-auto scrollbar-6 scrollbar-rounded-12 scrollbar-bg-neutral'
-        attributes={{ id: 'scrollableImplantList' }}
-        paddingEnd={16}
-      >
-        {!!implants?.data?.length ? (
-          <InfiniteScroll
-            dataLength={implants.data.length}
-            next={fetchMoreImplants}
-            scrollThreshold={'100px'}
-            hasMore={!!implants?.after}
-            loader={
-              <View paddingBlock={10}>
-                <Loader />
-              </View>
-            }
-            endMessage={<ProductHelpFooter />}
-            scrollableTarget='scrollableImplantList'
-          >
-            <Card padding={0}>
-              <View divided>
-                {implants.data.map((implant) => (
-                  <ImplantProduct key={implant.id} product={implant} />
-                ))}
-              </View>
-            </Card>
-          </InfiniteScroll>
-        ) : (
-          <>
-            <ProductNotFound barcode={searchedImplantManufacturerId} />
-            <ProductHelpFooter />
-          </>
-        )}
-      </View>
+      {!!implants?.data?.length ? (
+        <InfiniteScroll
+          dataLength={implants.data.length}
+          next={fetchMoreImplants}
+          scrollThreshold={'100px'}
+          hasMore={!!implants?.after}
+          loader={
+            <View paddingBlock={10}>
+              <Loader />
+            </View>
+          }
+          endMessage={<ProductHelpFooter />}
+          scrollableTarget='scrollableImplantList'
+        >
+          <Card padding={0}>
+            <View divided>
+              {implants.data.map((implant) => (
+                <ImplantProduct key={implant.id} product={implant} />
+              ))}
+            </View>
+          </Card>
+        </InfiniteScroll>
+      ) : (
+        <>
+          <ProductNotFound barcode={searchedImplantManufacturerId} />
+          <ProductHelpFooter />
+        </>
+      )}
     </>
   );
 };

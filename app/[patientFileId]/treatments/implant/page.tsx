@@ -30,9 +30,14 @@ export default function Implant({
     <Tabs.Panel value={`/${params.patientFileId}/treatments/implant`}>
       <SelectTeeth />
 
-      <View paddingStart={16} paddingTop={18}>
-        <View direction='row' gap={11}>
-          <View.Item columns={3}>
+      <View direction='row'>
+        <View.Item columns={3}>
+          <View
+            paddingStart={16}
+            paddingTop={18}
+            height='calc(100vh - 240px)'
+            className='overflow-y-auto scrollbar-0'
+          >
             <Suspense
               fallback={
                 <View height='70vh'>
@@ -42,9 +47,18 @@ export default function Implant({
             >
               <ImplantFilterForm />
             </Suspense>
-          </View.Item>
+          </View>
+        </View.Item>
 
-          <View.Item columns={9}>
+        <View.Item columns={9}>
+          <View
+            paddingStart={11}
+            paddingEnd={16}
+            paddingTop={18}
+            height='calc(100vh - 240px)'
+            className='overflow-y-auto scrollbar-6 scrollbar-rounded-12 scrollbar-bg-neutral'
+            attributes={{ id: 'scrollableImplantList' }}
+          >
             <Suspense
               fallback={
                 <View height='70vh'>
@@ -54,8 +68,8 @@ export default function Implant({
             >
               <ImplantList />
             </Suspense>
-          </View.Item>
-        </View>
+          </View>
+        </View.Item>
       </View>
     </Tabs.Panel>
   );
