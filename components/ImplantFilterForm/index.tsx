@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { View, Text, Checkbox, Icon, TextField, Button } from 'reshaped';
 import { useQuery } from 'fqlx-client';
 import { debounce } from 'reshaped/utilities/helpers';
@@ -22,6 +22,7 @@ interface Category {
 
 export const ImplantFilterForm = () => {
   const {
+    searchedImplantManufacturerId,
     setSearchedImplantManufacturerId,
     implantFilters,
     setImplantFilters,
@@ -87,6 +88,14 @@ export const ImplantFilterForm = () => {
     setImplantFilters(filteredImplants);
   };
 
+  // Reset searched manufacturerId and applied filters
+  useEffect(() => {
+    return () => {
+      setSearchedImplantManufacturerId('');
+      setImplantFilters({});
+    };
+  }, []);
+
   return (
     <View gap={5.5}>
       <View direction='row' align='center' paddingBlock={2.5} gap={1}>
@@ -99,7 +108,8 @@ export const ImplantFilterForm = () => {
       <TextField
         size='large'
         variant='faded'
-        name='email'
+        name='manufacturerProductId'
+        value={searchedImplantManufacturerId}
         placeholder='Search by code e.g K1043.XXXX '
         startSlot={<Icon svg={BarCodeIcon} color='neutral-faded' size={5} />}
         onChange={({ value }: { value: string }) =>
