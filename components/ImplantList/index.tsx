@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from 'fqlx-client';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Card, Text, View } from 'reshaped';
 import { Product, Query } from '../../fqlx-generated/typedefs';
@@ -23,12 +23,24 @@ const ImplantList = () => {
 
   const query = useQuery<Query>();
 
-  const implantQuery = query.Product.all().where(
-    formWhereCondition(searchedImplantManufacturerId, implantFilters)
+  const implantQuery = useMemo(
+    () =>
+      query.Product.all().where(
+        formWhereCondition(searchedImplantManufacturerId, implantFilters)
+      ),
+    [searchedImplantManufacturerId, implantFilters]
   );
 
-  const implantProducts = implantQuery.exec();
-  const implantCount = implantQuery.count().exec();
+  const implantProducts = useMemo(
+    () => implantQuery.exec(),
+
+    [implantQuery]
+  );
+
+  const implantCount = useMemo(
+    () => implantQuery.count().exec(),
+    [implantQuery]
+  );
 
   const fetchMoreImplants = async () => {
     const paginated = await query.Set.paginate<Product>(
