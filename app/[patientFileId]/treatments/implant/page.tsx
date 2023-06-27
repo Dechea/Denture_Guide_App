@@ -31,7 +31,7 @@ export default function Implant({
       <SelectTeeth />
 
       <View direction='row' gap={11}>
-        <View.Item columns={3} className='sticky !top-[240px]'>
+        <View.Item columns={3} className='sticky !top-[230px]'>
           <View
             paddingStart={6}
             paddingTop={8}
