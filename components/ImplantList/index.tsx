@@ -95,7 +95,6 @@ const ImplantList = () => {
             </View>
           }
           endMessage={<ProductHelpFooter />}
-          scrollableTarget='scrollableImplantList'
         >
           <Card padding={0}>
             <View divided>
