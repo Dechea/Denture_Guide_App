@@ -75,10 +75,6 @@ const Header = ({ patientFileId }: HeaderProps) => {
 
         <View.Item columns={6}>
           <View direction='row' align='center' justify='end' gap={4} divided>
-            <MenuItem size='small' roundedCorners>
-              Order History
-            </MenuItem>
-
             <View direction='row' align='center' gap={4}>
               <CartPopoverButton />
               <Button

@@ -24,10 +24,10 @@ export const ImplantProduct = ({ product }: ImplantProductProps) => {
   const implantData = {
     Material: product?.implant?.material || '',
     'Insertion Post': product?.implant?.insertionPost || '',
-    'Neck Height': product?.implant?.lengthNeck || '',
+    'Neck Length': product?.implant?.lengthNeck || '',
     Diameter: product?.implant?.diameterPlatform || '',
     Length: product?.implant?.length || '',
-    'Platform Switching': product?.implant?.platformSwitch || '',
+    'Platform Switch': product?.implant?.platformSwitch || '',
   };
 
   const productName =

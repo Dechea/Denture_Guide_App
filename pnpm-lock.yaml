@@ -12,7 +12,7 @@ dependencies:
     version: 3.0.2
   fqlx-client:
     specifier: github:mmailaender/Fauna-React#Support_DistinctAndPagination
-    version: github.com/mmailaender/Fauna-React/864691075d74ec8171110aa6869f67ae1d1bb01d(@types/node@20.2.5)(react@18.2.0)(typescript@5.1.3)
+    version: github.com/mmailaender/Fauna-React/3e88503ece868bbfc73075d7fd63fc4861afc208(@types/node@20.2.5)(react@18.2.0)(typescript@5.1.3)
   latest:
     specifier: 0.2.0
     version: 0.2.0
@@ -75,6 +75,11 @@ devDependencies:
 
 packages:
 
+  /@aashutoshrathi/word-wrap@1.2.6:
+    resolution: {integrity: sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==}
+    engines: {node: '>=0.10.0'}
+    dev: true
+
   /@alloc/quick-lru@5.2.0:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
@@ -108,11 +113,11 @@ packages:
       regenerator-runtime: 0.13.11
     dev: true
 
-  /@clerk/backend@0.23.5:
-    resolution: {integrity: sha512-x+NCRvgaVFbAQX2r5hJ6SRI1JnQWD8HAfKxZb+op0KBuKvnk1shpDX67n/23ehx+YG5rQ7FbbKHXyrO5chM5Mw==}
+  /@clerk/backend@0.23.6:
+    resolution: {integrity: sha512-+JnG9jmqoqPPKCHEtGf7vhFj2G8qNXmkPR8cDycjbUje/rXGNzxYAkgGaOahD9gXj5oZYMTKfGAebPf5i24JuA==}
     engines: {node: '>=14'}
     dependencies:
-      '@clerk/types': 3.46.0
+      '@clerk/types': 3.46.1
       '@peculiar/webcrypto': 1.4.1
       '@types/node': 16.18.6
       deepmerge: 4.2.2
@@ -121,25 +126,25 @@ packages:
       tslib: 2.4.1
     dev: false
 
-  /@clerk/clerk-react@4.20.5(react@18.2.0):
-    resolution: {integrity: sha512-y5edxot+7adnyUqOGNgS7bEA3eoM53FMC8jV8VmUFvKLkOOMQpgfdo3/I7PWoTrRaNwqNWmhQGy1J3uqw8gv4g==}
+  /@clerk/clerk-react@4.21.0(react@18.2.0):
+    resolution: {integrity: sha512-wd8BDGIh8zMx6R9uTmAQdgtTBzx7B7hlWlWSxZ+oJVcz8MqT7gcmmYGgqnr5RuDtaWK9Z2jzya6CvVodzJi/Wg==}
     engines: {node: '>=14'}
     peerDependencies:
       react: '>=16'
     dependencies:
       '@clerk/shared': 0.19.1(react@18.2.0)
-      '@clerk/types': 3.46.0
+      '@clerk/types': 3.46.1
       react: 18.2.0
       swr: 1.3.0(react@18.2.0)
       tslib: 2.4.1
     dev: false
 
-  /@clerk/clerk-sdk-node@4.10.12:
-    resolution: {integrity: sha512-6LzLFEMZMnUE4O19XOW/6LAoAnHP7mZ2scMCib4dOvTRQxcZz1ql34ZMzewNYKrS6V5loQlslc1bnPlJ2zoX3g==}
+  /@clerk/clerk-sdk-node@4.10.13:
+    resolution: {integrity: sha512-Yy7N/DT1GdW+oI3/PxYqgjIgHCIEPI97dDUYn1xpG82y9aIQMVI69/W7KRK940559GDl4CmgZm1Taon+SOdDmQ==}
     engines: {node: '>=14'}
     dependencies:
-      '@clerk/backend': 0.23.5
-      '@clerk/types': 3.46.0
+      '@clerk/backend': 0.23.6
+      '@clerk/types': 3.46.1
       '@types/cookies': 0.7.7
       '@types/express': 4.17.14
       '@types/node-fetch': 2.6.2
@@ -157,10 +162,10 @@ packages:
       react: ^17.0.2 || ^18.0.0-0
       react-dom: ^17.0.2 || ^18.0.0-0
     dependencies:
-      '@clerk/backend': 0.23.5
-      '@clerk/clerk-react': 4.20.5(react@18.2.0)
-      '@clerk/clerk-sdk-node': 4.10.12
-      '@clerk/types': 3.46.0
+      '@clerk/backend': 0.23.6
+      '@clerk/clerk-react': 4.21.0(react@18.2.0)
+      '@clerk/clerk-sdk-node': 4.10.13
+      '@clerk/types': 3.46.1
       next: 13.4.5(react-dom@18.2.0)(react@18.2.0)
       path-to-regexp: 6.2.1
       react: 18.2.0
@@ -179,8 +184,8 @@ packages:
       swr: 1.3.0(react@18.2.0)
     dev: false
 
-  /@clerk/types@3.46.0:
-    resolution: {integrity: sha512-IooGZ64uARKg+GS6b38usrWqhzU0PcrDbZBaZm4JmtYd5CZbWABklBNkiXQhnnaKYdvHr5K8vhJd5spsJarNpw==}
+  /@clerk/types@3.46.1:
+    resolution: {integrity: sha512-IA/iSXJJZym4Z6f9OcT9OJayK2opVhxUVJky15aY4iVsJCPScgApBuuzC7N4vfXwA6RI/wGebFbvmsEQ3oI/UA==}
     engines: {node: '>=14'}
     dependencies:
       csstype: 3.1.1
@@ -847,7 +852,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.21.9
-      caniuse-lite: 1.0.30001508
+      caniuse-lite: 1.0.30001509
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -925,8 +930,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001508
-      electron-to-chromium: 1.4.441
+      caniuse-lite: 1.0.30001509
+      electron-to-chromium: 1.4.442
       node-releases: 2.0.12
       update-browserslist-db: 1.0.11(browserslist@4.21.9)
     dev: false
@@ -996,13 +1001,13 @@ packages:
     resolution: {integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==}
     dependencies:
       browserslist: 4.21.9
-      caniuse-lite: 1.0.30001508
+      caniuse-lite: 1.0.30001509
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: false
 
-  /caniuse-lite@1.0.30001508:
-    resolution: {integrity: sha512-sdQZOJdmt3GJs1UMNpCCCyeuS2IEGLXnHyAo9yIO5JJDjbjoVRij4M1qep6P6gFpptD1PqIYgzM+gwJbOi92mw==}
+  /caniuse-lite@1.0.30001509:
+    resolution: {integrity: sha512-2uDDk+TRiTX5hMcUYT/7CSyzMZxjfGu0vAUjS2g0LSD8UoXOv0LtpH4LxGMemsiPq6LCVIUjNwVM0erkOkGCDA==}
     dev: false
 
   /chalk@1.1.3:
@@ -1156,8 +1161,8 @@ packages:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
     dev: false
 
-  /cosmiconfig@8.2.0:
-    resolution: {integrity: sha512-3rTMnFJA1tCOPwRxtgF4wd7Ab2qvDbL8jX+3smjIbS4HlZBagTlpERbdN7iAbWlrfxE3M8c27kTwTawQ7st+OQ==}
+  /cosmiconfig@8.1.3:
+    resolution: {integrity: sha512-/UkO2JKI18b5jVMJUp0lvKFMpa/Gye+ZgZjKD+DGEN9y7NRcf/nK1A0sp67ONmKtnDCNMS44E6jrk0Yc3bDuUw==}
     engines: {node: '>=14'}
     dependencies:
       import-fresh: 3.3.0
@@ -1499,8 +1504,8 @@ packages:
       stream-shift: 1.0.1
     dev: false
 
-  /electron-to-chromium@1.4.441:
-    resolution: {integrity: sha512-LlCgQ8zgYZPymf5H4aE9itwiIWH4YlCiv1HFLmmcBeFYi5E+3eaIFnjHzYtcFQbaKfAW+CqZ9pgxo33DZuoqPg==}
+  /electron-to-chromium@1.4.442:
+    resolution: {integrity: sha512-RkrZF//Ya+0aJq2NM3OdisNh5ZodZq1rdXOS96G8DdDgpDKqKE81yTbbQ3F/4CKm1JBPsGu1Lp/akkna2xO06Q==}
     dev: false
 
   /emitter-component@1.1.1:
@@ -1852,7 +1857,7 @@ packages:
       lodash.merge: 4.6.2
       minimatch: 3.1.2
       natural-compare: 1.4.0
-      optionator: 0.9.1
+      optionator: 0.9.3
       strip-ansi: 6.0.1
       strip-json-comments: 3.1.1
       text-table: 0.2.0
@@ -3063,7 +3068,7 @@ packages:
       '@next/env': 13.4.5
       '@swc/helpers': 0.5.1
       busboy: 1.6.0
-      caniuse-lite: 1.0.30001508
+      caniuse-lite: 1.0.30001509
       postcss: 8.4.14
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -3332,16 +3337,16 @@ packages:
       is-wsl: 2.2.0
     dev: true
 
-  /optionator@0.9.1:
-    resolution: {integrity: sha512-74RlY5FCnhq4jRxVUPKDaRwrVNXMqsGsiW6AJw4XK8hmtm10wC0ypZBLw5IIp85NZMr91+qd1RvvENwg7jjRFw==}
+  /optionator@0.9.3:
+    resolution: {integrity: sha512-JjCoypp+jKn1ttEFExxhetCKeJt9zhAgAve5FXHixTvFDW/5aEktX9bufBKLRRMdU7bNtpLfcGu94B3cdEJgjg==}
     engines: {node: '>= 0.8.0'}
     dependencies:
+      '@aashutoshrathi/word-wrap': 1.2.6
       deep-is: 0.1.4
       fast-levenshtein: 2.0.6
       levn: 0.4.1
       prelude-ls: 1.2.1
       type-check: 0.4.0
-      word-wrap: 1.2.3
     dev: true
 
   /ordered-read-streams@0.3.0:
@@ -5018,11 +5023,6 @@ packages:
     hasBin: true
     dev: false
 
-  /word-wrap@1.2.3:
-    resolution: {integrity: sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==}
-    engines: {node: '>=0.10.0'}
-    dev: true
-
   /wrap-ansi@2.1.0:
     resolution: {integrity: sha512-vAaEaDM946gbNpH5pLVNR+vX2ht6n0Bt3GXwVB1AuAqZosOvHNF3P7wDnh8KLkSqgUh0uh77le7Owgoz+Z9XBw==}
     engines: {node: '>=0.10.0'}
@@ -5183,9 +5183,9 @@ packages:
     requiresBuild: true
     dev: false
 
-  github.com/mmailaender/Fauna-React/864691075d74ec8171110aa6869f67ae1d1bb01d(@types/node@20.2.5)(react@18.2.0)(typescript@5.1.3):
-    resolution: {tarball: https://codeload.github.com/mmailaender/Fauna-React/tar.gz/864691075d74ec8171110aa6869f67ae1d1bb01d}
-    id: github.com/mmailaender/Fauna-React/864691075d74ec8171110aa6869f67ae1d1bb01d
+  github.com/mmailaender/Fauna-React/3e88503ece868bbfc73075d7fd63fc4861afc208(@types/node@20.2.5)(react@18.2.0)(typescript@5.1.3):
+    resolution: {tarball: https://codeload.github.com/mmailaender/Fauna-React/tar.gz/3e88503ece868bbfc73075d7fd63fc4861afc208}
+    id: github.com/mmailaender/Fauna-React/3e88503ece868bbfc73075d7fd63fc4861afc208
     name: fqlx-client
     version: 0.1.0
     engines: {node: '>=10'}
@@ -5195,7 +5195,7 @@ packages:
       react: '>=16'
     dependencies:
       buffer: 6.0.3
-      cosmiconfig: 8.2.0
+      cosmiconfig: 8.1.3
       fauna: github.com/Dechea/fauna-js/7fb8157c4d346e3ae8f3ddd9e702846cff433358
       husky: 8.0.3
       module: 1.2.5
