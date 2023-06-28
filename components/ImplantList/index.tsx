@@ -106,7 +106,12 @@ const ImplantList = () => {
         </InfiniteScroll>
       ) : (
         <>
-          <ProductNotFound barcode={searchedImplantManufacturerId} />
+          <ProductNotFound
+            barcode={searchedImplantManufacturerId}
+            showFilterError={
+              !Object.values(implantFilters).every((x) => !x.length)
+            }
+          />
           <ProductHelpFooter />
         </>
       )}
