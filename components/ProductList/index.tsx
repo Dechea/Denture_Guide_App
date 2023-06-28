@@ -6,57 +6,74 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { Card, Text, View } from 'reshaped';
 import { Product, Query } from '../../fqlx-generated/typedefs';
 import Loader from '../Loader';
-import { ImplantProduct } from '../ImplantProduct';
+import { ProductCard } from '../ProductCard';
 import ShareButton from '../ShareButton';
 import { useProductStore } from '../../zustand/product';
 import ProductHelpFooter from '../ProductHelpFooter';
 import ProductNotFound from '../ProductNotFound';
 import { formWhereCondition } from './helper';
+import { PRODUCT_TYPE } from '../../zustand/product/interface';
+import { convertCamelCaseToTitleCase } from '../../utils/helper';
 
-const ImplantList = () => {
+interface ProductListProps {
+  productType: PRODUCT_TYPE;
+}
+
+const ProductList = ({ productType }: ProductListProps) => {
   const {
-    implants,
-    setImplants,
-    searchedImplantManufacturerId,
-    implantFilters,
+    products,
+    setProducts,
+    searchedProductManufacturerId,
+    productFilters,
   } = useProductStore();
 
   const query = useQuery<Query>();
 
-  const implantQuery = useMemo(
+  const productQuery = useMemo(
     () =>
       query.Product.all().where(
-        formWhereCondition(searchedImplantManufacturerId, implantFilters)
+        formWhereCondition(
+          searchedProductManufacturerId,
+          productFilters,
+          productType
+        )
       ),
-    [searchedImplantManufacturerId, implantFilters]
+    [searchedProductManufacturerId, productFilters]
   );
 
-  const implantProducts = useMemo(
-    () => implantQuery.exec(),
+  const fqlxProducts = useMemo(
+    () => productQuery.exec(),
 
-    [implantQuery]
+    [productQuery]
   );
 
-  const implantCount = useMemo(
-    () => implantQuery.count().exec(),
-    [implantQuery]
+  const productsCount = useMemo(
+    () => productQuery.count().exec(),
+    [productQuery]
   );
 
-  const fetchMoreImplants = async () => {
+  const fetchMoreProducts = async () => {
     const paginated = await query.Set.paginate<Product>(
-      `${implants?.after}`
+      `${products?.after}`
     ).exec();
 
-    setImplants({
-      data: [...implants.data, ...paginated.data],
+    setProducts({
+      data: [...products.data, ...paginated.data],
       after: paginated?.after,
       before: paginated?.before,
     });
   };
 
   useEffect(() => {
-    setImplants(implantProducts);
-  }, [implantProducts.data]);
+    setProducts(fqlxProducts);
+  }, [fqlxProducts.data]);
+
+  // Reset products in state on component unmount
+  useEffect(() => {
+    return () => {
+      setProducts({ data: [] });
+    };
+  }, []);
 
   return (
     <>
@@ -64,7 +81,7 @@ const ImplantList = () => {
         <View.Item grow>
           <View direction='row' gap={2} align='end'>
             <Text variant='featured-3' weight='bold'>
-              Implants
+              {convertCamelCaseToTitleCase(productType)}
             </Text>
 
             <View direction='row' align='center' paddingBottom={0.5}>
@@ -74,7 +91,7 @@ const ImplantList = () => {
                 color='neutral-faded'
                 align='end'
               >
-                {typeof implantCount === 'object' ? 0 : implantCount}
+                {productsCount}
               </Text>
             </View>
           </View>
@@ -83,12 +100,12 @@ const ImplantList = () => {
         <ShareButton />
       </View>
 
-      {!!implants?.data?.length ? (
+      {!!products?.data?.length ? (
         <InfiniteScroll
-          dataLength={implants.data.length}
-          next={fetchMoreImplants}
+          dataLength={products.data.length}
+          next={fetchMoreProducts}
           scrollThreshold={'100px'}
-          hasMore={!!implants?.after}
+          hasMore={!!products?.after}
           loader={
             <View paddingBlock={10}>
               <Loader />
@@ -98,8 +115,12 @@ const ImplantList = () => {
         >
           <Card padding={0}>
             <View divided>
-              {implants.data.map((implant) => (
-                <ImplantProduct key={implant.id} product={implant} />
+              {products.data.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  productType={productType}
+                />
               ))}
             </View>
           </Card>
@@ -107,9 +128,9 @@ const ImplantList = () => {
       ) : (
         <>
           <ProductNotFound
-            barcode={searchedImplantManufacturerId}
+            barcode={searchedProductManufacturerId}
             showFilterError={
-              !Object.values(implantFilters).every((x) => !x.length)
+              !Object.values(productFilters).every((x) => !x.length)
             }
           />
           <ProductHelpFooter />
@@ -119,4 +140,4 @@ const ImplantList = () => {
   );
 };
 
-export default ImplantList;
+export default ProductList;

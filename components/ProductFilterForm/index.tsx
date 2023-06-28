@@ -9,37 +9,39 @@ import BarCodeIcon from '../Icons/Barcode';
 import { useProductStore } from '../../zustand/product';
 import { Query } from '../../fqlx-generated/typedefs';
 import EndIcon from '../Icons/End';
-import { filterCategories } from './filterCategories';
+import {
+  PRODUCT_TYPE,
+  ProductFilterCategory,
+} from '../../zustand/product/interface';
 
-interface Category {
-  displayName: string;
-  fqlxKey: string;
-  options: string[];
-  suffix: string;
-  prefix: string;
-  dataType: string;
+interface ProductFilterFormProps {
+  filterCategories: ProductFilterCategory[];
+  productType: PRODUCT_TYPE;
 }
 
-export const ImplantFilterForm = () => {
+export const ProductFilterForm = ({
+  filterCategories,
+  productType,
+}: ProductFilterFormProps) => {
   const {
-    setSearchedImplantManufacturerId,
-    implantFilters,
-    setImplantFilters,
+    setSearchedProductManufacturerId,
+    productFilters,
+    setProductFilters,
   } = useProductStore();
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<ProductFilterCategory[]>([]);
 
   const query = useQuery<Query>();
 
-  const implantProducts = query.Product.all().where(
-    (product) => product.implant != null
-  );
-
   useMemo(() => {
+    const productQuery = query.Product.all().where(
+      `(product) => product.${productType} != null`
+    );
+
     const categoriesWithOptions = filterCategories.map((category) => ({
       ...category,
-      options: implantProducts
-        .map(`(product) => product.implant.${category.fqlxKey}`)
+      options: productQuery
+        .map(`(product) => product.${productType}.${category.fqlxKey}`)
         .distinct<string>()
         .exec()
         .data?.filter((option) => option),
@@ -56,7 +58,7 @@ export const ImplantFilterForm = () => {
   };
 
   const handleManufacturerIdChange = debounce((id: string) => {
-    setSearchedImplantManufacturerId(id);
+    setSearchedProductManufacturerId(id);
   }, 300);
 
   const getFieldValueByType = (option: string, dataType: string) => {
@@ -73,25 +75,25 @@ export const ImplantFilterForm = () => {
   };
 
   const handleCategoryFieldClick = (category: string, field: string) => {
-    let filteredImplants = { ...implantFilters };
-    const filterCategory = filteredImplants[category];
+    let filteredProducts = { ...productFilters };
+    const filterCategory = filteredProducts[category];
 
     if (filterCategory?.includes(field)) {
-      filteredImplants[category] = filterCategory.filter(
-        (implant) => implant !== field
+      filteredProducts[category] = filterCategory.filter(
+        (product) => product !== field
       );
     } else {
-      filteredImplants[category] = [...(filterCategory || []), field];
+      filteredProducts[category] = [...(filterCategory || []), field];
     }
 
-    setImplantFilters(filteredImplants);
+    setProductFilters(filteredProducts);
   };
 
   // Reset searched manufacturerId and applied filters
   useEffect(() => {
     return () => {
-      setSearchedImplantManufacturerId('');
-      setImplantFilters({});
+      setSearchedProductManufacturerId('');
+      setProductFilters({});
     };
   }, []);
 
@@ -153,8 +155,8 @@ export const ImplantFilterForm = () => {
                           <Checkbox
                             name={option}
                             value={option}
-                            checked={implantFilters[
-                              category.fqlxKey as keyof typeof implantFilters
+                            checked={productFilters[
+                              category.fqlxKey as keyof typeof productFilters
                             ]?.includes(value)}
                             onChange={() =>
                               handleCategoryFieldClick(category.fqlxKey, value)

@@ -3,32 +3,38 @@ import { Icon, Text, View, MenuItem, Card } from 'reshaped';
 import cx from 'classnames';
 import ToothIcon from '../Icons/Tooth';
 
-interface ImplantProductOptionProps {
-  selectedTeeth: number;
-}
+const selectedTeeth = [
+  {
+    id: 0,
+    tooth: 14,
+  },
+  { id: 1, tooth: 43 },
+];
 
-const ImplantProductOption = ({ selectedTeeth }: ImplantProductOptionProps) => {
+const ProductToothList = () => {
   const [activeOption, setActiveOption] = useState<number>(0);
 
-  const setActiveTeeth = (selectedTeeth: number) => {
-    selectedTeeth !== activeOption
-      ? setActiveOption(selectedTeeth)
-      : setActiveOption(0);
+  const setActiveTeeth = (selectedTooth: number) => {
+    setActiveOption(selectedTooth);
   };
 
-  return (
+  return selectedTeeth.map((tooth) => (
     <Card
+      key={tooth.id}
       padding={0}
       className={cx(
         '!shadow-[0px_2px_3px_rgba(0,0,0,0.1),_0px_1px_2px_-1px_rgba(0,0,0,0.1)]',
-        { '!border-[--rs-color-foreground-primary]': Boolean(activeOption) }
+        {
+          '!border-[--rs-color-foreground-primary]':
+            activeOption === tooth.tooth,
+        }
       )}
     >
       <MenuItem
-        selected={Boolean(activeOption)}
+        selected={activeOption === tooth.tooth}
         size={'small'}
         roundedCorners={true}
-        onClick={() => setActiveTeeth(selectedTeeth)}
+        onClick={() => setActiveTeeth(tooth.tooth)}
       >
         <View
           direction='row'
@@ -40,12 +46,12 @@ const ImplantProductOption = ({ selectedTeeth }: ImplantProductOptionProps) => {
         >
           <Icon svg={ToothIcon} size={5} />
           <Text variant='body-3' weight='medium'>
-            {selectedTeeth}
+            {tooth.tooth}
           </Text>
         </View>
       </MenuItem>
     </Card>
-  );
+  ));
 };
 
-export default ImplantProductOption;
+export default ProductToothList;

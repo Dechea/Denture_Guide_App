@@ -5,26 +5,26 @@ import { Product, AbutmentInput } from '../../fqlx-generated/typedefs';
 
 interface ProductStore {
   product: Product;
-  implants: PaginateData<Product>;
-  searchedImplantManufacturerId: string;
-  implantFilters: { [key: string]: string[] };
-  setSearchedImplantManufacturerId: (id: string) => void;
-  setImplants: (implants: PaginateData<Product>) => void;
-  setImplantFilters: (filters: { [key: string]: string[] }) => void;
+  products: PaginateData<Product>;
+  searchedProductManufacturerId: string;
+  productFilters: { [key: string]: string[] };
+  setSearchedProductManufacturerId: (id: string) => void;
+  setProducts: (products: PaginateData<Product>) => void;
+  setProductFilters: (filters: { [key: string]: string[] }) => void;
   setAbutment: (abutment: AbutmentInput) => void;
 }
 
 export const useProductStore = create<ProductStore>()((set) => ({
   product: product,
-  implants: { data: [] },
-  searchedImplantManufacturerId: '',
-  implantFilters: {},
+  products: { data: [] },
+  searchedProductManufacturerId: '',
+  productFilters: {},
   setAbutment: (abutment) =>
     set((state) => ({
       product: { ...state.product, abutment: { ...abutment, id: '' } },
     })),
-  setImplants: (implants) => set({ implants }),
-  setSearchedImplantManufacturerId: (id) =>
-    set({ searchedImplantManufacturerId: id }),
-  setImplantFilters: (filters) => set({ implantFilters: filters }),
+  setProducts: (products) => set({ products }),
+  setSearchedProductManufacturerId: (id) =>
+    set({ searchedProductManufacturerId: id }),
+  setProductFilters: (filters) => set({ productFilters: filters }),
 }));

@@ -1,35 +1,20 @@
 'use client';
 
 import { Divider, Icon, Image, Text, View } from 'reshaped';
-import ImplantProductOption from '../ImplantProductOption';
+import ProductToothList from '../ProductToothList';
 import StorageIcon from '../Icons/Storage';
 import ArrowDownIcon from '../Icons/ArrowDown';
 import BarCodeIcon from '../Icons/Barcode';
 import { Product } from '../../fqlx-generated/typedefs';
+import { PRODUCT_TYPE } from '../../zustand/product/interface';
+import { convertCamelCaseToTitleCase } from '../../utils/helper';
 
-interface ImplantProductProps {
+interface ProductCardProps {
   product: Product;
+  productType: PRODUCT_TYPE;
 }
 
-export const ImplantProduct = ({ product }: ImplantProductProps) => {
-  const selectedTeeth = [
-    {
-      id: 0,
-      tooth: 14,
-      localStorageCount: 0,
-    },
-    { id: 1, tooth: 43, localStorageCount: 2 },
-  ];
-
-  const implantData = {
-    Material: product?.implant?.material || '',
-    'Insertion Post': product?.implant?.insertionPost || '',
-    'Neck Length': product?.implant?.lengthNeck || '',
-    Diameter: product?.implant?.diameterPlatform || '',
-    Length: product?.implant?.length || '',
-    'Platform Switch': product?.implant?.platformSwitch || '',
-  };
-
+export const ProductCard = ({ product, productType }: ProductCardProps) => {
   const productName =
     product?.localizations?.find(
       (item: { locale: string }) => item.locale === 'EN'
@@ -77,7 +62,7 @@ export const ImplantProduct = ({ product }: ImplantProductProps) => {
                 </View>
 
                 <View gap={2} width='inherit'>
-                  {Object.entries(implantData).map(([key, value]) => (
+                  {Object.entries(product[productType]).map(([key, value]) => (
                     <View
                       key={key}
                       direction='row'
@@ -139,17 +124,12 @@ export const ImplantProduct = ({ product }: ImplantProductProps) => {
             <View direction='row' align='center' width='100%' gap={1}>
               <Icon svg={ArrowDownIcon} />
               <Text variant='body-3' weight='medium'>
-                Select Implant for:
+                Select {convertCamelCaseToTitleCase(productType)} for:
               </Text>
             </View>
 
             <View direction='column' justify='start' gap={2} width='100%'>
-              {selectedTeeth?.map((data) => (
-                <ImplantProductOption
-                  key={data.id}
-                  selectedTeeth={data.tooth}
-                />
-              ))}
+              <ProductToothList />
             </View>
           </View>
         </View>

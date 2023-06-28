@@ -1,31 +1,20 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense } from 'react';
 import { Tabs, View } from 'reshaped';
-import { useRouter } from 'next/navigation';
-import ImplantList from '../../../../components/ImplantList';
-import { ImplantFilterForm } from '../../../../components/ImplantFilterForm';
+import ProductList from '../../../../components/ProductList';
+import { ProductFilterForm } from '../../../../components/ProductFilterForm';
 import SelectTeeth from '../../../../components/SelectedTeeth';
 import Loader from '../../../../components/Loader';
+import { filterCategories } from './filterCategories';
+import { Product } from '../../../../fqlx-generated/typedefs';
+import { PRODUCT_TYPE } from '../../../../zustand/product/interface';
 
 export default function Implant({
   params,
 }: {
   params: { patientFileId: string };
 }) {
-  const [selectedImplants, _setImplants] = useState<{
-    [key: string]: boolean;
-  }>({});
-  const selectedTeeth = [14, 22];
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (Object.keys(selectedImplants).length === selectedTeeth.length) {
-      router.push(`/${params.patientFileId}/treatments/abutment`);
-    }
-  }, [selectedImplants, selectedTeeth.length]);
-
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/implant`}>
       <SelectTeeth />
@@ -45,7 +34,10 @@ export default function Implant({
                 </View>
               }
             >
-              <ImplantFilterForm />
+              <ProductFilterForm
+                filterCategories={filterCategories}
+                productType={PRODUCT_TYPE.IMPLANT}
+              />
             </Suspense>
           </View>
         </View.Item>
@@ -59,7 +51,7 @@ export default function Implant({
                 </View>
               }
             >
-              <ImplantList />
+              <ProductList productType={PRODUCT_TYPE.IMPLANT} />
             </Suspense>
           </View>
         </View.Item>

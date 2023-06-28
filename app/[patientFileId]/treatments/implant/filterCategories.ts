@@ -5,6 +5,7 @@ export const filterCategories = [
     prefix: 'Ø',
     suffix: 'mm',
     dataType: 'number',
+    options: [],
   },
   {
     displayName: 'Length',
@@ -12,6 +13,7 @@ export const filterCategories = [
     prefix: '',
     suffix: 'mm',
     dataType: 'number',
+    options: [],
   },
   {
     displayName: 'Neck Height',
@@ -19,6 +21,7 @@ export const filterCategories = [
     prefix: '',
     suffix: 'mm',
     dataType: 'number',
+    options: [],
   },
   {
     displayName: 'Implant Line',
@@ -26,6 +29,7 @@ export const filterCategories = [
     prefix: '',
     suffix: '',
     dataType: 'string',
+    options: [],
   },
   {
     displayName: 'Type',
@@ -33,6 +37,7 @@ export const filterCategories = [
     prefix: '',
     suffix: '',
     dataType: 'string',
+    options: [],
   },
   {
     displayName: 'Material',
@@ -40,5 +45,6 @@ export const filterCategories = [
     prefix: '',
     suffix: '',
     dataType: 'string',
+    options: [],
   },
 ];
