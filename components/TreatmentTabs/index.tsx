@@ -71,13 +71,18 @@ const TreatmentTabs = ({
   };
 
   return (
-    <View paddingBlock={0} paddingInline={2}>
+    <View
+      paddingBlock={0}
+      paddingInline={2}
+      className='overflow-y-scroll max-h-[calc(100vh-60px)]'
+    >
       <Tabs onChange={onChangeTab} itemWidth='equal' value={path}>
         <View
           position='sticky'
-          insetTop={14.2}
+          insetTop={0}
           backgroundColor='white'
           zIndex={50}
+          height={11}
         >
           <Tabs.List>
             <Tabs.Item value={`/${patientFileId}/treatments`}>
