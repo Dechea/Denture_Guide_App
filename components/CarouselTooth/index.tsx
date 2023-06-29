@@ -1,7 +1,6 @@
 'use client';
 
-import React from 'react';
-import { View, Icon, Carousel } from 'reshaped';
+import { View, Icon } from 'reshaped';
 import {
   Tooth,
   ToothContainer,
@@ -14,17 +13,21 @@ import TickIcon from '../Icons/Tick';
 import { useTeethDiagramStore } from '../../zustand/teethDiagram';
 import { useProductStore } from '../../zustand/product';
 
-export const CartTooth = ({ toothNumber }: { toothNumber: number }) => {
+interface CarouselToothProps {
+  toothNumber: number;
+}
+
+const styles = {
+  activeTooth: '[&_svg>*]:!pointer-events-none [&_svg]:opacity-30 ',
+  inactiveTooth: '[&_svg>*]:!pointer-events-none ',
+};
+
+export const CarouselTooth = ({ toothNumber }: CarouselToothProps) => {
   const { treatments } = useTeethDiagramStore((state) => state);
   const { selectedProducts } = useProductStore((state) => state);
+
   const toothData = treatments[toothNumber as keyof typeof treatments] || {};
-
   const selected = !!selectedProducts[toothNumber];
-
-  const styles = {
-    activeTooth: '[&_svg>*]:!pointer-events-none [&_svg]:opacity-30 ',
-    inactiveTooth: '[&_svg>*]:!pointer-events-none ',
-  };
 
   return (
     <View height={30} width={15} aspectRatio={60 / 120}>
@@ -50,10 +53,7 @@ export const CartTooth = ({ toothNumber }: { toothNumber: number }) => {
               insetTop={3}
               align='center'
               justify='center'
-              className='
-            [&_svg]:!opacity-100
-            [&_svg>*]:!stroke-[--rs-color-background-page] [&_svg>*]:!fill-[--rs-color-background-primary]
-            '
+              className='[&_svg]:!opacity-100 [&_svg>*]:!stroke-[--rs-color-background-page] [&_svg>*]:!fill-[--rs-color-background-primary]'
             >
               <Icon svg={TickIcon} size={6} />
             </View>
@@ -65,33 +65,3 @@ export const CartTooth = ({ toothNumber }: { toothNumber: number }) => {
     </View>
   );
 };
-
-export default function SelectTeeth() {
-  const { availableTeethByProductType } = useProductStore();
-
-  return (
-    <View
-      width='100%'
-      position='sticky'
-      insetTop={25.3}
-      zIndex={50}
-      backgroundColor='neutral-faded'
-      direction='row'
-      justify='center'
-      align='end'
-      borderColor='neutral-faded'
-      wrap={false}
-      padding={3}
-      height='136px'
-    >
-      <Carousel
-        gap={2}
-        className='flex justify-center items-center w-[calc(100%-20px)] h-full'
-      >
-        {availableTeethByProductType.map((tooth) => (
-          <CartTooth toothNumber={tooth} key={tooth} />
-        ))}
-      </Carousel>
-    </View>
-  );
-}

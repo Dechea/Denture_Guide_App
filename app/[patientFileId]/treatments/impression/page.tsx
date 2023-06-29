@@ -3,7 +3,7 @@
 import { Card, Tabs, Text, View } from 'reshaped';
 import { ImpressionList } from '../../../../components/ImpressionList';
 import { ImpressionForm } from '../../../../components/ImpressionForm';
-import SelectTeeth from '../../../../components/SelectedTeeth';
+import CarouselTeeth from '../../../../components/CarouselTeeth';
 import ShareButton from '../../../../components/ShareButton';
 import { impressionProductList } from '../../../../__mocks__/impression';
 import { impressionListProps } from '../../../../interfaces/impression';
@@ -15,7 +15,7 @@ export default function Impression({
 }) {
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/impression`}>
-      <SelectTeeth />
+      <CarouselTeeth />
 
       <View paddingBlock={0} paddingInline={8}>
         <View.Item>

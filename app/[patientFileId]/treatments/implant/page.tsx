@@ -4,7 +4,7 @@ import { Suspense, useEffect } from 'react';
 import { Tabs, View } from 'reshaped';
 import ProductList from '../../../../components/ProductList';
 import { ProductFilterForm } from '../../../../components/ProductFilterForm';
-import SelectTeeth from '../../../../components/SelectedTeeth';
+import CarouselTeeth from '../../../../components/CarouselTeeth';
 import Loader from '../../../../components/Loader';
 import { filterCategories } from './filterCategories';
 import { PRODUCT_TYPE } from '../../../../zustand/product/interface';
@@ -47,7 +47,7 @@ export default function Implant({
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/implant`}>
-      <SelectTeeth />
+      <CarouselTeeth />
 
       <View direction='row' gap={11}>
         <View.Item columns={3} className='sticky !top-[237px]'>

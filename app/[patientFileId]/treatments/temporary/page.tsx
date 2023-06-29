@@ -2,7 +2,7 @@
 
 import { Card, Tabs, Text, View } from 'reshaped';
 import { TemporaryList } from '../../../../components/TemporaryList';
-import SelectTeeth from '../../../../components/SelectedTeeth';
+import CarouselTeeth from '../../../../components/CarouselTeeth';
 import ShareButton from '../../../../components/ShareButton';
 import { temporaryProductList } from '../../../../__mocks__/temporary';
 import { temporaryProductListProps } from '../../../../interfaces/temporary';
@@ -14,7 +14,7 @@ export default function Temporary({
 }) {
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/temporary`}>
-      <SelectTeeth />
+      <CarouselTeeth />
 
       <View paddingBlock={0} paddingInline={8}>
         <View.Item>

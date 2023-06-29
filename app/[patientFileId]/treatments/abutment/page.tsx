@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 import { Tabs, View, Text, Card, useToast, Button } from 'reshaped';
 import AbutmentList from '../../../../components/AbutmentList';
-import SelectTeeth from '../../../../components/SelectedTeeth';
+import CarouselTeeth from '../../../../components/CarouselTeeth';
 import AbutmentForm from '../../../../components/AbutmentForm';
 import ShareButton from '../../../../components/ShareButton';
 import { abutmentProductList } from '../../../../__mocks__/abutment';
@@ -66,7 +66,7 @@ export default function Abutment({
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/abutment`}>
-      <SelectTeeth />
+      <CarouselTeeth />
 
       <View paddingBlock={0} paddingInline={8}>
         <View.Item>

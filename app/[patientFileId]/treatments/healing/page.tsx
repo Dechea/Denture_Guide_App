@@ -1,7 +1,7 @@
 import { Tabs, View, Text, Card } from 'reshaped';
 import HealingList from '../../../../components/HealingList';
 import HealingForm from '../../../../components/HealingForm';
-import SelectTeeth from '../../../../components/SelectedTeeth';
+import CarouselTeeth from '../../../../components/CarouselTeeth';
 import { healingProductList } from '../../../../__mocks__/healing';
 import { healingProductListProps } from '../../../../interfaces/healing';
 import ShareButton from '../../../../components/ShareButton';
@@ -13,7 +13,7 @@ export default function Healing({
 }) {
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/healing`}>
-      <SelectTeeth />
+      <CarouselTeeth />
 
       <View paddingBlock={0} paddingInline={8}>
         <View.Item>
