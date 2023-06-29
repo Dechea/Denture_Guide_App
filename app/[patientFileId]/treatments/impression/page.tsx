@@ -1,12 +1,13 @@
 'use client';
 
-import { Card, Tabs, Text, View } from 'reshaped';
-import { ImpressionList } from '../../../../components/ImpressionList';
-import { ImpressionForm } from '../../../../components/ImpressionForm';
+import { Suspense } from 'react';
+import { Tabs, View } from 'reshaped';
+import ProductList from '../../../../components/ProductList';
+import { ProductFilterForm } from '../../../../components/ProductFilterForm';
 import CarouselTeeth from '../../../../components/CarouselTeeth';
-import ShareButton from '../../../../components/ShareButton';
-import { impressionProductList } from '../../../../__mocks__/impression';
-import { impressionListProps } from '../../../../interfaces/impression';
+import Loader from '../../../../components/Loader';
+import { filterCategories } from './filterCategories';
+import { PRODUCT_TYPE } from '../../../../zustand/product/interface';
 
 export default function Impression({
   params,
@@ -17,41 +18,42 @@ export default function Impression({
     <Tabs.Panel value={`/${params.patientFileId}/treatments/impression`}>
       <CarouselTeeth />
 
-      <View paddingBlock={0} paddingInline={8}>
-        <View.Item>
-          <View direction='row' align='center' paddingTop={6}>
-            <View.Item grow>
-              <Text variant='body-3' color='neutral-faded'>
-                25 Results
-              </Text>
-            </View.Item>
-            <ShareButton />
+      <View direction='row' gap={11}>
+        <View.Item columns={3} className='sticky !top-[237px]'>
+          <View
+            paddingStart={6}
+            paddingTop={8}
+            height='calc(100vh - 240px)'
+            className='overflow-y-auto scrollbar-0'
+          >
+            <Suspense
+              fallback={
+                <View height='70vh'>
+                  <Loader />
+                </View>
+              }
+            >
+              <ProductFilterForm
+                filterCategories={filterCategories}
+                productType={PRODUCT_TYPE.IMPRESSION}
+              />
+            </Suspense>
           </View>
         </View.Item>
 
-        <View direction='row' paddingBlock={8} paddingInline={0} gap={23}>
-          <View.Item columns={3}>
-            <ImpressionForm />
-          </View.Item>
-
-          <View.Item columns={9}>
-            <Card padding={0}>
-              <View divided>
-                {impressionProductList.map((data: impressionListProps) => (
-                  <ImpressionList
-                    key={data.id}
-                    id={data.id}
-                    heading={data.heading}
-                    description={data.description}
-                    image={data.image}
-                    price={data.price}
-                    options={data.options}
-                  />
-                ))}
-              </View>
-            </Card>
-          </View.Item>
-        </View>
+        <View.Item columns={9}>
+          <View paddingEnd={6} paddingTop={8}>
+            <Suspense
+              fallback={
+                <View height='70vh'>
+                  <Loader />
+                </View>
+              }
+            >
+              <ProductList productType={PRODUCT_TYPE.IMPRESSION} />
+            </Suspense>
+          </View>
+        </View.Item>
       </View>
     </Tabs.Panel>
   );

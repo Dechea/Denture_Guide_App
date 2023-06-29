@@ -61,23 +61,22 @@ const TreatmentTabs = ({
     // TODO: Remove to make corwn tab functionable`
     if (clickedTabIndex === 6) return;
 
-    if (activeTabIndex >= 2 || clickedTabIndex === 1) {
-      router.push(value as __next_route_internal_types__.RouteImpl<string>);
-      return;
-    }
-    if (activeTabIndex < 2 && activeTabIndex > clickedTabIndex) {
-      router.push(value as __next_route_internal_types__.RouteImpl<string>);
-    }
+    router.push(value as __next_route_internal_types__.RouteImpl<string>);
   };
 
   return (
-    <View paddingBlock={0} paddingInline={2}>
+    <View
+      paddingBlock={0}
+      paddingInline={2}
+      className='overflow-y-scroll max-h-[calc(100vh-60px)]'
+    >
       <Tabs onChange={onChangeTab} itemWidth='equal' value={path}>
         <View
           position='sticky'
-          insetTop={14.2}
+          insetTop={0}
           backgroundColor='white'
           zIndex={50}
+          height={11}
         >
           <Tabs.List>
             <Tabs.Item value={`/${patientFileId}/treatments`}>
@@ -98,7 +97,7 @@ const TreatmentTabs = ({
             <Tabs.Item value={`/${patientFileId}/treatments/abutment`}>
               <TabItemWithTooltip
                 tabText='Abutments'
-                active={activeTabIndex >= 2}
+                active
                 tooltipText={toolTipMapping[activeTabIndex]}
               />
             </Tabs.Item>
@@ -106,7 +105,7 @@ const TreatmentTabs = ({
             <Tabs.Item value={`/${patientFileId}/treatments/healing`}>
               <TabItemWithTooltip
                 tabText='Healings'
-                active={activeTabIndex >= 2}
+                active
                 tooltipText={toolTipMapping[activeTabIndex]}
               />
             </Tabs.Item>
@@ -114,7 +113,7 @@ const TreatmentTabs = ({
             <Tabs.Item value={`/${patientFileId}/treatments/temporary`}>
               <TabItemWithTooltip
                 tabText='Temporary'
-                active={activeTabIndex >= 2}
+                active
                 tooltipText={toolTipMapping[activeTabIndex]}
               />
             </Tabs.Item>
@@ -122,7 +121,7 @@ const TreatmentTabs = ({
             <Tabs.Item value={`/${patientFileId}/treatments/impression`}>
               <TabItemWithTooltip
                 tabText='Impression'
-                active={activeTabIndex >= 2}
+                active
                 tooltipText={toolTipMapping[activeTabIndex]}
               />
             </Tabs.Item>

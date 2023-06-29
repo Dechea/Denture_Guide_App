@@ -50,7 +50,7 @@ export default function Implant({
       <CarouselTeeth />
 
       <View direction='row' gap={11}>
-        <View.Item columns={3} className='sticky !top-[237px]'>
+        <View.Item columns={3} className='sticky !top-[180px]'>
           <View
             paddingStart={6}
             paddingTop={8}

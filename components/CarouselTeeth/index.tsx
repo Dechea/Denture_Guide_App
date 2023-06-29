@@ -11,7 +11,7 @@ export default function CarouselTeeth() {
     <View
       width='100%'
       position='sticky'
-      insetTop={25.3}
+      insetTop={11}
       zIndex={50}
       backgroundColor='neutral-faded'
       direction='row'
