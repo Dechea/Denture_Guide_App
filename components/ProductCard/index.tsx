@@ -129,7 +129,7 @@ export const ProductCard = ({ product, productType }: ProductCardProps) => {
             </View>
 
             <View direction='column' justify='start' gap={2} width='100%'>
-              <ProductToothList />
+              <ProductToothList productId={product.id} />
             </View>
           </View>
         </View>

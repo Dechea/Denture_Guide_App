@@ -1,77 +1,74 @@
 'use client';
 
 import React from 'react';
-import { View, Text, Icon } from 'reshaped';
-import { Tooth, ToothNumber } from '../TeethDiagram/teeth/areas/tooth';
+import { View, Icon, Carousel } from 'reshaped';
+import {
+  Tooth,
+  ToothContainer,
+  ToothNumber,
+} from '../TeethDiagram/teeth/areas/tooth';
 import Root from '../TeethDiagram/teeth/areas/root';
 import Crown from '../TeethDiagram/teeth/areas/crown-side-view';
 import { JawType } from '../TeethDiagram/teeth/areas/tooth/interfaces/props';
 import TickIcon from '../Icons/Tick';
 import { useTeethDiagramStore } from '../../zustand/teethDiagram';
+import { useProductStore } from '../../zustand/product';
 
-const selectedTeethData = [
-  { toothNumber: 11, isSelected: true },
-  { toothNumber: 12, isSelected: false },
-];
-
-interface CartToothProps {
-  toothNumber: number;
-  isSelected: boolean;
-}
-
-export const CartTooth = ({ tooth }: { tooth: CartToothProps }) => {
+export const CartTooth = ({ toothNumber }: { toothNumber: number }) => {
   const { treatments } = useTeethDiagramStore((state) => state);
-  const toothData =
-    treatments[tooth.toothNumber as keyof typeof treatments] || {};
+  const { selectedProducts } = useProductStore((state) => state);
+  const toothData = treatments[toothNumber as keyof typeof treatments] || {};
 
-  const selectedTooth = {
+  const selected = !!selectedProducts[toothNumber];
+
+  const styles = {
     activeTooth: '[&_svg>*]:!pointer-events-none [&_svg]:opacity-30 ',
     inactiveTooth: '[&_svg>*]:!pointer-events-none ',
   };
 
   return (
-    <View width='4.31%' height='100%' aspectRatio={53 / 89}>
-      <Tooth
-        variant={toothData?.toothVariant}
-        tooth={tooth.toothNumber}
-        className={
-          tooth.isSelected
-            ? selectedTooth.activeTooth
-            : selectedTooth.inactiveTooth
-        }
-      >
-        <Root tooth={tooth.toothNumber} variant={toothData.rootVariant} />
-        <Crown
-          tooth={tooth.toothNumber}
-          variant={toothData.crownVariant}
-          leftAnchor={toothData.leftAnchor}
-          rightAnchor={toothData.rightAnchor}
-        />
-        {tooth.isSelected && (
-          <View
-            position='absolute'
-            width='100%'
-            height='100%'
-            direction='row'
-            insetTop={3}
-            align='center'
-            justify='center'
-            className='
+    <View height={30} width={15} aspectRatio={60 / 120}>
+      <ToothContainer customStyles='!w-full pointer-events-none'>
+        <Tooth
+          variant={toothData?.toothVariant}
+          tooth={toothNumber}
+          className={selected ? styles.activeTooth : styles.inactiveTooth}
+        >
+          <Root tooth={toothNumber} variant={toothData.rootVariant} />
+          <Crown
+            tooth={toothNumber}
+            variant={toothData.crownVariant}
+            leftAnchor={toothData.leftAnchor}
+            rightAnchor={toothData.rightAnchor}
+          />
+          {selected && (
+            <View
+              position='absolute'
+              width='100%'
+              height='100%'
+              direction='row'
+              insetTop={3}
+              align='center'
+              justify='center'
+              className='
             [&_svg]:!opacity-100
             [&_svg>*]:!stroke-[--rs-color-background-page] [&_svg>*]:!fill-[--rs-color-background-primary]
             '
-          >
-            <Icon svg={TickIcon} size={6} />
-          </View>
-        )}
-      </Tooth>
+            >
+              <Icon svg={TickIcon} size={6} />
+            </View>
+          )}
+        </Tooth>
 
-      <ToothNumber tooth={tooth.toothNumber} jawType={JawType.UPPER} />
+        <ToothNumber tooth={toothNumber} jawType={JawType.UPPER} />
+      </ToothContainer>
     </View>
   );
 };
 
 export default function SelectTeeth() {
+  const { availableTeethByProductType } = useProductStore();
+
   return (
     <View
       width='100%'
@@ -87,9 +84,14 @@ export default function SelectTeeth() {
       padding={3}
       height='136px'
     >
-      {selectedTeethData.map((tooth) => (
-        <CartTooth tooth={tooth} key={tooth.toothNumber} />
-      ))}
+      <Carousel
+        gap={2}
+        className='flex justify-center items-center w-[calc(100%-20px)] h-full'
+      >
+        {availableTeethByProductType.map((tooth) => (
+          <CartTooth toothNumber={tooth} key={tooth} />
+        ))}
+      </Carousel>
     </View>
   );
 }
