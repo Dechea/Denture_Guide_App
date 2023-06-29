@@ -1,11 +1,13 @@
 'use client';
 
-import { Card, Tabs, Text, View } from 'reshaped';
-import { TemporaryList } from '../../../../components/TemporaryList';
+import { Suspense } from 'react';
+import { Tabs, View } from 'reshaped';
+import ProductList from '../../../../components/ProductList';
+import { ProductFilterForm } from '../../../../components/ProductFilterForm';
 import SelectTeeth from '../../../../components/SelectedTeeth';
-import ShareButton from '../../../../components/ShareButton';
-import { temporaryProductList } from '../../../../__mocks__/temporary';
-import { temporaryProductListProps } from '../../../../interfaces/temporary';
+import Loader from '../../../../components/Loader';
+import { filterCategories } from './filterCategories';
+import { PRODUCT_TYPE } from '../../../../zustand/product/interface';
 
 export default function Temporary({
   params,
@@ -16,47 +18,42 @@ export default function Temporary({
     <Tabs.Panel value={`/${params.patientFileId}/treatments/temporary`}>
       <SelectTeeth />
 
-      <View paddingBlock={0} paddingInline={8}>
-        <View.Item>
-          <View direction='row' paddingTop={6} align='center'>
-            <Text variant='body-3' color='neutral-faded'>
-              25 Results
-            </Text>
-
-            <View.Item grow>
-              <View direction='row' justify='end'>
-                <ShareButton />
-              </View>
-            </View.Item>
+      <View direction='row' gap={11}>
+        <View.Item columns={3} className='sticky !top-[237px]'>
+          <View
+            paddingStart={6}
+            paddingTop={8}
+            height='calc(100vh - 240px)'
+            className='overflow-y-auto scrollbar-0'
+          >
+            <Suspense
+              fallback={
+                <View height='70vh'>
+                  <Loader />
+                </View>
+              }
+            >
+              <ProductFilterForm
+                filterCategories={filterCategories}
+                productType={PRODUCT_TYPE.TEMPORARY_ABUTMENT}
+              />
+            </Suspense>
           </View>
         </View.Item>
-        <View
-          direction='row'
-          paddingBlock={8}
-          paddingInline={0}
-          align='center'
-          gap={23}
-        >
-          <View.Item columns={3} />
 
-          <View.Item columns={9}>
-            <Card padding={0}>
-              <View divided>
-                {temporaryProductList.map((data) => (
-                  <TemporaryList
-                    key={data.id}
-                    id={data.id}
-                    heading={data.heading}
-                    price={data.price}
-                    image={data.image}
-                    options={data.options}
-                    patientFileId={params.patientFileId}
-                  />
-                ))}
-              </View>
-            </Card>
-          </View.Item>
-        </View>
+        <View.Item columns={9}>
+          <View paddingEnd={6} paddingTop={8}>
+            <Suspense
+              fallback={
+                <View height='70vh'>
+                  <Loader />
+                </View>
+              }
+            >
+              <ProductList productType={PRODUCT_TYPE.TEMPORARY_ABUTMENT} />
+            </Suspense>
+          </View>
+        </View.Item>
       </View>
     </Tabs.Panel>
   );

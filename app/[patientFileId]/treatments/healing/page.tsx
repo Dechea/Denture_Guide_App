@@ -1,10 +1,13 @@
-import { Tabs, View, Text, Card } from 'reshaped';
-import HealingList from '../../../../components/HealingList';
-import HealingForm from '../../../../components/HealingForm';
+'use client';
+
+import { Suspense } from 'react';
+import { Tabs, View } from 'reshaped';
+import ProductList from '../../../../components/ProductList';
+import { ProductFilterForm } from '../../../../components/ProductFilterForm';
 import SelectTeeth from '../../../../components/SelectedTeeth';
-import { healingProductList } from '../../../../__mocks__/healing';
-import { healingProductListProps } from '../../../../interfaces/healing';
-import ShareButton from '../../../../components/ShareButton';
+import Loader from '../../../../components/Loader';
+import { filterCategories } from './filterCategories';
+import { PRODUCT_TYPE } from '../../../../zustand/product/interface';
 
 export default function Healing({
   params,
@@ -15,41 +18,42 @@ export default function Healing({
     <Tabs.Panel value={`/${params.patientFileId}/treatments/healing`}>
       <SelectTeeth />
 
-      <View paddingBlock={0} paddingInline={8}>
-        <View.Item>
-          <View direction='row' align='center' paddingTop={6}>
-            <View.Item grow>
-              <Text variant='body-3' color='neutral-faded'>
-                3 Results
-              </Text>
-            </View.Item>
-            <ShareButton />
+      <View direction='row' gap={11}>
+        <View.Item columns={3} className='sticky !top-[237px]'>
+          <View
+            paddingStart={6}
+            paddingTop={8}
+            height='calc(100vh - 240px)'
+            className='overflow-y-auto scrollbar-0'
+          >
+            <Suspense
+              fallback={
+                <View height='70vh'>
+                  <Loader />
+                </View>
+              }
+            >
+              <ProductFilterForm
+                filterCategories={filterCategories}
+                productType={PRODUCT_TYPE.HEALING_ABUTMENT}
+              />
+            </Suspense>
           </View>
         </View.Item>
 
-        <View direction='row' paddingBlock={8} paddingInline={0} gap={23}>
-          <View.Item columns={3}>
-            <HealingForm />
-          </View.Item>
-          <View.Item columns={9}>
-            <Card padding={0}>
-              <View divided>
-                {healingProductList.map((data) => (
-                  <HealingList
-                    key={data.id}
-                    id={data.id}
-                    heading={data.heading}
-                    description={data.description}
-                    price={data.price}
-                    image={data.image}
-                    options={data.options}
-                    patientFileId={params.patientFileId}
-                  />
-                ))}
-              </View>
-            </Card>
-          </View.Item>
-        </View>
+        <View.Item columns={9}>
+          <View paddingEnd={6} paddingTop={8}>
+            <Suspense
+              fallback={
+                <View height='70vh'>
+                  <Loader />
+                </View>
+              }
+            >
+              <ProductList productType={PRODUCT_TYPE.HEALING_ABUTMENT} />
+            </Suspense>
+          </View>
+        </View.Item>
       </View>
     </Tabs.Panel>
   );
