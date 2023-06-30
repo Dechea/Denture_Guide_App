@@ -8,18 +8,26 @@ import CarouselTeeth from '../../../../components/CarouselTeeth';
 import Loader from '../../../../components/Loader';
 import { filterCategories } from './filterCategories';
 import { PRODUCT_TYPE } from '../../../../zustand/product/interface';
+import { IMPLANT } from '../../../../components/TeethDiagram/teeth/constants/treatmentVariants';
+import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
+
+const acceptableTreatment = {
+  rootVariant: [IMPLANT],
+};
 
 export default function Temporary({
   params,
 }: {
   params: { patientFileId: string };
 }) {
+  useAvailableTeethByTreatment({ acceptableTreatment });
+
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/temporary`}>
       <CarouselTeeth />
 
       <View direction='row' gap={11}>
-        <View.Item columns={3} className='sticky !top-[237px]'>
+        <View.Item columns={3} className='sticky !top-[180px]'>
           <View
             paddingStart={6}
             paddingTop={8}

@@ -69,6 +69,7 @@ const TreatmentTabs = ({
       paddingBlock={0}
       paddingInline={2}
       className='overflow-y-scroll max-h-[calc(100vh-60px)]'
+      attributes={{ id: 'scrollableProductList' }}
     >
       <Tabs onChange={onChangeTab} itemWidth='equal' value={path}>
         <View

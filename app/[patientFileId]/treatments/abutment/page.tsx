@@ -8,18 +8,40 @@ import CarouselTeeth from '../../../../components/CarouselTeeth';
 import Loader from '../../../../components/Loader';
 import { filterCategories } from './filterCategories';
 import { PRODUCT_TYPE } from '../../../../zustand/product/interface';
+import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
+import {
+  ARTIFICIAL_CROWN,
+  BRIDGE_ANCHOR,
+  BRIDGE_LINK,
+  IMPLANT,
+  PROSTHESIS_ANCHOR,
+  PROSTHESIS_LINK,
+} from '../../../../components/TeethDiagram/teeth/constants/treatmentVariants';
+
+const acceptableTreatment = {
+  rootVariant: [IMPLANT],
+  crownVariant: [
+    ARTIFICIAL_CROWN,
+    PROSTHESIS_ANCHOR,
+    PROSTHESIS_LINK,
+    BRIDGE_ANCHOR,
+    BRIDGE_LINK,
+  ],
+};
 
 export default function Abutment({
   params,
 }: {
   params: { patientFileId: string };
 }) {
+  useAvailableTeethByTreatment({ acceptableTreatment });
+
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/abutment`}>
       <CarouselTeeth />
 
       <View direction='row' gap={11}>
-        <View.Item columns={3} className='sticky !top-[237px]'>
+        <View.Item columns={3} className='sticky !top-[180px]'>
           <View
             paddingStart={6}
             paddingTop={8}

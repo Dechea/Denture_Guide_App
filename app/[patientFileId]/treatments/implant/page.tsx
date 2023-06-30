@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect } from 'react';
+import { Suspense } from 'react';
 import { Tabs, View } from 'reshaped';
 import ProductList from '../../../../components/ProductList';
 import { ProductFilterForm } from '../../../../components/ProductFilterForm';
@@ -8,9 +8,8 @@ import CarouselTeeth from '../../../../components/CarouselTeeth';
 import Loader from '../../../../components/Loader';
 import { filterCategories } from './filterCategories';
 import { PRODUCT_TYPE } from '../../../../zustand/product/interface';
-import { useTeethDiagramStore } from '../../../../zustand/teethDiagram';
 import { IMPLANT } from '../../../../components/TeethDiagram/teeth/constants/treatmentVariants';
-import { useProductStore } from '../../../../zustand/product';
+import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
 
 const acceptableTreatment = { rootVariant: [IMPLANT] };
 
@@ -19,31 +18,7 @@ export default function Implant({
 }: {
   params: { patientFileId: string };
 }) {
-  const { treatments } = useTeethDiagramStore();
-  const { setAvailableTeethByProductType } = useProductStore();
-
-  useEffect(() => {
-    const availableTeeth: number[] = [];
-
-    Object.entries(treatments).forEach(([toothNumber, visualisation]) => {
-      Object.entries(acceptableTreatment).forEach(([area, values]) => {
-        if (
-          values.includes(
-            visualisation[area as keyof typeof visualisation] as string
-          )
-        ) {
-          availableTeeth.push(Number(toothNumber));
-          return;
-        }
-      });
-    });
-
-    setAvailableTeethByProductType(availableTeeth);
-
-    return () => {
-      setAvailableTeethByProductType([]);
-    };
-  }, []);
+  useAvailableTeethByTreatment({ acceptableTreatment });
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/implant`}>

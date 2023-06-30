@@ -105,6 +105,7 @@ const ProductList = ({ productType }: ProductListProps) => {
           dataLength={products.data.length}
           next={fetchMoreProducts}
           scrollThreshold={'100px'}
+          scrollableTarget={'scrollableProductList'}
           hasMore={!!products?.after}
           loader={
             <View paddingBlock={10}>
