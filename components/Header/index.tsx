@@ -1,19 +1,19 @@
 'use client';
 
-import { useMemo } from 'react';
-import { View, Avatar, Divider, MenuItem, Button, Text } from 'reshaped';
-import { useRouter, usePathname } from 'next/navigation';
 import { useQuery } from 'fqlx-client';
-import CartPopoverButton from '../CartPopoverButton';
-import BackwardIcon from '../Icons/Backward';
-import CostEst from '../Icons/Cost Est';
+import { usePathname, useRouter } from 'next/navigation';
+import { useMemo } from 'react';
+import { Avatar, Badge, Button, Divider, Icon, Text, View } from 'reshaped';
 import { Query } from '../../fqlx-generated/typedefs';
+import CostEst from '../Icons/CostEst';
+import MenuIcon from '../Icons/MenuIcon';
+import CartIcon from '../Icons/Cart';
 
 interface HeaderProps {
   patientFileId: string;
 }
 
-const Header = ({ patientFileId }: HeaderProps) => {
+export default function Header({ patientFileId }: HeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const query = useQuery<Query>();
@@ -40,60 +40,59 @@ const Header = ({ patientFileId }: HeaderProps) => {
       <View
         direction='row'
         align='center'
-        paddingTop={2}
-        paddingBottom={2}
-        paddingEnd={4}
-        paddingStart={4}
+        paddingBlock={2}
+        paddingInline={6}
+        className='!justify-between'
       >
-        <View.Item columns={6}>
-          <View gap={2} direction='row' align='center'>
-            {/* Back Button */}
-            <View align='center'>
-              <Button
-                icon={<BackwardIcon />}
-                variant='ghost'
-                size='small'
-                onClick={() => router.back()}
-              ></Button>
-            </View>
+        <Button
+          icon={<Icon svg={MenuIcon} size={4} />}
+          variant='ghost'
+          onClick={() => router.push('/')}
+        >
+          <Text variant='body-3' weight='medium'>
+            Orders List
+          </Text>
+        </Button>
 
-            {/* Patient Indicator */}
-            <MenuItem
-              roundedCorners
-              size='small'
-              startSlot={
-                <Avatar
-                  src={patientFile?.patient?.avatar || '/defaultAvatar.svg'}
-                  size={8}
-                />
-              }
+        <View direction='row' gap={3} align='center'>
+          <Avatar
+            src={patientFile?.patient?.avatar || '/defaultAvatar.svg'}
+            size={8}
+          />
+          <Text variant='body-2' weight='medium'>
+            {patientFile?.patient?.name}
+          </Text>
+        </View>
+
+        <View direction='row' align='center' justify='end' gap={6}>
+          <View direction='row' align='center' gap={2.5}>
+            <Button
+              variant='ghost'
+              icon={<Icon svg={CartIcon} size={4} />}
+              highlighted={pathname === `/${patientFileId}/cart`}
+              onClick={() => router.push(`/${patientFileId}/cart`)}
             >
-              <Text variant='body-2'>{patientFile?.patient?.name}</Text>
-            </MenuItem>
+              <Text variant='body-3' weight='medium'>
+                400 €
+              </Text>
+            </Button>
+            <Badge color='critical' size='small'>
+              8
+            </Badge>
           </View>
-        </View.Item>
-
-        <View.Item columns={6}>
-          <View direction='row' align='center' justify='end' gap={4} divided>
-            <View direction='row' align='center' gap={4}>
-              <CartPopoverButton />
-              <Button
-                icon={<CostEst />}
-                variant='ghost'
-                size='small'
-                color='neutral'
-                highlighted={pathname === '/costestimation'}
-                onClick={() => router.push('/costestimation')}
-              >
-                Cost Est. 0.00 €
-              </Button>
-            </View>
-          </View>
-        </View.Item>
+          <Button
+            icon={<CostEst />}
+            variant='ghost'
+            size='small'
+            color='neutral'
+            highlighted={pathname === `/${patientFileId}/cost-estimation`}
+            onClick={() => router.push(`/${patientFileId}/cost-estimation`)}
+          >
+            Cost Estimation
+          </Button>
+        </View>
       </View>
       <Divider />
     </View>
   );
-};
-
-export default Header;
+}
