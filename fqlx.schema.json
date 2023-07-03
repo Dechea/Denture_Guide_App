@@ -152,6 +152,56 @@
         "implantLine": "string",
         "abutmentLine": "string",
         "diameterPlatform": "number"
+      },
+      "labScrew": {
+        "implantLine": "string",
+        "abutmentLine": "string",
+        "material": "string",
+        "sterile": "boolean",
+        "singleUse": "boolean",
+        "maxTorque": "number",
+        "length": "number",
+        "diameterPlatform": "number[]"
+      },
+      "implantReplica": {
+        "implantLine": "string",
+        "material": "string",
+        "platformSwitch": "boolean",
+        "sterile": "boolean",
+        "singleUse": "boolean",
+        "diameterPlatform": "number",
+        "workflow": "boolean"
+      },
+      "screwdriver": {
+        "material": "string",
+        "sterile": "boolean",
+        "singleUse": "boolean",
+        "lengthFunctional": "number",
+        "lengthFull": "number",
+        "type": "string"
+      },
+      "orientationAid": {
+        "material": "string",
+        "sterile": "boolean",
+        "singleUse": "boolean",
+        "lengthFunctional": "number",
+        "lengthFull": "number",
+        "type": "string"
+      },
+      "protectionAid": {
+        "material": "string",
+        "sterile": "boolean",
+        "singleUse": "boolean",
+        "diameterPlatform": "number",
+        "heightProsthetic": "number"
+      },
+      "clampingAid": {
+        "implantLine": "string",
+        "abutmentLine": "string",
+        "material": "string",
+        "sterile": "boolean",
+        "singleUse": "boolean",
+        "diameterPlatform": "number"
       }
     }
   },
