@@ -6,6 +6,11 @@ export enum PRODUCT_TYPE {
   IMPRESSION = 'impression',
 }
 
+export enum AREA_TYPE {
+  ROOT = 'root',
+  CROWN = 'crown',
+}
+
 export interface ProductFilterCategory {
   displayName: string;
   fqlxKey: string;

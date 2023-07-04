@@ -18,7 +18,7 @@ const ProductToothList = ({ productId }: ProductToothListProps) => {
 
     // Deselect if clicked on selected tooth
     if (selectedProductsData[toothNumber] === productId) {
-      delete selectedProductsData[toothNumber];
+      selectedProductsData[toothNumber] = '';
     } else {
       // Select tooth with productId
       selectedProductsData[toothNumber] = productId;

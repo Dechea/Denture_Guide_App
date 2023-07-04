@@ -1,35 +1,51 @@
 import { useEffect } from 'react';
 import { useProductStore } from '../zustand/product';
-import { useTeethDiagramStore } from '../zustand/teethDiagram';
+import { useQuery } from 'fqlx-client';
+import { PatientFile, Query } from '../fqlx-generated/typedefs';
 
 interface useAvailableTeethByTreatmentProps {
   acceptableTreatment: { [key: string]: string[] };
+  patientFileId: string;
 }
 
 export function useAvailableTeethByTreatment({
   acceptableTreatment,
+  patientFileId,
 }: useAvailableTeethByTreatmentProps) {
-  const { treatments } = useTeethDiagramStore();
   const { setAvailableTeethByProductType, setSelectedProducts } =
     useProductStore();
+  const query = useQuery<Query>();
+
+  const patientFile: PatientFile = query.PatientFile.firstWhere(
+    `(file) => file.id == "${patientFileId}"`
+  ).exec();
+
+  const patientFileTeeth = [...(patientFile.teeth || [])];
 
   useEffect(() => {
     const availableTeeth: number[] = [];
+    const alreadySelectedProducts: { [key: number]: string } = {};
 
-    Object.entries(treatments).forEach(([toothNumber, visualisation]) => {
+    patientFileTeeth.forEach((tooth) => {
+      const toothNumber = Number(tooth.name);
+
       for (const [area, values] of Object.entries(acceptableTreatment)) {
-        if (
-          values.includes(
-            visualisation[area as keyof typeof visualisation] as string
-          )
-        ) {
+        // @ts-expect-error
+        if (values.includes(tooth[area]?.treatmentDoc?.treatment?.name)) {
           availableTeeth.push(Number(toothNumber));
+          // @ts-expect-error
+          if (tooth[area]?.treatmentDoc?.selectedProducts?.length) {
+            alreadySelectedProducts[toothNumber] =
+              // @ts-expect-error
+              tooth[area].treatmentDoc.selectedProducts[0]?.selectedProduct.id;
+          }
           break;
         }
       }
     });
 
     setAvailableTeethByProductType(availableTeeth);
+    setSelectedProducts(alreadySelectedProducts);
 
     return () => {
       setAvailableTeethByProductType([]);

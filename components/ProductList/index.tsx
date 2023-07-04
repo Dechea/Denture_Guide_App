@@ -4,7 +4,7 @@ import { useQuery } from 'fqlx-client';
 import { useEffect, useMemo } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Card, Text, View } from 'reshaped';
-import { Product, Query } from '../../fqlx-generated/typedefs';
+import { Product, Query, Tooth } from '../../fqlx-generated/typedefs';
 import Loader from '../Loader';
 import { ProductCard } from '../ProductCard';
 import ShareButton from '../ShareButton';
@@ -12,22 +12,71 @@ import { useProductStore } from '../../zustand/product';
 import ProductHelpFooter from '../ProductHelpFooter';
 import ProductNotFound from '../ProductNotFound';
 import { formWhereCondition } from './helper';
-import { PRODUCT_TYPE } from '../../zustand/product/interface';
+import { AREA_TYPE, PRODUCT_TYPE } from '../../zustand/product/interface';
 import { convertCamelCaseToTitleCase } from '../../utils/helper';
 
 interface ProductListProps {
   productType: PRODUCT_TYPE;
+  areaType: AREA_TYPE;
+  patientFileId: string;
 }
 
-const ProductList = ({ productType }: ProductListProps) => {
+const ProductList = ({
+  productType,
+  areaType,
+  patientFileId,
+}: ProductListProps) => {
   const {
     products,
     setProducts,
     searchedProductManufacturerId,
     productFilters,
+    selectedProducts,
   } = useProductStore();
 
   const query = useQuery<Query>();
+
+  const fqlxTeeth =
+    query.PatientFile.firstWhere(
+      `(file) => file.id == "${patientFileId}"`
+    ).exec().teeth || [];
+
+  const addProductInFqlx = () => {
+    const teeth = [...fqlxTeeth];
+
+    teeth.forEach((tooth: Tooth) => {
+      const toothNumber = Number(tooth.name);
+
+      if (toothNumber in selectedProducts) {
+        if (selectedProducts[toothNumber] === '') {
+          // @ts-expect-error
+          tooth[areaType].treatmentDoc.selectedProducts = [];
+        } else {
+          // @ts-expect-error
+          tooth[areaType].treatmentDoc.selectedProducts = [
+            {
+              // @ts-expect-error
+              selectedProduct: `Product.byId("${selectedProducts[toothNumber]}")`,
+              quantity: 1,
+            },
+          ];
+        }
+      }
+    });
+
+    const stringifyTeeth = JSON.stringify(teeth).replaceAll(
+      /"Product.byId\(\\"(\d*)\\"\)"/g,
+      'Product.byId("$1")'
+    );
+
+    query.PatientFile.byId(patientFileId)
+      .update(`{ teeth: ${stringifyTeeth} }`)
+      .exec();
+  };
+
+  useEffect(() => {
+    addProductInFqlx();
+  }, [selectedProducts]);
 
   const productQuery = useMemo(
     () =>
