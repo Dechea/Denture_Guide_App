@@ -14,16 +14,17 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
     <View>
       <Suspense
         fallback={
-          <View height='100vh' width='100%' justify='center' align='center'>
+          <View height='56px' width='100%' justify='center' align='center'>
             <Loader />
           </View>
         }
       >
         <Header patientFileId={params.patientFileId} />
-        <TreatmentTabs patientFileId={params.patientFileId}>
-          {children}
-        </TreatmentTabs>
       </Suspense>
+
+      <TreatmentTabs patientFileId={params.patientFileId}>
+        {children}
+      </TreatmentTabs>
     </View>
   );
 }

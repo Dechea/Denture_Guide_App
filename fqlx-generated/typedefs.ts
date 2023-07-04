@@ -2350,6 +2350,10 @@ export interface Ts {
  */
  manufacturer: Manufacturer;
 /**
+ * image for the Product
+ */
+ image: string;
+/**
  * localizations for the Product
  */
  localizations: ProductLocalization[];
@@ -2386,6 +2390,10 @@ export interface Ts {
  * manufacturer for the Product
  */
  manufacturer: Manufacturer;
+/**
+ * image for the Product
+ */
+ image: string;
 /**
  * localizations for the Product
  */
@@ -2435,6 +2443,7 @@ export interface Ts {
        * @param {ProductInput} input - will be the Product which you want to add.
          * @param { string } input.manufacturerProductId ManufacturerProductId for the Product
 * @param { Manufacturer } input.manufacturer Manufacturer for the Product
+* @param { string } input.image Image for the Product
 * @param { ProductLocalization[] } input.localizations Localizations for the Product
 * @param { Implant } input.implant Implant for the Product
 * @param { Abutment } input.abutment Abutment for the Product
@@ -2448,6 +2457,7 @@ export interface Ts {
        * query.Product.create({  
  * manufacturerProductId: "Value of the manufacturerProductId"   
  * manufacturer: "Value of the manufacturer"   
+ * image: "Value of the image"   
  * localizations: "Value of the localizations"   
  * implant: "Value of the implant"   
  * abutment: "Value of the abutment"   

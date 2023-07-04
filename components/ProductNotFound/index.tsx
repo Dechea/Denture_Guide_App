@@ -3,9 +3,13 @@ import BarCodeIcon from '../Icons/Barcode';
 
 interface ProductNotFoundProps {
   barcode: string;
+  showFilterError: boolean;
 }
 
-export default function ProductNotFound({ barcode }: ProductNotFoundProps) {
+export default function ProductNotFound({
+  barcode,
+  showFilterError,
+}: ProductNotFoundProps) {
   return (
     <View align='center' paddingTop={24} gap={6}>
       <View
@@ -22,15 +26,31 @@ export default function ProductNotFound({ barcode }: ProductNotFoundProps) {
       </View>
 
       <View align='center' gap={2}>
-        <Text variant='featured-2' weight='medium' color='neutral'>
-          Nothing was found for code
-        </Text>
-        <Text variant='featured-2' weight='medium' color='neutral'>
-          “{barcode}”
-        </Text>
-        <Text variant='body-2' weight='regular' color='neutral-faded'>
-          Try another code
-        </Text>
+        {showFilterError ? (
+          <>
+            <Text variant='featured-2' weight='medium' color='neutral'>
+              Oops! It looks like there are
+            </Text>
+            <Text variant='featured-2' weight='medium' color='neutral'>
+              no results matching your
+            </Text>
+            <Text variant='featured-2' weight='medium' color='neutral'>
+              current filters
+            </Text>
+          </>
+        ) : (
+          <>
+            <Text variant='featured-2' weight='medium' color='neutral'>
+              Nothing was found for code
+            </Text>
+            <Text variant='featured-2' weight='medium' color='neutral'>
+              {barcode && `“${barcode}”`}
+            </Text>
+            <Text variant='body-2' weight='regular' color='neutral-faded'>
+              Try another code
+            </Text>
+          </>
+        )}
       </View>
     </View>
   );

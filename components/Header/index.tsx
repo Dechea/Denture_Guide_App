@@ -1,11 +1,12 @@
 'use client';
 
+import { useMemo } from 'react';
 import { View, Avatar, Divider, MenuItem, Button, Text } from 'reshaped';
 import { useRouter, usePathname } from 'next/navigation';
+import { useQuery } from 'fqlx-client';
 import CartPopoverButton from '../CartPopoverButton';
 import BackwardIcon from '../Icons/Backward';
 import CostEst from '../Icons/Cost Est';
-import { useQuery } from 'fqlx-client';
 import { Query } from '../../fqlx-generated/typedefs';
 
 interface HeaderProps {
@@ -17,11 +18,15 @@ const Header = ({ patientFileId }: HeaderProps) => {
   const pathname = usePathname();
   const query = useQuery<Query>();
 
-  const patientFile = query.PatientFile.firstWhere(
-    `(patientFile) => patientFile.id == "${patientFileId}"`
-  )
-    .project({ patient: { name: true, avatar: true } })
-    .exec();
+  const patientFile = useMemo(
+    () =>
+      query.PatientFile.firstWhere(
+        `(patientFile) => patientFile.id == "${patientFileId}"`
+      )
+        .project({ patient: { name: true, avatar: true } })
+        .exec(),
+    [patientFileId]
+  );
 
   return (
     <View
@@ -70,10 +75,6 @@ const Header = ({ patientFileId }: HeaderProps) => {
 
         <View.Item columns={6}>
           <View direction='row' align='center' justify='end' gap={4} divided>
-            <MenuItem size='small' roundedCorners>
-              Order History
-            </MenuItem>
-
             <View direction='row' align='center' gap={4}>
               <CartPopoverButton />
               <Button

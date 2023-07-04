@@ -1,32 +1,32 @@
 'use client';
 
 import { Divider, Icon, Image, Text, View } from 'reshaped';
-import ImplantProductOption from '../ImplantProductOption';
-import { implantProductListProps } from '../../interfaces/implant';
+import ProductToothList from '../ProductToothList';
+import StorageIcon from '../Icons/Storage';
 import ArrowDownIcon from '../Icons/ArrowDown';
 import BarCodeIcon from '../Icons/Barcode';
+import { Product } from '../../fqlx-generated/typedefs';
+import { PRODUCT_TYPE } from '../../zustand/product/interface';
+import { convertCamelCaseToTitleCase } from '../../utils/helper';
 
-export const ImplantList = ({
-  id,
-  implant,
-  options,
-}: implantProductListProps) => {
-  const implantData = {
-    Material: implant?.implant?.material || '',
-    'Insertion Post': implant?.implant?.insertionPost || '',
-    'Neck Length': implant?.implant?.lengthNeck || '',
-    Diameter: implant?.implant?.diameterPlatform || '',
-    Length: implant?.implant?.length || '',
-    'Platform Switch': implant?.implant?.platformSwitch || '',
-  };
+interface ProductCardProps {
+  product: Product;
+  productType: PRODUCT_TYPE;
+}
+
+export const ProductCard = ({ product, productType }: ProductCardProps) => {
+  const productName =
+    product?.localizations?.find(
+      (item: { locale: string }) => item.locale === 'EN'
+    )?.name || '';
 
   return (
     <View direction='row' paddingBlock={6} paddingInline={4} gap={8}>
       <Image
         width='140px'
         height='140px'
-        src='/ImplantImage.svg'
-        alt='ImplantImage'
+        src={product.image}
+        alt={productName}
         borderRadius='medium'
       />
 
@@ -38,20 +38,14 @@ export const ImplantList = ({
                 <View gap={1}>
                   <View direction='row' align='center' gap={2}>
                     <Text variant='body-1' weight='bold'>
-                      {implant?.localizations?.length
-                        ? implant.localizations
-                            .find(
-                              (item: { locale: string }) => item.locale === 'EN'
-                            )
-                            .name.split(',')[0]
-                        : '-'}
+                      {productName ? productName?.split(',')[0] : '-'}
                     </Text>
                     <Text
                       variant='caption-1'
                       weight='medium'
                       color='neutral-faded'
                     >
-                      {implant.manufacturer.name}
+                      {product.manufacturer.name}
                     </Text>
                   </View>
 
@@ -62,13 +56,13 @@ export const ImplantList = ({
                       variant='body-3'
                       weight='regular'
                     >
-                      {implant?.manufacturerProductId || '-'}
+                      {product?.manufacturerProductId || '-'}
                     </Text>
                   </View>
                 </View>
 
                 <View gap={2} width='inherit'>
-                  {Object.entries(implantData).map(([key, value]) => (
+                  {Object.entries(product[productType]).map(([key, value]) => (
                     <View
                       key={key}
                       direction='row'
@@ -103,11 +97,19 @@ export const ImplantList = ({
               </View>
               <View direction='row' height='100%' gap={6} width='100%'>
                 <Text color='neutral' variant='body-3' weight='medium'>
-                  {!isNaN(implant.localizations[1].price.amount)
-                    ? implant.localizations[1].price.amount
+                  {!isNaN(product.localizations[1].price.amount)
+                    ? product.localizations[1].price.amount
                     : '-'}{' '}
                   €
                 </Text>
+                {true && (
+                  <View direction='row' gap={1} align='center'>
+                    <Icon svg={StorageIcon} color='primary' />
+                    <Text color='primary' variant='body-3' weight='medium'>
+                      2 in Local Storage
+                    </Text>
+                  </View>
+                )}
               </View>
             </View>
           </View.Item>
@@ -122,17 +124,12 @@ export const ImplantList = ({
             <View direction='row' align='center' width='100%' gap={1}>
               <Icon svg={ArrowDownIcon} />
               <Text variant='body-3' weight='medium'>
-                Select Implant for:
+                Select {convertCamelCaseToTitleCase(productType)} for:
               </Text>
             </View>
 
             <View direction='column' justify='start' gap={2} width='100%'>
-              {options?.map((data) => (
-                <ImplantProductOption
-                  key={data.id}
-                  selectedTeeth={data.selectedTeeth}
-                />
-              ))}
+              <ProductToothList />
             </View>
           </View>
         </View>
