@@ -62,42 +62,44 @@ export const ProductCard = ({ product, productType }: ProductCardProps) => {
                 </View>
 
                 <View gap={2} width='inherit'>
-                  {Object.entries(product[productType]).map(([key, value]) => (
-                    <View
-                      key={key}
-                      direction='row'
-                      width='100%'
-                      height='100%'
-                      gap={1}
-                    >
-                      <View direction='row' width='50%' gap={1}>
-                        <Text
-                          variant='body-3'
-                          weight='regular'
-                          color='neutral-faded'
-                        >
-                          {key}
-                        </Text>
+                  {Object.entries(product[productType] || {}).map(
+                    ([key, value]) => (
+                      <View
+                        key={key}
+                        direction='row'
+                        width='100%'
+                        height='100%'
+                        gap={1}
+                      >
+                        <View direction='row' width='50%' gap={1}>
+                          <Text
+                            variant='body-3'
+                            weight='regular'
+                            color='neutral-faded'
+                          >
+                            {key}
+                          </Text>
 
-                        <View.Item grow>
-                          <View paddingTop={3.5}>
-                            <Divider />
-                          </View>
-                        </View.Item>
-                      </View>
+                          <View.Item grow>
+                            <View paddingTop={3.5}>
+                              <Divider />
+                            </View>
+                          </View.Item>
+                        </View>
 
-                      <View direction='row'>
-                        <Text variant='body-3' weight='regular'>
-                          {value as string}
-                        </Text>
+                        <View direction='row'>
+                          <Text variant='body-3' weight='regular'>
+                            {value as string}
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                  ))}
+                    )
+                  )}
                 </View>
               </View>
               <View direction='row' height='100%' gap={6} width='100%'>
                 <Text color='neutral' variant='body-3' weight='medium'>
-                  {!isNaN(product.localizations[1].price.amount)
+                  {!isNaN(product.localizations[1].price.amount as number)
                     ? product.localizations[1].price.amount
                     : '-'}{' '}
                   €
@@ -129,7 +131,7 @@ export const ProductCard = ({ product, productType }: ProductCardProps) => {
             </View>
 
             <View direction='column' justify='start' gap={2} width='100%'>
-              <ProductToothList productId={product.id} />
+              <ProductToothList productId={product.id as string} />
             </View>
           </View>
         </View>

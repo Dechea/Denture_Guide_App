@@ -114,11 +114,11 @@ export interface Ts {
 /**
  * patient for the PatientFile
  */
- patient?: Patient;
+ patient: Patient;
 /**
  * teeth for the PatientFile
  */
- teeth?: Tooth[];
+ teeth: Tooth[];
 
   }
 
@@ -131,11 +131,11 @@ export interface Ts {
 /**
  * patient for the PatientFile
  */
- patient?: Patient;
+ patient: Patient;
 /**
  * teeth for the PatientFile
  */
- teeth?: Tooth[];
+ teeth: Tooth[];
 
   } 
 
@@ -220,7 +220,7 @@ export interface Ts {
     /**
  * name for the Patient
  */
- name?: string;
+ name: string;
 /**
  * avatar for the Patient
  */
@@ -237,7 +237,7 @@ export interface Ts {
     /**
  * name for the Patient
  */
- name?: string;
+ name: string;
 /**
  * avatar for the Patient
  */
@@ -334,7 +334,7 @@ export interface Ts {
 /**
  * treatmentDoc for the Root
  */
- treatmentDoc?: TreatmentDoc;
+ treatmentDoc: TreatmentDoc;
 /**
  * addon for the Root
  */
@@ -363,7 +363,7 @@ export interface Ts {
 /**
  * treatmentDoc for the Root
  */
- treatmentDoc?: TreatmentDoc;
+ treatmentDoc: TreatmentDoc;
 /**
  * addon for the Root
  */
@@ -477,7 +477,7 @@ export interface Ts {
 /**
  * treatmentDoc for the Crown
  */
- treatmentDoc?: TreatmentDoc;
+ treatmentDoc: TreatmentDoc;
 /**
  * addon for the Crown
  */
@@ -518,7 +518,7 @@ export interface Ts {
 /**
  * treatmentDoc for the Crown
  */
- treatmentDoc?: TreatmentDoc;
+ treatmentDoc: TreatmentDoc;
 /**
  * addon for the Crown
  */
@@ -649,15 +649,15 @@ export interface Ts {
     /**
  * name for the Tooth
  */
- name?: string;
+ name: string;
 /**
  * root for the Tooth
  */
- root?: Root;
+ root: Root;
 /**
  * crown for the Tooth
  */
- crown?: Crown;
+ crown: Crown;
 
   }
 
@@ -666,15 +666,15 @@ export interface Ts {
     /**
  * name for the Tooth
  */
- name?: string;
+ name: string;
 /**
  * root for the Tooth
  */
- root?: Root;
+ root: Root;
 /**
  * crown for the Tooth
  */
- crown?: Crown;
+ crown: Crown;
 
   } 
 
@@ -979,7 +979,7 @@ export interface Ts {
     /**
  * treatment for the TreatmentDoc
  */
- treatment?: Treatment;
+ treatment: Treatment;
 /**
  * selectedProducts for the TreatmentDoc
  */
@@ -992,7 +992,7 @@ export interface Ts {
     /**
  * treatment for the TreatmentDoc
  */
- treatment?: Treatment;
+ treatment: Treatment;
 /**
  * selectedProducts for the TreatmentDoc
  */
@@ -1280,7 +1280,7 @@ export interface Ts {
 /**
  * locale for the ProductLocalization
  */
- locale?: string;
+ locale: string;
 /**
  * description for the ProductLocalization
  */
@@ -1288,7 +1288,7 @@ export interface Ts {
 /**
  * price for the ProductLocalization
  */
- price?: Price;
+ price: Price;
 
   }
 
@@ -1301,7 +1301,7 @@ export interface Ts {
 /**
  * locale for the ProductLocalization
  */
- locale?: string;
+ locale: string;
 /**
  * description for the ProductLocalization
  */
@@ -1309,7 +1309,7 @@ export interface Ts {
 /**
  * price for the ProductLocalization
  */
- price?: Price;
+ price: Price;
 
   } 
 
@@ -3381,11 +3381,11 @@ export interface Ts {
 /**
  * manufacturerProductId for the Product
  */
- manufacturerProductId?: string;
+ manufacturerProductId: string;
 /**
  * manufacturer for the Product
  */
- manufacturer?: Manufacturer;
+ manufacturer: Manufacturer;
 /**
  * image for the Product
  */
@@ -3393,7 +3393,7 @@ export interface Ts {
 /**
  * localizations for the Product
  */
- localizations?: ProductLocalization[];
+ localizations: ProductLocalization[];
 /**
  * implant for the Product
  */
@@ -3450,11 +3450,11 @@ export interface Ts {
 /**
  * manufacturerProductId for the Product
  */
- manufacturerProductId?: string;
+ manufacturerProductId: string;
 /**
  * manufacturer for the Product
  */
- manufacturer?: Manufacturer;
+ manufacturer: Manufacturer;
 /**
  * image for the Product
  */
@@ -3462,7 +3462,7 @@ export interface Ts {
 /**
  * localizations for the Product
  */
- localizations?: ProductLocalization[];
+ localizations: ProductLocalization[];
 /**
  * implant for the Product
  */
@@ -3737,7 +3737,7 @@ export interface Ts {
     /**
  * name for the Treatment
  */
- name?: string;
+ name: string;
 /**
  * areas for the Treatment
  */
@@ -3754,7 +3754,7 @@ export interface Ts {
     /**
  * name for the Treatment
  */
- name?: string;
+ name: string;
 /**
  * areas for the Treatment
  */

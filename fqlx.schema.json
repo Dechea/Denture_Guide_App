@@ -7,6 +7,9 @@
       },
       "patient": "Patient",
       "teeth": "Tooth[]"
+    },
+    "constraints": {
+      "required": ["patient", "teeth"]
     }
   },
   "Patient": {
@@ -14,6 +17,9 @@
       "name": "string",
       "avatar": "string",
       "status": "string"
+    },
+    "constraints": {
+      "required": ["name"]
     }
   },
   "Tooth": {
@@ -38,6 +44,15 @@
         "outside": "BodyPartLeaf",
         "inside": "BodyPartLeaf"
       }
+    },
+    "constraints": {
+      "required": [
+        "name",
+        "root",
+        "crown",
+        "root.treatmentDoc",
+        "crown.treatmentDoc"
+      ]
     }
   },
   "BodyPartLeaf": {
@@ -58,6 +73,9 @@
     "fields": {
       "treatment": "Treatment",
       "selectedProducts": "SelectedProduct[]"
+    },
+    "constraints": {
+      "required": ["treatment"]
     }
   },
   "SelectedProduct": {
@@ -75,6 +93,9 @@
         "amount": "number",
         "currency": "string"
       }
+    },
+    "constraints": {
+      "required": ["locale", "price"]
     }
   },
   "Product": {
@@ -203,6 +224,9 @@
         "singleUse": "boolean",
         "diameterPlatform": "number"
       }
+    },
+    "constraints": {
+      "required": ["manufacturer", "manufacturerProductId", "localizations"]
     }
   },
   "TreatmentGroup": {
@@ -217,6 +241,9 @@
       "name": "string",
       "areas": "Area[]",
       "localizations": "TreatmentLocalization[]"
+    },
+    "constraints": {
+      "required": ["name"]
     }
   },
   "Area": {
