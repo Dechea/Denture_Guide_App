@@ -49,10 +49,8 @@ const ProductList = ({
 
       if (toothNumber in selectedProducts) {
         if (selectedProducts[toothNumber] === '') {
-          // @ts-expect-error
           tooth[areaType].treatmentDoc.selectedProducts = [];
         } else {
-          // @ts-expect-error
           tooth[areaType].treatmentDoc.selectedProducts = [
             {
               // @ts-expect-error
