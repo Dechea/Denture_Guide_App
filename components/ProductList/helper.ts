@@ -7,7 +7,7 @@ export const formWhereCondition = (
 ) => {
   const conditions = [`(product) => product.${productType} != null`];
 
-  if (Boolean(searchedProductManufacturerId)) {
+  if (searchedProductManufacturerId) {
     conditions.push(
       `product.manufacturerProductId?.includes("${searchedProductManufacturerId}")`
     );

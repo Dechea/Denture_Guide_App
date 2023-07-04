@@ -151,7 +151,7 @@ export const ProductFilterForm = ({
                         category.dataType
                       );
                       return (
-                        <View key={index + `${option}`}>
+                        <View key={`${index}-${option}`}>
                           <Checkbox
                             name={option}
                             value={option}

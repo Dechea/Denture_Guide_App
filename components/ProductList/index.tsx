@@ -100,7 +100,7 @@ const ProductList = ({ productType }: ProductListProps) => {
         <ShareButton />
       </View>
 
-      {!!products?.data?.length ? (
+      {products?.data?.length ? (
         <InfiniteScroll
           dataLength={products.data.length}
           next={fetchMoreProducts}

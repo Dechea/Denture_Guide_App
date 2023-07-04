@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import { useProductStore } from '../zustand/product';
 import { useTeethDiagramStore } from '../zustand/teethDiagram';
 
-interface useAvailableTeethByTreatmentProps {
+interface UseAvailableTeethByTreatmentProps {
   acceptableTreatment: { [key: string]: string[] };
 }
 
 export function useAvailableTeethByTreatment({
   acceptableTreatment,
-}: useAvailableTeethByTreatmentProps) {
+}: UseAvailableTeethByTreatmentProps) {
   const { treatments } = useTeethDiagramStore();
   const { setAvailableTeethByProductType, setSelectedProducts } =
     useProductStore();

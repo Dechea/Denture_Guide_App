@@ -2,7 +2,6 @@
 
 import { Divider, Icon, Image, Text, View } from 'reshaped';
 import ProductToothList from '../ProductToothList';
-import StorageIcon from '../Icons/Storage';
 import ArrowDownIcon from '../Icons/ArrowDown';
 import BarCodeIcon from '../Icons/Barcode';
 import { Product } from '../../fqlx-generated/typedefs';
@@ -18,7 +17,7 @@ export const ProductCard = ({ product, productType }: ProductCardProps) => {
   const productName =
     product?.localizations?.find(
       (item: { locale: string }) => item.locale === 'EN'
-    )?.name || '';
+    )?.name ?? '';
 
   return (
     <View direction='row' paddingBlock={6} paddingInline={4} gap={8}>
@@ -62,7 +61,7 @@ export const ProductCard = ({ product, productType }: ProductCardProps) => {
                 </View>
 
                 <View gap={2} width='inherit'>
-                  {Object.entries(product[productType] || {}).map(
+                  {Object.entries(product[productType] ?? {}).map(
                     ([key, value]) => (
                       <View
                         key={key}
@@ -104,14 +103,6 @@ export const ProductCard = ({ product, productType }: ProductCardProps) => {
                     : '-'}{' '}
                   €
                 </Text>
-                {true && (
-                  <View direction='row' gap={1} align='center'>
-                    <Icon svg={StorageIcon} color='primary' />
-                    <Text color='primary' variant='body-3' weight='medium'>
-                      2 in Local Storage
-                    </Text>
-                  </View>
-                )}
               </View>
             </View>
           </View.Item>
