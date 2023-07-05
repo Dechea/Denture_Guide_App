@@ -100,11 +100,12 @@ const ProductList = ({ productType }: ProductListProps) => {
         <ShareButton />
       </View>
 
-      {!!products?.data?.length ? (
+      {products?.data?.length ? (
         <InfiniteScroll
           dataLength={products.data.length}
           next={fetchMoreProducts}
           scrollThreshold={'100px'}
+          scrollableTarget={'scrollableProductList'}
           hasMore={!!products?.after}
           loader={
             <View paddingBlock={10}>

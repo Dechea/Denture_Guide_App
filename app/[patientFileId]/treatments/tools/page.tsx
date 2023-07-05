@@ -11,11 +11,9 @@ import { PRODUCT_TYPE } from '../../../../zustand/product/interface';
 import { IMPLANT } from '../../../../components/TeethDiagram/teeth/constants/treatmentVariants';
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
 
-const acceptableTreatment = {
-  rootVariant: [IMPLANT],
-};
+const acceptableTreatment = { rootVariant: [IMPLANT] };
 
-export default function Healing({
+export default function Tools({
   params,
 }: {
   params: { patientFileId: string };
@@ -23,7 +21,7 @@ export default function Healing({
   useAvailableTeethByTreatment({ acceptableTreatment });
 
   return (
-    <Tabs.Panel value={`/${params.patientFileId}/treatments/healing`}>
+    <Tabs.Panel value={`/${params.patientFileId}/treatments/tools`}>
       <CarouselTeeth />
 
       <View direction='row' gap={11}>
@@ -43,7 +41,8 @@ export default function Healing({
             >
               <ProductFilterForm
                 filterCategories={filterCategories}
-                productType={PRODUCT_TYPE.HEALING_ABUTMENT}
+                productType={PRODUCT_TYPE.TOOLS}
+                showOptionsWithoutTitle
               />
             </Suspense>
           </View>
@@ -58,7 +57,7 @@ export default function Healing({
                 </View>
               }
             >
-              <ProductList productType={PRODUCT_TYPE.HEALING_ABUTMENT} />
+              <ProductList productType={PRODUCT_TYPE.TOOLS} />
             </Suspense>
           </View>
         </View.Item>

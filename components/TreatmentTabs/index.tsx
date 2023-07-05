@@ -10,7 +10,7 @@ const toolTipMapping: { [key: number]: string } = {
   3: 'Select Healings First',
   4: 'Select Temporary First',
   5: 'Select Impression First',
-  6: 'Select Crowns First',
+  6: 'Select Treatment First',
 };
 
 const TabItemWithTooltip = ({
@@ -27,7 +27,7 @@ const TabItemWithTooltip = ({
       {(attributes) => (
         <Text
           color={active ? 'neutral' : 'disabled'}
-          attributes={!active && tabText !== 'Crowns' ? attributes : {}}
+          attributes={!active ? attributes : {}}
         >
           {tabText}
         </Text>
@@ -52,15 +52,11 @@ const TreatmentTabs = ({
     [`/${patientFileId}/treatments/healing`]: 3,
     [`/${patientFileId}/treatments/temporary`]: 4,
     [`/${patientFileId}/treatments/impression`]: 5,
-    [`/${patientFileId}/treatments/crowns`]: 6,
+    [`/${patientFileId}/treatments/tools`]: 6,
   };
   const activeTabIndex = routesMapping[path] || 0;
 
   const onChangeTab = ({ value }: { value: string }) => {
-    const clickedTabIndex = routesMapping[value];
-    // TODO: Remove to make corwn tab functionable`
-    if (clickedTabIndex === 6) return;
-
     router.push(value as __next_route_internal_types__.RouteImpl<string>);
   };
 
@@ -69,6 +65,7 @@ const TreatmentTabs = ({
       paddingBlock={0}
       paddingInline={2}
       className='overflow-y-scroll max-h-[calc(100vh-60px)]'
+      attributes={{ id: 'scrollableProductList' }}
     >
       <Tabs onChange={onChangeTab} itemWidth='equal' value={path}>
         <View
@@ -89,7 +86,6 @@ const TreatmentTabs = ({
               <TabItemWithTooltip
                 tabText='Implants'
                 active
-                // active={activeTabIndex >= 1}
                 tooltipText={toolTipMapping[activeTabIndex]}
               />
             </Tabs.Item>
@@ -125,11 +121,11 @@ const TreatmentTabs = ({
                 tooltipText={toolTipMapping[activeTabIndex]}
               />
             </Tabs.Item>
-            <Tabs.Item value={`/${patientFileId}/treatments/crowns`}>
+            <Tabs.Item value={`/${patientFileId}/treatments/tools`}>
               <TabItemWithTooltip
-                tabText='Crowns'
-                active={false}
-                tooltipText={''}
+                tabText='Tools'
+                active
+                tooltipText={toolTipMapping[activeTabIndex]}
               />
             </Tabs.Item>
           </Tabs.List>
