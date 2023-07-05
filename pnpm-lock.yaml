@@ -11,8 +11,8 @@ dependencies:
     specifier: 3.0.2
     version: 3.0.2
   fqlx-client:
-    specifier: github:mmailaender/Fauna-React#Support_DistinctAndPagination
-    version: github.com/mmailaender/Fauna-React/efa585d4bdb15baa742f0d2fe96e4860a4a496dd(@types/node@20.2.5)(react@18.2.0)(typescript@5.1.3)
+    specifier: github:mmailaender/Fauna-React
+    version: github.com/mmailaender/Fauna-React/3557888ad1f1eb98e7ef0ca03558748e020b30b0(@types/node@20.2.5)(react@18.2.0)(typescript@5.1.3)
   latest:
     specifier: 0.2.0
     version: 0.2.0
@@ -5185,9 +5185,9 @@ packages:
     requiresBuild: true
     dev: false
 
-  github.com/mmailaender/Fauna-React/efa585d4bdb15baa742f0d2fe96e4860a4a496dd(@types/node@20.2.5)(react@18.2.0)(typescript@5.1.3):
-    resolution: {tarball: https://codeload.github.com/mmailaender/Fauna-React/tar.gz/efa585d4bdb15baa742f0d2fe96e4860a4a496dd}
-    id: github.com/mmailaender/Fauna-React/efa585d4bdb15baa742f0d2fe96e4860a4a496dd
+  github.com/mmailaender/Fauna-React/3557888ad1f1eb98e7ef0ca03558748e020b30b0(@types/node@20.2.5)(react@18.2.0)(typescript@5.1.3):
+    resolution: {tarball: https://codeload.github.com/mmailaender/Fauna-React/tar.gz/3557888ad1f1eb98e7ef0ca03558748e020b30b0}
+    id: github.com/mmailaender/Fauna-React/3557888ad1f1eb98e7ef0ca03558748e020b30b0
     name: fqlx-client
     version: 0.1.0
     engines: {node: '>=10'}
