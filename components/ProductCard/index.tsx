@@ -21,21 +21,18 @@ export const ProductCard = ({ product, productType }: ProductCardProps) => {
     )?.name ?? '';
 
   const productData = useMemo(() => {
-    switch (true) {
-      case productType === PRODUCT_TYPE.TOOLS:
-        return (
-          product['labScrew'] ||
-          product['implantReplica'] ||
-          product['clampingAid'] ||
-          product['orientationAid'] ||
-          product['protectionAid'] ||
-          product['screwdriver']
-        );
-
-      default:
-        // @ts-expect-error
-        return product[productType];
+    if (productType === PRODUCT_TYPE.TOOLS) {
+      return (
+        product['labScrew'] ??
+        product['implantReplica'] ??
+        product['clampingAid'] ??
+        product['orientationAid'] ??
+        product['protectionAid'] ??
+        product['screwdriver']
+      );
     }
+
+    return product[productType];
   }, [product, productType]);
 
   return (
