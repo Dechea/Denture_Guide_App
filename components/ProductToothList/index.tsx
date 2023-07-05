@@ -44,6 +44,7 @@ const ProductToothList = ({ productId }: ProductToothListProps) => {
           size={'small'}
           roundedCorners={true}
           onClick={() => handleClickOnToothOption(availableTooth)}
+          className='hover:!cursor-pointer'
         >
           <View
             direction='row'
