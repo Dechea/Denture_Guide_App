@@ -7,6 +7,11 @@ export enum PRODUCT_TYPE {
   TOOLS = 'tools',
 }
 
+export enum AREA_TYPE {
+  ROOT = 'root',
+  CROWN = 'crown',
+}
+
 export interface ProductFilterCategory {
   displayName: string;
   fqlxKey: string;

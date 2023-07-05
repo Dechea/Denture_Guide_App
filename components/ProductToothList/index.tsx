@@ -18,7 +18,7 @@ const ProductToothList = ({ productId }: ProductToothListProps) => {
 
     // Deselect if clicked on selected tooth
     if (selectedProductsData[toothNumber] === productId) {
-      delete selectedProductsData[toothNumber];
+      selectedProductsData[toothNumber] = '';
     } else {
       // Select tooth with productId
       selectedProductsData[toothNumber] = productId;
@@ -44,6 +44,7 @@ const ProductToothList = ({ productId }: ProductToothListProps) => {
           size={'small'}
           roundedCorners={true}
           onClick={() => handleClickOnToothOption(availableTooth)}
+          className='hover:!cursor-pointer'
         >
           <View
             direction='row'

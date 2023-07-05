@@ -7,18 +7,21 @@ import { ProductFilterForm } from '../../../../components/ProductFilterForm';
 import CarouselTeeth from '../../../../components/CarouselTeeth';
 import Loader from '../../../../components/Loader';
 import { filterCategories } from './filterCategories';
-import { PRODUCT_TYPE } from '../../../../zustand/product/interface';
+import { AREA_TYPE, PRODUCT_TYPE } from '../../../../zustand/product/interface';
 import { IMPLANT } from '../../../../components/TeethDiagram/teeth/constants/treatmentVariants';
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
 
-const acceptableTreatment = { rootVariant: [IMPLANT] };
+const acceptableTreatment = { [AREA_TYPE.ROOT]: [IMPLANT] };
 
 export default function Tools({
   params,
 }: {
   params: { patientFileId: string };
 }) {
-  useAvailableTeethByTreatment({ acceptableTreatment });
+  useAvailableTeethByTreatment({
+    acceptableTreatment,
+    patientFileId: params.patientFileId,
+  });
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/tools`}>
@@ -57,7 +60,11 @@ export default function Tools({
                 </View>
               }
             >
-              <ProductList productType={PRODUCT_TYPE.TOOLS} />
+              <ProductList
+                productType={PRODUCT_TYPE.TOOLS}
+                areaType={AREA_TYPE.ROOT}
+                patientFileId={params.patientFileId}
+              />
             </Suspense>
           </View>
         </View.Item>
