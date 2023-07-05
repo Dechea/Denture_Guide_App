@@ -18,7 +18,10 @@ export default function Tools({
 }: {
   params: { patientFileId: string };
 }) {
-  useAvailableTeethByTreatment({ acceptableTreatment });
+  useAvailableTeethByTreatment({
+    acceptableTreatment,
+    patientFileId: params.patientFileId,
+  });
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/tools`}>
