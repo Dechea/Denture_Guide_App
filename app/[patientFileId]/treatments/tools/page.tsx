@@ -8,14 +8,12 @@ import CarouselTeeth from '../../../../components/CarouselTeeth';
 import Loader from '../../../../components/Loader';
 import { filterCategories } from './filterCategories';
 import { AREA_TYPE, PRODUCT_TYPE } from '../../../../zustand/product/interface';
-import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
 import { IMPLANT } from '../../../../components/TeethDiagram/teeth/constants/treatmentVariants';
+import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
 
-const acceptableTreatment = {
-  [AREA_TYPE.ROOT]: [IMPLANT],
-};
+const acceptableTreatment = { [AREA_TYPE.ROOT]: [IMPLANT] };
 
-export default function Impression({
+export default function Tools({
   params,
 }: {
   params: { patientFileId: string };
@@ -26,7 +24,7 @@ export default function Impression({
   });
 
   return (
-    <Tabs.Panel value={`/${params.patientFileId}/treatments/impression`}>
+    <Tabs.Panel value={`/${params.patientFileId}/treatments/tools`}>
       <CarouselTeeth />
 
       <View direction='row' gap={11}>
@@ -46,7 +44,8 @@ export default function Impression({
             >
               <ProductFilterForm
                 filterCategories={filterCategories}
-                productType={PRODUCT_TYPE.IMPRESSION}
+                productType={PRODUCT_TYPE.TOOLS}
+                showOptionsWithoutTitle
               />
             </Suspense>
           </View>
@@ -62,7 +61,7 @@ export default function Impression({
               }
             >
               <ProductList
-                productType={PRODUCT_TYPE.IMPRESSION}
+                productType={PRODUCT_TYPE.TOOLS}
                 areaType={AREA_TYPE.ROOT}
                 patientFileId={params.patientFileId}
               />

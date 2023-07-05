@@ -7,26 +7,16 @@ import { ProductFilterForm } from '../../../../components/ProductFilterForm';
 import CarouselTeeth from '../../../../components/CarouselTeeth';
 import Loader from '../../../../components/Loader';
 import { filterCategories } from './filterCategories';
-import { PRODUCT_TYPE } from '../../../../zustand/product/interface';
+import { AREA_TYPE, PRODUCT_TYPE } from '../../../../zustand/product/interface';
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
 import {
   ARTIFICIAL_CROWN,
   BRIDGE_ANCHOR,
-  BRIDGE_LINK,
-  IMPLANT,
   PROSTHESIS_ANCHOR,
-  PROSTHESIS_LINK,
 } from '../../../../components/TeethDiagram/teeth/constants/treatmentVariants';
 
 const acceptableTreatment = {
-  rootVariant: [IMPLANT],
-  crownVariant: [
-    ARTIFICIAL_CROWN,
-    PROSTHESIS_ANCHOR,
-    PROSTHESIS_LINK,
-    BRIDGE_ANCHOR,
-    BRIDGE_LINK,
-  ],
+  [AREA_TYPE.CROWN]: [ARTIFICIAL_CROWN, PROSTHESIS_ANCHOR, BRIDGE_ANCHOR],
 };
 
 export default function Abutment({
@@ -34,7 +24,10 @@ export default function Abutment({
 }: {
   params: { patientFileId: string };
 }) {
-  useAvailableTeethByTreatment({ acceptableTreatment });
+  useAvailableTeethByTreatment({
+    acceptableTreatment,
+    patientFileId: params.patientFileId,
+  });
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/abutment`}>
@@ -72,7 +65,11 @@ export default function Abutment({
                 </View>
               }
             >
-              <ProductList productType={PRODUCT_TYPE.ABUTMENT} />
+              <ProductList
+                productType={PRODUCT_TYPE.ABUTMENT}
+                areaType={AREA_TYPE.CROWN}
+                patientFileId={params.patientFileId}
+              />
             </Suspense>
           </View>
         </View.Item>

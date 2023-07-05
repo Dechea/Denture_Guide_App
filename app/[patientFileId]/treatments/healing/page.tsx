@@ -7,12 +7,12 @@ import { ProductFilterForm } from '../../../../components/ProductFilterForm';
 import CarouselTeeth from '../../../../components/CarouselTeeth';
 import Loader from '../../../../components/Loader';
 import { filterCategories } from './filterCategories';
-import { PRODUCT_TYPE } from '../../../../zustand/product/interface';
+import { AREA_TYPE, PRODUCT_TYPE } from '../../../../zustand/product/interface';
 import { IMPLANT } from '../../../../components/TeethDiagram/teeth/constants/treatmentVariants';
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
 
 const acceptableTreatment = {
-  rootVariant: [IMPLANT],
+  [AREA_TYPE.ROOT]: [IMPLANT],
 };
 
 export default function Healing({
@@ -20,7 +20,10 @@ export default function Healing({
 }: {
   params: { patientFileId: string };
 }) {
-  useAvailableTeethByTreatment({ acceptableTreatment });
+  useAvailableTeethByTreatment({
+    acceptableTreatment,
+    patientFileId: params.patientFileId,
+  });
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/healing`}>
@@ -58,7 +61,11 @@ export default function Healing({
                 </View>
               }
             >
-              <ProductList productType={PRODUCT_TYPE.HEALING_ABUTMENT} />
+              <ProductList
+                productType={PRODUCT_TYPE.HEALING_ABUTMENT}
+                areaType={AREA_TYPE.ROOT}
+                patientFileId={params.patientFileId}
+              />
             </Suspense>
           </View>
         </View.Item>

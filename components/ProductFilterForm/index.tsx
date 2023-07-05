@@ -13,15 +13,18 @@ import {
   PRODUCT_TYPE,
   ProductFilterCategory,
 } from '../../zustand/product/interface';
+import { formWhereCondition } from './helper';
 
 interface ProductFilterFormProps {
   filterCategories: ProductFilterCategory[];
   productType: PRODUCT_TYPE;
+  showOptionsWithoutTitle?: boolean;
 }
 
 export const ProductFilterForm = ({
   filterCategories,
   productType,
+  showOptionsWithoutTitle = false,
 }: ProductFilterFormProps) => {
   const {
     setSearchedProductManufacturerId,
@@ -35,17 +38,20 @@ export const ProductFilterForm = ({
 
   useMemo(() => {
     const productQuery = query.Product.all().where(
-      `(product) => product.${productType} != null`
+      formWhereCondition(productType)
     );
 
-    const categoriesWithOptions = filterCategories.map((category) => ({
-      ...category,
-      options: productQuery
-        .map(`(product) => product.${productType}.${category.fqlxKey}`)
-        .distinct<string>()
-        .exec()
-        .data?.filter((option) => option),
-    }));
+    const categoriesWithOptions =
+      productType === PRODUCT_TYPE.TOOLS
+        ? filterCategories
+        : filterCategories.map((category) => ({
+            ...category,
+            options: productQuery
+              .map(`(product) => product.${productType}.${category.fqlxKey}`)
+              .distinct<string>()
+              .exec()
+              .data?.filter((option) => option),
+          }));
 
     setCategories(categoriesWithOptions);
   }, []);
@@ -117,7 +123,7 @@ export const ProductFilterForm = ({
         }
       />
 
-      <View gap={10} paddingBottom={10}>
+      <View gap={showOptionsWithoutTitle ? 4 : 10} paddingBottom={10}>
         {categories.map((category) => {
           const isExpanded = expandedCategories.includes(category.fqlxKey);
           const optionsLength = category.options?.length;
@@ -137,38 +143,38 @@ export const ProductFilterForm = ({
               key={category.fqlxKey}
               paddingStart={0}
             >
-              <Text variant='body-3' weight='medium'>
-                {category.displayName}
-              </Text>
+              {!showOptionsWithoutTitle && (
+                <Text variant='body-3' weight='medium'>
+                  {category.displayName}
+                </Text>
+              )}
 
               <View gap={4}>
                 <>
-                  {category.options
-                    ?.slice(0, sliceEndPointer)
-                    .map((option, index) => {
-                      const value = getFieldValueByType(
-                        option,
-                        category.dataType
-                      );
-                      return (
-                        <View key={index + `${option}`}>
-                          <Checkbox
-                            name={option}
-                            value={option}
-                            checked={productFilters[
-                              category.fqlxKey as keyof typeof productFilters
-                            ]?.includes(value)}
-                            onChange={() =>
-                              handleCategoryFieldClick(category.fqlxKey, value)
-                            }
-                          >
-                            <Text variant='body-3' weight='regular'>
-                              {`${category.prefix} ${option} ${category.suffix}`}
-                            </Text>
-                          </Checkbox>
-                        </View>
-                      );
-                    })}
+                  {category.options?.slice(0, sliceEndPointer).map((option) => {
+                    const value = getFieldValueByType(
+                      option,
+                      category.dataType
+                    );
+                    return (
+                      <View key={option}>
+                        <Checkbox
+                          name={option}
+                          value={option}
+                          checked={productFilters[
+                            category.fqlxKey as keyof typeof productFilters
+                          ]?.includes(value)}
+                          onChange={() =>
+                            handleCategoryFieldClick(category.fqlxKey, value)
+                          }
+                        >
+                          <Text variant='body-3' weight='regular'>
+                            {`${category.prefix} ${option} ${category.suffix}`}
+                          </Text>
+                        </Checkbox>
+                      </View>
+                    );
+                  })}
                 </>
               </View>
 
