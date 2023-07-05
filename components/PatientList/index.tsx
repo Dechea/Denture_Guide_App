@@ -139,7 +139,7 @@ export default function PatientList({
                             color='neutral'
                             weight='regular'
                           >
-                            {moment(patientFile.ts.isoString).format(
+                            {moment(patientFile?.ts?.isoString).format(
                               'MMM DD, YYYY'
                             )}
                           </Text>
