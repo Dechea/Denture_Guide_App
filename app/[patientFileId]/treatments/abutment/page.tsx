@@ -12,9 +12,7 @@ import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeet
 import {
   ARTIFICIAL_CROWN,
   BRIDGE_ANCHOR,
-  BRIDGE_LINK,
   PROSTHESIS_ANCHOR,
-  PROSTHESIS_LINK,
 } from '../../../../components/TeethDiagram/teeth/constants/treatmentVariants';
 
 const acceptableTreatment = {

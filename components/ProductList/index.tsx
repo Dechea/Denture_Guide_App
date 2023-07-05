@@ -36,25 +36,31 @@ const ProductList = ({
 
   const query = useQuery<Query>();
 
-  const fqlxTeeth =
-    query.PatientFile.firstWhere(
-      `(file) => file.id == "${patientFileId}"`
-    ).exec().teeth || [];
-
-  const addProductInFqlx = () => {
+  const addProductInFqlx = async () => {
+    const fqlxTeeth =
+      (await query.PatientFile.byId(patientFileId).exec()).teeth || [];
     const teeth = [...fqlxTeeth];
 
     teeth.forEach((tooth: Tooth) => {
       const toothNumber = Number(tooth.name);
-
-      if (toothNumber in selectedProducts) {
-        if (selectedProducts[toothNumber] === '') {
-          tooth[areaType].treatmentDoc.selectedProducts = [];
-        } else {
-          tooth[areaType].treatmentDoc.selectedProducts = [
+      for (const area of Object.values(AREA_TYPE)) {
+        if (area === areaType && toothNumber in selectedProducts) {
+          if (selectedProducts[toothNumber] === '') {
+            tooth[area].treatmentDoc.selectedProducts = [];
+          } else {
+            tooth[area].treatmentDoc.selectedProducts = [
+              {
+                // @ts-expect-error
+                selectedProduct: `Product.byId("${selectedProducts[toothNumber]}")`,
+                quantity: 1,
+              },
+            ];
+          }
+        } else if (tooth[area].treatmentDoc?.selectedProducts?.length) {
+          tooth[area].treatmentDoc.selectedProducts = [
             {
               // @ts-expect-error
-              selectedProduct: `Product.byId("${selectedProducts[toothNumber]}")`,
+              selectedProduct: `Product.byId("${tooth[area].treatmentDoc.selectedProducts[0]?.selectedProduct?.id}")`,
               quantity: 1,
             },
           ];
@@ -66,6 +72,8 @@ const ProductList = ({
       /"Product.byId\(\\"(\d*)\\"\)"/g,
       'Product.byId("$1")'
     );
+
+    console.log(stringifyTeeth);
 
     query.PatientFile.byId(patientFileId)
       .update(`{ teeth: ${stringifyTeeth} }`)

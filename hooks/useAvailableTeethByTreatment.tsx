@@ -3,7 +3,7 @@ import { useProductStore } from '../zustand/product';
 import { useQuery } from 'fqlx-client';
 import { PatientFile, Query } from '../fqlx-generated/typedefs';
 
-interface useAvailableTeethByTreatmentProps {
+interface UseAvailableTeethByTreatmentProps {
   acceptableTreatment: { [key: string]: string[] };
   patientFileId: string;
 }
@@ -11,7 +11,7 @@ interface useAvailableTeethByTreatmentProps {
 export function useAvailableTeethByTreatment({
   acceptableTreatment,
   patientFileId,
-}: useAvailableTeethByTreatmentProps) {
+}: UseAvailableTeethByTreatmentProps) {
   const { setAvailableTeethByProductType, setSelectedProducts } =
     useProductStore();
   const query = useQuery<Query>();
