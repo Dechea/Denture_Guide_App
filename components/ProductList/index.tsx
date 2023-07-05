@@ -73,8 +73,6 @@ const ProductList = ({
       'Product.byId("$1")'
     );
 
-    console.log(stringifyTeeth);
-
     query.PatientFile.byId(patientFileId)
       .update(`{ teeth: ${stringifyTeeth} }`)
       .exec();
