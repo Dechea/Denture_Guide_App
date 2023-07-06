@@ -23,6 +23,7 @@ export default function Impression({
   useAvailableTeethByTreatment({
     acceptableTreatment,
     patientFileId: params.patientFileId,
+    productType: PRODUCT_TYPE.IMPRESSION,
   });
 
   return (

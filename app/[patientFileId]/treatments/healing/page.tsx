@@ -23,6 +23,7 @@ export default function Healing({
   useAvailableTeethByTreatment({
     acceptableTreatment,
     patientFileId: params.patientFileId,
+    productType: PRODUCT_TYPE.HEALING_ABUTMENT,
   });
 
   return (
