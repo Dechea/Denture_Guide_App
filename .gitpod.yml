@@ -35,13 +35,15 @@ vscode:
   extensions:
     - christian-kohler.npm-intellisense
     - eamodio.gitlens
-    - genuitecllc.codetogether
     - esbenp.prettier-vscode
     - christian-kohler.path-intellisense
     - aaron-bond.better-comments
-    - leodevbro.blockman
     - meganrogge.template-string-converter
-    - rangav.vscode-thunder-client
+    - leodevbro.blockman
     - Gruntfuggly.todo-tree
-    - PulkitGangwar.nextjs-snippets
+    - unifiedjs.vscode-mdx
     - bradlc.vscode-tailwindcss
+    - PulkitGangwar.nextjs-snippets
+    - PKief.material-icon-theme
+    - TeamHub.teamhub
+    - DanielSanMedium.dscodegpt
