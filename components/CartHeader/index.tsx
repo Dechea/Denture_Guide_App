@@ -5,7 +5,11 @@ import { Badge, Button, Icon, Text, View } from 'reshaped';
 import BackwardIcon from '../Icons/Backward';
 import CartIcon from '../Icons/Cart';
 
-export default function CartHeader() {
+interface CartHeaderProps {
+  totalProductsCount: number;
+}
+
+export default function CartHeader({ totalProductsCount }: CartHeaderProps) {
   const router = useRouter();
 
   return (
@@ -34,7 +38,7 @@ export default function CartHeader() {
             {' '}
             Cart
           </Text>
-          <Badge color='critical'>8</Badge>
+          <Badge color='critical'>{totalProductsCount}</Badge>
         </View>
       </View>
     </View>

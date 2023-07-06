@@ -8,6 +8,7 @@ import { Query } from '../../fqlx-generated/typedefs';
 import CostEst from '../Icons/CostEst';
 import MenuIcon from '../Icons/MenuIcon';
 import CartIcon from '../Icons/Cart';
+import { useProductCalculations } from '../../hooks/useProductCalculations';
 
 interface HeaderProps {
   patientFileId: string;
@@ -18,12 +19,15 @@ export default function Header({ patientFileId }: HeaderProps) {
   const pathname = usePathname();
   const query = useQuery<Query>();
 
+  const { totalCostOfProductsInCart, totalProductsInCart } =
+    useProductCalculations(patientFileId);
+
   const patientFile = useMemo(
     () =>
       query.PatientFile.firstWhere(
         `(patientFile) => patientFile.id == "${patientFileId}"`
       )
-        .project({ patient: { name: true, avatar: true } })
+        .project({ patient: { name: true, avatar: true }, teeth: true })
         .exec(),
     [patientFileId]
   );
@@ -73,11 +77,11 @@ export default function Header({ patientFileId }: HeaderProps) {
               onClick={() => router.push(`/${patientFileId}/cart`)}
             >
               <Text variant='body-3' weight='medium'>
-                400 €
+                {totalCostOfProductsInCart} €
               </Text>
             </Button>
             <Badge color='critical' size='small'>
-              8
+              {totalProductsInCart}
             </Badge>
           </View>
           <Button
@@ -85,8 +89,8 @@ export default function Header({ patientFileId }: HeaderProps) {
             variant='ghost'
             size='small'
             color='neutral'
-            highlighted={pathname === `/${patientFileId}/cost-estimation`}
-            onClick={() => router.push(`/${patientFileId}/cost-estimation`)}
+            highlighted={pathname === `/costestimation`}
+            onClick={() => router.push(`/costestimation`)}
           >
             Cost Estimation
           </Button>

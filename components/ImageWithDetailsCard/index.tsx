@@ -1,28 +1,23 @@
 import { Image, Text, View } from 'reshaped';
 
-interface CartListProps {
-  cartList: {
-    id: number;
-    title: string;
-    description: string;
-    image: string;
-    isPrice: boolean;
-    price: string;
-    localStorageCount: number;
-    selected: boolean;
-    cartCount: number;
-    shared: boolean;
-    sharedId: string;
-    showButton: boolean;
-  };
+interface ImageWithDetailsCardProps {
+  imageUrl: string;
+  title: string;
+  description: string;
+  price: number;
 }
 
-export default function CartListItem({ cartList }: CartListProps) {
+export default function ImageWithDetailsCard({
+  description,
+  imageUrl,
+  price,
+  title,
+}: ImageWithDetailsCardProps) {
   return (
     <View direction='row' align='stretch' gap={4}>
       <Image
-        src={cartList.image}
-        alt={cartList.title}
+        src={imageUrl}
+        alt={title}
         width='72px'
         height='72px'
         borderRadius='medium'
@@ -32,19 +27,17 @@ export default function CartListItem({ cartList }: CartListProps) {
         <View align='stretch' height='100%' className='!justify-between'>
           <View align='start' gap={0.25}>
             <Text variant='body-3' weight='medium'>
-              {cartList.title}
+              {title}
             </Text>
             <Text variant='caption-1' weight='regular' color='neutral-faded'>
-              {cartList.description}
+              {description}
             </Text>
           </View>
 
           <View direction='row' justify='start' align='center' gap={4}>
-            {cartList.isPrice && (
-              <Text variant='caption-1' weight='regular'>
-                {cartList.price}
-              </Text>
-            )}
+            <Text variant='caption-1' weight='regular'>
+              {isNaN(price) ? 0 : price}
+            </Text>
           </View>
         </View>
       </View.Item>

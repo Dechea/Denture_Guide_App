@@ -5,11 +5,15 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import CostEstimationIcon from '../Icons/CostEstimation';
 
+interface CartCostEstimationProps {
+  patientFileId: string;
+  totalCostOfProducts: number;
+}
+
 export const CartCostEstimation = ({
   patientFileId,
-}: {
-  patientFileId: string;
-}) => {
+  totalCostOfProducts,
+}: CartCostEstimationProps) => {
   const router = useRouter();
 
   return (
@@ -37,7 +41,7 @@ export const CartCostEstimation = ({
               </View>
             </Link>
             <Text variant='body-3' weight='medium'>
-              400 €
+              {totalCostOfProducts} €
             </Text>
           </View>
           <Divider />
@@ -53,7 +57,7 @@ export const CartCostEstimation = ({
               </Text>
             </View>
             <Text variant='body-3' weight='bold'>
-              400 €
+              {totalCostOfProducts} €
             </Text>
           </View>
         </View>
