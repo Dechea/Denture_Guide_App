@@ -44,11 +44,7 @@ export function useAvailableTeethByTreatment({
               // @ts-expect-error
               ({ selectedProduct }) => {
                 if (Object.keys(selectedProduct).includes(productType)) {
-                  alreadySelectedProducts[toothNumber] =
-                    // @ts-expect-error
-                    tooth[
-                      area
-                    ].treatmentDoc.selectedProducts[0]?.selectedProduct.id;
+                  alreadySelectedProducts[toothNumber] = selectedProduct.id;
                 }
               }
             );
