@@ -32,7 +32,6 @@ const ProductList = ({
     setProducts,
     searchedProductManufacturerId,
     productFilters,
-    selectedProducts,
   } = useProductStore();
 
   const query = useQuery<Query>();
@@ -56,7 +55,7 @@ const ProductList = ({
           tooth[area].treatmentDoc.selectedProducts = tooth[
             area
           ].treatmentDoc.selectedProducts?.filter(
-            ({ selectedProduct }) => !(selectedProduct?.id === productToDelete)
+            ({ selectedProduct }) => selectedProduct?.id !== productToDelete
           );
         }
 
