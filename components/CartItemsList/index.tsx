@@ -28,6 +28,7 @@ export default function CartItemsList({
           ...(tooth.root.treatmentDoc?.selectedProducts ?? []),
           ...(tooth.crown.treatmentDoc?.selectedProducts ?? []),
         ];
+
         if (products.length == 0) {
           return;
         }
@@ -44,51 +45,50 @@ export default function CartItemsList({
             </View>
 
             <View align='center' width='100%' divided gap={6}>
-              {products.map(({ selectedProduct, quantity }) => (
-                <View
-                  key={selectedProduct?.id as string}
-                  width='100%'
-                  direction='row'
-                  align='center'
-                  className='justify-between'
-                  gap={4}
-                >
-                  <View.Item grow>
-                    <ImageWithDetailsCard
-                      title={selectedProduct?.localizations[1]?.name as string}
-                      description={
-                        selectedProduct?.localizations[1]?.description as string
-                      }
-                      imageUrl={selectedProduct?.image as string}
-                      price={
-                        selectedProduct?.localizations[1]?.price
-                          ?.amount as number
-                      }
-                    />
-                  </View.Item>
+              {products.map(({ selectedProduct, quantity }) => {
+                const localization = selectedProduct?.localizations?.[1];
 
-                  <View direction='row' align='center' gap={4}>
-                    <Counter
-                      initialCount={Number(quantity)}
-                      onCountChange={(count: number) =>
-                        onProductCountChange(
-                          count,
-                          Number(tooth.name),
-                          selectedProduct?.id as string
-                        )
-                      }
-                    />
-                    <Delete
-                      onClick={() =>
-                        onDeleteProduct(
-                          Number(tooth.name),
-                          selectedProduct?.id as string
-                        )
-                      }
-                    />
+                return (
+                  <View
+                    key={selectedProduct?.id as string}
+                    width='100%'
+                    direction='row'
+                    align='center'
+                    className='justify-between'
+                    gap={4}
+                  >
+                    <View.Item grow>
+                      <ImageWithDetailsCard
+                        title={localization?.name as string}
+                        description={localization?.description as string}
+                        imageUrl={selectedProduct?.image as string}
+                        price={localization?.price?.amount as number}
+                      />
+                    </View.Item>
+
+                    <View direction='row' align='center' gap={4}>
+                      <Counter
+                        initialCount={Number(quantity)}
+                        onCountChange={(count: number) =>
+                          onProductCountChange(
+                            count,
+                            Number(tooth.name),
+                            selectedProduct?.id as string
+                          )
+                        }
+                      />
+                      <Delete
+                        onClick={() =>
+                          onDeleteProduct(
+                            Number(tooth.name),
+                            selectedProduct?.id as string
+                          )
+                        }
+                      />
+                    </View>
                   </View>
-                </View>
-              ))}
+                );
+              })}
             </View>
           </View>
         );

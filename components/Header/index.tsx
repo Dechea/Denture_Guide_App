@@ -27,7 +27,7 @@ export default function Header({ patientFileId }: HeaderProps) {
       query.PatientFile.firstWhere(
         `(patientFile) => patientFile.id == "${patientFileId}"`
       )
-        .project({ patient: { name: true, avatar: true }, teeth: true })
+        .project({ patient: { name: true, avatar: true } })
         .exec(),
     [patientFileId]
   );
