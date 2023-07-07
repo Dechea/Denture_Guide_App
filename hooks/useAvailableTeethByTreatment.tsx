@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react';
 import { useProductStore } from '../zustand/product';
 import { useQuery } from 'fqlx-client';
@@ -18,9 +20,7 @@ export function useAvailableTeethByTreatment({
     useProductStore();
   const query = useQuery<Query>();
 
-  const patientFile: PatientFile = query.PatientFile.firstWhere(
-    `(file) => file.id == "${patientFileId}"`
-  )
+  const patientFile: PatientFile = query.PatientFile.byId(patientFileId)
     .project({ teeth: true })
     .exec();
 
