@@ -3,7 +3,7 @@ import { PaginateData } from 'fqlx-client';
 import { product } from '../../__mocks__/initialProductsState';
 import { Product, AbutmentInput } from '../../fqlx-generated/typedefs';
 
-interface SelectedProducts {
+export interface SelectedProducts {
   [key: number]: string;
 }
 

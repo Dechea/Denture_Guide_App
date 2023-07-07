@@ -1,11 +1,7 @@
 import { useEffect } from 'react';
 import { useProductStore } from '../zustand/product';
 import { useQuery } from 'fqlx-client';
-import {
-  PatientFile,
-  Query,
-  SelectedProduct,
-} from '../fqlx-generated/typedefs';
+import { PatientFile, Query } from '../fqlx-generated/typedefs';
 
 interface UseAvailableTeethByTreatmentProps {
   acceptableTreatment: { [key: string]: string[] };
@@ -43,7 +39,9 @@ export function useAvailableTeethByTreatment({
           availableTeeth.push(Number(toothNumber));
           // @ts-expect-error
           if (tooth[area]?.treatmentDoc?.selectedProducts?.length) {
+            // @ts-expect-error
             tooth[area]?.treatmentDoc?.selectedProducts.forEach(
+              // @ts-expect-error
               ({ selectedProduct }) => {
                 if (Object.keys(selectedProduct).includes(productType)) {
                   alreadySelectedProducts[toothNumber] =

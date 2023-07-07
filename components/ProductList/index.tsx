@@ -8,7 +8,7 @@ import { Product, Query, Tooth } from '../../fqlx-generated/typedefs';
 import Loader from '../Loader';
 import { ProductCard } from '../ProductCard';
 import ShareButton from '../ShareButton';
-import { useProductStore } from '../../zustand/product';
+import { SelectedProducts, useProductStore } from '../../zustand/product';
 import ProductHelpFooter from '../ProductHelpFooter';
 import ProductNotFound from '../ProductNotFound';
 import { formWhereCondition } from './helper';
@@ -38,38 +38,59 @@ const ProductList = ({
   const query = useQuery<Query>();
   const { addOrUpdateProductInFqlx } = useProductCrudOps({ patientFileId });
 
-  const getMappedTeeth = (teeth: Tooth[]) => {
+  const getMappedTeeth = (
+    teeth: Tooth[],
+    productToDelete: string,
+    toothNumber: number,
+    selectedProducts: SelectedProducts
+  ) => {
     teeth.forEach((tooth: Tooth) => {
-      const toothNumber = Number(tooth.name);
+      const localToothNumber = Number(tooth.name);
+
       for (const area of Object.values(AREA_TYPE)) {
-        if (area === areaType && toothNumber in selectedProducts) {
-          if (selectedProducts[toothNumber] === '') {
-            tooth[area].treatmentDoc.selectedProducts = [];
-          } else {
-            tooth[area].treatmentDoc.selectedProducts = [
-              {
-                // @ts-expect-error
-                selectedProduct: `Product.byId("${selectedProducts[toothNumber]}")`,
-                quantity: 1,
-              },
-            ];
-          }
-        } else if (tooth[area].treatmentDoc?.selectedProducts?.length) {
-          tooth[area].treatmentDoc.selectedProducts = [
-            {
-              // @ts-expect-error
-              selectedProduct: `Product.byId("${tooth[area].treatmentDoc.selectedProducts[0]?.selectedProduct?.id}")`,
-              quantity: 1,
-            },
-          ];
+        const toothInArea =
+          area === areaType && localToothNumber === toothNumber;
+
+        // remove old, unselected product
+        if (toothInArea) {
+          tooth[area].treatmentDoc.selectedProducts = tooth[
+            area
+          ].treatmentDoc.selectedProducts?.filter(
+            ({ selectedProduct }) => !(selectedProduct?.id === productToDelete)
+          );
+        }
+
+        // convert existing products from object to ref
+        if (tooth[area].treatmentDoc.selectedProducts?.length) {
+          tooth[area].treatmentDoc.selectedProducts?.forEach((product) => {
+            // @ts-expect-error
+            product.selectedProduct = `Product.byId("${product.selectedProduct?.id}")`;
+          });
+        } else {
+          tooth[area].treatmentDoc.selectedProducts = [];
+        }
+
+        // add new product
+        if (toothInArea && selectedProducts[toothNumber]) {
+          tooth[area].treatmentDoc.selectedProducts?.push({
+            // @ts-expect-error
+            selectedProduct: `Product.byId("${selectedProducts[toothNumber]}")`,
+            quantity: 1,
+          });
         }
       }
     });
   };
 
-  useEffect(() => {
-    addOrUpdateProductInFqlx(getMappedTeeth);
-  }, [selectedProducts]);
+  const handleClickOnProduct = (
+    productToDelete: string,
+    toothNumber: number,
+    selectedProducts: SelectedProducts
+  ) => {
+    addOrUpdateProductInFqlx((teeth) => {
+      getMappedTeeth(teeth, productToDelete, toothNumber, selectedProducts);
+    });
+  };
 
   const productQuery = useMemo(
     () =>
@@ -163,6 +184,7 @@ const ProductList = ({
                   key={product.id}
                   product={product}
                   productType={productType}
+                  onClickProduct={handleClickOnProduct}
                 />
               ))}
             </View>
