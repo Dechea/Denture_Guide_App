@@ -36,7 +36,7 @@ export default function ImageWithDetailsCard({
 
           <View direction='row' justify='start' align='center' gap={4}>
             <Text variant='caption-1' weight='regular'>
-              {isNaN(price) ? 0 : price}
+              {isNaN(price) ? 0 : price} €
             </Text>
           </View>
         </View>
