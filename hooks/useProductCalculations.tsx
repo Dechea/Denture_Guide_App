@@ -22,8 +22,8 @@ export const useProductCalculations = (patientFileId: string) => {
       patientFile.teeth?.reduce((acc, tooth) => {
         return (
           acc +
-          (Number(tooth.root?.treatmentDoc?.selectedProducts?.length) ?? 0) +
-          (Number(tooth.crown?.treatmentDoc?.selectedProducts?.length) ?? 0)
+          Number(tooth.root?.treatmentDoc?.selectedProducts?.length ?? 0) +
+          Number(tooth.crown?.treatmentDoc?.selectedProducts?.length ?? 0)
         );
       }, 0),
     [patientFile]
@@ -36,8 +36,8 @@ export const useProductCalculations = (patientFileId: string) => {
           if (selectedProduct?.localizations?.length) {
             return (
               acc +
-              (Number(selectedProduct?.localizations[1]?.price?.amount) ?? 0) *
-                (Number(quantity) ?? 0)
+              Number(selectedProduct?.localizations[1]?.price?.amount ?? 0) *
+                Number(quantity ?? 0)
             );
           }
 
