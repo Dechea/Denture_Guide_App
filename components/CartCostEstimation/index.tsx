@@ -26,10 +26,7 @@ export const CartCostEstimation = ({
             align='center'
             className='!justify-between'
           >
-            <Link
-              href={`/${patientFileId}/cost-estimation`}
-              className='no-underline'
-            >
+            <Link href={`/costestimation`} className='no-underline'>
               <View direction='row' align='center' gap={1}>
                 <Icon svg={CostEstimationIcon} size={4} color='neutral' />
 
