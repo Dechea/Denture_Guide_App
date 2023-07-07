@@ -36,35 +36,37 @@ export default function Cart({ params }: CartProps) {
   );
 
   const handleProductCountChange = async (
-    quantity: number,
+    updatedQuantity: number,
     toothNumber: number,
     productId: string
   ) => {
     const getMappedTeeth = (teeth: Tooth[]) => {
       teeth.forEach((tooth: Tooth) => {
         const localToothNumber = Number(tooth.name);
+
         for (const area of Object.values(AREA_TYPE)) {
           if (tooth[area].treatmentDoc?.selectedProducts?.length) {
-            if (
-              localToothNumber == toothNumber &&
-              // @ts-ignore
-              tooth[area]?.treatmentDoc?.selectedProducts[0]?.selectedProduct
-                ?.id === productId
-            ) {
-              tooth[area].treatmentDoc.selectedProducts = [
-                {
-                  // @ts-ignore
-                  selectedProduct: `Product.byId("${tooth[area].treatmentDoc.selectedProducts[0]?.selectedProduct?.id}")`,
-                  quantity: quantity,
-                },
-              ];
+            if (localToothNumber == toothNumber) {
+              // @ts-expect-error
+              tooth[area].treatmentDoc.selectedProducts = tooth[
+                area
+              ].treatmentDoc.selectedProducts?.map(
+                ({ selectedProduct, quantity }) => ({
+                  // @ts-expect-error
+                  selectedProduct: `Product.byId("${selectedProduct.id}")`,
+                  quantity:
+                    selectedProduct?.id === productId
+                      ? updatedQuantity
+                      : quantity,
+                })
+              );
             } else {
               tooth[area].treatmentDoc.selectedProducts = [
                 {
-                  // @ts-ignore
+                  // @ts-expect-error
                   selectedProduct: `Product.byId("${tooth[area].treatmentDoc.selectedProducts[0]?.selectedProduct?.id}")`,
                   quantity:
-                    // @ts-ignore
+                    // @ts-expect-error
                     tooth[area].treatmentDoc.selectedProducts[0]?.quantity,
                 },
               ];
@@ -84,22 +86,22 @@ export default function Cart({ params }: CartProps) {
     const getMappedTeeth = (teeth: Tooth[]) => {
       teeth.forEach((tooth: Tooth) => {
         const localToothNumber = Number(tooth.name);
+
         for (const area of Object.values(AREA_TYPE)) {
           if (tooth[area].treatmentDoc?.selectedProducts?.length) {
-            if (
-              localToothNumber == toothNumber &&
-              // @ts-ignore
-              tooth[area].treatmentDoc.selectedProducts[0]?.selectedProduct
-                ?.id === productId
-            ) {
-              tooth[area].treatmentDoc.selectedProducts = [];
+            if (localToothNumber == toothNumber) {
+              tooth[area].treatmentDoc.selectedProducts = tooth[
+                area
+              ].treatmentDoc.selectedProducts?.filter(({ selectedProduct }) => {
+                selectedProduct?.id !== productId;
+              });
             } else {
               tooth[area].treatmentDoc.selectedProducts = [
                 {
-                  // @ts-ignore
+                  // @ts-expect-error
                   selectedProduct: `Product.byId("${tooth[area].treatmentDoc.selectedProducts[0]?.selectedProduct?.id}")`,
                   quantity:
-                    // @ts-ignore
+                    // @ts-expect-error
                     tooth[area].treatmentDoc.selectedProducts[0]?.quantity,
                 },
               ];
