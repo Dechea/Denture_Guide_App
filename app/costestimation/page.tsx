@@ -5,7 +5,24 @@ import { useRouter } from 'next/navigation';
 import Header from '../../components/Header';
 import BackwardIcon from '../../components/Icons/Backward';
 import PrintIcon from '../../components/Icons/Print';
-import { cartItems } from '../../__mocks__/cart';
+
+const cartItems = [
+  {
+    id: 0,
+    count: '7',
+    title: 'Abutment PS',
+    description: 'Type A, Grade, GH 1.5 - 2.5',
+    price: '55.00 €',
+  },
+  {
+    id: 1,
+
+    count: '7',
+    title: 'Abutment PS',
+    description: 'Type A, Grade, GH 1.5 - 2.5',
+    price: '55.00 €',
+  },
+];
 
 const CostEstimation = () => {
   const router = useRouter();

@@ -1,17 +1,10 @@
 'use client';
 import { View, Text, Button } from 'reshaped';
-import { useRouter } from 'next/navigation';
 import CheckoutForm from '../../components/Checkout';
 import Header from '../../components/Header';
 import BackwardIcon from '../../components/Icons/Backward';
 
 export default function Checkout() {
-  const router = useRouter();
-
-  const handleNavigation = () => {
-    router.push('/cart');
-  };
-
   return (
     <View>
       {/* TODO: Use PatientFileId from params */}
@@ -27,15 +20,12 @@ export default function Checkout() {
         gap={4}
       >
         <View>
-          <Button
-            icon={<BackwardIcon />}
-            variant='ghost'
-            size='small'
-            onClick={handleNavigation}
-          ></Button>
+          <Button icon={<BackwardIcon />} variant='ghost' size='small'></Button>
         </View>
         <View direction='row' gap={3}>
-          <Text variant='featured-1' weight='bold'>Cart</Text>
+          <Text variant='featured-1' weight='bold'>
+            Cart
+          </Text>
           <Text variant='featured-1' weight='bold' color='disabled'>
             /
           </Text>
