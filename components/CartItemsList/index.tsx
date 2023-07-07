@@ -25,8 +25,8 @@ export default function CartItemsList({
     <View gap={18}>
       {teeth.map((tooth) => {
         const products: SelectedProduct[] = [
-          ...(tooth.root.treatmentDoc?.selectedProducts || []),
-          ...(tooth.crown.treatmentDoc?.selectedProducts || []),
+          ...(tooth.root.treatmentDoc?.selectedProducts ?? []),
+          ...(tooth.crown.treatmentDoc?.selectedProducts ?? []),
         ];
         if (products.length == 0) {
           return;
