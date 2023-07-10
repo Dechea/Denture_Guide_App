@@ -61,15 +61,17 @@ export default function Cart({ params }: CartProps) {
                 })
               );
             } else {
-              tooth[area].treatmentDoc.selectedProducts = [
-                {
-                  // @ts-expect-error
-                  selectedProduct: `Product.byId("${tooth[area].treatmentDoc.selectedProducts[0]?.selectedProduct?.id}")`,
-                  quantity:
-                    // @ts-expect-error
-                    tooth[area].treatmentDoc.selectedProducts[0]?.quantity,
-                },
-              ];
+              // @ts-expect-error
+              tooth[area].treatmentDoc.selectedProducts = tooth[
+                area
+              ].treatmentDoc.selectedProducts?.map(
+                ({ selectedProduct, quantity }) => {
+                  return {
+                    selectedProduct: `Product.byId("${selectedProduct?.id}")`,
+                    quantity: quantity,
+                  };
+                }
+              );
             }
           }
         }
@@ -84,6 +86,7 @@ export default function Cart({ params }: CartProps) {
     productId: string
   ) => {
     const getMappedTeeth = (teeth: Tooth[]) => {
+      console.log(teeth);
       teeth.forEach((tooth: Tooth) => {
         const localToothNumber = Number(tooth.name);
 
@@ -93,19 +96,20 @@ export default function Cart({ params }: CartProps) {
               tooth[area].treatmentDoc.selectedProducts = tooth[
                 area
               ].treatmentDoc.selectedProducts?.filter(({ selectedProduct }) => {
-                selectedProduct?.id !== productId;
+                return selectedProduct?.id !== productId;
               });
-            } else {
-              tooth[area].treatmentDoc.selectedProducts = [
-                {
-                  // @ts-expect-error
-                  selectedProduct: `Product.byId("${tooth[area].treatmentDoc.selectedProducts[0]?.selectedProduct?.id}")`,
-                  quantity:
-                    // @ts-expect-error
-                    tooth[area].treatmentDoc.selectedProducts[0]?.quantity,
-                },
-              ];
             }
+            // @ts-expect-error
+            tooth[area].treatmentDoc.selectedProducts = tooth[
+              area
+            ].treatmentDoc.selectedProducts?.map(
+              ({ selectedProduct, quantity }) => {
+                return {
+                  selectedProduct: `Product.byId("${selectedProduct?.id}")`,
+                  quantity: quantity,
+                };
+              }
+            );
           }
         }
       });
