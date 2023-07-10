@@ -23,7 +23,7 @@ export default function Temporary({
   useAvailableTeethByTreatment({
     acceptableTreatment,
     patientFileId: params.patientFileId,
-    productType: PRODUCT_TYPE.IMPRESSION,
+    productType: PRODUCT_TYPE.TEMPORARY_ABUTMENT,
   });
 
   return (
