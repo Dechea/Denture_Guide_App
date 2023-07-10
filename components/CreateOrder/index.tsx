@@ -49,46 +49,45 @@ export default function CreateOrder({
     <Modal
       active={activeModal}
       onClose={deactivateModal}
-      padding={4}
-      size='509px'
+      padding={6}
+      size="400px"
     >
-      <View gap={11} className='cursor-default'>
-        <View gap={2} direction='row' align='center'>
+      <View gap={12} className="cursor-default">
+        <View gap={2} direction="row" align="center">
           <View.Item grow>
-            <Text variant='featured-2' weight='bold' color='neutral'>
+            <Text variant="featured-2" weight="bold" color="neutral">
               Create Order for...
             </Text>
           </View.Item>
           <Button
             onClick={deactivateModal}
-            icon={<Icon size={5} svg={CrossIcon} />}
-            variant='ghost'
-            size='large'
+            icon={<Icon svg={CrossIcon} />}
+            variant="ghost"
           />
         </View>
 
         <View gap={1}>
-          <Text variant='body-3' weight='medium' color='neutral'>
+          <Text variant="body-3" weight="medium" color="neutral">
             Patient’s Name
           </Text>
-          <View direction='row' gap={3} align='center'>
-            <View.Item grow>
+          <View direction="column" gap={3} align="center">
+            <View width="100%">
               <TextField
-                size='large'
-                name='patientName'
-                placeholder='Patient’s name'
+                size="large"
+                name="patientName"
+                placeholder="John..."
                 onChange={handlePatientNameChange}
                 inputAttributes={{ autoComplete: 'off' }}
               />
-            </View.Item>
-            <View width={21}>
+            </View>
+            <View width="100%">
               <Button
-                color='primary'
-                size='large'
+                color="primary"
+                size="large"
                 onClick={onCreatePatientFileButtonClick}
                 fullWidth
               >
-                Create
+                Create Order
               </Button>
             </View>
           </View>
