@@ -1,71 +1,45 @@
 'use client';
 
 import { useQuery } from 'fqlx-client';
-import { useCallback, useMemo } from 'react';
-import { Query, SelectedProduct } from '../fqlx-generated/typedefs';
+import { useMemo } from 'react';
+import { Query } from '../fqlx-generated/typedefs';
 
 export const useProductCalculations = (patientFileId: string) => {
   const query = useQuery<Query>();
 
-  const patientFile = useMemo(
-    () =>
-      query.PatientFile.firstWhere(
-        `(patientFile) => patientFile.id == "${patientFileId}"`
-      )
-        .project({ teeth: true })
-        .exec(),
-    [patientFileId, query]
-  );
+  const patientFile = query.PatientFile.byId(patientFileId)
+    .project({ teeth: true })
+    .exec();
 
-  const totalProductsInCart = useMemo(
+  const selectedProducts = useMemo(
     () =>
-      patientFile.teeth?.reduce((acc, tooth) => {
-        return (
-          acc +
-          (tooth.root?.treatmentDoc?.selectedProducts?.reduce(
-            (acc, { quantity }) => acc + Number(quantity),
-            0
-          ) ?? 0) +
-          (tooth.crown?.treatmentDoc?.selectedProducts?.reduce(
-            (acc, { quantity }) => acc + Number(quantity),
-            0
-          ) ?? 0)
-        );
-      }, 0),
+      patientFile.teeth.flatMap((tooth) => [
+        ...(tooth.root?.treatmentDoc?.selectedProducts ?? []),
+        ...(tooth.crown?.treatmentDoc?.selectedProducts ?? []),
+      ]),
     [patientFile]
   );
 
-  const sumOfCostOfProducts = useCallback(
-    (products: SelectedProduct[]): number => {
-      return (
-        products?.reduce((acc, { selectedProduct, quantity }) => {
+  const { totalProductsInCart, totalCostOfProductsInCart } = useMemo(
+    () =>
+      selectedProducts.reduce(
+        (acc, { selectedProduct, quantity }) => {
+          acc.totalProductsInCart += Number(quantity);
+
           if (selectedProduct?.localizations?.length) {
-            return (
-              acc +
-              Number(selectedProduct?.localizations[1]?.price?.amount ?? 0) *
-                Number(quantity ?? 0)
+            const amount = Number(
+              selectedProduct?.localizations[1]?.price?.amount
             );
+            const price = isNaN(amount) ? 0 : amount;
+
+            acc.totalCostOfProductsInCart += Number(quantity) * price;
           }
 
           return acc;
-        }, 0) || 0
-      );
-    },
-    []
-  );
-
-  const totalCostOfProductsInCart = useMemo(
-    () =>
-      patientFile.teeth?.reduce((acc, tooth) => {
-        return (
-          acc +
-          sumOfCostOfProducts(
-            tooth.root?.treatmentDoc?.selectedProducts ?? []
-          ) +
-          sumOfCostOfProducts(tooth.crown?.treatmentDoc?.selectedProducts ?? [])
-        );
-      }, 0),
-    [patientFile]
+        },
+        { totalProductsInCart: 0, totalCostOfProductsInCart: 0 }
+      ),
+    [selectedProducts]
   );
 
   return { totalProductsInCart, totalCostOfProductsInCart };
