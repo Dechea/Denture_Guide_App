@@ -21,6 +21,7 @@ export default function Tools({
   useAvailableTeethByTreatment({
     acceptableTreatment,
     patientFileId: params.patientFileId,
+    productType: PRODUCT_TYPE.TOOLS,
   });
 
   return (

@@ -6,7 +6,12 @@ import { useQuery } from 'fqlx-client';
 import { CartCostEstimation } from '../../../components/CartCostEstimation';
 import CartHeader from '../../../components/CartHeader';
 import CartItemsList from '../../../components/CartItemsList';
-import { Query, Tooth } from '../../../fqlx-generated/typedefs';
+import {
+  Product,
+  Query,
+  SelectedProduct,
+  Tooth,
+} from '../../../fqlx-generated/typedefs';
 import { useProductCalculations } from '../../../hooks/useProductCalculations';
 import { useProductCrudOps } from '../../../hooks/useProductCrudOps';
 import { AREA_TYPE } from '../../../zustand/product/interface';
@@ -36,41 +41,38 @@ export default function Cart({ params }: CartProps) {
   );
 
   const handleProductCountChange = async (
-    quantity: number,
+    updatedQuantity: number,
     toothNumber: number,
     productId: string
   ) => {
     const getMappedTeeth = (teeth: Tooth[]) => {
       teeth.forEach((tooth: Tooth) => {
         const localToothNumber = Number(tooth.name);
-        for (const area of Object.values(AREA_TYPE)) {
-          if (tooth[area].treatmentDoc?.selectedProducts?.length) {
-            if (
-              localToothNumber == toothNumber &&
-              // @ts-ignore
-              tooth[area]?.treatmentDoc?.selectedProducts[0]?.selectedProduct
-                ?.id === productId
-            ) {
-              tooth[area].treatmentDoc.selectedProducts = [
-                {
-                  // @ts-ignore
-                  selectedProduct: `Product.byId("${tooth[area].treatmentDoc.selectedProducts[0]?.selectedProduct?.id}")`,
-                  quantity: quantity,
-                },
-              ];
-            } else {
-              tooth[area].treatmentDoc.selectedProducts = [
-                {
-                  // @ts-ignore
-                  selectedProduct: `Product.byId("${tooth[area].treatmentDoc.selectedProducts[0]?.selectedProduct?.id}")`,
-                  quantity:
-                    // @ts-ignore
-                    tooth[area].treatmentDoc.selectedProducts[0]?.quantity,
-                },
-              ];
+
+        Object.values(AREA_TYPE).forEach((area) => {
+          const selectedProducts = [
+            ...(tooth?.[area]?.treatmentDoc?.selectedProducts ?? []),
+          ];
+          const isToothMatched = localToothNumber === toothNumber;
+
+          // @ts-expect-error
+          tooth[area].treatmentDoc.selectedProducts = selectedProducts.map(
+            ({ selectedProduct, quantity, ...args }) => {
+              const isProductMatched = selectedProduct?.id === productId;
+
+              return {
+                ...args,
+                selectedProduct: `Product.byId("${
+                  selectedProduct?.id as string
+                }")`,
+                quantity:
+                  isToothMatched && isProductMatched
+                    ? updatedQuantity
+                    : quantity,
+              };
             }
-          }
-        }
+          );
+        });
       });
     };
 
@@ -84,28 +86,27 @@ export default function Cart({ params }: CartProps) {
     const getMappedTeeth = (teeth: Tooth[]) => {
       teeth.forEach((tooth: Tooth) => {
         const localToothNumber = Number(tooth.name);
-        for (const area of Object.values(AREA_TYPE)) {
-          if (tooth[area].treatmentDoc?.selectedProducts?.length) {
-            if (
-              localToothNumber == toothNumber &&
-              // @ts-ignore
-              tooth[area].treatmentDoc.selectedProducts[0]?.selectedProduct
-                ?.id === productId
-            ) {
-              tooth[area].treatmentDoc.selectedProducts = [];
-            } else {
-              tooth[area].treatmentDoc.selectedProducts = [
-                {
-                  // @ts-ignore
-                  selectedProduct: `Product.byId("${tooth[area].treatmentDoc.selectedProducts[0]?.selectedProduct?.id}")`,
-                  quantity:
-                    // @ts-ignore
-                    tooth[area].treatmentDoc.selectedProducts[0]?.quantity,
-                },
-              ];
+
+        Object.values(AREA_TYPE).forEach((area) => {
+          const selectedProducts = [
+            ...(tooth[area].treatmentDoc.selectedProducts ?? []),
+          ];
+          const filteredSelectedProducts: SelectedProduct[] = [];
+          const isToothMatched = localToothNumber === toothNumber;
+
+          selectedProducts.forEach(({ quantity, selectedProduct, ...args }) => {
+            if (!(selectedProduct?.id === productId && isToothMatched)) {
+              filteredSelectedProducts.push({
+                ...args,
+                selectedProduct:
+                  `Product.byId("${selectedProduct?.id}")` as unknown as Product,
+                quantity: quantity,
+              });
             }
-          }
-        }
+          });
+
+          tooth[area].treatmentDoc.selectedProducts = filteredSelectedProducts;
+        });
       });
     };
 

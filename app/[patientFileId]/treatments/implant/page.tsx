@@ -23,6 +23,7 @@ export default function Implant({
   useAvailableTeethByTreatment({
     acceptableTreatment,
     patientFileId: params.patientFileId,
+    productType: PRODUCT_TYPE.IMPLANT,
   });
 
   return (

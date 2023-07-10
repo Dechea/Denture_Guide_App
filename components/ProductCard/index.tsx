@@ -8,13 +8,23 @@ import BarCodeIcon from '../Icons/Barcode';
 import { Product } from '../../fqlx-generated/typedefs';
 import { PRODUCT_TYPE } from '../../zustand/product/interface';
 import { convertCamelCaseToTitleCase } from '../../utils/helper';
+import { SelectedProducts } from '../../zustand/product';
 
 interface ProductCardProps {
   product: Product;
   productType: PRODUCT_TYPE;
+  onClickProduct: (
+    productToDelete: string,
+    toothNumber: number,
+    selectedProducts: SelectedProducts
+  ) => void;
 }
 
-export const ProductCard = ({ product, productType }: ProductCardProps) => {
+export const ProductCard = ({
+  product,
+  productType,
+  onClickProduct,
+}: ProductCardProps) => {
   const productName =
     product?.localizations?.find(
       (item: { locale: string }) => item.locale === 'EN'
@@ -136,7 +146,10 @@ export const ProductCard = ({ product, productType }: ProductCardProps) => {
             </View>
 
             <View direction='column' justify='start' gap={2} width='100%'>
-              <ProductToothList productId={product.id as string} />
+              <ProductToothList
+                productId={product.id as string}
+                onClickProduct={onClickProduct}
+              />
             </View>
           </View>
         </View>

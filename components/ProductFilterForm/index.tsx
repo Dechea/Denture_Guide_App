@@ -33,15 +33,14 @@ export const ProductFilterForm = ({
   } = useProductStore();
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
   const [categories, setCategories] = useState<ProductFilterCategory[]>([]);
-
   const query = useQuery<Query>();
 
-  useMemo(() => {
-    const productQuery = query.Product.all().where(
-      formWhereCondition(productType)
-    );
+  const productQuery = query.Product.all().where(
+    formWhereCondition(productType)
+  );
 
-    const categoriesWithOptions =
+  const categoriesWithOptions = useMemo(
+    () =>
       productType === PRODUCT_TYPE.TOOLS
         ? filterCategories
         : filterCategories.map((category) => ({
@@ -51,10 +50,9 @@ export const ProductFilterForm = ({
               .distinct<string>()
               .exec()
               .data?.filter((option) => option),
-          }));
-
-    setCategories(categoriesWithOptions);
-  }, []);
+          })),
+    []
+  );
 
   const toggleCategoryOptions = (category: string) => {
     const localExpandedItems = expandedCategories.includes(category)
@@ -95,8 +93,12 @@ export const ProductFilterForm = ({
     setProductFilters(filteredProducts);
   };
 
-  // Reset searched manufacturerId and applied filters
   useEffect(() => {
+    setCategories(categoriesWithOptions);
+  }, [categoriesWithOptions]);
+
+  useEffect(() => {
+    // Reset searched manufacturerId and applied filters
     return () => {
       setSearchedProductManufacturerId('');
       setProductFilters({});

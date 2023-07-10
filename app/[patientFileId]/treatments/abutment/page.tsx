@@ -27,6 +27,7 @@ export default function Abutment({
   useAvailableTeethByTreatment({
     acceptableTreatment,
     patientFileId: params.patientFileId,
+    productType: PRODUCT_TYPE.ABUTMENT,
   });
 
   return (

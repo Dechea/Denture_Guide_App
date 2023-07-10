@@ -3,18 +3,27 @@
 import { Icon, Text, View, MenuItem, Card } from 'reshaped';
 import cx from 'classnames';
 import ToothIcon from '../Icons/Tooth';
-import { useProductStore } from '../../zustand/product';
+import { SelectedProducts, useProductStore } from '../../zustand/product';
 
 interface ProductToothListProps {
   productId: string;
+  onClickProduct: (
+    productToDelete: string,
+    toothNumber: number,
+    selectedProducts: SelectedProducts
+  ) => void;
 }
 
-const ProductToothList = ({ productId }: ProductToothListProps) => {
+const ProductToothList = ({
+  productId,
+  onClickProduct,
+}: ProductToothListProps) => {
   const { availableTeethByProductType, selectedProducts, setSelectedProducts } =
     useProductStore();
 
   const handleClickOnToothOption = (toothNumber: number) => {
     const selectedProductsData = { ...selectedProducts };
+    const productToDelete = selectedProductsData[toothNumber];
 
     // Deselect if clicked on selected tooth
     if (selectedProductsData[toothNumber] === productId) {
@@ -25,6 +34,7 @@ const ProductToothList = ({ productId }: ProductToothListProps) => {
     }
 
     setSelectedProducts(selectedProductsData);
+    onClickProduct(productToDelete, toothNumber, selectedProductsData);
   };
 
   return availableTeethByProductType.map((availableTooth) => {

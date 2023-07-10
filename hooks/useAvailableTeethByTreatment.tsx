@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react';
 import { useProductStore } from '../zustand/product';
 import { useQuery } from 'fqlx-client';
@@ -6,19 +8,21 @@ import { PatientFile, Query } from '../fqlx-generated/typedefs';
 interface UseAvailableTeethByTreatmentProps {
   acceptableTreatment: { [key: string]: string[] };
   patientFileId: string;
+  productType: string;
 }
 
 export function useAvailableTeethByTreatment({
   acceptableTreatment,
   patientFileId,
+  productType,
 }: UseAvailableTeethByTreatmentProps) {
   const { setAvailableTeethByProductType, setSelectedProducts } =
     useProductStore();
   const query = useQuery<Query>();
 
-  const patientFile: PatientFile = query.PatientFile.firstWhere(
-    `(file) => file.id == "${patientFileId}"`
-  ).exec();
+  const patientFile: PatientFile = query.PatientFile.byId(patientFileId)
+    .project({ teeth: true })
+    .exec();
 
   const patientFileTeeth = [...(patientFile.teeth || [])];
 
@@ -35,9 +39,15 @@ export function useAvailableTeethByTreatment({
           availableTeeth.push(Number(toothNumber));
           // @ts-expect-error
           if (tooth[area]?.treatmentDoc?.selectedProducts?.length) {
-            alreadySelectedProducts[toothNumber] =
+            // @ts-expect-error
+            tooth[area]?.treatmentDoc?.selectedProducts.forEach(
               // @ts-expect-error
-              tooth[area].treatmentDoc.selectedProducts[0]?.selectedProduct.id;
+              ({ selectedProduct }) => {
+                if (Object.keys(selectedProduct).includes(productType)) {
+                  alreadySelectedProducts[toothNumber] = selectedProduct.id;
+                }
+              }
+            );
           }
           break;
         }
