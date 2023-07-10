@@ -38,7 +38,9 @@ export default function CartHeader({ totalProductsCount }: CartHeaderProps) {
             {' '}
             Cart
           </Text>
-          <Badge color='critical'>{totalProductsCount}</Badge>
+          <Badge className='!min-w-[30px]' color='critical'>
+            {totalProductsCount}
+          </Badge>
         </View>
       </View>
     </View>
