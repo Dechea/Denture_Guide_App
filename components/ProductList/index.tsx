@@ -14,6 +14,7 @@ import ProductNotFound from '../ProductNotFound';
 import { formWhereCondition } from './helper';
 import { AREA_TYPE, PRODUCT_TYPE } from '../../zustand/product/interface';
 import { convertCamelCaseToTitleCase } from '../../utils/helper';
+import { useProductCrudOps } from '../../hooks/useProductCrudOps';
 
 interface ProductListProps {
   productType: PRODUCT_TYPE;
@@ -35,12 +36,9 @@ const ProductList = ({
   } = useProductStore();
 
   const query = useQuery<Query>();
+  const { addOrUpdateProductInFqlx } = useProductCrudOps({ patientFileId });
 
-  const addProductInFqlx = async () => {
-    const fqlxTeeth =
-      (await query.PatientFile.byId(patientFileId).exec()).teeth || [];
-    const teeth = [...fqlxTeeth];
-
+  const getMappedTeeth = (teeth: Tooth[]) => {
     teeth.forEach((tooth: Tooth) => {
       const toothNumber = Number(tooth.name);
       for (const area of Object.values(AREA_TYPE)) {
@@ -67,19 +65,10 @@ const ProductList = ({
         }
       }
     });
-
-    const stringifyTeeth = JSON.stringify(teeth).replaceAll(
-      /"Product.byId\(\\"(\d*)\\"\)"/g,
-      'Product.byId("$1")'
-    );
-
-    query.PatientFile.byId(patientFileId)
-      .update(`{ teeth: ${stringifyTeeth} }`)
-      .exec();
   };
 
   useEffect(() => {
-    addProductInFqlx();
+    addOrUpdateProductInFqlx(getMappedTeeth);
   }, [selectedProducts]);
 
   const productQuery = useMemo(
