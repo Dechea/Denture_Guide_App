@@ -20,7 +20,7 @@ export default function CostEstimationHeader() {
       paddingInline={6}
       align='center'
       gap={4}
-      className='border-b border-[--rs-color-border-neutral-faded]'
+      className='border-b border-[--rs-color-border-neutral-faded] print:!hidden'
     >
       <Button
         icon={<Icon svg={BackwardIcon} size={4} />}

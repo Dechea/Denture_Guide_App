@@ -65,7 +65,7 @@ export default function CostEstimationList({
         return (
           <View key={productId}>
             <View paddingTop={3} paddingBottom={4}>
-              <Divider />
+              <Divider className='print:!border print:!border-solid print:!border-[--rs-color-border-neutral-faded]' />
             </View>
 
             <View gap={4} divided>

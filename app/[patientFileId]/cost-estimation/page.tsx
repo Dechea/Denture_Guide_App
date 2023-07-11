@@ -1,16 +1,12 @@
 'use client';
 
-import { useQuery } from 'fqlx-client';
-import { useEffect, useMemo, useState } from 'react';
-import { View } from 'reshaped';
+import { useEffect, useState } from 'react';
+import { Text, View } from 'reshaped';
 import CostEstimationHeader from '../../../components/CostEstimationHeader';
 import CostEstimationList from '../../../components/CostEstimationList';
 import TotalCostEstimationCard from '../../../components/TotalCostEstimationCard';
-import {
-  Product,
-  Query,
-  SelectedProduct,
-} from '../../../fqlx-generated/typedefs';
+import { Product } from '../../../fqlx-generated/typedefs';
+import { useProductCalculations } from '../../../hooks/useProductCalculations';
 
 export interface UniqueProduct {
   [key: string]: { count: number; details: Product };
@@ -21,40 +17,11 @@ export default function CostEstimation({
 }: {
   params: { patientFileId: string };
 }) {
-  const query = useQuery<Query>();
   const [uniqueProducts, setUniqueProducts] = useState<UniqueProduct>({});
-
-  const patientFile = useMemo(
-    () =>
-      query.PatientFile.firstWhere(
-        `(patientFile) => patientFile.id == "${params.patientFileId}"`
-      )
-        .project({ id: true, teeth: true })
-        .exec(),
-    [params.patientFileId]
-  );
-
-  const totalPrice = useMemo(() => {
-    return Object.values(uniqueProducts).reduce((acc, item) => {
-      const { count, details } = item;
-      const price = details.localizations[1]?.price?.amount as number;
-
-      if (!isNaN(price)) {
-        return acc + price * count;
-      }
-
-      return acc;
-    }, 0);
-  }, [uniqueProducts]);
+  const { selectedProducts, totalCostOfProductsInCart } =
+    useProductCalculations(params.patientFileId);
 
   useEffect(() => {
-    const selectedProducts: SelectedProduct[] = patientFile.teeth.flatMap(
-      (tooth) => [
-        ...(tooth.root.treatmentDoc?.selectedProducts ?? []),
-        ...(tooth.crown.treatmentDoc?.selectedProducts ?? []),
-      ]
-    );
-
     const uniqueProductsData: UniqueProduct = {
       ...uniqueProducts,
     };
@@ -76,11 +43,18 @@ export default function CostEstimation({
     });
 
     setUniqueProducts(uniqueProductsData);
-  }, []);
+  }, [selectedProducts]);
 
   return (
-    <View className='overflow-y-scroll max-h-[calc(100vh-53px)]'>
+    <View className='overflow-y-scroll max-h-[calc(100vh-53px)] print:block print:overflow-visible'>
       <CostEstimationHeader />
+
+      <View className='hidden print:block print:pb-x24 print:px-x12'>
+        <Text variant='title-3'>Cost Estimation</Text>
+        <Text variant='featured-3' weight='bold' className='print:pt-x4'>
+          Total: {totalCostOfProductsInCart} €
+        </Text>
+      </View>
 
       <View
         direction='row'
@@ -88,12 +62,16 @@ export default function CostEstimation({
         paddingBlock={8}
         paddingInline={6}
         gap={35.5}
+        className='print:!p-0'
       >
-        <View.Item columns={8}>
+        <View.Item
+          columns={8}
+          className='print:block print:p-10 print:pt-x12 print:px-x12 print:!w-full'
+        >
           <CostEstimationList products={uniqueProducts} />
         </View.Item>
-        <View.Item columns={4} className='sticky !top-[133px]'>
-          <TotalCostEstimationCard totalPrice={totalPrice} />
+        <View.Item columns={4} className='sticky !top-[133px] print:hidden'>
+          <TotalCostEstimationCard totalPrice={totalCostOfProductsInCart} />
         </View.Item>
       </View>
     </View>

@@ -31,6 +31,7 @@ export default function TotalCostEstimationCard({
           size='large'
           icon={<PrintIcon />}
           className='!rounded-lg'
+          onClick={() => window.print()}
         >
           <Text variant='body-2' weight='medium'>
             Print

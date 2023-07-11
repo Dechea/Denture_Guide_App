@@ -42,5 +42,5 @@ export const useProductCalculations = (patientFileId: string) => {
     [selectedProducts]
   );
 
-  return { totalProductsInCart, totalCostOfProductsInCart };
+  return { selectedProducts, totalProductsInCart, totalCostOfProductsInCart };
 };
