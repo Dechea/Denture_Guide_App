@@ -26,7 +26,10 @@ export const CartCostEstimation = ({
             align='center'
             className='!justify-between'
           >
-            <Link href={`/costestimation`} className='no-underline'>
+            <Link
+              href={`/${patientFileId}/cost-estimation`}
+              className='no-underline'
+            >
               <View direction='row' align='center' gap={1}>
                 <Icon svg={CostEstimationIcon} size={4} color='neutral' />
 
@@ -58,11 +61,7 @@ export const CartCostEstimation = ({
             </Text>
           </View>
         </View>
-        <Button
-          onClick={() => router.push('/checkout')}
-          color='primary'
-          className='!rounded-lg'
-        >
+        <Button color='primary' className='!rounded-lg'>
           <View paddingBlock={1}>
             <Text variant='body-2' weight='medium'>
               Place Order
