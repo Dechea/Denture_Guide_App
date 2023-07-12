@@ -1,3 +1,5 @@
+'use client';
+
 import { Button, Card, Text, View } from 'reshaped';
 import PrintIcon from '../../components/Icons/Print';
 

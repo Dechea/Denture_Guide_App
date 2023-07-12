@@ -56,11 +56,10 @@ export default function CostEstimationList({
             ?.find((item: { locale: string }) => item.locale === 'EN')
             ?.name?.split(',')?.[0] ?? '-';
 
-        const productPrice = isNaN(
-          productInfo.details?.localizations?.[1]?.price?.amount as number
-        )
-          ? 0
-          : (productInfo.details?.localizations?.[1]?.price?.amount as number);
+        const price = productInfo.details?.localizations?.[1]?.price
+          ?.amount as number;
+
+        const productPrice = isNaN(price) ? 0 : price;
 
         return (
           <View key={productId}>

@@ -12,19 +12,17 @@ export interface UniqueProduct {
   [key: string]: { count: number; details: Product };
 }
 
-export default function CostEstimation({
-  params,
-}: {
+interface CostEstimationProps {
   params: { patientFileId: string };
-}) {
+}
+
+export default function CostEstimation({ params }: CostEstimationProps) {
   const [uniqueProducts, setUniqueProducts] = useState<UniqueProduct>({});
   const { selectedProducts, totalCostOfProductsInCart } =
     useProductCalculations(params.patientFileId);
 
   useEffect(() => {
-    const uniqueProductsData: UniqueProduct = {
-      ...uniqueProducts,
-    };
+    const uniqueProductsData: UniqueProduct = {};
 
     selectedProducts.forEach((product) => {
       const productId = product?.selectedProduct?.id as string;
@@ -66,7 +64,7 @@ export default function CostEstimation({
       >
         <View.Item
           columns={8}
-          className='print:block print:p-10 print:pt-x12 print:px-x12 print:!w-full'
+          className='print:block print:p-x12 print:!w-full'
         >
           <CostEstimationList products={uniqueProducts} />
         </View.Item>
