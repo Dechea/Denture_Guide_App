@@ -1,8 +1,7 @@
 'use client';
 
-import { Button, Text, View, Card, Icon, Divider } from 'reshaped';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { Button, Card, Divider, Icon, Text, View } from 'reshaped';
 import CostEstimationIcon from '../Icons/CostEstimation';
 
 interface CartCostEstimationProps {
@@ -14,8 +13,6 @@ export const CartCostEstimation = ({
   patientFileId,
   totalCostOfProducts,
 }: CartCostEstimationProps) => {
-  const router = useRouter();
-
   return (
     <Card padding={0}>
       <View gap={10} padding={3} paddingTop={4}>
@@ -26,7 +23,10 @@ export const CartCostEstimation = ({
             align='center'
             className='!justify-between'
           >
-            <Link href={`/costestimation`} className='no-underline'>
+            <Link
+              href={`/${patientFileId}/cost-estimation`}
+              className='no-underline'
+            >
               <View direction='row' align='center' gap={1}>
                 <Icon svg={CostEstimationIcon} size={4} color='neutral' />
 
@@ -58,11 +58,7 @@ export const CartCostEstimation = ({
             </Text>
           </View>
         </View>
-        <Button
-          onClick={() => router.push('/checkout')}
-          color='primary'
-          className='!rounded-lg'
-        >
+        <Button color='primary' className='!rounded-lg'>
           <View paddingBlock={1}>
             <Text variant='body-2' weight='medium'>
               Place Order

@@ -40,6 +40,7 @@ export default function Header({ patientFileId }: HeaderProps) {
       insetTop={0}
       zIndex={50}
       backgroundColor='white'
+      className='print:!hidden'
     >
       <View
         direction='row'
@@ -68,7 +69,7 @@ export default function Header({ patientFileId }: HeaderProps) {
           </Text>
         </View>
 
-        <View direction='row' align='center' justify='end' gap={3}>
+        <View direction='row' align='center' justify='end' gap={6}>
           <View direction='row' align='center' gap={2.5}>
             <Button
               variant='ghost'
@@ -90,8 +91,8 @@ export default function Header({ patientFileId }: HeaderProps) {
             icon={<CostEst />}
             variant='ghost'
             color='neutral'
-            highlighted={pathname === `/costestimation`}
-            onClick={() => router.push(`/costestimation`)}
+            highlighted={pathname === `/${patientFileId}/cost-estimation`}
+            onClick={() => router.push(`/${patientFileId}/cost-estimation`)}
           >
             Cost Estimation
           </Button>

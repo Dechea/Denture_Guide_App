@@ -10,3 +10,8 @@
   border-radius: 12px;
   background-color: var(--rs-color-background-neutral);
 }
+
+@page {
+  size: auto;
+  margin-block: 30mm;
+}

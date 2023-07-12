@@ -10,7 +10,9 @@ import InvoiceIcon from '../Icons/Invoice';
 const CheckoutForm = () => {
   const router = useRouter();
 
-  const handleNavigation = (path: __next_route_internal_types__.RouteImpl<string> ) => {
+  const handleNavigation = (
+    path: __next_route_internal_types__.RouteImpl<string>
+  ) => {
     router.push(path);
   };
 
@@ -38,7 +40,11 @@ const CheckoutForm = () => {
             <View padding={6} gap={9}>
               <View direction={'row'} width={'100%'}>
                 <View.Item grow>
-                  <Text color={'neutral-faded'} variant='body-2' weight='medium'>
+                  <Text
+                    color={'neutral-faded'}
+                    variant='body-2'
+                    weight='medium'
+                  >
                     Doctor pays
                   </Text>
                 </View.Item>
@@ -55,12 +61,10 @@ const CheckoutForm = () => {
             </View>
           </Card>
           <View direction={'row'} justify={'center'} align={'center'} gap={2}>
-            <Button
-              icon={<InvoiceIcon />}
-              variant='ghost'
-              onClick={() => handleNavigation('/costestimation')}
-            >
-              <Text variant='body-3' weight="medium">Cost Estimation</Text>
+            <Button icon={<InvoiceIcon />} variant='ghost'>
+              <Text variant='body-3' weight='medium'>
+                Cost Estimation
+              </Text>
             </Button>
           </View>
         </View>

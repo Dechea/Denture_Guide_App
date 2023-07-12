@@ -6,7 +6,12 @@ const NAVBAR_WIDTH = 64;
 
 export default function Navbar(): JSX.Element {
   return (
-    <View direction='row' width={{ s: `${NAVBAR_WIDTH}px` }} height='100%'>
+    <View
+      direction='row'
+      width={{ s: `${NAVBAR_WIDTH}px` }}
+      height='100%'
+      className='print:!hidden'
+    >
       <View
         direction='column'
         height='100%'
