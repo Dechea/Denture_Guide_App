@@ -1,8 +1,7 @@
 'use client';
 
-import { Button, Text, View, Card, Icon, Divider } from 'reshaped';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { Button, Card, Divider, Icon, Text, View } from 'reshaped';
 import CostEstimationIcon from '../Icons/CostEstimation';
 
 interface CartCostEstimationProps {
@@ -14,8 +13,6 @@ export const CartCostEstimation = ({
   patientFileId,
   totalCostOfProducts,
 }: CartCostEstimationProps) => {
-  const router = useRouter();
-
   return (
     <Card padding={0}>
       <View gap={10} padding={3} paddingTop={4}>
