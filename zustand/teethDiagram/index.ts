@@ -10,7 +10,7 @@ const initialState = {
   availableTreatments: [],
   history: [],
   historyIndex: 0,
-  lastTreatment: {},
+  recentAddedTreatment: {},
 };
 
 export const useTeethDiagramStore = create<TeethDiagramState>()(
@@ -35,7 +35,8 @@ export const useTeethDiagramStore = create<TeethDiagramState>()(
       setHistoryIndex: (updatedHistoryIndex) =>
         set(() => ({ historyIndex: updatedHistoryIndex })),
       resetHistory: () => set(() => ({ historyIndex: 0, history: [] })),
-      setLastTreatment: (treatment) => set({ lastTreatment: treatment }),
+      setRecentAddedTreatment: (treatment) =>
+        set({ recentAddedTreatment: treatment }),
     }),
     { name: 'teeth-diagram-store' }
   )

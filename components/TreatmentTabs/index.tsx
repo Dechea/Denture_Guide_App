@@ -29,18 +29,17 @@ const TreatmentTabs = ({
   children: React.ReactNode;
   patientFileId: string;
 }) => {
+  const [activeTabs, setActiveTabs] = useState(defaultActiveTabs);
+  const [activePopupFor, setActivePopupFor] = useState<PRODUCT_TYPE | null>();
+
   const router = useRouter();
   const path: string = usePathname();
-  const { treatments, lastTreatment, setLastTreatment } = useTeethDiagramStore(
-    (state) => state
-  );
+  const { treatments, recentAddedTreatment, setRecentAddedTreatment } =
+    useTeethDiagramStore((state) => state);
 
   const onChangeTab = ({ value }: { value: string }) => {
     router.push(value as __next_route_internal_types__.RouteImpl<string>);
   };
-
-  const [activeTabs, setActiveTabs] = useState(defaultActiveTabs);
-  const [activePopup, setActivePopup] = useState('');
 
   const getTabsToActivate = (treatment: TreatmentVisualization) => {
     const implant = treatment.rootVariant === IMPLANT;
@@ -50,9 +49,9 @@ const TreatmentTabs = ({
     return { implant, abutment };
   };
 
-  const resetPopoverAndTreatment = () => {
-    setActivePopup('');
-    setLastTreatment({});
+  const handleClosePopover = () => {
+    setActivePopupFor(null);
+    setRecentAddedTreatment({});
   };
 
   useEffect(() => {
@@ -72,14 +71,14 @@ const TreatmentTabs = ({
       }
     });
 
-    if (lastTreatment) {
-      const { implant, abutment } = getTabsToActivate(lastTreatment);
+    if (recentAddedTreatment) {
+      const { implant, abutment } = getTabsToActivate(recentAddedTreatment);
 
       if (implant && !activeTabs.implants) {
-        setActivePopup(PRODUCT_TYPE.IMPLANT);
+        setActivePopupFor(PRODUCT_TYPE.IMPLANT);
       }
       if (abutment && !activeTabs.abutments) {
-        setActivePopup(PRODUCT_TYPE.ABUTMENT);
+        setActivePopupFor(PRODUCT_TYPE.ABUTMENT);
       }
     }
 
@@ -111,8 +110,9 @@ const TreatmentTabs = ({
             <Tabs.Item value={`/${patientFileId}/treatments/implant`}>
               <TreatmentTabsPopover
                 activeTab={activeTabs.implants}
-                activePopup={activePopup === PRODUCT_TYPE.IMPLANT}
-                resetPopup={resetPopoverAndTreatment}
+                image={'/TreatmentTabsImplantsPopover.svg'}
+                activePopup={activePopupFor === PRODUCT_TYPE.IMPLANT}
+                onClosePopover={handleClosePopover}
                 tabText='Implants'
                 description='You can select implants for each tooth in ‘Implants’ tab'
               />
@@ -121,8 +121,9 @@ const TreatmentTabs = ({
             <Tabs.Item value={`/${patientFileId}/treatments/abutment`}>
               <TreatmentTabsPopover
                 activeTab={activeTabs.abutments}
-                activePopup={activePopup === PRODUCT_TYPE.ABUTMENT}
-                resetPopup={resetPopoverAndTreatment}
+                image={'/TreatmentTabsAbutmentsPopover.svg'}
+                activePopup={activePopupFor === PRODUCT_TYPE.ABUTMENT}
+                onClosePopover={handleClosePopover}
                 tabText='Abutments'
                 description='You can select abutments for each tooth in ‘Abutments’ tab'
               />
@@ -131,39 +132,27 @@ const TreatmentTabs = ({
             <Tabs.Item value={`/${patientFileId}/treatments/healing`}>
               <TreatmentTabsPopover
                 activeTab={activeTabs.healing}
-                activePopup={false}
-                resetPopup={resetPopoverAndTreatment}
                 tabText='Healing Abutment'
-                description='You can select healing abutments for each tooth in ‘Healing Abutments’ tab'
               />
             </Tabs.Item>
 
             <Tabs.Item value={`/${patientFileId}/treatments/temporary`}>
               <TreatmentTabsPopover
                 activeTab={activeTabs.healing}
-                activePopup={false}
-                resetPopup={resetPopoverAndTreatment}
                 tabText='Temporary Abutments'
-                description='You can select temporary abutments for each tooth in ‘Temporary Abutments’ tab'
               />
             </Tabs.Item>
 
             <Tabs.Item value={`/${patientFileId}/treatments/impression`}>
               <TreatmentTabsPopover
                 activeTab={activeTabs.impression}
-                activePopup={false}
-                resetPopup={resetPopoverAndTreatment}
                 tabText='Impression'
-                description='You can select impression for each tooth in ‘Impression’ tab'
               />
             </Tabs.Item>
             <Tabs.Item value={`/${patientFileId}/treatments/tools`}>
               <TreatmentTabsPopover
                 activeTab={activeTabs.tools}
-                activePopup={false}
-                resetPopup={resetPopoverAndTreatment}
                 tabText='Tools'
-                description='You can select tools in ‘Tools’ tab'
               />
             </Tabs.Item>
           </Tabs.List>

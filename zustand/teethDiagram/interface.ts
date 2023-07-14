@@ -43,7 +43,7 @@ export interface TeethDiagramState {
   availableTreatments: TreatmentProps[];
   history: History[];
   historyIndex: number;
-  lastTreatment: TreatmentProps['visualization'];
+  recentAddedTreatment: TreatmentProps['visualization'];
   setActiveToothParts: (toothParts: string[]) => void;
   onClick: (
     event:
@@ -60,5 +60,5 @@ export interface TeethDiagramState {
   setHistory: (updatedHistory: History[]) => void;
   setHistoryIndex: (updatedHistoryIndex: number) => void;
   resetHistory: () => void;
-  setLastTreatment: (treatment: TreatmentProps['visualization']) => void;
+  setRecentAddedTreatment: (treatment: TreatmentProps['visualization']) => void;
 }

@@ -1,21 +1,27 @@
 import { Actionable, Image, Popover, Text, View } from 'reshaped';
 
+interface TreatmentTabsPopoverProps {
+  activeTab: boolean;
+  tabText: string;
+  description?: string;
+  onClosePopover?: () => void;
+  activePopup?: boolean;
+  image?: string;
+}
+
 export default function TreatmentTabsPopover({
   activeTab,
-  activePopup,
   description,
   tabText,
-  resetPopup,
-}: {
-  activeTab: boolean;
-  activePopup: boolean;
-  description: string;
-  tabText: string;
-  resetPopup: () => void;
-}) {
+  image,
+  onClosePopover,
+  activePopup = false,
+}: TreatmentTabsPopoverProps) {
   if (activePopup) {
     setTimeout(() => {
-      resetPopup();
+      if (onClosePopover) {
+        onClosePopover();
+      }
     }, 3000);
   }
 
@@ -33,12 +39,12 @@ export default function TreatmentTabsPopover({
           gap={4}
           padding={2}
           paddingEnd={4}
-          className='bg-[--rs-color-on-background-neutral] '
           direction='row'
           align='center'
+          backgroundColor='black'
         >
           <Image
-            src={'/TreatmentTabsPopover.svg'}
+            src={image}
             width='107px'
             height='80px'
             borderRadius='medium'
