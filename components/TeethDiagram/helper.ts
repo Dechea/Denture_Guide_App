@@ -41,6 +41,9 @@ export const getTreatmentsVariant = ({
   treatmentsData,
   forCard = false,
 }: GetTreatmentsVariantArgs) => {
+  treatments.crownVariant = ADULT;
+  treatments.rootVariant = ADULT;
+
   treatmentsData.forEach((treatment) => {
     if (treatment?.name === ARTIFICIAL_CROWN) {
       treatments.crownVariant = ARTIFICIAL_CROWN;

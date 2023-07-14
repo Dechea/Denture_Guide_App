@@ -1,39 +1,25 @@
 'use client';
 
-import { useRouter, usePathname } from 'next/navigation';
-import { View, Tabs, Text, Tooltip } from 'reshaped';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { Tabs, Text, View } from 'reshaped';
+import { useTeethDiagramStore } from '../../zustand/teethDiagram';
+import {
+  ADULT,
+  IMPLANT,
+  PROSTHESIS_ANCHOR,
+} from '../TeethDiagram/teeth/constants/treatmentVariants';
+import TreatmentTabsPopover from '../TreatmentTabsPopover';
+import { TreatmentVisualization } from '../../zustand/teethDiagram/interface';
+import { PRODUCT_TYPE } from '../../zustand/product/interface';
 
-const toolTipMapping: { [key: number]: string } = {
-  0: 'Select Treatments First',
-  1: 'Select Implant First',
-  2: 'Select Abutments First',
-  3: 'Select Healings First',
-  4: 'Select Temporary First',
-  5: 'Select Impression First',
-  6: 'Select Treatment First',
-};
-
-const TabItemWithTooltip = ({
-  active,
-  tooltipText,
-  tabText,
-}: {
-  active: boolean;
-  tooltipText: string;
-  tabText: string;
-}) => {
-  return (
-    <Tooltip text={tooltipText}>
-      {(attributes) => (
-        <Text
-          color={active ? 'neutral' : 'disabled'}
-          attributes={!active ? attributes : {}}
-        >
-          {tabText}
-        </Text>
-      )}
-    </Tooltip>
-  );
+const defaultActiveTabs = {
+  implants: false,
+  abutments: false,
+  healing: false,
+  temporary: false,
+  impression: false,
+  tools: true,
 };
 
 const TreatmentTabs = ({
@@ -45,20 +31,60 @@ const TreatmentTabs = ({
 }) => {
   const router = useRouter();
   const path: string = usePathname();
-  const routesMapping: { [key: string]: number } = {
-    [`/${patientFileId}/treatments`]: 0,
-    [`/${patientFileId}/treatments/implant`]: 1,
-    [`/${patientFileId}/treatments/abutment`]: 2,
-    [`/${patientFileId}/treatments/healing`]: 3,
-    [`/${patientFileId}/treatments/temporary`]: 4,
-    [`/${patientFileId}/treatments/impression`]: 5,
-    [`/${patientFileId}/treatments/tools`]: 6,
-  };
-  const activeTabIndex = routesMapping[path] || 0;
+  const { treatments, lastTreatment, setLastTreatment } = useTeethDiagramStore(
+    (state) => state
+  );
 
   const onChangeTab = ({ value }: { value: string }) => {
     router.push(value as __next_route_internal_types__.RouteImpl<string>);
   };
+
+  const [activeTabs, setActiveTabs] = useState(defaultActiveTabs);
+  const [activePopup, setActivePopup] = useState('');
+
+  const getTabsToActivate = (treatment: TreatmentVisualization) => {
+    const implant = treatment.rootVariant === IMPLANT;
+    const abutment =
+      treatment.crownVariant === PROSTHESIS_ANCHOR &&
+      treatment.rootVariant === ADULT;
+    return { implant, abutment };
+  };
+
+  const resetPopoverAndTreatment = () => {
+    setActivePopup('');
+    setLastTreatment({});
+  };
+
+  useEffect(() => {
+    const localActiveTabs = { ...defaultActiveTabs };
+
+    Object.values(treatments).forEach((treatment) => {
+      const { implant, abutment } = getTabsToActivate(treatment);
+
+      if (implant) {
+        localActiveTabs.implants = true;
+      }
+      if (abutment) {
+        localActiveTabs.abutments = true;
+        localActiveTabs.healing = true;
+        localActiveTabs.temporary = true;
+        localActiveTabs.impression = true;
+      }
+    });
+
+    if (lastTreatment) {
+      const { implant, abutment } = getTabsToActivate(lastTreatment);
+
+      if (implant && !activeTabs.implants) {
+        setActivePopup(PRODUCT_TYPE.IMPLANT);
+      }
+      if (abutment && !activeTabs.abutments) {
+        setActivePopup(PRODUCT_TYPE.ABUTMENT);
+      }
+    }
+
+    setActiveTabs(localActiveTabs);
+  }, [treatments]);
 
   return (
     <View
@@ -83,54 +109,65 @@ const TreatmentTabs = ({
             </Tabs.Item>
 
             <Tabs.Item value={`/${patientFileId}/treatments/implant`}>
-              <TabItemWithTooltip
+              <TreatmentTabsPopover
+                activeTab={activeTabs.implants}
+                activePopup={activePopup === PRODUCT_TYPE.IMPLANT}
+                resetPopup={resetPopoverAndTreatment}
                 tabText='Implants'
-                active
-                tooltipText={toolTipMapping[activeTabIndex]}
+                description='You can select implants for each tooth in ‘Implants’ tab'
               />
             </Tabs.Item>
 
             <Tabs.Item value={`/${patientFileId}/treatments/abutment`}>
-              <TabItemWithTooltip
+              <TreatmentTabsPopover
+                activeTab={activeTabs.abutments}
+                activePopup={activePopup === PRODUCT_TYPE.ABUTMENT}
+                resetPopup={resetPopoverAndTreatment}
                 tabText='Abutments'
-                active
-                tooltipText={toolTipMapping[activeTabIndex]}
+                description='You can select abutments for each tooth in ‘Abutments’ tab'
               />
             </Tabs.Item>
 
             <Tabs.Item value={`/${patientFileId}/treatments/healing`}>
-              <TabItemWithTooltip
-                tabText='Healings'
-                active
-                tooltipText={toolTipMapping[activeTabIndex]}
+              <TreatmentTabsPopover
+                activeTab={activeTabs.healing}
+                activePopup={false}
+                resetPopup={resetPopoverAndTreatment}
+                tabText='Healing Abutment'
+                description='You can select healing abutments for each tooth in ‘Healing Abutments’ tab'
               />
             </Tabs.Item>
 
             <Tabs.Item value={`/${patientFileId}/treatments/temporary`}>
-              <TabItemWithTooltip
-                tabText='Temporary'
-                active
-                tooltipText={toolTipMapping[activeTabIndex]}
+              <TreatmentTabsPopover
+                activeTab={activeTabs.healing}
+                activePopup={false}
+                resetPopup={resetPopoverAndTreatment}
+                tabText='Temporary Abutments'
+                description='You can select temporary abutments for each tooth in ‘Temporary Abutments’ tab'
               />
             </Tabs.Item>
 
             <Tabs.Item value={`/${patientFileId}/treatments/impression`}>
-              <TabItemWithTooltip
+              <TreatmentTabsPopover
+                activeTab={activeTabs.impression}
+                activePopup={false}
+                resetPopup={resetPopoverAndTreatment}
                 tabText='Impression'
-                active
-                tooltipText={toolTipMapping[activeTabIndex]}
+                description='You can select impression for each tooth in ‘Impression’ tab'
               />
             </Tabs.Item>
             <Tabs.Item value={`/${patientFileId}/treatments/tools`}>
-              <TabItemWithTooltip
+              <TreatmentTabsPopover
+                activeTab={activeTabs.tools}
+                activePopup={false}
+                resetPopup={resetPopoverAndTreatment}
                 tabText='Tools'
-                active
-                tooltipText={toolTipMapping[activeTabIndex]}
+                description='You can select tools in ‘Tools’ tab'
               />
             </Tabs.Item>
           </Tabs.List>
         </View>
-
         <View.Item>{children}</View.Item>
       </Tabs>
     </View>

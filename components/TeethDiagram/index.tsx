@@ -90,6 +90,7 @@ export default function TeethDiagramWithTreatments({
     setHistoryIndex,
     resetTeethDiagramStore,
     resetHistory,
+    setLastTreatment,
   } = useTeethDiagramStore((state) => state);
 
   const fqlxTreatmentGroups = query.TreatmentGroup.all()
@@ -111,6 +112,7 @@ export default function TeethDiagramWithTreatments({
   };
 
   const handleTreatmentsClick = async (treatment: TreatmentProps) => {
+    setLastTreatment(treatment.visualization);
     const patientFileData = await query.PatientFile.byId(patientFileId).exec();
 
     // @ts-expect-error
@@ -156,7 +158,6 @@ export default function TeethDiagramWithTreatments({
     setActiveToothParts([]);
 
     callPatientFileAPI(mappedPatientFile.teeth);
-    showSelectImplantToast();
   };
 
   const handleDeleteTreatment = async () => {
@@ -219,27 +220,6 @@ export default function TeethDiagramWithTreatments({
       patientFile.teeth
     );
     setTreatments(treatmentVisualizations);
-  };
-
-  const showSelectImplantToast = () => {
-    const id = toast.show({
-      color: 'primary',
-      title: 'Now you can specify implants',
-      icon: <InfoIcon />,
-      position: 'top-start',
-      size: 'small',
-      actionsSlot: (
-        <Button
-          size='small'
-          onClick={() => {
-            router.push(`/${patientFileId}/treatments/implant`);
-            toast.hide(id);
-          }}
-        >
-          Select Implant
-        </Button>
-      ),
-    });
   };
 
   const { undoFunction, redoFunction } = useKeyboardNavigation({
