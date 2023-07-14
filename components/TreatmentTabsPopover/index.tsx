@@ -22,7 +22,7 @@ export default function TreatmentTabsPopover({
       if (onClosePopover) {
         onClosePopover();
       }
-    }, 3000);
+    }, 5000);
   }
 
   return (

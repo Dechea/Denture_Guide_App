@@ -14,8 +14,8 @@ import { TreatmentVisualization } from '../../zustand/teethDiagram/interface';
 import { PRODUCT_TYPE } from '../../zustand/product/interface';
 
 const defaultActiveTabs = {
-  implants: false,
-  abutments: false,
+  implant: false,
+  abutment: false,
   healing: false,
   temporary: false,
   impression: false,
@@ -38,7 +38,14 @@ const TreatmentTabs = ({
     useTeethDiagramStore((state) => state);
 
   const onChangeTab = ({ value }: { value: string }) => {
-    router.push(value as __next_route_internal_types__.RouteImpl<string>);
+    const splitedRoute = value.split('/');
+    const clickedTab = splitedRoute[
+      splitedRoute.length - 1
+    ] as keyof typeof defaultActiveTabs;
+
+    if (activeTabs[clickedTab] === undefined || activeTabs[clickedTab]) {
+      router.push(value as __next_route_internal_types__.RouteImpl<string>);
+    }
   };
 
   const getTabsToActivate = (treatment: TreatmentVisualization) => {
@@ -61,23 +68,20 @@ const TreatmentTabs = ({
       const { implant, abutment } = getTabsToActivate(treatment);
 
       if (implant) {
-        localActiveTabs.implants = true;
+        localActiveTabs.implant = true;
       }
       if (abutment) {
-        localActiveTabs.abutments = true;
-        localActiveTabs.healing = true;
-        localActiveTabs.temporary = true;
-        localActiveTabs.impression = true;
+        localActiveTabs.abutment = true;
       }
     });
 
     if (recentAddedTreatment) {
       const { implant, abutment } = getTabsToActivate(recentAddedTreatment);
 
-      if (implant && !activeTabs.implants) {
+      if (implant && !activeTabs.implant) {
         setActivePopupFor(PRODUCT_TYPE.IMPLANT);
       }
-      if (abutment && !activeTabs.abutments) {
+      if (abutment && !activeTabs.abutment) {
         setActivePopupFor(PRODUCT_TYPE.ABUTMENT);
       }
     }
@@ -109,7 +113,7 @@ const TreatmentTabs = ({
 
             <Tabs.Item value={`/${patientFileId}/treatments/implant`}>
               <TreatmentTabsPopover
-                activeTab={activeTabs.implants}
+                activeTab={activeTabs.implant}
                 image={'/TreatmentTabsImplantsPopover.svg'}
                 activePopup={activePopupFor === PRODUCT_TYPE.IMPLANT}
                 onClosePopover={handleClosePopover}
@@ -120,7 +124,7 @@ const TreatmentTabs = ({
 
             <Tabs.Item value={`/${patientFileId}/treatments/abutment`}>
               <TreatmentTabsPopover
-                activeTab={activeTabs.abutments}
+                activeTab={activeTabs.abutment}
                 image={'/TreatmentTabsAbutmentsPopover.svg'}
                 activePopup={activePopupFor === PRODUCT_TYPE.ABUTMENT}
                 onClosePopover={handleClosePopover}
