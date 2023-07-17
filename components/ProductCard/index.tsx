@@ -45,6 +45,8 @@ export const ProductCard = ({
     return product[productType];
   }, [product, productType]);
 
+  console.log({ productData });
+
   return (
     <View direction='row' paddingBlock={6} paddingInline={4} gap={8}>
       <Image
@@ -113,7 +115,7 @@ export const ProductCard = ({
 
                       <View direction='row'>
                         <Text variant='body-3' weight='regular'>
-                          {value as string}
+                          {String(value)}
                         </Text>
                       </View>
                     </View>
