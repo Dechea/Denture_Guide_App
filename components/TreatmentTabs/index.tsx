@@ -69,6 +69,9 @@ const TreatmentTabs = ({
 
       if (implant) {
         localActiveTabs.implant = true;
+        localActiveTabs.healing = true;
+        localActiveTabs.temporary = true;
+        localActiveTabs.impression = true;
       }
       if (abutment) {
         localActiveTabs.abutment = true;
@@ -117,7 +120,7 @@ const TreatmentTabs = ({
                 image={'/TreatmentTabsImplantsPopover.svg'}
                 activePopup={activePopupFor === PRODUCT_TYPE.IMPLANT}
                 onClosePopover={handleClosePopover}
-                tabText='Implants'
+                title='Implants'
                 description='You can select implants for each tooth in ‘Implants’ tab'
               />
             </Tabs.Item>
@@ -128,7 +131,7 @@ const TreatmentTabs = ({
                 image={'/TreatmentTabsAbutmentsPopover.svg'}
                 activePopup={activePopupFor === PRODUCT_TYPE.ABUTMENT}
                 onClosePopover={handleClosePopover}
-                tabText='Abutments'
+                title='Abutments'
                 description='You can select abutments for each tooth in ‘Abutments’ tab'
               />
             </Tabs.Item>
@@ -136,27 +139,27 @@ const TreatmentTabs = ({
             <Tabs.Item value={`/${patientFileId}/treatments/healing`}>
               <TreatmentTabsPopover
                 activeTab={activeTabs.healing}
-                tabText='Healing Abutment'
+                title='Healing Abutment'
               />
             </Tabs.Item>
 
             <Tabs.Item value={`/${patientFileId}/treatments/temporary`}>
               <TreatmentTabsPopover
                 activeTab={activeTabs.healing}
-                tabText='Temporary Abutments'
+                title='Temporary Abutments'
               />
             </Tabs.Item>
 
             <Tabs.Item value={`/${patientFileId}/treatments/impression`}>
               <TreatmentTabsPopover
                 activeTab={activeTabs.impression}
-                tabText='Impression'
+                title='Impression'
               />
             </Tabs.Item>
             <Tabs.Item value={`/${patientFileId}/treatments/tools`}>
               <TreatmentTabsPopover
                 activeTab={activeTabs.tools}
-                tabText='Tools'
+                title='Tools'
               />
             </Tabs.Item>
           </Tabs.List>

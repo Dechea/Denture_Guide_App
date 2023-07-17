@@ -2,7 +2,7 @@ import { Actionable, Image, Popover, Text, View } from 'reshaped';
 
 interface TreatmentTabsPopoverProps {
   activeTab: boolean;
-  tabText: string;
+  title: string;
   description?: string;
   onClosePopover?: () => void;
   activePopup?: boolean;
@@ -12,7 +12,7 @@ interface TreatmentTabsPopoverProps {
 export default function TreatmentTabsPopover({
   activeTab,
   description,
-  tabText,
+  title,
   image,
   onClosePopover,
   activePopup = false,
@@ -30,7 +30,7 @@ export default function TreatmentTabsPopover({
       <Popover.Trigger>
         {(attributes) => (
           <Actionable attributes={attributes}>
-            <Text color={activeTab ? 'neutral' : 'disabled'}>{tabText}</Text>
+            <Text color={activeTab ? 'neutral' : 'disabled'}>{title}</Text>
           </Actionable>
         )}
       </Popover.Trigger>
@@ -45,6 +45,7 @@ export default function TreatmentTabsPopover({
         >
           <Image
             src={image}
+            alt={title}
             width='107px'
             height='80px'
             borderRadius='medium'
