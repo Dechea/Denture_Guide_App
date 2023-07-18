@@ -44,8 +44,6 @@ export const CarouselTooth = ({ toothNumber, tooth }: CarouselToothProps) => {
     setProducts(selectedProducts);
   }, [tooth]);
 
-  console.log('toothData ', toothData);
-
   return (
     <Popover key={products.length} triggerType='hover' padding={3}>
       <Popover.Trigger>
