@@ -26,7 +26,7 @@ export default function Tools({
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/tools`}>
-      <CarouselTeeth />
+      <CarouselTeeth patientFileId={params.patientFileId} />
 
       <View direction='row' gap={11}>
         <View.Item columns={3} className='sticky !top-[180px]'>
