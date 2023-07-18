@@ -1,8 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Button, Modal, View, useToast, useToggle } from 'reshaped';
-import { useRouter } from 'next/navigation';
+import { Modal, View, useToggle } from 'reshaped';
 import {
   Tooth11Composed,
   Tooth12Composed,
@@ -62,7 +61,6 @@ import {
 } from '../../zustand/teethDiagram/interface';
 
 import { useKeyboardNavigation } from './useKeyboardNavigation';
-import InfoIcon from '../Icons/Info';
 import Toolbar from './Toolbar';
 import TreatmentOptionCard from '../TreatmentOptionCard';
 import UnionIcon from '../Icons/Union';
@@ -73,8 +71,6 @@ export default function TeethDiagramWithTreatments({
   patientFileId: string;
 }) {
   const query = useQuery<Query>();
-  const router = useRouter();
-  const toast = useToast();
   const { activate, deactivate, active } = useToggle(false);
 
   const {
@@ -90,6 +86,7 @@ export default function TeethDiagramWithTreatments({
     setHistoryIndex,
     resetTeethDiagramStore,
     resetHistory,
+    setRecentAddedTreatment,
   } = useTeethDiagramStore((state) => state);
 
   const fqlxTreatmentGroups = query.TreatmentGroup.all()
@@ -111,6 +108,7 @@ export default function TeethDiagramWithTreatments({
   };
 
   const handleTreatmentsClick = async (treatment: TreatmentProps) => {
+    setRecentAddedTreatment(treatment.visualization);
     const patientFileData = await query.PatientFile.byId(patientFileId).exec();
 
     // @ts-expect-error
@@ -156,7 +154,6 @@ export default function TeethDiagramWithTreatments({
     setActiveToothParts([]);
 
     callPatientFileAPI(mappedPatientFile.teeth);
-    showSelectImplantToast();
   };
 
   const handleDeleteTreatment = async () => {
@@ -219,27 +216,6 @@ export default function TeethDiagramWithTreatments({
       patientFile.teeth
     );
     setTreatments(treatmentVisualizations);
-  };
-
-  const showSelectImplantToast = () => {
-    const id = toast.show({
-      color: 'primary',
-      title: 'Now you can specify implants',
-      icon: <InfoIcon />,
-      position: 'top-start',
-      size: 'small',
-      actionsSlot: (
-        <Button
-          size='small'
-          onClick={() => {
-            router.push(`/${patientFileId}/treatments/implant`);
-            toast.hide(id);
-          }}
-        >
-          Select Implant
-        </Button>
-      ),
-    });
   };
 
   const { undoFunction, redoFunction } = useKeyboardNavigation({
