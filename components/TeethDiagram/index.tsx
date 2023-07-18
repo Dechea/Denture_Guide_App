@@ -43,7 +43,6 @@ import { useTeethDiagramStore } from '../../zustand/teethDiagram';
 import { useQuery } from 'fqlx-client';
 import {
   PatientFile,
-  PatientFileInput,
   Query,
   Tooth,
   Treatment,
