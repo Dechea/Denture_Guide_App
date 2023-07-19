@@ -1,4 +1,9 @@
-import { PatientFile, Tooth, Treatment } from '../../fqlx-generated/typedefs';
+import {
+  PatientFile,
+  SelectedProduct,
+  Tooth,
+  Treatment,
+} from '../../fqlx-generated/typedefs';
 import { useTeethDiagramStore } from '../../zustand/teethDiagram';
 import {
   TreatmentProps,
@@ -171,6 +176,35 @@ export function getAnchors(treatments: any) {
   getAnchorVariants(lower);
 }
 
+export const replaceSelectedProductWithRef = (teeth: Tooth[]) => {
+  const teethWithRef = [...teeth];
+
+  teethWithRef.forEach((tooth) => {
+    const selectProductsOnCrown = tooth.crown.treatmentDoc?.selectedProducts;
+    const selectProductsOnRoot = tooth.root.treatmentDoc?.selectedProducts;
+
+    tooth.crown.treatmentDoc.selectedProducts = selectProductsOnCrown?.length
+      ? (selectProductsOnCrown.map((selectedProduct) => ({
+          quantity: selectedProduct.quantity,
+          selectedProduct: `Product.byId("${
+            selectedProduct?.selectedProduct?.id as string
+          }")` as unknown,
+        })) as SelectedProduct[])
+      : [];
+
+    tooth.root.treatmentDoc.selectedProducts = selectProductsOnRoot?.length
+      ? (selectProductsOnRoot.map((selectedProduct) => ({
+          quantity: selectedProduct.quantity,
+          selectedProduct: `Product.byId("${
+            selectedProduct?.selectedProduct?.id as string
+          }")` as unknown,
+        })) as SelectedProduct[])
+      : [];
+  });
+
+  return teethWithRef;
+};
+
 export const getMappedPatientFileData = (
   patientFile: PatientFile,
   selectedTreatments: TreatmentProps[]
@@ -238,8 +272,12 @@ export const getMappedPatientFileData = (
     }
   });
 
+  // Storing ref for selected products for each area
+  const teethWithSelectedProductRef =
+    replaceSelectedProductWithRef(patientFileTeeth);
+
   return {
-    teeth: [...patientFileTeeth],
+    teeth: [...teethWithSelectedProductRef],
   };
 };
 

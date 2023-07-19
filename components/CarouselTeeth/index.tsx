@@ -1,11 +1,22 @@
 'use client';
 
+import { useQuery } from 'fqlx-client';
 import { View, Carousel } from 'reshaped';
 import { useProductStore } from '../../zustand/product';
 import { CarouselTooth } from '../CarouselTooth';
+import { Query } from '../../fqlx-generated/typedefs';
 
-export default function CarouselTeeth() {
+interface CarouselTeethProps {
+  patientFileId: string;
+}
+
+export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
+  const query = useQuery<Query>();
   const { availableTeethByProductType } = useProductStore();
+
+  const patientFile = query.PatientFile.byId(patientFileId)
+    .project({ teeth: true })
+    .exec();
 
   return (
     <View
@@ -26,9 +37,18 @@ export default function CarouselTeeth() {
         gap={2}
         className='flex justify-center items-center w-[calc(100%-20px)] h-full'
       >
-        {availableTeethByProductType.map((tooth) => (
-          <CarouselTooth toothNumber={tooth} key={tooth} />
-        ))}
+        {availableTeethByProductType.map((toothNumber) => {
+          const tooth = patientFile.teeth.find(
+            ({ name }) => Number(name) === toothNumber
+          );
+          return (
+            <CarouselTooth
+              toothNumber={toothNumber}
+              key={toothNumber}
+              tooth={tooth}
+            />
+          );
+        })}
       </Carousel>
     </View>
   );

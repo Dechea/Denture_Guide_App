@@ -32,7 +32,7 @@ export default function Abutment({
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/abutment`}>
-      <CarouselTeeth />
+      <CarouselTeeth patientFileId={params.patientFileId} />
 
       <View direction='row' gap={11}>
         <View.Item columns={3} className='sticky !top-[180px]'>

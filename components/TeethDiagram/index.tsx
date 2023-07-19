@@ -43,7 +43,6 @@ import { useTeethDiagramStore } from '../../zustand/teethDiagram';
 import { useQuery } from 'fqlx-client';
 import {
   PatientFile,
-  PatientFileInput,
   Query,
   Tooth,
   Treatment,
@@ -53,6 +52,7 @@ import {
   getMappedPatientFileData,
   getTreatmentsVariant,
   mapTreatmentVisualizationsFromTeeth,
+  replaceSelectedProductWithRef,
 } from './helper';
 import { validTreatments } from './validTreatments';
 import {
@@ -100,8 +100,13 @@ export default function TeethDiagramWithTreatments({
   const fqlxTreatments = query.Treatment.all().exec();
 
   const callPatientFileAPI = async (teeth: Tooth[]) => {
+    const stringifyTeeth = JSON.stringify(teeth).replaceAll(
+      /"Product.byId\(\\"(\d*)\\"\)"/g,
+      'Product.byId("$1")'
+    );
+
     const updateRes = await query.PatientFile.byId(patientFileId)
-      .update({ teeth: teeth } as PatientFileInput)
+      .update(`{ teeth: ${stringifyTeeth} }`)
       .exec();
 
     console.log({ updateRes });
@@ -181,6 +186,9 @@ export default function TeethDiagramWithTreatments({
       (tooth) => !uniqueArrayOfActiveTeeth.includes(tooth.name)
     );
 
+    const teethWithSelectedProductRef =
+      replaceSelectedProductWithRef(filteredTeeth);
+
     setHistory([
       ...history.slice(0, historyIndex),
       {
@@ -188,7 +196,7 @@ export default function TeethDiagramWithTreatments({
         activeToothPartsBefore: activeToothParts,
         activeToothPartsAfter: [],
         patientFileTeethBefore: patientFile.teeth,
-        patientFileTeethAfter: filteredTeeth,
+        patientFileTeethAfter: teethWithSelectedProductRef,
       },
     ]);
     setHistoryIndex(historyIndex + 1);
@@ -196,7 +204,7 @@ export default function TeethDiagramWithTreatments({
     setTreatments(treatmentsClone);
     setActiveToothParts([]);
 
-    callPatientFileAPI(filteredTeeth);
+    callPatientFileAPI(teethWithSelectedProductRef);
   };
 
   const fetchPatientFile = async () => {
