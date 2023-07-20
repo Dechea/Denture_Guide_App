@@ -134,6 +134,7 @@ export default function TeethDiagramWithTreatments({
 
     mappedPatientFile.teeth.map((value) => {
       newTreatments[value.name] = getTreatmentsVariant({
+        toothNumber: Number(value.name),
         treatmentsData: [
           value.root.treatmentDoc?.treatment,
           value.crown.treatmentDoc?.treatment,

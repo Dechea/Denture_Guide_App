@@ -7,13 +7,12 @@ import { ProductFilterForm } from '../../../../components/ProductFilterForm';
 import CarouselTeeth from '../../../../components/CarouselTeeth';
 import Loader from '../../../../components/Loader';
 import { filterCategories } from './filterCategories';
-import { AREA_TYPE, PRODUCT_TYPE } from '../../../../zustand/product/interface';
-import { IMPLANT } from '../../../../components/TeethDiagram/teeth/constants/treatmentVariants';
+import {
+  AREA_TYPE,
+  GROUP_TYPE,
+  PRODUCT_TYPE,
+} from '../../../../zustand/product/interface';
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
-
-const acceptableTreatment = {
-  [AREA_TYPE.ROOT]: [IMPLANT],
-};
 
 export default function Healing({
   params,
@@ -21,14 +20,14 @@ export default function Healing({
   params: { patientFileId: string };
 }) {
   useAvailableTeethByTreatment({
-    acceptableTreatment,
     patientFileId: params.patientFileId,
     productType: PRODUCT_TYPE.HEALING_ABUTMENT,
+    acceptedTreatmentGroups: [GROUP_TYPE.IMPLANT_GROUP],
   });
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/healing`}>
-       <CarouselTeeth patientFileId={params.patientFileId} />
+      <CarouselTeeth patientFileId={params.patientFileId} />
 
       <View direction='row' gap={11}>
         <View.Item columns={3} className='sticky !top-[180px]'>

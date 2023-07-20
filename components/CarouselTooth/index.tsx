@@ -54,7 +54,7 @@ export const CarouselTooth = ({
         'hover:border-[--rs-color-border-neutral-faded] border-[1px] border-[rgba(0.0,0.0,0.0,0.0)]'
       )}
     >
-      {treatmentToothData.map((tooth) => {
+      {treatmentToothData?.map((tooth) => {
         const selected = !!selectedProducts[tooth.toothNumber as number];
         const toothData = patientFile.teeth.find(
           ({ name }) => Number(name) === tooth.toothNumber
@@ -82,7 +82,7 @@ export const CarouselTooth = ({
                         >
                           <Root
                             tooth={tooth.toothNumber}
-                            variant={tooth.roothVariant}
+                            variant={tooth.rootVariant}
                           />
                           <Crown
                             tooth={tooth.toothNumber}

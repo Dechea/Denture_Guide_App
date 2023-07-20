@@ -24,7 +24,7 @@ export interface TreatmentVisualization {
   crownVariant?: string;
   leftAnchor?: boolean;
   rightAnchor?: boolean;
-  toothNumber?: number;
+  toothNumber: number;
   group: string;
 }
 

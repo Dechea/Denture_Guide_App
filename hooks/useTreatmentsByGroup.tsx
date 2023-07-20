@@ -7,10 +7,7 @@ export function useTreatmentsByGroup() {
   const { treatments } = useTeethDiagramStore((state) => state);
 
   const teethWithTreatments = availableTeethByProductType.map((toothNumber) => {
-    return {
-      toothNumber: toothNumber,
-      ...treatments[toothNumber as keyof typeof treatments],
-    };
+    return treatments[toothNumber as keyof typeof treatments];
   });
 
   const groupwiseTeethWithTreatments = teethWithTreatments.reduce(

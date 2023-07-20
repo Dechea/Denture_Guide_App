@@ -37,16 +37,19 @@ import { rootId } from './teeth/constants/toothArea';
 import { GROUP_TYPE } from '../../zustand/product/interface';
 
 interface GetTreatmentsVariantArgs {
+  toothNumber?: number;
   treatments?: TreatmentVisualization;
   treatmentsData: Treatment[];
   forCard?: boolean;
 }
 
 export const getTreatmentsVariant = ({
+  toothNumber = 0,
   treatments = {} as TreatmentVisualization,
   treatmentsData,
   forCard = false,
 }: GetTreatmentsVariantArgs) => {
+  treatments.toothNumber = toothNumber;
   treatments.crownVariant = ADULT;
   treatments.rootVariant = ADULT;
 
@@ -333,6 +336,7 @@ export const mapTreatmentVisualizationsFromTeeth = (teeth: Tooth[]) => {
   // Mapping treatment visualization from PatientFile data
   teeth.forEach((value) => {
     treatmentVisualization[value.name] = getTreatmentsVariant({
+      toothNumber: Number(value.name),
       treatmentsData: [
         value.root.treatmentDoc?.treatment,
         value.crown.treatmentDoc?.treatment,

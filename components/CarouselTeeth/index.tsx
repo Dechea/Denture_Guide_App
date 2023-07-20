@@ -1,18 +1,30 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { Actionable, Carousel, Tabs, Tooltip, View } from 'reshaped';
 import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
 import { CarouselTooth } from '../CarouselTooth';
 import { TreatmentVisualization } from '../../zustand/teethDiagram/interface';
+import { useProductStore } from '../../zustand/product';
+import { GROUP_TYPE } from '../../zustand/product/interface';
 
 interface CarouselTeethProps {
   patientFileId: string;
 }
 
 export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
-  const [activeGroup, setActiveGroup] = useState('0');
+  const {
+    acceptedTreatmentGroups,
+    activeTreatmentGroup,
+    setActiveTreatmentGroup,
+  } = useProductStore();
   const { groupwiseTeethWithTreatments } = useTreatmentsByGroup();
+
+  console.log(acceptedTreatmentGroups, groupwiseTeethWithTreatments);
+
+  useEffect(() => {
+    setActiveTreatmentGroup(acceptedTreatmentGroups[0]);
+  }, []);
 
   const handleTooltip = (
     treatmentTeethGroupData: { [key: string]: TreatmentVisualization[] },
@@ -45,43 +57,36 @@ export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
         className='flex justify-center items-center w-[calc(100%-20px)] h-full'
       >
         <Tabs
-          value={activeGroup}
-          onChange={({ value }) =>
-            Object.keys(groupwiseTeethWithTreatments).length - 1 ===
-            Number(value)
-              ? ''
-              : setActiveGroup(value)
-          }
+          value={activeTreatmentGroup}
+          onChange={({ value }) => setActiveTreatmentGroup(value as GROUP_TYPE)}
         >
           <Tabs.List className={`[&_[role=tablist]]:!gap-[8px]`}>
-            {Object.entries(groupwiseTeethWithTreatments).map(
-              ([group, treatmentToothData], index) => {
-                return (
-                  <Tabs.Item value={`${index}`} key={group}>
-                    <Tooltip
-                      position='top'
-                      text={handleTooltip(
-                        groupwiseTeethWithTreatments,
-                        index,
-                        group
-                      )}
-                    >
-                      {(attributes) => (
-                        <Actionable attributes={attributes}>
-                          <CarouselTooth
-                            treatmentToothData={treatmentToothData}
-                            active={
-                              activeGroup === index.toString() ? true : false
-                            }
-                            patientFileId={patientFileId}
-                          />
-                        </Actionable>
-                      )}
-                    </Tooltip>
-                  </Tabs.Item>
-                );
-              }
-            )}
+            {acceptedTreatmentGroups.map((group, index) => {
+              return (
+                <Tabs.Item value={group} key={group}>
+                  <Tooltip
+                    position='top'
+                    text={handleTooltip(
+                      groupwiseTeethWithTreatments,
+                      index,
+                      group
+                    )}
+                  >
+                    {(attributes) => (
+                      <Actionable attributes={attributes}>
+                        <CarouselTooth
+                          treatmentToothData={
+                            groupwiseTeethWithTreatments[group]
+                          }
+                          active={activeTreatmentGroup === group ? true : false}
+                          patientFileId={patientFileId}
+                        />
+                      </Actionable>
+                    )}
+                  </Tooltip>
+                </Tabs.Item>
+              );
+            })}
           </Tabs.List>
         </Tabs>
       </Carousel>

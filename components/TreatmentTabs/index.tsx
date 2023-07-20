@@ -10,7 +10,7 @@ import {
   PROSTHESIS_ANCHOR,
 } from '../TeethDiagram/teeth/constants/treatmentVariants';
 import TreatmentTabsPopover from '../TreatmentTabsPopover';
-import { TreatmentVisualization } from '../../zustand/teethDiagram/interface';
+import { TreatmentProps } from '../../zustand/teethDiagram/interface';
 import { PRODUCT_TYPE } from '../../zustand/product/interface';
 
 const defaultActiveTabs = {
@@ -48,7 +48,7 @@ const TreatmentTabs = ({
     }
   };
 
-  const getTabsToActivate = (treatment: TreatmentVisualization) => {
+  const getTabsToActivate = (treatment: TreatmentProps['visualization']) => {
     const implant = treatment.rootVariant === IMPLANT;
     const abutment =
       treatment.crownVariant === PROSTHESIS_ANCHOR &&

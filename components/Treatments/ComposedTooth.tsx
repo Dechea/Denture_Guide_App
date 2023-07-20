@@ -1,11 +1,11 @@
 import Root from '../TeethDiagram/teeth/areas/root';
 import Crown from '../TeethDiagram/teeth/areas/crown-side-view';
 import { Tooth } from '../TeethDiagram/teeth/areas/tooth';
-import { TreatmentVisualization } from '../../zustand/teethDiagram/interface';
+import { TreatmentProps } from '../../zustand/teethDiagram/interface';
 import { ToothContainer } from '../TeethDiagram/teeth/areas/tooth';
 
 interface ComposedToothProps {
-  treatment: TreatmentVisualization;
+  treatment: TreatmentProps['visualization'];
 }
 
 export const ComposedTooth = ({ treatment }: ComposedToothProps) => {
@@ -16,8 +16,8 @@ export const ComposedTooth = ({ treatment }: ComposedToothProps) => {
         <Crown
           variant={treatment.crownVariant}
           tooth={0}
-          leftAnchor={treatment.leftAnchor}
-          rightAnchor={treatment.rightAnchor}
+          leftAnchor={treatment.anchorLeft}
+          rightAnchor={treatment.anchorRight}
         />
       </Tooth>
     </ToothContainer>

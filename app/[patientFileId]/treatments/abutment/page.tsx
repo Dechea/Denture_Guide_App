@@ -7,17 +7,12 @@ import { ProductFilterForm } from '../../../../components/ProductFilterForm';
 import CarouselTeeth from '../../../../components/CarouselTeeth';
 import Loader from '../../../../components/Loader';
 import { filterCategories } from './filterCategories';
-import { AREA_TYPE, PRODUCT_TYPE } from '../../../../zustand/product/interface';
-import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
 import {
-  ARTIFICIAL_CROWN,
-  BRIDGE_ANCHOR,
-  PROSTHESIS_ANCHOR,
-} from '../../../../components/TeethDiagram/teeth/constants/treatmentVariants';
-
-const acceptableTreatment = {
-  [AREA_TYPE.CROWN]: [ARTIFICIAL_CROWN, PROSTHESIS_ANCHOR, BRIDGE_ANCHOR],
-};
+  AREA_TYPE,
+  GROUP_TYPE,
+  PRODUCT_TYPE,
+} from '../../../../zustand/product/interface';
+import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
 
 export default function Abutment({
   params,
@@ -25,9 +20,12 @@ export default function Abutment({
   params: { patientFileId: string };
 }) {
   useAvailableTeethByTreatment({
-    acceptableTreatment,
     patientFileId: params.patientFileId,
     productType: PRODUCT_TYPE.ABUTMENT,
+    acceptedTreatmentGroups: [
+      GROUP_TYPE.IMPLANT_GROUP,
+      GROUP_TYPE.ABUTMENT_GROUP,
+    ],
   });
 
   return (

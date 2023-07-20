@@ -7,13 +7,12 @@ import { ProductFilterForm } from '../../../../components/ProductFilterForm';
 import CarouselTeeth from '../../../../components/CarouselTeeth';
 import Loader from '../../../../components/Loader';
 import { filterCategories } from './filterCategories';
-import { AREA_TYPE, PRODUCT_TYPE } from '../../../../zustand/product/interface';
-import { IMPLANT } from '../../../../components/TeethDiagram/teeth/constants/treatmentVariants';
+import {
+  AREA_TYPE,
+  GROUP_TYPE,
+  PRODUCT_TYPE,
+} from '../../../../zustand/product/interface';
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
-
-const acceptableTreatment = {
-  [AREA_TYPE.ROOT]: [IMPLANT],
-};
 
 export default function Temporary({
   params,
@@ -21,9 +20,9 @@ export default function Temporary({
   params: { patientFileId: string };
 }) {
   useAvailableTeethByTreatment({
-    acceptableTreatment,
     patientFileId: params.patientFileId,
     productType: PRODUCT_TYPE.TEMPORARY_ABUTMENT,
+    acceptedTreatmentGroups: [GROUP_TYPE.IMPLANT_GROUP],
   });
 
   return (
