@@ -39,7 +39,7 @@ import { GROUP_TYPE } from '../../zustand/product/interface';
 interface GetTreatmentsVariantArgs {
   treatments?: TreatmentVisualization;
   treatmentsData: Treatment[];
-  forCard?: Boolean;
+  forCard?: boolean;
 }
 
 export const getTreatmentsVariant = ({
