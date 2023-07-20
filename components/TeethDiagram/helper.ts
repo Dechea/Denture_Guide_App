@@ -29,6 +29,7 @@ import {
   twoRootsTeeth,
 } from './teeth/constants/tooth';
 import { rootId } from './teeth/constants/toothArea';
+import { GROUP_TYPE } from '../../zustand/product/interface';
 
 interface GetTreatmentsVariantArgs {
   treatments?: TreatmentVisualization;
@@ -37,7 +38,7 @@ interface GetTreatmentsVariantArgs {
 }
 
 export const getTreatmentsVariant = ({
-  treatments = {},
+  treatments = {} as TreatmentVisualization,
   treatmentsData,
   forCard = false,
 }: GetTreatmentsVariantArgs) => {
@@ -71,6 +72,24 @@ export const getTreatmentsVariant = ({
       treatments.rootVariant = IMPLANT;
     } else if (treatment?.name === MISSING_ROOT) {
       treatments.rootVariant = MISSING_ROOT;
+    }
+
+    if (treatments.rootVariant === IMPLANT) {
+      treatments.group = GROUP_TYPE.IMPLANT_GROUP;
+    } else if (
+      treatments.rootVariant === ADULT &&
+      treatments.crownVariant === PROSTHESIS_ANCHOR
+    ) {
+      treatments.group = GROUP_TYPE.ABUTMENT_GROUP;
+    } else if (
+      treatments.crownVariant === ARTIFICIAL_CROWN ||
+      treatments.crownVariant === BRIDGE_ANCHOR ||
+      treatments.crownVariant === BRIDGE_LINK ||
+      treatments.crownVariant === PROSTHESIS_LINK
+    ) {
+      treatments.group = GROUP_TYPE.CROWN_GROUP;
+    } else {
+      treatments.group = GROUP_TYPE.NO_GROUP;
     }
 
     if (forCard) {

@@ -24,6 +24,8 @@ export interface TreatmentVisualization {
   crownVariant?: string;
   leftAnchor?: boolean;
   rightAnchor?: boolean;
+  toothNumber?: number;
+  group: string;
 }
 
 export interface History {
