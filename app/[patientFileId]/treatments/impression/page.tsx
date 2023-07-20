@@ -28,7 +28,7 @@ export default function Impression({
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/impression`}>
-      <CarouselTeeth />
+       <CarouselTeeth patientFileId={params.patientFileId} />
 
       <View direction='row' gap={11}>
         <View.Item columns={3} className='sticky !top-[180px]'>
