@@ -21,7 +21,7 @@ const ProductToothList = ({
 }: ProductToothListProps) => {
   const { activeTreatmentGroup, selectedProducts, setSelectedProducts } =
     useProductStore();
-  const { groupwiseTeethWithTreatments } = useTreatmentsByGroup();
+  const { groupwiseTeethWithTreatments } = useTreatmentsByGroup({});
 
   const handleClickOnToothOption = (toothNumber: number) => {
     const selectedProductsData = { ...selectedProducts };

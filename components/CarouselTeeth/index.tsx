@@ -6,7 +6,7 @@ import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
 import { CarouselTooth } from '../CarouselTooth';
 import { TreatmentVisualization } from '../../zustand/teethDiagram/interface';
 import { useProductStore } from '../../zustand/product';
-import { GROUP_TYPE } from '../../zustand/product/interface';
+import { GROUP_TYPE, PRODUCT_TYPE } from '../../zustand/product/interface';
 
 interface CarouselTeethProps {
   patientFileId: string;
@@ -18,9 +18,10 @@ export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
     activeTreatmentGroup,
     setActiveTreatmentGroup,
   } = useProductStore();
-  const { groupwiseTeethWithTreatments } = useTreatmentsByGroup();
-
-  console.log(acceptedTreatmentGroups, groupwiseTeethWithTreatments);
+  const { groupwiseTeethWithTreatments } = useTreatmentsByGroup({
+    productType: PRODUCT_TYPE.ABUTMENT,
+    patientFileId: patientFileId,
+  });
 
   useEffect(() => {
     setActiveTreatmentGroup(acceptedTreatmentGroups[0]);

@@ -45,8 +45,6 @@ export const ProductCard = ({
     return product[productType];
   }, [product, productType]);
 
-  console.log({ productData });
-
   return (
     <View direction='row' paddingBlock={6} paddingInline={4} gap={8}>
       <Image
