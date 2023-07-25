@@ -95,7 +95,7 @@ export function useTreatmentsByGroup() {
   const mappingToApply = mapping[activeProductTab];
   const unLockedTeethGroup: TreatmentVisualization[] = [];
 
-  let toothGroupsByTreatmentAndLockStatus = Object.entries(
+  let toothGroupsByTreatmentAndLockStatusBefore = Object.entries(
     groupwiseTeethWithTreatments
   ).reduce(
     (toothGroupsByTreatmentAndLockStatusAccumulator, [tabgroup, teeth]) => {
@@ -160,57 +160,59 @@ export function useTreatmentsByGroup() {
     }[]
   );
 
-  if (mappingToApply?.implicit?.includes('indication')) {
-    const indicationWiseTeethGroups: { [key: string]: any } = {};
-    unLockedTeethGroup.forEach((tooth) => {
-      indicationWiseTeethGroups[tooth.indication] =
-        indicationWiseTeethGroups[tooth.indication] || [];
-      indicationWiseTeethGroups[tooth.indication].push(tooth);
-    });
+  const previousProductTab = PRODUCT_TYPE.IMPLANT;
+  const filterParams = mappingToApply?.implicit;
 
-    Object.entries(indicationWiseTeethGroups).forEach(([indication, teeth]) => {
-      toothGroupsByTreatmentAndLockStatus.push({
-        group: indication,
-        teeth,
-        open: true,
-        tooltipText: indication,
-      });
-    });
-  } else {
-    toothGroupsByTreatmentAndLockStatus.push({
-      group: 'unlocked',
-      teeth: unLockedTeethGroup,
-      open: true,
-      tooltipText: 'unlocked',
-    });
-  }
-
-  toothGroupsByTreatmentAndLockStatus =
-    toothGroupsByTreatmentAndLockStatus.reduce(
-      (acc, group) => {
-        if (group.group === 'unlocked') {
-          group.teeth.forEach((tooth) => {
-            acc.push({
-              group: `${tooth.toothNumber}`,
-              teeth: [tooth],
-              open: true,
-              tooltipText: `${tooth.toothNumber}`,
-            });
-          });
-        } else {
-          acc.push(group);
-        }
-        return acc;
-      },
-      [] as {
-        group: string;
-        tabgroup?: string;
-        teeth: TreatmentVisualization[];
-        open: boolean;
-        tooltipText: string;
-        nextStep?: string[];
-      }[]
+  const groups: { [key: string]: TreatmentVisualization[] } = {};
+  unLockedTeethGroup.forEach((tooth) => {
+    const fqlxTooth = patientFile.teeth?.find(
+      (localTooth) => Number(localTooth.name) == tooth.toothNumber
+    );
+    const fqlxToothProducts = [
+      ...(fqlxTooth?.crown.treatmentDoc.selectedProducts ?? []),
+      ...(fqlxTooth?.root.treatmentDoc.selectedProducts ?? []),
+    ];
+    const previousTabProduct = fqlxToothProducts.find(({ selectedProduct }) =>
+      Object.keys(selectedProduct || {}).includes(previousProductTab)
     );
 
-  return { groupwiseTeethWithTreatments, toothGroupsByTreatmentAndLockStatus };
+    const filterValues = {};
+    
+    filterParams?.forEach((filter) => {
+      if (filter === 'indication') {
+        filterValues[filter] = tooth.indication;
+      } else {
+        filterValues[filter] =
+          previousTabProduct?.selectedProduct?.[previousProductTab]?.[filter];
+      }
+    });
+    
+    if (Object.keys(filterValues).length === 0) {
+      toothGroupsByTreatmentAndLockStatusBefore.push({
+        group: `${tooth.toothNumber}`,
+        teeth: [tooth],
+        open: true,
+        tooltipText: `${tooth.toothNumber}`,
+      });
+    } else {
+      groups[JSON.stringify(filterValues)] =
+        groups[JSON.stringify(filterValues)] || [];
+      groups[JSON.stringify(filterValues)].push(tooth);
+    }
+  });
+
+  Object.entries(groups).forEach(([key, value]) => {
+    toothGroupsByTreatmentAndLockStatusBefore.push({
+      group: key,
+      teeth: value,
+      open: true,
+      tooltipText: key,
+    });
+  });
+
+  return {
+    groupwiseTeethWithTreatments,
+    toothGroupsByTreatmentAndLockStatus:
+      toothGroupsByTreatmentAndLockStatusBefore,
+  };
 }

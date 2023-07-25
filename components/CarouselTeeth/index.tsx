@@ -37,7 +37,6 @@ export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
           value={activeTreatmentGroup}
           onChange={({ value }) => {
             const [group, index] = value.split('-');
-            console.log(group, index);
             toothGroups[Number(index)].open && setActiveTreatmentGroup(value);
           }}
         >
