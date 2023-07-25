@@ -20,10 +20,13 @@ const ProductToothList = ({
   productId,
   onClickProduct,
 }: ProductToothListProps) => {
-  const { activeTreatmentGroup, selectedProducts, setSelectedProducts } =
-    useProductStore();
+  const {
+    activeTreatmentGroup,
+    selectedProducts,
+    setSelectedProducts,
+  } = useProductStore();
   const { toothGroupsByTreatmentAndLockStatus: toothGroups } =
-    useTreatmentsByGroup({});
+    useTreatmentsByGroup();
   const [groupIndex, setGroupIndex] = useState('0');
 
   useEffect(() => {

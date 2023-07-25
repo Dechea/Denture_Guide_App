@@ -7,19 +7,12 @@ import { useProductStore } from '../../zustand/product';
 
 interface CarouselTeethProps {
   patientFileId: string;
-  productType: string;
 }
 
-export default function CarouselTeeth({
-  patientFileId,
-  productType,
-}: CarouselTeethProps) {
+export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
   const { activeTreatmentGroup, setActiveTreatmentGroup } = useProductStore();
   const { toothGroupsByTreatmentAndLockStatus: toothGroups } =
-    useTreatmentsByGroup({
-      productType: productType,
-      patientFileId: patientFileId,
-    });
+    useTreatmentsByGroup();
 
   return (
     <View

@@ -11,6 +11,8 @@ export interface SelectedProducts {
 interface ProductStore {
   product: Product;
   products: PaginateData<Product>;
+  activeProductTab: string;
+  activePatientFileId: string;
   searchedProductManufacturerId: string;
   productFilters: { [key: string]: string[] };
   availableTeethByProductType: number[];
@@ -19,6 +21,8 @@ interface ProductStore {
   activeTreatmentGroup: string;
   setSearchedProductManufacturerId: (id: string) => void;
   setProducts: (products: PaginateData<Product>) => void;
+  setActiveProductTab: (productTab: string) => void;
+  setActivePatientFileId: (patientFileId: string) => void;
   setProductFilters: (filters: { [key: string]: string[] }) => void;
   setAvailableTeethByProductType: (availableTeeth: number[]) => void;
   setSelectedProducts: (products: SelectedProducts) => void;
@@ -30,6 +34,8 @@ interface ProductStore {
 export const useProductStore = create<ProductStore>()((set) => ({
   product: product,
   products: { data: [] },
+  activeProductTab: '',
+  activePatientFileId: '',
   searchedProductManufacturerId: '',
   productFilters: {},
   availableTeethByProductType: [],
@@ -41,6 +47,9 @@ export const useProductStore = create<ProductStore>()((set) => ({
       product: { ...state.product, abutment: { ...abutment, id: '' } },
     })),
   setProducts: (products) => set({ products }),
+  setActiveProductTab: (productTab) => set({ activeProductTab: productTab }),
+  setActivePatientFileId: (patientFileId) =>
+    set({ activePatientFileId: patientFileId }),
   setSearchedProductManufacturerId: (id) =>
     set({ searchedProductManufacturerId: id }),
   setProductFilters: (filters) => set({ productFilters: filters }),

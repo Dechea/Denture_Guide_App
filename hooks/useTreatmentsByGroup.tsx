@@ -8,11 +8,13 @@ import { Query } from '../fqlx-generated/typedefs';
 
 const mapping: {
   [key: string]: {
-    [key: string]: {
-      requiredProductTypes: string[];
-      tooltipText: string;
-      nextStep?: string[];
-    };
+    [key: string]:
+      | {
+          requiredProductTypes: string[];
+          tooltipText: string;
+          nextStep?: string[];
+        }
+      | string[];
   };
 } = {
   [PRODUCT_TYPE.IMPLANT]: {},
@@ -22,6 +24,7 @@ const mapping: {
       tooltipText: 'please select implants first',
       nextStep: [PRODUCT_TYPE.TEMPORARY_ABUTMENT, PRODUCT_TYPE.IMPRESSION],
     },
+    implicit: ['indication', 'implantLine', 'diameterPlatform'],
   },
   [PRODUCT_TYPE.HEALING_ABUTMENT]: {
     [TABGROUP_TYPE.IMPLANT_GROUP]: {
@@ -29,31 +32,42 @@ const mapping: {
       tooltipText: 'please select implants first',
       nextStep: [PRODUCT_TYPE.TEMPORARY_ABUTMENT, PRODUCT_TYPE.IMPRESSION],
     },
+    implicit: [
+      'indication',
+      'implantLine',
+      'diameterPlatform',
+      'platformSwitch',
+    ],
   },
   [PRODUCT_TYPE.TEMPORARY_ABUTMENT]: {
     [TABGROUP_TYPE.IMPLANT_GROUP]: {
       requiredProductTypes: [PRODUCT_TYPE.IMPLANT, PRODUCT_TYPE.ABUTMENT],
       tooltipText: 'please select implants and abutment first',
     },
+    implicit: ['indication', 'implantLine', 'abutmentLine', 'diameterPlatform'],
   },
   [PRODUCT_TYPE.IMPRESSION]: {
     [TABGROUP_TYPE.IMPLANT_GROUP]: {
       requiredProductTypes: [PRODUCT_TYPE.IMPLANT, PRODUCT_TYPE.ABUTMENT],
       tooltipText: 'please select implants and abutment first',
     },
+    implicit: [
+      'implantLine',
+      'abutmentLine',
+      'diameterPlatform',
+      'platformSwitch',
+    ],
   },
   [PRODUCT_TYPE.TOOLS]: {},
 };
 
-export function useTreatmentsByGroup({
-  productType = '',
-  patientFileId = '',
-}: {
-  productType?: string;
-  patientFileId?: string;
-}) {
-  const { availableTeethByProductType, acceptedTreatmentGroups } =
-    useProductStore();
+export function useTreatmentsByGroup() {
+  const {
+    availableTeethByProductType,
+    acceptedTreatmentGroups,
+    activeProductTab,
+    activePatientFileId,
+  } = useProductStore();
   const { treatments } = useTeethDiagramStore((state) => state);
   const query = useQuery<Query>();
 
@@ -71,14 +85,17 @@ export function useTreatmentsByGroup({
   );
 
   const patientFile = useMemo(
-    () => query.PatientFile.byId(patientFileId).project({ teeth: true }).exec(),
-    [patientFileId, query.PatientFile]
+    () =>
+      query.PatientFile.byId(activePatientFileId)
+        .project({ teeth: true })
+        .exec(),
+    [activePatientFileId, query.PatientFile]
   );
 
-  const mappingToApply = mapping[productType];
+  const mappingToApply = mapping[activeProductTab];
   const unLockedTeethGroup: TreatmentVisualization[] = [];
 
-  const toothGroupsByTreatmentAndLockStatus = Object.entries(
+  let toothGroupsByTreatmentAndLockStatus = Object.entries(
     groupwiseTeethWithTreatments
   ).reduce(
     (toothGroupsByTreatmentAndLockStatusAccumulator, [tabgroup, teeth]) => {
@@ -143,13 +160,57 @@ export function useTreatmentsByGroup({
     }[]
   );
 
-  unLockedTeethGroup.length > 0 &&
+  if (mappingToApply?.implicit?.includes('indication')) {
+    const indicationWiseTeethGroups: { [key: string]: any } = {};
+    unLockedTeethGroup.forEach((tooth) => {
+      indicationWiseTeethGroups[tooth.indication] =
+        indicationWiseTeethGroups[tooth.indication] || [];
+      indicationWiseTeethGroups[tooth.indication].push(tooth);
+    });
+
+    Object.entries(indicationWiseTeethGroups).forEach(([indication, teeth]) => {
+      toothGroupsByTreatmentAndLockStatus.push({
+        group: indication,
+        teeth,
+        open: true,
+        tooltipText: indication,
+      });
+    });
+  } else {
     toothGroupsByTreatmentAndLockStatus.push({
       group: 'unlocked',
       teeth: unLockedTeethGroup,
       open: true,
       tooltipText: 'unlocked',
     });
+  }
+
+  toothGroupsByTreatmentAndLockStatus =
+    toothGroupsByTreatmentAndLockStatus.reduce(
+      (acc, group) => {
+        if (group.group === 'unlocked') {
+          group.teeth.forEach((tooth) => {
+            acc.push({
+              group: `${tooth.toothNumber}`,
+              teeth: [tooth],
+              open: true,
+              tooltipText: `${tooth.toothNumber}`,
+            });
+          });
+        } else {
+          acc.push(group);
+        }
+        return acc;
+      },
+      [] as {
+        group: string;
+        tabgroup?: string;
+        teeth: TreatmentVisualization[];
+        open: boolean;
+        tooltipText: string;
+        nextStep?: string[];
+      }[]
+    );
 
   return { groupwiseTeethWithTreatments, toothGroupsByTreatmentAndLockStatus };
 }
