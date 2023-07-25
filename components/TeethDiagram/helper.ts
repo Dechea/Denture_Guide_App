@@ -34,7 +34,7 @@ import {
   twoRootsTeeth,
 } from './teeth/constants/tooth';
 import { rootId } from './teeth/constants/toothArea';
-import { GROUP_TYPE } from '../../zustand/product/interface';
+import { INDICATION, TABGROUP_TYPE } from '../../zustand/product/interface';
 
 interface GetTreatmentsVariantArgs {
   toothNumber?: number;
@@ -82,24 +82,6 @@ export const getTreatmentsVariant = ({
       treatments.rootVariant = MISSING_ROOT;
     }
 
-    if (treatments.rootVariant === IMPLANT) {
-      treatments.group = GROUP_TYPE.IMPLANT_GROUP;
-    } else if (
-      treatments.rootVariant === ADULT &&
-      treatments.crownVariant === PROSTHESIS_ANCHOR
-    ) {
-      treatments.group = GROUP_TYPE.ABUTMENT_GROUP;
-    } else if (
-      treatments.crownVariant === ARTIFICIAL_CROWN ||
-      treatments.crownVariant === BRIDGE_ANCHOR ||
-      treatments.crownVariant === BRIDGE_LINK ||
-      treatments.crownVariant === PROSTHESIS_LINK
-    ) {
-      treatments.group = GROUP_TYPE.CROWN_GROUP;
-    } else {
-      treatments.group = GROUP_TYPE.NO_GROUP;
-    }
-
     if (forCard) {
       if (treatment?.name.includes(LINK) || treatment?.name.includes(ANCHOR)) {
         treatments.leftAnchor = true;
@@ -107,6 +89,36 @@ export const getTreatmentsVariant = ({
       }
     }
   });
+
+  if (treatments.rootVariant === IMPLANT) {
+    treatments.tabgroup = TABGROUP_TYPE.IMPLANT_GROUP;
+  } else if (
+    treatments.rootVariant === ADULT &&
+    treatments.crownVariant === PROSTHESIS_ANCHOR
+  ) {
+    treatments.tabgroup = TABGROUP_TYPE.ABUTMENT_GROUP;
+  } else if (
+    treatments.crownVariant === ARTIFICIAL_CROWN ||
+    treatments.crownVariant === BRIDGE_ANCHOR ||
+    treatments.crownVariant === BRIDGE_LINK ||
+    treatments.crownVariant === PROSTHESIS_LINK
+  ) {
+    treatments.tabgroup = TABGROUP_TYPE.CROWN_GROUP;
+  } else {
+    treatments.tabgroup = TABGROUP_TYPE.NO_GROUP;
+  }
+
+  if ([BRIDGE_ANCHOR, BRIDGE_LINK].includes(treatments.crownVariant)) {
+    treatments.indication = INDICATION.BRIDGE;
+  } else if (
+    [PROSTHESIS, PROSTHESIS_ANCHOR, PROSTHESIS_LINK].includes(
+      treatments.crownVariant
+    )
+  ) {
+    treatments.indication = INDICATION.PROSTHESIS;
+  } else if (treatments.crownVariant === ARTIFICIAL_CROWN) {
+    treatments.indication = INDICATION.CROWN;
+  }
   return treatments;
 };
 

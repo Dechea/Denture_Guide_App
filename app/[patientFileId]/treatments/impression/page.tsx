@@ -9,7 +9,7 @@ import Loader from '../../../../components/Loader';
 import { filterCategories } from './filterCategories';
 import {
   AREA_TYPE,
-  GROUP_TYPE,
+  TABGROUP_TYPE,
   PRODUCT_TYPE,
 } from '../../../../zustand/product/interface';
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
@@ -22,12 +22,15 @@ export default function Impression({
   useAvailableTeethByTreatment({
     patientFileId: params.patientFileId,
     productType: PRODUCT_TYPE.IMPRESSION,
-    acceptedTreatmentGroups: [GROUP_TYPE.IMPLANT_GROUP],
+    acceptedTreatmentGroups: [TABGROUP_TYPE.IMPLANT_GROUP],
   });
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/impression`}>
-      <CarouselTeeth patientFileId={params.patientFileId} />
+      <CarouselTeeth
+        patientFileId={params.patientFileId}
+        productType={PRODUCT_TYPE.IMPRESSION}
+      />
 
       <View direction='row' gap={11}>
         <View.Item columns={3} className='sticky !top-[180px]'>

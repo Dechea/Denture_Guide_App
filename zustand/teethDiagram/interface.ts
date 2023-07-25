@@ -25,7 +25,8 @@ export interface TreatmentVisualization {
   leftAnchor?: boolean;
   rightAnchor?: boolean;
   toothNumber: number;
-  group: string;
+  tabgroup: string;
+  indication: string;
 }
 
 export interface History {

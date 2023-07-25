@@ -12,11 +12,17 @@ export enum AREA_TYPE {
   CROWN = 'crown',
 }
 
-export enum GROUP_TYPE {
+export enum TABGROUP_TYPE {
   IMPLANT_GROUP = 'implantGroup',
   ABUTMENT_GROUP = 'abutmentGroup',
   CROWN_GROUP = 'crownGroup',
   NO_GROUP = 'noGroup',
+}
+
+export enum INDICATION {
+  CROWN = 'crown',
+  BRIDGE = 'bridge',
+  PROSTHESIS = 'prosthesis',
 }
 
 export interface ProductFilterCategory {

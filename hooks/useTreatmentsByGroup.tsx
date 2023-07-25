@@ -1,41 +1,59 @@
 import { useMemo } from 'react';
 import { useProductStore } from '../zustand/product';
-import { GROUP_TYPE, PRODUCT_TYPE } from '../zustand/product/interface';
+import { TABGROUP_TYPE, PRODUCT_TYPE } from '../zustand/product/interface';
 import { useTeethDiagramStore } from '../zustand/teethDiagram';
 import { TreatmentVisualization } from '../zustand/teethDiagram/interface';
 import { useQuery } from 'fqlx-client';
 import { Query } from '../fqlx-generated/typedefs';
 
-const mapping = {
-  [PRODUCT_TYPE.IMPLANT]: {
-    [GROUP_TYPE.IMPLANT_GROUP]: [],
-  },
+const mapping: {
+  [key: string]: {
+    [key: string]: {
+      requiredProductTypes: string[];
+      tooltipText: string;
+      nextStep?: string[];
+    };
+  };
+} = {
+  [PRODUCT_TYPE.IMPLANT]: {},
   [PRODUCT_TYPE.ABUTMENT]: {
-    [GROUP_TYPE.IMPLANT_GROUP]: [PRODUCT_TYPE.IMPLANT, PRODUCT_TYPE.ABUTMENT],
-    [GROUP_TYPE.ABUTMENT_GROUP]: [PRODUCT_TYPE.ABUTMENT],
+    [TABGROUP_TYPE.IMPLANT_GROUP]: {
+      requiredProductTypes: [PRODUCT_TYPE.IMPLANT],
+      tooltipText: 'please select implants first',
+      nextStep: [PRODUCT_TYPE.TEMPORARY_ABUTMENT, PRODUCT_TYPE.IMPRESSION],
+    },
   },
   [PRODUCT_TYPE.HEALING_ABUTMENT]: {
-    [GROUP_TYPE.IMPLANT_GROUP]: [PRODUCT_TYPE.IMPLANT],
+    [TABGROUP_TYPE.IMPLANT_GROUP]: {
+      requiredProductTypes: [PRODUCT_TYPE.IMPLANT],
+      tooltipText: 'please select implants first',
+      nextStep: [PRODUCT_TYPE.TEMPORARY_ABUTMENT, PRODUCT_TYPE.IMPRESSION],
+    },
   },
   [PRODUCT_TYPE.TEMPORARY_ABUTMENT]: {
-    [GROUP_TYPE.IMPLANT_GROUP]: [PRODUCT_TYPE.IMPLANT],
+    [TABGROUP_TYPE.IMPLANT_GROUP]: {
+      requiredProductTypes: [PRODUCT_TYPE.IMPLANT, PRODUCT_TYPE.ABUTMENT],
+      tooltipText: 'please select implants and abutment first',
+    },
   },
   [PRODUCT_TYPE.IMPRESSION]: {
-    [GROUP_TYPE.IMPLANT_GROUP]: [PRODUCT_TYPE.IMPLANT],
+    [TABGROUP_TYPE.IMPLANT_GROUP]: {
+      requiredProductTypes: [PRODUCT_TYPE.IMPLANT, PRODUCT_TYPE.ABUTMENT],
+      tooltipText: 'please select implants and abutment first',
+    },
   },
-  [PRODUCT_TYPE.TOOLS]: {
-    [GROUP_TYPE.IMPLANT_GROUP]: [PRODUCT_TYPE.IMPLANT],
-  },
+  [PRODUCT_TYPE.TOOLS]: {},
 };
 
 export function useTreatmentsByGroup({
-  productType,
-  patientFileId,
+  productType = '',
+  patientFileId = '',
 }: {
-  productType?: PRODUCT_TYPE;
+  productType?: string;
   patientFileId?: string;
 }) {
-  const { availableTeethByProductType } = useProductStore();
+  const { availableTeethByProductType, acceptedTreatmentGroups } =
+    useProductStore();
   const { treatments } = useTeethDiagramStore((state) => state);
   const query = useQuery<Query>();
 
@@ -45,56 +63,93 @@ export function useTreatmentsByGroup({
 
   const groupwiseTeethWithTreatments = teethWithTreatments.reduce(
     (acc, treatment) => {
-      acc[treatment.group] = acc[treatment.group] || [];
-      acc[treatment.group].push(treatment);
+      acc[treatment.tabgroup] = acc[treatment.tabgroup] || [];
+      acc[treatment.tabgroup].push(treatment);
       return acc;
     },
     {} as { [key: string]: TreatmentVisualization[] }
   );
 
-  if (patientFileId != undefined && productType != undefined) {
-    const patientFile = useMemo(
-      () =>
-        query.PatientFile.byId(patientFileId).project({ teeth: true }).exec(),
-      [patientFileId, query.PatientFile]
-    );
+  const patientFile = useMemo(
+    () => query.PatientFile.byId(patientFileId).project({ teeth: true }).exec(),
+    [patientFileId, query.PatientFile]
+  );
 
-    const mappingToApply = mapping[productType];
+  const mappingToApply = mapping[productType];
+  const unLockedTeethGroup: TreatmentVisualization[] = [];
 
-    const lockedGroupwiseTeeth = Object.entries(
-      groupwiseTeethWithTreatments
-    ).reduce((acc, [group, teeth]) => {
+  const toothGroupsByTreatmentAndLockStatus = Object.entries(
+    groupwiseTeethWithTreatments
+  ).reduce(
+    (toothGroupsByTreatmentAndLockStatusAccumulator, [tabgroup, teeth]) => {
+      if (!acceptedTreatmentGroups.includes(tabgroup as TABGROUP_TYPE)) {
+        return toothGroupsByTreatmentAndLockStatusAccumulator;
+      }
+
       const requiredProductTypes =
-        mappingToApply[group as keyof typeof mappingToApply];
+        mappingToApply?.[tabgroup as keyof typeof mappingToApply]
+          ?.requiredProductTypes;
 
-      let groupSatisfiesRequirement = true;
+      const lockedTeethGroup: TreatmentVisualization[] = [];
 
-      teeth.forEach((tooth, index) => {
-        const fqlxTooth = patientFile.teeth.find(
+      teeth.forEach((tooth) => {
+        const fqlxTooth = patientFile.teeth?.find(
           (localTooth) => Number(localTooth.name) == tooth.toothNumber
         );
-        let toothSatisfiesRequirement = true;
-        requiredProductTypes?.forEach((productType, index) => {
-          const fqlxToothProducts = [
-            ...(fqlxTooth?.crown.treatmentDoc.selectedProducts || []),
-            ...(fqlxTooth?.root.treatmentDoc.selectedProducts || []),
-          ];
+        const fqlxToothProducts = [
+          ...(fqlxTooth?.crown.treatmentDoc.selectedProducts ?? []),
+          ...(fqlxTooth?.root.treatmentDoc.selectedProducts ?? []),
+        ];
 
-          toothSatisfiesRequirement =
-            toothSatisfiesRequirement &&
+        let isToothUnlocked = true;
+
+        requiredProductTypes?.forEach((productType) => {
+          isToothUnlocked =
+            isToothUnlocked &&
             fqlxToothProducts.some((product) =>
-              Object.keys(product.selectedProduct || {}).includes(productType)
+              Object.keys(product.selectedProduct ?? {}).includes(productType)
             );
         });
-        groupSatisfiesRequirement =
-          groupSatisfiesRequirement && toothSatisfiesRequirement;
+
+        if (isToothUnlocked) {
+          unLockedTeethGroup.push(tooth);
+        } else {
+          lockedTeethGroup.push(tooth);
+        }
       });
 
-      acc[group] = { teeth: teeth, open: groupSatisfiesRequirement };
+      lockedTeethGroup.length > 0 &&
+        toothGroupsByTreatmentAndLockStatusAccumulator.push({
+          group: 'locked',
+          tabgroup: tabgroup,
+          teeth: lockedTeethGroup,
+          open: false,
+          tooltipText:
+            mappingToApply?.[tabgroup as keyof typeof mappingToApply]
+              ?.tooltipText,
+          nextStep:
+            mappingToApply?.[tabgroup as keyof typeof mappingToApply]?.nextStep,
+        });
 
-      return acc;
-    }, {} as { [key: string]: { teeth: TreatmentVisualization[]; open: boolean } });
-  }
+      return toothGroupsByTreatmentAndLockStatusAccumulator;
+    },
+    [] as {
+      group: string;
+      tabgroup?: string;
+      teeth: TreatmentVisualization[];
+      open: boolean;
+      tooltipText: string;
+      nextStep?: string[];
+    }[]
+  );
 
-  return { groupwiseTeethWithTreatments };
+  unLockedTeethGroup.length > 0 &&
+    toothGroupsByTreatmentAndLockStatus.push({
+      group: 'unlocked',
+      teeth: unLockedTeethGroup,
+      open: true,
+      tooltipText: 'unlocked',
+    });
+
+  return { groupwiseTeethWithTreatments, toothGroupsByTreatmentAndLockStatus };
 }

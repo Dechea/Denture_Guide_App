@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { PaginateData } from 'fqlx-client';
 import { product } from '../../__mocks__/initialProductsState';
 import { Product, AbutmentInput } from '../../fqlx-generated/typedefs';
-import { GROUP_TYPE } from './interface';
+import { TABGROUP_TYPE } from './interface';
 
 export interface SelectedProducts {
   [key: number]: string;
@@ -15,15 +15,15 @@ interface ProductStore {
   productFilters: { [key: string]: string[] };
   availableTeethByProductType: number[];
   selectedProducts: SelectedProducts;
-  acceptedTreatmentGroups: GROUP_TYPE[];
-  activeTreatmentGroup: GROUP_TYPE | undefined;
+  acceptedTreatmentGroups: TABGROUP_TYPE[];
+  activeTreatmentGroup: string;
   setSearchedProductManufacturerId: (id: string) => void;
   setProducts: (products: PaginateData<Product>) => void;
   setProductFilters: (filters: { [key: string]: string[] }) => void;
   setAvailableTeethByProductType: (availableTeeth: number[]) => void;
   setSelectedProducts: (products: SelectedProducts) => void;
-  setAcceptedTreatmentGroups: (treatmentGroups: GROUP_TYPE[]) => void;
-  setActiveTreatmentGroup: (treatmentGroup: GROUP_TYPE) => void;
+  setAcceptedTreatmentGroups: (treatmentGroups: TABGROUP_TYPE[]) => void;
+  setActiveTreatmentGroup: (treatmentGroup: string) => void;
   setAbutment: (abutment: AbutmentInput) => void;
 }
 
@@ -35,7 +35,7 @@ export const useProductStore = create<ProductStore>()((set) => ({
   availableTeethByProductType: [],
   selectedProducts: {},
   acceptedTreatmentGroups: [],
-  activeTreatmentGroup: undefined,
+  activeTreatmentGroup: '',
   setAbutment: (abutment) =>
     set((state) => ({
       product: { ...state.product, abutment: { ...abutment, id: '' } },
@@ -48,8 +48,8 @@ export const useProductStore = create<ProductStore>()((set) => ({
     set({ availableTeethByProductType: availableTeeth }),
   setSelectedProducts: (products: SelectedProducts) =>
     set({ selectedProducts: products }),
-  setAcceptedTreatmentGroups: (treatmentGroups: GROUP_TYPE[]) =>
+  setAcceptedTreatmentGroups: (treatmentGroups: TABGROUP_TYPE[]) =>
     set({ acceptedTreatmentGroups: treatmentGroups }),
-  setActiveTreatmentGroup: (treatmentGroup: GROUP_TYPE) =>
+  setActiveTreatmentGroup: (treatmentGroup: string) =>
     set({ activeTreatmentGroup: treatmentGroup }),
 }));

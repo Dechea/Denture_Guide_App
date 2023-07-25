@@ -9,7 +9,7 @@ import Loader from '../../../../components/Loader';
 import { filterCategories } from './filterCategories';
 import {
   AREA_TYPE,
-  GROUP_TYPE,
+  TABGROUP_TYPE,
   PRODUCT_TYPE,
 } from '../../../../zustand/product/interface';
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
@@ -23,14 +23,17 @@ export default function Abutment({
     patientFileId: params.patientFileId,
     productType: PRODUCT_TYPE.ABUTMENT,
     acceptedTreatmentGroups: [
-      GROUP_TYPE.IMPLANT_GROUP,
-      GROUP_TYPE.ABUTMENT_GROUP,
+      TABGROUP_TYPE.IMPLANT_GROUP,
+      TABGROUP_TYPE.ABUTMENT_GROUP,
     ],
   });
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/abutment`}>
-      <CarouselTeeth patientFileId={params.patientFileId} />
+      <CarouselTeeth
+        patientFileId={params.patientFileId}
+        productType={PRODUCT_TYPE.ABUTMENT}
+      />
 
       <View direction='row' gap={11}>
         <View.Item columns={3} className='sticky !top-[180px]'>
