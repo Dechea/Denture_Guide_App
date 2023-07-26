@@ -54,7 +54,7 @@ export function useTabsStatus() {
 
   patientFile.teeth?.forEach((tooth) => {
     const treatment = treatments[tooth.name];
-    const initialTabs = initialTabsUnlock[treatment.tabgroup];
+    const initialTabs = initialTabsUnlock[treatment?.tabgroup];
     initialTabs?.forEach((tab) => {
       tabsStatus[tab] = true;
     });
@@ -64,12 +64,12 @@ export function useTabsStatus() {
       ...(tooth?.root.treatmentDoc.selectedProducts ?? []),
     ];
 
-    const conditions = mapTabsRequirements[treatment.tabgroup];
+    const conditions = mapTabsRequirements[treatment?.tabgroup];
 
     conditions?.forEach(({ requiredProductTypes, nextStep }) => {
       const satisfyRequirements = requiredProductTypes.every((required) =>
         products.some((product) =>
-          Object.keys(product.selectedProduct || {}).includes(required)
+          Object.keys(product.selectedProduct ?? {}).includes(required)
         )
       );
       satisfyRequirements &&
