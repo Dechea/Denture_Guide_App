@@ -20,18 +20,14 @@ const ProductToothList = ({
   productId,
   onClickProduct,
 }: ProductToothListProps) => {
-  const {
-    activeTreatmentGroup,
-    selectedProducts,
-    setSelectedProducts,
-  } = useProductStore();
-  const { toothGroupsByTreatmentAndLockStatus: toothGroups } =
-    useTreatmentsByGroup();
+  const { activeTreatmentGroup, selectedProducts, setSelectedProducts } =
+    useProductStore();
+  const { getToothGroups } = useTreatmentsByGroup();
   const [groupIndex, setGroupIndex] = useState('0');
+  const toothGroups = getToothGroups();
 
   useEffect(() => {
-    const [_group, index] = activeTreatmentGroup.split('-');
-    setGroupIndex(index);
+    setGroupIndex(activeTreatmentGroup);
   }, [activeTreatmentGroup]);
 
   const handleClickOnToothOption = (toothNumber: number) => {

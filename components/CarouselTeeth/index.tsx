@@ -4,15 +4,39 @@ import { Actionable, Carousel, Tabs, Tooltip, View } from 'reshaped';
 import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
 import { CarouselTooth } from '../CarouselTooth';
 import { useProductStore } from '../../zustand/product';
+import { useEffect, useState } from 'react';
 
 interface CarouselTeethProps {
   patientFileId: string;
 }
 
 export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
-  const { activeTreatmentGroup, setActiveTreatmentGroup } = useProductStore();
-  const { toothGroupsByTreatmentAndLockStatus: toothGroups } =
-    useTreatmentsByGroup();
+  const {
+    activeTreatmentGroup,
+    setActiveTreatmentGroup,
+    activeProductTab,
+    availableTeethByProductType,
+  } = useProductStore();
+  const { getToothGroups, patientFile } = useTreatmentsByGroup();
+  const [toothGroups, setToothGroups] = useState<any[]>([]);
+
+  useEffect(() => {
+    const localToothGroups = getToothGroups();
+    setToothGroups(localToothGroups);
+    if (!activeTreatmentGroup) {
+      for (const [index, group] of Object.entries(localToothGroups)) {
+        if (group.open) {
+          setActiveTreatmentGroup(`${index}`);
+        }
+      }
+    }
+  }, [patientFile, activeProductTab, availableTeethByProductType]);
+
+  useEffect(() => {
+    return () => {
+      setActiveTreatmentGroup('');
+    };
+  }, []);
 
   return (
     <View
@@ -36,16 +60,15 @@ export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
         <Tabs
           value={activeTreatmentGroup}
           onChange={({ value }) => {
-            const [_group, index] = value.split('-');
-            toothGroups[Number(index)].open && setActiveTreatmentGroup(value);
+            toothGroups[Number(value)].open && setActiveTreatmentGroup(value);
           }}
         >
           <Tabs.List className={`[&_[role=tablist]]:!gap-[8px]`}>
-            {toothGroups.map((tooth, index) => {
+            {toothGroups?.map((tooth, index) => {
               const isEmptyFilterGroup = tooth.group === '{}';
               return (
                 <Tabs.Item
-                  value={`${tooth.group}-${index}`}
+                  value={`${index}`}
                   key={`${tooth.group}-${tooth?.tabgroup}`}
                 >
                   <Tooltip

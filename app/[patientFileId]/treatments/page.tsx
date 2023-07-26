@@ -12,6 +12,7 @@ export default function Treatment({
 }) {
   const { setActivePatientFileId } = useProductStore();
   useEffect(() => {
+    console.log('id');
     setActivePatientFileId(params.patientFileId);
   }, []);
 

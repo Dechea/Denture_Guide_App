@@ -105,127 +105,148 @@ export function useTreatmentsByGroup() {
   const mappingToApply = mapProductRequirements[activeProductTab];
   const unLockedTeethGroup: TreatmentVisualization[] = [];
   const filterParams = mapImplicitFilters[activeProductTab];
-  const groups: { [key: string]: TreatmentVisualization[] } = {};
 
-  const teethWithTreatments = availableTeethByProductType.map((toothNumber) => {
-    return treatments[toothNumber as keyof typeof treatments];
-  });
+  const teethWithTreatments = useMemo(() => {
+    return availableTeethByProductType.map((toothNumber) => {
+      return treatments[toothNumber as keyof typeof treatments];
+    });
+  }, [availableTeethByProductType]);
 
-  const groupwiseTeethWithTreatments = teethWithTreatments.reduce(
-    (acc, treatment) => {
-      acc[treatment.tabgroup] = acc[treatment.tabgroup] || [];
-      acc[treatment.tabgroup].push(treatment);
-      return acc;
-    },
-    {} as { [key: string]: TreatmentVisualization[] }
-  );
+  const complexStuff = () => {
+    const groupwiseTeethWithTreatments = teethWithTreatments.reduce(
+      (acc, treatment) => {
+        acc[treatment.tabgroup] = acc[treatment.tabgroup] || [];
+        acc[treatment.tabgroup].push(treatment);
+        return acc;
+      },
+      {} as { [key: string]: TreatmentVisualization[] }
+    );
 
-  const toothGroupsByTreatmentAndLockStatusBefore = Object.entries(
-    groupwiseTeethWithTreatments
-  ).reduce(
-    (toothGroupsByTreatmentAndLockStatusAccumulator, [tabgroup, teeth]) => {
-      if (!acceptedTreatmentGroups.includes(tabgroup as TABGROUP_TYPE)) {
-        return toothGroupsByTreatmentAndLockStatusAccumulator;
-      }
+    const lockedGroups = Object.entries(groupwiseTeethWithTreatments).reduce(
+      (toothGroupsByTreatmentAndLockStatusAccumulator, [tabgroup, teeth]) => {
+        if (!acceptedTreatmentGroups.includes(tabgroup as TABGROUP_TYPE)) {
+          return toothGroupsByTreatmentAndLockStatusAccumulator;
+        }
 
-      const requiredProductTypes =
-        mappingToApply?.[tabgroup as keyof typeof mappingToApply]
-          ?.requiredProductTypes;
+        const requiredProductTypes =
+          mappingToApply?.[tabgroup as keyof typeof mappingToApply]
+            ?.requiredProductTypes;
 
-      const lockedTeethGroup: TreatmentVisualization[] = [];
+        const lockedTeethGroup: TreatmentVisualization[] = [];
 
-      teeth.forEach((tooth) => {
-        const fqlxTooth = patientFile.teeth?.find(
-          (localTooth) => Number(localTooth.name) == tooth.toothNumber
-        );
-        const fqlxToothProducts = [
-          ...(fqlxTooth?.crown.treatmentDoc.selectedProducts ?? []),
-          ...(fqlxTooth?.root.treatmentDoc.selectedProducts ?? []),
-        ];
+        teeth.forEach((tooth) => {
+          const fqlxTooth = patientFile.teeth?.find(
+            (localTooth) => Number(localTooth.name) == tooth.toothNumber
+          );
+          const fqlxToothProducts = [
+            ...(fqlxTooth?.crown.treatmentDoc.selectedProducts ?? []),
+            ...(fqlxTooth?.root.treatmentDoc.selectedProducts ?? []),
+          ];
 
-        let isToothUnlocked = true;
+          let isToothUnlocked = true;
 
-        requiredProductTypes?.forEach((productType) => {
-          isToothUnlocked =
-            isToothUnlocked &&
-            fqlxToothProducts.some((product) =>
-              Object.keys(product.selectedProduct ?? {}).includes(productType)
-            );
+          requiredProductTypes?.forEach((productType) => {
+            isToothUnlocked =
+              isToothUnlocked &&
+              fqlxToothProducts.some((product) =>
+                Object.keys(product.selectedProduct ?? {}).includes(productType)
+              );
+          });
+
+          if (isToothUnlocked) {
+            unLockedTeethGroup.push(tooth);
+          } else {
+            lockedTeethGroup.push(tooth);
+          }
         });
 
-        if (isToothUnlocked) {
-          unLockedTeethGroup.push(tooth);
+        lockedTeethGroup.length > 0 &&
+          toothGroupsByTreatmentAndLockStatusAccumulator.push({
+            group: 'locked',
+            tabgroup: tabgroup,
+            teeth: lockedTeethGroup,
+            open: false,
+            tooltipText:
+              mappingToApply?.[tabgroup as keyof typeof mappingToApply]
+                ?.tooltipText,
+            areProductsSelected: false,
+          });
+
+        return toothGroupsByTreatmentAndLockStatusAccumulator;
+      },
+      [] as {
+        group: string;
+        tabgroup?: string;
+        teeth: TreatmentVisualization[];
+        open: boolean;
+        tooltipText: string;
+        areProductsSelected: boolean;
+      }[]
+    );
+
+    const groups: {
+      [key: string]: {
+        areProductsSelected: boolean;
+        teeth: TreatmentVisualization[];
+      };
+    } = {};
+
+    unLockedTeethGroup.forEach((tooth) => {
+      const fqlxTooth = patientFile.teeth?.find(
+        (localTooth) => Number(localTooth.name) == tooth.toothNumber
+      );
+      const fqlxToothProducts = [
+        ...(fqlxTooth?.crown.treatmentDoc.selectedProducts ?? []),
+        ...(fqlxTooth?.root.treatmentDoc.selectedProducts ?? []),
+      ];
+
+      const isProductSelected = fqlxToothProducts.some((product) =>
+        Object.keys(product.selectedProduct ?? {}).includes(activeProductTab)
+      );
+
+      const filterValues: { [key: string]: string } = {};
+
+      filterParams?.forEach((filter) => {
+        if (filter.name === 'indication') {
+          filterValues[filter.name] = tooth.indication;
         } else {
-          lockedTeethGroup.push(tooth);
+          const previousTabProduct = fqlxToothProducts.find(
+            ({ selectedProduct }) =>
+              Object.keys(selectedProduct ?? {}).includes(filter.productType)
+          );
+          filterValues[filter.name] =
+            // @ts-ignore
+            previousTabProduct?.selectedProduct?.[filter.productType]?.[
+              filter.name
+            ];
         }
       });
 
-      lockedTeethGroup.length > 0 &&
-        toothGroupsByTreatmentAndLockStatusAccumulator.push({
-          group: 'locked',
-          tabgroup: tabgroup,
-          teeth: lockedTeethGroup,
-          open: false,
-          tooltipText:
-            mappingToApply?.[tabgroup as keyof typeof mappingToApply]
-              ?.tooltipText,
-        });
-
-      return toothGroupsByTreatmentAndLockStatusAccumulator;
-    },
-    [] as {
-      group: string;
-      tabgroup?: string;
-      teeth: TreatmentVisualization[];
-      open: boolean;
-      tooltipText: string;
-    }[]
-  );
-
-  unLockedTeethGroup.forEach((tooth) => {
-    const fqlxTooth = patientFile.teeth?.find(
-      (localTooth) => Number(localTooth.name) == tooth.toothNumber
-    );
-    const fqlxToothProducts = [
-      ...(fqlxTooth?.crown.treatmentDoc.selectedProducts ?? []),
-      ...(fqlxTooth?.root.treatmentDoc.selectedProducts ?? []),
-    ];
-
-    const filterValues: { [key: string]: string } = {};
-
-    filterParams?.forEach((filter) => {
-      if (filter.name === 'indication') {
-        filterValues[filter.name] = tooth.indication;
-      } else {
-        const previousTabProduct = fqlxToothProducts.find(
-          ({ selectedProduct }) =>
-            Object.keys(selectedProduct ?? {}).includes(filter.productType)
-        );
-        filterValues[filter.name] =
-          // @ts-ignore
-          previousTabProduct?.selectedProduct?.[filter.productType]?.[
-            filter.name
-          ];
-      }
+      groups[JSON.stringify(filterValues)] = groups[
+        JSON.stringify(filterValues)
+      ] || { areProductsSelected: true, teeth: [] };
+      groups[JSON.stringify(filterValues)].areProductsSelected =
+        groups[JSON.stringify(filterValues)].areProductsSelected &&
+        isProductSelected;
+      groups[JSON.stringify(filterValues)].teeth.push(tooth);
     });
 
-    groups[JSON.stringify(filterValues)] =
-      groups[JSON.stringify(filterValues)] || [];
-    groups[JSON.stringify(filterValues)].push(tooth);
-  });
-
-  Object.entries(groups).forEach(([key, value]) => {
-    toothGroupsByTreatmentAndLockStatusBefore.push({
-      group: key,
-      teeth: value,
-      open: true,
-      tooltipText: key,
+    const implicitGroups = Object.entries(groups).map(([key, value]) => {
+      return {
+        group: key,
+        tabgroup: '',
+        teeth: value.teeth,
+        open: true,
+        tooltipText: key,
+        areProductsSelected: value.areProductsSelected,
+      };
     });
-  });
+
+    return [...lockedGroups, ...implicitGroups];
+  };
 
   return {
-    groupwiseTeethWithTreatments,
-    toothGroupsByTreatmentAndLockStatus:
-      toothGroupsByTreatmentAndLockStatusBefore,
+    getToothGroups: complexStuff,
+    patientFile,
   };
 }

@@ -15,6 +15,7 @@ import { formWhereCondition } from './helper';
 import { AREA_TYPE, PRODUCT_TYPE } from '../../zustand/product/interface';
 import { convertCamelCaseToTitleCase } from '../../utils/helper';
 import { useProductCrudOps } from '../../hooks/useProductCrudOps';
+import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
 
 interface ProductListProps {
   productType: PRODUCT_TYPE;
@@ -32,7 +33,11 @@ const ProductList = ({
     setProducts,
     searchedProductManufacturerId,
     productFilters,
+    activeTreatmentGroup,
+    setActiveTreatmentGroup,
   } = useProductStore();
+  const { getToothGroups } = useTreatmentsByGroup();
+  const toothGroups = getToothGroups();
 
   const query = useQuery<Query>();
   const { addOrUpdateProductInFqlx } = useProductCrudOps({ patientFileId });
@@ -89,6 +94,15 @@ const ProductList = ({
     addOrUpdateProductInFqlx((teeth) => {
       getMappedTeeth(teeth, productToDelete, toothNumber, selectedProducts);
     });
+    const index = Number(activeTreatmentGroup);
+    if (
+      toothGroups[index].teeth.every(
+        (tooth) => selectedProducts[`${tooth.toothNumber}`]
+      ) &&
+      index + 1 < toothGroups.length
+    ) {
+      setActiveTreatmentGroup(`${index + 1}`);
+    }
   };
 
   const productQuery = useMemo(

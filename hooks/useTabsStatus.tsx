@@ -43,41 +43,44 @@ export function useTabsStatus() {
     [activePatientFileId, query.PatientFile]
   );
 
-  const tabsStatus: { [key: string]: boolean } = {
-    implant: false,
-    abutment: false,
-    healing: false,
-    temporary: false,
-    impression: false,
-    tools: true,
+  const getTabsStatus = () => {
+    const tabsStatus: { [key: string]: boolean } = {
+      implant: false,
+      abutment: false,
+      healing: false,
+      temporary: false,
+      impression: false,
+      tools: true,
+    };
+
+    patientFile.teeth?.forEach((tooth) => {
+      const treatment = treatments[tooth.name];
+      const initialTabs = initialTabsUnlock[treatment?.tabgroup];
+      initialTabs?.forEach((tab) => {
+        tabsStatus[tab] = true;
+      });
+
+      const products = [
+        ...(tooth?.crown.treatmentDoc.selectedProducts ?? []),
+        ...(tooth?.root.treatmentDoc.selectedProducts ?? []),
+      ];
+
+      const conditions = mapTabsRequirements[treatment?.tabgroup];
+
+      conditions?.forEach(({ requiredProductTypes, nextStep }) => {
+        const satisfyRequirements = requiredProductTypes.every((required) =>
+          products.some((product) =>
+            Object.keys(product.selectedProduct ?? {}).includes(required)
+          )
+        );
+        satisfyRequirements &&
+          nextStep.forEach((step) => {
+            tabsStatus[step] = true;
+          });
+      });
+    });
+    return tabsStatus;
   };
 
-  patientFile.teeth?.forEach((tooth) => {
-    const treatment = treatments[tooth.name];
-    const initialTabs = initialTabsUnlock[treatment?.tabgroup];
-    initialTabs?.forEach((tab) => {
-      tabsStatus[tab] = true;
-    });
-
-    const products = [
-      ...(tooth?.crown.treatmentDoc.selectedProducts ?? []),
-      ...(tooth?.root.treatmentDoc.selectedProducts ?? []),
-    ];
-
-    const conditions = mapTabsRequirements[treatment?.tabgroup];
-
-    conditions?.forEach(({ requiredProductTypes, nextStep }) => {
-      const satisfyRequirements = requiredProductTypes.every((required) =>
-        products.some((product) =>
-          Object.keys(product.selectedProduct ?? {}).includes(required)
-        )
-      );
-      satisfyRequirements &&
-        nextStep.forEach((step) => {
-          tabsStatus[step] = true;
-        });
-    });
-  });
-
-  return { tabsStatus };
+  return { getTabsStatus, patientFile };
 }
