@@ -1,4 +1,5 @@
 export const IMPLANT = 'implant';
+export const ABUTMENT = 'abutment';
 export const MISSING_ROOT = 'missingRoot';
 export const ARTIFICIAL_CROWN = 'artificialCrown';
 export const BRIDGE_LINK = 'bridgeLink';

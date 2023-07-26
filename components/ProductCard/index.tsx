@@ -42,6 +42,7 @@ export const ProductCard = ({
       );
     }
 
+    // @ts-ignore
     return product[productType];
   }, [product, productType]);
 

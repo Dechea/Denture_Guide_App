@@ -1,8 +1,8 @@
 export enum PRODUCT_TYPE {
   IMPLANT = 'implant',
   ABUTMENT = 'abutment',
-  HEALING_ABUTMENT = 'healingAbutment',
-  TEMPORARY_ABUTMENT = 'temporaryAbutment',
+  HEALING_ABUTMENT = 'healing',
+  TEMPORARY_ABUTMENT = 'temporary',
   IMPRESSION = 'impression',
   TOOLS = 'tools',
 }

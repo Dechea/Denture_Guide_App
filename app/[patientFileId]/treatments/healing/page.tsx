@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { Tabs, View } from 'reshaped';
 import ProductList from '../../../../components/ProductList';
 import { ProductFilterForm } from '../../../../components/ProductFilterForm';
@@ -13,6 +13,7 @@ import {
   PRODUCT_TYPE,
 } from '../../../../zustand/product/interface';
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
+import { useProductStore } from '../../../../zustand/product';
 
 export default function Healing({
   params,
@@ -25,12 +26,15 @@ export default function Healing({
     acceptedTreatmentGroups: [TABGROUP_TYPE.IMPLANT_GROUP],
   });
 
+  const { setActiveProductTab, setActivePatientFileId } = useProductStore();
+  useEffect(() => {
+    setActiveProductTab(PRODUCT_TYPE.HEALING_ABUTMENT);
+    setActivePatientFileId(params.patientFileId);
+  }, []);
+
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/healing`}>
-      <CarouselTeeth
-        patientFileId={params.patientFileId}
-        productType={PRODUCT_TYPE.HEALING_ABUTMENT}
-      />
+      <CarouselTeeth patientFileId={params.patientFileId} />
 
       <View direction='row' gap={11}>
         <View.Item columns={3} className='sticky !top-[180px]'>

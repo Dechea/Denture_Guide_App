@@ -14,6 +14,8 @@ export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
   const { toothGroupsByTreatmentAndLockStatus: toothGroups } =
     useTreatmentsByGroup();
 
+  console.log({ toothGroups });
+
   return (
     <View
       width='100%'
@@ -36,7 +38,7 @@ export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
         <Tabs
           value={activeTreatmentGroup}
           onChange={({ value }) => {
-            const [group, index] = value.split('-');
+            const [_group, index] = value.split('-');
             toothGroups[Number(index)].open && setActiveTreatmentGroup(value);
           }}
         >
@@ -45,7 +47,7 @@ export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
               return (
                 <Tabs.Item
                   value={`${value.group}-${index}`}
-                  key={`${value.tabgroup}-${value?.tabgroup}`}
+                  key={`${value.group}-${value?.tabgroup}`}
                 >
                   <Tooltip
                     position='top'
