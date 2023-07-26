@@ -45,6 +45,7 @@ export const CarouselTooth = ({
       direction='row'
       borderRadius='small'
       paddingInline={2}
+      gap={1}
       className={cx(
         {
           'opacity-50': !active,
@@ -55,7 +56,7 @@ export const CarouselTooth = ({
       )}
     >
       {treatmentToothData?.map((tooth) => {
-        const selected = !!selectedProducts[tooth.toothNumber as number];
+        const selected = !!selectedProducts[tooth.toothNumber];
         const toothData = patientFile.teeth.find(
           ({ name }) => Number(name) === tooth.toothNumber
         );

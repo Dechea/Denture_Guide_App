@@ -14,8 +14,6 @@ export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
   const { toothGroupsByTreatmentAndLockStatus: toothGroups } =
     useTreatmentsByGroup();
 
-  console.log({ toothGroups });
-
   return (
     <View
       width='100%'
@@ -43,22 +41,26 @@ export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
           }}
         >
           <Tabs.List className={`[&_[role=tablist]]:!gap-[8px]`}>
-            {toothGroups.map((value, index) => {
+            {toothGroups.map((tooth, index) => {
+              const isEmptyFilterGroup = tooth.group === '{}';
               return (
                 <Tabs.Item
-                  value={`${value.group}-${index}`}
-                  key={`${value.group}-${value?.tabgroup}`}
+                  value={`${tooth.group}-${index}`}
+                  key={`${tooth.group}-${tooth?.tabgroup}`}
                 >
                   <Tooltip
                     position='top'
                     text={
                       toothGroups[index]?.open
-                        ? value?.tabgroup ?? value.group
+                        ? tooth?.tabgroup ?? tooth.group
                         : toothGroups[index]?.tooltipText
                     }
                   >
                     {(attributes) => (
-                      <Actionable attributes={attributes}>
+                      <Actionable
+                        attributes={attributes}
+                        className={isEmptyFilterGroup && 'pointer-events-none'}
+                      >
                         <CarouselTooth
                           treatmentToothData={toothGroups[index]?.teeth}
                           active={toothGroups[index]?.open}

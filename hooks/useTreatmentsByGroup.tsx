@@ -40,33 +40,48 @@ const mapProductRequirements: {
   },
 };
 
-const mapImplicitFilters: { [key: string]: string[] } = {
-  [PRODUCT_TYPE.ABUTMENT]: ['indication', 'implantLine', 'diameterPlatform'],
-  [PRODUCT_TYPE.HEALING_ABUTMENT]: [
-    'indication',
-    'implantLine',
-    'diameterPlatform',
-    'platformSwitch',
-  ],
-  [PRODUCT_TYPE.TEMPORARY_ABUTMENT]: [
-    'indication',
-    'implantLine',
-    'abutmentLine',
-    'diameterPlatform',
-  ],
-  [PRODUCT_TYPE.IMPRESSION]: [
-    'implantLine',
-    'abutmentLine',
-    'diameterPlatform',
-    'platformSwitch',
-  ],
+const implicitFilters: {
+  [key: string]: { name: string; productType: string };
+} = {
+  indication: { name: 'indication', productType: '' },
+  implantLine: { name: 'implantLine', productType: PRODUCT_TYPE.IMPLANT },
+  diameterPlatform: {
+    name: 'diameterPlatform',
+    productType: PRODUCT_TYPE.IMPLANT,
+  },
+  abutmentLine: { name: 'abutmentLine', productType: PRODUCT_TYPE.ABUTMENT },
+  platformSwitch: {
+    name: 'platformSwitch',
+    productType: PRODUCT_TYPE.ABUTMENT,
+  },
 };
 
-const mapPreviousTab: { [key: string]: string } = {
-  [PRODUCT_TYPE.ABUTMENT]: PRODUCT_TYPE.IMPLANT,
-  [PRODUCT_TYPE.HEALING_ABUTMENT]: PRODUCT_TYPE.ABUTMENT,
-  [PRODUCT_TYPE.TEMPORARY_ABUTMENT]: PRODUCT_TYPE.HEALING_ABUTMENT,
-  [PRODUCT_TYPE.IMPRESSION]: PRODUCT_TYPE.TEMPORARY_ABUTMENT,
+const mapImplicitFilters: {
+  [key: string]: { name: string; productType: string }[];
+} = {
+  [PRODUCT_TYPE.ABUTMENT]: [
+    implicitFilters.indication,
+    implicitFilters.implantLine,
+    implicitFilters.diameterPlatform,
+  ],
+  [PRODUCT_TYPE.HEALING_ABUTMENT]: [
+    implicitFilters.indication,
+    implicitFilters.implantLine,
+    implicitFilters.diameterPlatform,
+    implicitFilters.platformSwitch,
+  ],
+  [PRODUCT_TYPE.TEMPORARY_ABUTMENT]: [
+    implicitFilters.indication,
+    implicitFilters.implantLine,
+    implicitFilters.abutmentLine,
+    implicitFilters.diameterPlatform,
+  ],
+  [PRODUCT_TYPE.IMPRESSION]: [
+    implicitFilters.implantLine,
+    implicitFilters.abutmentLine,
+    implicitFilters.diameterPlatform,
+    implicitFilters.platformSwitch,
+  ],
 };
 
 export function useTreatmentsByGroup() {
@@ -89,7 +104,6 @@ export function useTreatmentsByGroup() {
 
   const mappingToApply = mapProductRequirements[activeProductTab];
   const unLockedTeethGroup: TreatmentVisualization[] = [];
-  const previousProductTab = mapPreviousTab[activeProductTab];
   const filterParams = mapImplicitFilters[activeProductTab];
   const groups: { [key: string]: TreatmentVisualization[] } = {};
 
@@ -176,34 +190,28 @@ export function useTreatmentsByGroup() {
       ...(fqlxTooth?.crown.treatmentDoc.selectedProducts ?? []),
       ...(fqlxTooth?.root.treatmentDoc.selectedProducts ?? []),
     ];
-    const previousTabProduct = fqlxToothProducts.find(({ selectedProduct }) =>
-      Object.keys(selectedProduct ?? {}).includes(previousProductTab)
-    );
 
     const filterValues: { [key: string]: string } = {};
 
     filterParams?.forEach((filter) => {
-      if (filter === 'indication') {
-        filterValues[filter] = tooth.indication;
+      if (filter.name === 'indication') {
+        filterValues[filter.name] = tooth.indication;
       } else {
-        filterValues[filter] =
+        const previousTabProduct = fqlxToothProducts.find(
+          ({ selectedProduct }) =>
+            Object.keys(selectedProduct ?? {}).includes(filter.productType)
+        );
+        filterValues[filter.name] =
           // @ts-ignore
-          previousTabProduct?.selectedProduct?.[previousProductTab]?.[filter];
+          previousTabProduct?.selectedProduct?.[filter.productType]?.[
+            filter.name
+          ];
       }
     });
 
-    if (Object.keys(filterValues).length === 0) {
-      toothGroupsByTreatmentAndLockStatusBefore.push({
-        group: `${tooth.toothNumber}`,
-        teeth: [tooth],
-        open: true,
-        tooltipText: `${tooth.toothNumber}`,
-      });
-    } else {
-      groups[JSON.stringify(filterValues)] =
-        groups[JSON.stringify(filterValues)] || [];
-      groups[JSON.stringify(filterValues)].push(tooth);
-    }
+    groups[JSON.stringify(filterValues)] =
+      groups[JSON.stringify(filterValues)] || [];
+    groups[JSON.stringify(filterValues)].push(tooth);
   });
 
   Object.entries(groups).forEach(([key, value]) => {

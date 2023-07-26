@@ -19,7 +19,6 @@ interface ProductStore {
   selectedProducts: SelectedProducts;
   acceptedTreatmentGroups: TABGROUP_TYPE[];
   activeTreatmentGroup: string;
-  recentToothClicked: number;
   setSearchedProductManufacturerId: (id: string) => void;
   setProducts: (products: PaginateData<Product>) => void;
   setActiveProductTab: (productTab: string) => void;
@@ -30,7 +29,6 @@ interface ProductStore {
   setAcceptedTreatmentGroups: (treatmentGroups: TABGROUP_TYPE[]) => void;
   setActiveTreatmentGroup: (treatmentGroup: string) => void;
   setAbutment: (abutment: AbutmentInput) => void;
-  setRecentToothClicked: (toothNumber: number) => void;
 }
 
 export const useProductStore = create<ProductStore>()((set) => ({
@@ -44,7 +42,6 @@ export const useProductStore = create<ProductStore>()((set) => ({
   selectedProducts: {},
   acceptedTreatmentGroups: [],
   activeTreatmentGroup: '',
-  recentToothClicked: 0,
   setAbutment: (abutment) =>
     set((state) => ({
       product: { ...state.product, abutment: { ...abutment, id: '' } },
@@ -64,6 +61,4 @@ export const useProductStore = create<ProductStore>()((set) => ({
     set({ acceptedTreatmentGroups: treatmentGroups }),
   setActiveTreatmentGroup: (treatmentGroup: string) =>
     set({ activeTreatmentGroup: treatmentGroup }),
-  setRecentToothClicked: (toothNumber: number) =>
-    set({ recentToothClicked: toothNumber }),
 }));

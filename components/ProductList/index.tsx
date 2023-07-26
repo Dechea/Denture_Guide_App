@@ -32,7 +32,6 @@ const ProductList = ({
     setProducts,
     searchedProductManufacturerId,
     productFilters,
-    setRecentToothClicked,
   } = useProductStore();
 
   const query = useQuery<Query>();
@@ -90,7 +89,6 @@ const ProductList = ({
     addOrUpdateProductInFqlx((teeth) => {
       getMappedTeeth(teeth, productToDelete, toothNumber, selectedProducts);
     });
-    setRecentToothClicked(toothNumber);
   };
 
   const productQuery = useMemo(
