@@ -82,14 +82,21 @@ export const getTreatmentsVariant = ({
       treatments.rootVariant = MISSING_ROOT;
     }
 
-    if (forCard) {
-      if (treatment?.name.includes(LINK) || treatment?.name.includes(ANCHOR)) {
-        treatments.leftAnchor = true;
-        treatments.rightAnchor = true;
-      }
+    if (
+      (forCard && treatment?.name.includes(LINK)) ||
+      treatment?.name.includes(ANCHOR)
+    ) {
+      treatments.leftAnchor = true;
+      treatments.rightAnchor = true;
     }
   });
 
+  getGroupAndIndication(treatments);
+
+  return treatments;
+};
+
+function getGroupAndIndication(treatments: TreatmentVisualization) {
   if (treatments.rootVariant === IMPLANT) {
     treatments.tabgroup = TABGROUP_TYPE.IMPLANT_GROUP;
   } else if (
@@ -108,19 +115,18 @@ export const getTreatmentsVariant = ({
     treatments.tabgroup = TABGROUP_TYPE.NO_GROUP;
   }
 
-  if ([BRIDGE_ANCHOR, BRIDGE_LINK].includes(treatments.crownVariant)) {
+  if ([BRIDGE_ANCHOR, BRIDGE_LINK].includes(treatments.crownVariant ?? '')) {
     treatments.indication = INDICATION.BRIDGE;
   } else if (
     [PROSTHESIS, PROSTHESIS_ANCHOR, PROSTHESIS_LINK].includes(
-      treatments.crownVariant
+      treatments.crownVariant ?? ''
     )
   ) {
     treatments.indication = INDICATION.PROSTHESIS;
   } else if (treatments.crownVariant === ARTIFICIAL_CROWN) {
     treatments.indication = INDICATION.CROWN;
   }
-  return treatments;
-};
+}
 
 function getAnchorVariants(treatments: TreatmentVisualization[]) {
   treatments.forEach((value, index) => {

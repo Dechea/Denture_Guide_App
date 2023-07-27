@@ -1,19 +1,18 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Tabs, Text, View } from 'reshaped';
 import { useTeethDiagramStore } from '../../zustand/teethDiagram';
 import TreatmentTabsPopover from '../TreatmentTabsPopover';
 import { PRODUCT_TYPE } from '../../zustand/product/interface';
 import { useTabsStatus } from '../../hooks/useTabsStatus';
-import { useProductStore } from '../../zustand/product';
 
 const defaultActiveTabs: { [key: string]: boolean } = {
   implant: false,
   abutment: false,
-  healing: false,
-  temporary: false,
+  healingAbutment: false,
+  temporaryAbutment: false,
   impression: false,
   tools: true,
 };
@@ -54,7 +53,6 @@ const TreatmentTabs = ({
   };
 
   useEffect(() => {
-    console.log({ localTabStatus, tabsStatus });
     if (Object.keys(recentAddedTreatment).length) {
       if (!localTabStatus?.implant && tabsStatus.implant) {
         setActivePopupFor(PRODUCT_TYPE.IMPLANT);
@@ -120,14 +118,14 @@ const TreatmentTabs = ({
 
             <Tabs.Item value={`/${patientFileId}/treatments/healing`}>
               <TreatmentTabsPopover
-                activeTab={tabsStatus.healing}
+                activeTab={tabsStatus.healingAbutment}
                 title='Healing Abutment'
               />
             </Tabs.Item>
 
             <Tabs.Item value={`/${patientFileId}/treatments/temporary`}>
               <TreatmentTabsPopover
-                activeTab={tabsStatus.temporary}
+                activeTab={tabsStatus.temporaryAbutment}
                 title='Temporary Abutments'
               />
             </Tabs.Item>

@@ -5,7 +5,7 @@ import { useTeethDiagramStore } from '../zustand/teethDiagram';
 import { Query } from '../fqlx-generated/typedefs';
 import { useMemo } from 'react';
 
-const mapTabsRequirements: {
+const tabRequirements: {
   [key: string]: {
     requiredProductTypes: string[];
     nextStep: string[];
@@ -47,8 +47,8 @@ export function useTabsStatus() {
     const tabsStatus: { [key: string]: boolean } = {
       implant: false,
       abutment: false,
-      healing: false,
-      temporary: false,
+      healingAbutment: false,
+      temporaryAbutment: false,
       impression: false,
       tools: true,
     };
@@ -65,15 +65,18 @@ export function useTabsStatus() {
         ...(tooth?.root.treatmentDoc.selectedProducts ?? []),
       ];
 
-      const conditions = mapTabsRequirements[treatment?.tabgroup];
+      const conditionsToUnlockTabs = tabRequirements[treatment?.tabgroup];
 
-      conditions?.forEach(({ requiredProductTypes, nextStep }) => {
-        const satisfyRequirements = requiredProductTypes.every((required) =>
-          products.some((product) =>
-            Object.keys(product.selectedProduct ?? {}).includes(required)
-          )
+      conditionsToUnlockTabs?.forEach(({ requiredProductTypes, nextStep }) => {
+        const areRequirementsSatisfied = requiredProductTypes.every(
+          (requiredProductType) =>
+            products.some((product) =>
+              Object.keys(product.selectedProduct ?? {}).includes(
+                requiredProductType
+              )
+            )
         );
-        satisfyRequirements &&
+        areRequirementsSatisfied &&
           nextStep.forEach((step) => {
             tabsStatus[step] = true;
           });

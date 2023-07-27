@@ -42,8 +42,7 @@ export const ProductCard = ({
       );
     }
 
-    // @ts-ignore
-    return product[productType];
+    return product[productType as keyof typeof product];
   }, [product, productType]);
 
   return (
