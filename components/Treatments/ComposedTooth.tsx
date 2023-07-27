@@ -16,8 +16,8 @@ export const ComposedTooth = ({ treatment }: ComposedToothProps) => {
         <Crown
           variant={treatment.crownVariant}
           tooth={0}
-          leftAnchor={treatment.anchorLeft}
-          rightAnchor={treatment.anchorRight}
+          leftAnchor={treatment.leftAnchor}
+          rightAnchor={treatment.rightAnchor}
         />
       </Tooth>
     </ToothContainer>

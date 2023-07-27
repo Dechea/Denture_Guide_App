@@ -76,6 +76,7 @@ export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
                 <Tabs.Item value={`${index}`} key={`${tooth.tabgroup}`}>
                   <Tooltip
                     position='top'
+                    active={isEmptyFilterGroup ? false : undefined}
                     text={
                       toothGroups[index]?.open
                         ? tooth.tabgroup
@@ -83,14 +84,10 @@ export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
                     }
                   >
                     {(attributes) => (
-                      <Actionable
-                        attributes={attributes}
-                        className={isEmptyFilterGroup && 'pointer-events-none'}
-                      >
+                      <Actionable attributes={attributes}>
                         <CarouselGroupTabs
                           treatmentToothData={toothGroups[index]?.teeth}
                           active={toothGroups[index]?.open}
-                          patientFileId={patientFileId}
                         />
                       </Actionable>
                     )}

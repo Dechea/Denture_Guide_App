@@ -12,10 +12,11 @@ import {
   ToothNumber,
 } from '../TeethDiagram/teeth/areas/tooth';
 import { JawType } from '../TeethDiagram/teeth/areas/tooth/interfaces/props';
+import { useProductStore } from '../../zustand/product';
+import { useEffect, useMemo, useState } from 'react';
+import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
 interface CarouselToothProps {
-  products: SelectedProduct[];
   tooth: TreatmentVisualization;
-  selected: boolean;
 }
 
 const styles = {
@@ -23,13 +24,29 @@ const styles = {
   inactiveTooth: '[&_svg>*]:!pointer-events-none ',
 };
 
-export const CarouselTooth = ({
-  products,
-  tooth,
-  selected,
-}: CarouselToothProps) => {
+export const CarouselTooth = ({ tooth }: CarouselToothProps) => {
+  const { patientFile } = useTreatmentsByGroup();
+
+  const { selectedProducts } = useProductStore((state) => state);
+  const [products, setProducts] = useState<SelectedProduct[]>([]);
+  const toothData = patientFile.teeth.find(
+    ({ name }) => Number(name) === tooth.toothNumber
+  );
+  const selected = !!selectedProducts[tooth.toothNumber];
+
+  const selectedProductsList = useMemo(() => {
+    return [
+      ...(toothData?.root.treatmentDoc?.selectedProducts ?? []),
+      ...(toothData?.crown.treatmentDoc?.selectedProducts ?? []),
+    ];
+  }, [tooth, toothData]);
+
+  useEffect(() => {
+    setProducts(selectedProductsList);
+  }, [selectedProductsList]);
+
   return (
-    <Popover key={tooth.toothNumber} triggerType='hover' padding={3}>
+    <Popover key={products.length} triggerType='hover' padding={3}>
       <Popover.Trigger>
         {(attributes) => {
           return (

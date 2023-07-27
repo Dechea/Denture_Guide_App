@@ -267,6 +267,10 @@ export default function TeethDiagramWithTreatments({
     resetHistory();
     setActiveTooth(0);
     setActiveToothParts([]);
+    return () => {
+      setActiveTooth(0);
+      setActiveToothParts([]);
+    };
   }, []);
 
   useEffect(() => {

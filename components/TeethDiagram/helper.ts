@@ -82,10 +82,9 @@ export const getTreatmentsVariant = ({
       treatments.rootVariant = MISSING_ROOT;
     }
 
-    if (
-      (forCard && treatment?.name.includes(LINK)) ||
-      treatment?.name.includes(ANCHOR)
-    ) {
+    const isAnchorTreatment =
+      treatment?.name.includes(LINK) || treatment?.name.includes(ANCHOR);
+    if (forCard && isAnchorTreatment) {
       treatments.leftAnchor = true;
       treatments.rightAnchor = true;
     }
