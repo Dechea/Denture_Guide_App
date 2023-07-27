@@ -82,10 +82,10 @@ export const getTreatmentsVariant = ({
       treatments.rootVariant = MISSING_ROOT;
     }
 
-    const isAnchorTreatment =
-      treatment?.name.includes(LINK) || treatment?.name.includes(ANCHOR);
-    if (forCard && isAnchorTreatment) {
+    if (forCard && treatment?.name.includes(LINK)) {
       treatments.leftAnchor = true;
+      treatments.rightAnchor = true;
+    } else if (forCard && treatment?.name.includes(ANCHOR)) {
       treatments.rightAnchor = true;
     }
   });
@@ -252,7 +252,7 @@ export const getMappedPatientFileData = (
   const patientFileData = { ...patientFile };
   const patientFileTeeth = [...patientFileData.teeth];
 
-  store.activeToothParts.forEach((toothPart) => {
+  store.activeToothParts.forEach((toothPart: string) => {
     const toothName = toothPart.split('-')[0];
 
     const treatment: { [key: string]: string } = {};
