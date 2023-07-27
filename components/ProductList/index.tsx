@@ -101,7 +101,7 @@ const ProductList = ({
       ) &&
       index + 1 < toothGroups.length
     ) {
-      setActiveTreatmentGroup(`${index + 1}`);
+      setActiveTreatmentGroup(index + 1);
     }
   };
 
