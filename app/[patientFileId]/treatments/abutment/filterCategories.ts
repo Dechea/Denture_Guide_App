@@ -7,14 +7,6 @@ export const filterCategories = [
     dataType: 'string',
     options: [],
   },
-  // {
-  //   displayName: 'Indication',
-  //   fqlxKey: 'indication',
-  //   prefix: '',
-  //   suffix: '',
-  //   dataType: 'string',
-  //   options: [],
-  // },
   {
     displayName: 'Material',
     fqlxKey: 'material',
