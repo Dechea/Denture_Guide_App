@@ -45,7 +45,7 @@ export function useAvailableTeethByTreatment({
               // @ts-ignore
               if (Object.keys(selectedProduct).includes(productType)) {
                 alreadySelectedProducts[toothNumber] =
-                  selectedProduct?.id || '';
+                  selectedProduct?.id ?? '';
               }
             }
           );
