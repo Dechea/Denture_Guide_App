@@ -2,7 +2,7 @@
 
 import { Actionable, Carousel, Tabs, Tooltip, View } from 'reshaped';
 import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
-import { CarouselTooth } from '../CarouselTooth';
+import { CarouselGroupTabs } from '../CarouselGroupTabs';
 import { useProductStore } from '../../zustand/product';
 import { useEffect, useState } from 'react';
 
@@ -16,6 +16,7 @@ export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
     setActiveTreatmentGroup,
     activeProductTab,
     availableTeethByProductType,
+    selectedProducts,
   } = useProductStore();
   const { getToothGroups, patientFile } = useTreatmentsByGroup();
   const [toothGroups, setToothGroups] = useState<any[]>([]);
@@ -25,8 +26,12 @@ export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
     setToothGroups(localToothGroups);
     if (!activeTreatmentGroup) {
       for (const [index, group] of Object.entries(localToothGroups)) {
-        if (group.open) {
-          setActiveTreatmentGroup(`${index}`);
+        if (
+          group.open &&
+          !group.teeth.every((tooth) => selectedProducts[tooth.toothNumber])
+        ) {
+          setActiveTreatmentGroup(Number(index));
+          break;
         }
       }
     }
@@ -34,7 +39,7 @@ export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
 
   useEffect(() => {
     return () => {
-      setActiveTreatmentGroup('');
+      setActiveTreatmentGroup(null);
     };
   }, []);
 
@@ -58,24 +63,22 @@ export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
         className='flex justify-center items-center w-[calc(100%-20px)] h-full'
       >
         <Tabs
-          value={activeTreatmentGroup}
+          value={`${activeTreatmentGroup}`}
           onChange={({ value }) => {
-            toothGroups[Number(value)].open && setActiveTreatmentGroup(value);
+            toothGroups[Number(value)].open &&
+              setActiveTreatmentGroup(Number(value));
           }}
         >
           <Tabs.List className={`[&_[role=tablist]]:!gap-[8px]`}>
             {toothGroups?.map((tooth, index) => {
-              const isEmptyFilterGroup = tooth.group === '{}';
+              const isEmptyFilterGroup = tooth.tabgroup === '{}';
               return (
-                <Tabs.Item
-                  value={`${index}`}
-                  key={`${tooth.group}-${tooth?.tabgroup}`}
-                >
+                <Tabs.Item value={`${index}`} key={`${tooth.tabgroup}`}>
                   <Tooltip
                     position='top'
                     text={
                       toothGroups[index]?.open
-                        ? tooth?.tabgroup ?? tooth.group
+                        ? tooth.tabgroup
                         : toothGroups[index]?.tooltipText
                     }
                   >
@@ -84,7 +87,7 @@ export default function CarouselTeeth({ patientFileId }: CarouselTeethProps) {
                         attributes={attributes}
                         className={isEmptyFilterGroup && 'pointer-events-none'}
                       >
-                        <CarouselTooth
+                        <CarouselGroupTabs
                           treatmentToothData={toothGroups[index]?.teeth}
                           active={toothGroups[index]?.open}
                           patientFileId={patientFileId}

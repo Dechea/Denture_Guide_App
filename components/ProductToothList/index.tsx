@@ -23,7 +23,7 @@ const ProductToothList = ({
   const { activeTreatmentGroup, selectedProducts, setSelectedProducts } =
     useProductStore();
   const { getToothGroups } = useTreatmentsByGroup();
-  const [groupIndex, setGroupIndex] = useState('0');
+  const [groupIndex, setGroupIndex] = useState<number | null>();
   const toothGroups = getToothGroups();
 
   useEffect(() => {
@@ -46,42 +46,45 @@ const ProductToothList = ({
     onClickProduct(productToDelete, toothNumber, selectedProductsData);
   };
 
-  return toothGroups[Number(groupIndex)]?.teeth.map(({ toothNumber }) => {
-    const selected = selectedProducts[toothNumber] === productId;
+  return (
+    groupIndex &&
+    toothGroups[groupIndex]?.teeth.map(({ toothNumber }) => {
+      const selected = selectedProducts[toothNumber] === productId;
 
-    return (
-      <Card
-        key={`${toothNumber}`}
-        padding={0}
-        className={cx(
-          '!shadow-[0px_2px_3px_rgba(0,0,0,0.1),_0px_1px_2px_-1px_rgba(0,0,0,0.1)]',
-          { '!border-[--rs-color-foreground-primary]': selected }
-        )}
-      >
-        <MenuItem
-          selected={selected}
-          size={'small'}
-          roundedCorners={true}
-          onClick={() => handleClickOnToothOption(toothNumber)}
-          className='hover:!cursor-pointer'
+      return (
+        <Card
+          key={`${toothNumber}`}
+          padding={0}
+          className={cx(
+            '!shadow-[0px_2px_3px_rgba(0,0,0,0.1),_0px_1px_2px_-1px_rgba(0,0,0,0.1)]',
+            { '!border-[--rs-color-foreground-primary]': selected }
+          )}
         >
-          <View
-            direction='row'
-            align='center'
-            gap={3}
-            width='100%'
-            paddingStart={2}
-            paddingBlock={2}
+          <MenuItem
+            selected={selected}
+            size={'small'}
+            roundedCorners={true}
+            onClick={() => handleClickOnToothOption(toothNumber)}
+            className='hover:!cursor-pointer'
           >
-            <Icon svg={ToothIcon} size={5} />
-            <Text variant='body-3' weight='medium'>
-              {toothNumber}
-            </Text>
-          </View>
-        </MenuItem>
-      </Card>
-    );
-  });
+            <View
+              direction='row'
+              align='center'
+              gap={3}
+              width='100%'
+              paddingStart={2}
+              paddingBlock={2}
+            >
+              <Icon svg={ToothIcon} size={5} />
+              <Text variant='body-3' weight='medium'>
+                {toothNumber}
+              </Text>
+            </View>
+          </MenuItem>
+        </Card>
+      );
+    })
+  );
 };
 
 export default ProductToothList;
