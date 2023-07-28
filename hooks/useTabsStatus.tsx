@@ -1,17 +1,23 @@
 import { useQuery } from 'fqlx-client';
 import { useProductStore } from '../zustand/product';
-import { PRODUCT_TYPE, TABGROUP_TYPE } from '../zustand/product/interface';
+import { PRODUCT_TYPE, TREATMENT_GROUP } from '../zustand/product/interface';
 import { useTeethDiagramStore } from '../zustand/teethDiagram';
 import { Query } from '../fqlx-generated/typedefs';
 import { useMemo } from 'react';
 
-const tabRequirements: {
+interface TabRequirementsProps {
   [key: string]: {
     requiredProductTypes: string[];
     nextStep: string[];
   }[];
-} = {
-  [TABGROUP_TYPE.IMPLANT_GROUP]: [
+}
+
+interface InitialTabsUnlockProps {
+  [key: string]: string[];
+}
+
+const tabRequirements: TabRequirementsProps = {
+  [TREATMENT_GROUP.IMPLANT_GROUP]: [
     {
       requiredProductTypes: [PRODUCT_TYPE.IMPLANT],
       nextStep: [PRODUCT_TYPE.ABUTMENT, PRODUCT_TYPE.HEALING_ABUTMENT],
@@ -23,11 +29,9 @@ const tabRequirements: {
   ],
 };
 
-const initialTabsUnlock: {
-  [key: string]: string[];
-} = {
-  [TABGROUP_TYPE.IMPLANT_GROUP]: [PRODUCT_TYPE.IMPLANT],
-  [TABGROUP_TYPE.ABUTMENT_GROUP]: [PRODUCT_TYPE.ABUTMENT],
+const initialTabsUnlock: InitialTabsUnlockProps = {
+  [TREATMENT_GROUP.IMPLANT_GROUP]: [PRODUCT_TYPE.IMPLANT],
+  [TREATMENT_GROUP.ABUTMENT_GROUP]: [PRODUCT_TYPE.ABUTMENT],
 };
 
 export function useTabsStatus() {
@@ -55,7 +59,7 @@ export function useTabsStatus() {
 
     patientFile.teeth?.forEach((tooth) => {
       const treatment = treatments[tooth.name];
-      const initialTabs = initialTabsUnlock[treatment?.tabgroup];
+      const initialTabs = initialTabsUnlock[treatment?.treatmentgroup];
       initialTabs?.forEach((tab) => {
         tabsStatus[tab] = true;
       });
@@ -65,15 +69,16 @@ export function useTabsStatus() {
         ...(tooth?.root.treatmentDoc.selectedProducts ?? []),
       ];
 
-      const conditionsToUnlockTabs = tabRequirements[treatment?.tabgroup];
+      const conditionsToUnlockTabs = tabRequirements[treatment?.treatmentgroup];
 
       conditionsToUnlockTabs?.forEach(({ requiredProductTypes, nextStep }) => {
         const areRequirementsSatisfied = requiredProductTypes.every(
           (requiredProductType) =>
-            products.some((product) =>
-              Object.keys(product.selectedProduct ?? {}).includes(
-                requiredProductType
-              )
+            products.some(
+              (product) =>
+                product.selectedProduct?.[
+                  requiredProductType as keyof typeof product.selectedProduct
+                ]
             )
         );
         areRequirementsSatisfied &&

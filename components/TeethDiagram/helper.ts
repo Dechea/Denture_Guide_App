@@ -34,7 +34,7 @@ import {
   twoRootsTeeth,
 } from './teeth/constants/tooth';
 import { rootId } from './teeth/constants/toothArea';
-import { INDICATION, TABGROUP_TYPE } from '../../zustand/product/interface';
+import { INDICATION, TREATMENT_GROUP } from '../../zustand/product/interface';
 
 interface GetTreatmentsVariantArgs {
   toothNumber?: number;
@@ -97,21 +97,21 @@ export const getTreatmentsVariant = ({
 
 function getGroupAndIndication(treatments: TreatmentVisualization) {
   if (treatments.rootVariant === IMPLANT) {
-    treatments.tabgroup = TABGROUP_TYPE.IMPLANT_GROUP;
+    treatments.treatmentgroup = TREATMENT_GROUP.IMPLANT_GROUP;
   } else if (
     treatments.rootVariant === ADULT &&
     treatments.crownVariant === PROSTHESIS_ANCHOR
   ) {
-    treatments.tabgroup = TABGROUP_TYPE.ABUTMENT_GROUP;
+    treatments.treatmentgroup = TREATMENT_GROUP.ABUTMENT_GROUP;
   } else if (
     treatments.crownVariant === ARTIFICIAL_CROWN ||
     treatments.crownVariant === BRIDGE_ANCHOR ||
     treatments.crownVariant === BRIDGE_LINK ||
     treatments.crownVariant === PROSTHESIS_LINK
   ) {
-    treatments.tabgroup = TABGROUP_TYPE.CROWN_GROUP;
+    treatments.treatmentgroup = TREATMENT_GROUP.CROWN_GROUP;
   } else {
-    treatments.tabgroup = TABGROUP_TYPE.NO_GROUP;
+    treatments.treatmentgroup = TREATMENT_GROUP.NO_GROUP;
   }
 
   if ([BRIDGE_ANCHOR, BRIDGE_LINK].includes(treatments.crownVariant ?? '')) {

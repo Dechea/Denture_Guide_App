@@ -12,7 +12,7 @@ export enum AREA_TYPE {
   CROWN = 'crown',
 }
 
-export enum TABGROUP_TYPE {
+export enum TREATMENT_GROUP {
   IMPLANT_GROUP = 'implantGroup',
   ABUTMENT_GROUP = 'abutmentGroup',
   CROWN_GROUP = 'crownGroup',

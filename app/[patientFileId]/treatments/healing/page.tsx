@@ -9,7 +9,7 @@ import Loader from '../../../../components/Loader';
 import { filterCategories } from './filterCategories';
 import {
   AREA_TYPE,
-  TABGROUP_TYPE,
+  TREATMENT_GROUP,
   PRODUCT_TYPE,
 } from '../../../../zustand/product/interface';
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
@@ -20,13 +20,14 @@ export default function Healing({
 }: {
   params: { patientFileId: string };
 }) {
+  const { setActiveProductTab, setActivePatientFileId } = useProductStore();
+
   useAvailableTeethByTreatment({
     patientFileId: params.patientFileId,
     productType: PRODUCT_TYPE.HEALING_ABUTMENT,
-    acceptedTreatmentGroups: [TABGROUP_TYPE.IMPLANT_GROUP],
+    acceptedTreatmentGroups: [TREATMENT_GROUP.IMPLANT_GROUP],
   });
 
-  const { setActiveProductTab, setActivePatientFileId } = useProductStore();
   useEffect(() => {
     setActiveProductTab(PRODUCT_TYPE.HEALING_ABUTMENT);
     setActivePatientFileId(params.patientFileId);
@@ -34,7 +35,7 @@ export default function Healing({
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/healing`}>
-      <CarouselTeeth patientFileId={params.patientFileId} />
+      <CarouselTeeth />
 
       <View direction='row' gap={11}>
         <View.Item columns={3} className='sticky !top-[180px]'>

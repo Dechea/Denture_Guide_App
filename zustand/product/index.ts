@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { PaginateData } from 'fqlx-client';
 import { product } from '../../__mocks__/initialProductsState';
 import { Product, AbutmentInput } from '../../fqlx-generated/typedefs';
-import { TABGROUP_TYPE } from './interface';
+import { TREATMENT_GROUP } from './interface';
 
 export interface SelectedProducts {
   [key: number]: string;
@@ -17,7 +17,7 @@ interface ProductStore {
   productFilters: { [key: string]: string[] };
   availableTeethByProductType: number[];
   selectedProducts: SelectedProducts;
-  acceptedTreatmentGroups: TABGROUP_TYPE[];
+  acceptedTreatmentGroups: TREATMENT_GROUP[];
   activeTreatmentGroup: number | null;
   setSearchedProductManufacturerId: (id: string) => void;
   setProducts: (products: PaginateData<Product>) => void;
@@ -26,7 +26,7 @@ interface ProductStore {
   setProductFilters: (filters: { [key: string]: string[] }) => void;
   setAvailableTeethByProductType: (availableTeeth: number[]) => void;
   setSelectedProducts: (products: SelectedProducts) => void;
-  setAcceptedTreatmentGroups: (treatmentGroups: TABGROUP_TYPE[]) => void;
+  setAcceptedTreatmentGroups: (treatmentGroups: TREATMENT_GROUP[]) => void;
   setActiveTreatmentGroup: (treatmentGroup: number | null) => void;
   setAbutment: (abutment: AbutmentInput) => void;
 }
@@ -57,7 +57,7 @@ export const useProductStore = create<ProductStore>()((set) => ({
     set({ availableTeethByProductType: availableTeeth }),
   setSelectedProducts: (products: SelectedProducts) =>
     set({ selectedProducts: products }),
-  setAcceptedTreatmentGroups: (treatmentGroups: TABGROUP_TYPE[]) =>
+  setAcceptedTreatmentGroups: (treatmentGroups: TREATMENT_GROUP[]) =>
     set({ acceptedTreatmentGroups: treatmentGroups }),
   setActiveTreatmentGroup: (treatmentGroup: number | null) =>
     set({ activeTreatmentGroup: treatmentGroup }),

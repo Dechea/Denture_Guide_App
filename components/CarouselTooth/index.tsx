@@ -26,13 +26,13 @@ const styles = {
 
 export const CarouselTooth = ({ tooth }: CarouselToothProps) => {
   const { patientFile } = useTreatmentsByGroup();
-
   const { selectedProducts } = useProductStore((state) => state);
   const [products, setProducts] = useState<SelectedProduct[]>([]);
+
+  const selected = !!selectedProducts[tooth.toothNumber];
   const toothData = patientFile.teeth.find(
     ({ name }) => Number(name) === tooth.toothNumber
   );
-  const selected = !!selectedProducts[tooth.toothNumber];
 
   const selectedProductsList = useMemo(() => {
     return [

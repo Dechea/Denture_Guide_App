@@ -9,7 +9,7 @@ import Loader from '../../../../components/Loader';
 import { filterCategories } from './filterCategories';
 import {
   AREA_TYPE,
-  TABGROUP_TYPE,
+  TREATMENT_GROUP,
   PRODUCT_TYPE,
 } from '../../../../zustand/product/interface';
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
@@ -20,15 +20,17 @@ export default function Abutment({
 }: {
   params: { patientFileId: string };
 }) {
+  const { setActiveProductTab, setActivePatientFileId } = useProductStore();
+
   useAvailableTeethByTreatment({
     patientFileId: params.patientFileId,
     productType: PRODUCT_TYPE.ABUTMENT,
     acceptedTreatmentGroups: [
-      TABGROUP_TYPE.IMPLANT_GROUP,
-      TABGROUP_TYPE.ABUTMENT_GROUP,
+      TREATMENT_GROUP.IMPLANT_GROUP,
+      TREATMENT_GROUP.ABUTMENT_GROUP,
     ],
   });
-  const { setActiveProductTab, setActivePatientFileId } = useProductStore();
+
   useEffect(() => {
     setActiveProductTab(PRODUCT_TYPE.ABUTMENT);
     setActivePatientFileId(params.patientFileId);
@@ -36,7 +38,7 @@ export default function Abutment({
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/abutment`}>
-      <CarouselTeeth patientFileId={params.patientFileId} />
+      <CarouselTeeth />
 
       <View direction='row' gap={11}>
         <View.Item columns={3} className='sticky !top-[180px]'>

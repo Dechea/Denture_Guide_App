@@ -4,12 +4,12 @@ import { useEffect } from 'react';
 import { useProductStore } from '../zustand/product';
 import { useQuery } from 'fqlx-client';
 import { PatientFile, Query } from '../fqlx-generated/typedefs';
-import { AREA_TYPE, TABGROUP_TYPE } from '../zustand/product/interface';
+import { AREA_TYPE, TREATMENT_GROUP } from '../zustand/product/interface';
 
 interface UseAvailableTeethByTreatmentProps {
   patientFileId: string;
   productType: string;
-  acceptedTreatmentGroups: TABGROUP_TYPE[];
+  acceptedTreatmentGroups: TREATMENT_GROUP[];
 }
 
 export function useAvailableTeethByTreatment({
@@ -42,8 +42,9 @@ export function useAvailableTeethByTreatment({
         if (tooth[area]?.treatmentDoc?.selectedProducts?.length) {
           tooth[area]?.treatmentDoc?.selectedProducts?.forEach(
             ({ selectedProduct }) => {
-              // @ts-ignore
-              if (Object.keys(selectedProduct).includes(productType)) {
+              if (
+                selectedProduct?.[productType as keyof typeof selectedProduct]
+              ) {
                 alreadySelectedProducts[toothNumber] =
                   selectedProduct?.id ?? '';
               }

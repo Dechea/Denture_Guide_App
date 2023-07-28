@@ -20,11 +20,19 @@ const ProductToothList = ({
   productId,
   onClickProduct,
 }: ProductToothListProps) => {
-  const { activeTreatmentGroup, selectedProducts, setSelectedProducts } =
-    useProductStore();
-  const { getToothGroups } = useTreatmentsByGroup();
+  const {
+    activeTreatmentGroup,
+    selectedProducts,
+    setSelectedProducts,
+    activeProductTab,
+    availableTeethByProductType,
+  } = useProductStore();
+  const { patientFile, toothGroups, getToothGroups } = useTreatmentsByGroup();
   const [groupIndex, setGroupIndex] = useState<number | null>();
-  const toothGroups = getToothGroups();
+
+  useEffect(() => {
+    getToothGroups();
+  }, [patientFile, activeProductTab, availableTeethByProductType]);
 
   useEffect(() => {
     setGroupIndex(activeTreatmentGroup);

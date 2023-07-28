@@ -9,7 +9,7 @@ import Loader from '../../../../components/Loader';
 import { filterCategories } from './filterCategories';
 import {
   AREA_TYPE,
-  TABGROUP_TYPE,
+  TREATMENT_GROUP,
   PRODUCT_TYPE,
 } from '../../../../zustand/product/interface';
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
@@ -20,12 +20,14 @@ export default function Implant({
 }: {
   params: { patientFileId: string };
 }) {
+  const { setActiveProductTab, setActivePatientFileId } = useProductStore();
+
   useAvailableTeethByTreatment({
     patientFileId: params.patientFileId,
     productType: PRODUCT_TYPE.IMPLANT,
-    acceptedTreatmentGroups: [TABGROUP_TYPE.IMPLANT_GROUP],
+    acceptedTreatmentGroups: [TREATMENT_GROUP.IMPLANT_GROUP],
   });
-  const { setActiveProductTab, setActivePatientFileId } = useProductStore();
+
   useEffect(() => {
     setActiveProductTab(PRODUCT_TYPE.IMPLANT);
     setActivePatientFileId(params.patientFileId);
@@ -33,7 +35,7 @@ export default function Implant({
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/implant`}>
-      <CarouselTeeth patientFileId={params.patientFileId} />
+      <CarouselTeeth />
 
       <View direction='row' gap={11}>
         <View.Item columns={3} className='sticky !top-[180px]'>

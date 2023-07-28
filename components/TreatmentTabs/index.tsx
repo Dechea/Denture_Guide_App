@@ -28,7 +28,6 @@ const TreatmentTabs = ({
   const [localTabStatus, setLocalTabStatus] = useState<any>();
   const { getTabsStatus, patientFile } = useTabsStatus();
   const [tabsStatus, setTabsStatus] = useState(defaultActiveTabs);
-
   const router = useRouter();
   const path: string = usePathname();
   const { treatments, recentAddedTreatment, setRecentAddedTreatment } =
@@ -67,7 +66,8 @@ const TreatmentTabs = ({
   useEffect(() => {
     const localTabsStatus = getTabsStatus();
     setTabsStatus(localTabsStatus);
-    if (localTabStatus == undefined) {
+
+    if (localTabStatus === undefined) {
       setLocalTabStatus(localTabsStatus);
     }
   }, [patientFile]);

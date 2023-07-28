@@ -34,10 +34,11 @@ const ProductList = ({
     searchedProductManufacturerId,
     productFilters,
     activeTreatmentGroup,
+    activeProductTab,
+    availableTeethByProductType,
     setActiveTreatmentGroup,
   } = useProductStore();
-  const { getToothGroups } = useTreatmentsByGroup();
-  const toothGroups = getToothGroups();
+  const { patientFile, toothGroups, getToothGroups } = useTreatmentsByGroup();
 
   const query = useQuery<Query>();
   const { addOrUpdateProductInFqlx } = useProductCrudOps({ patientFileId });
@@ -94,14 +95,16 @@ const ProductList = ({
     addOrUpdateProductInFqlx((teeth) => {
       getMappedTeeth(teeth, productToDelete, toothNumber, selectedProducts);
     });
-    const index = Number(activeTreatmentGroup);
+
+    const activeTreatmentGroupIndex = Number(activeTreatmentGroup);
+
     if (
-      toothGroups[index].teeth.every(
+      toothGroups[activeTreatmentGroupIndex].teeth.every(
         (tooth) => selectedProducts[`${tooth.toothNumber}`]
       ) &&
-      index + 1 < toothGroups.length
+      activeTreatmentGroupIndex + 1 < toothGroups.length
     ) {
-      setActiveTreatmentGroup(index + 1);
+      setActiveTreatmentGroup(activeTreatmentGroupIndex + 1);
     }
   };
 
@@ -143,6 +146,10 @@ const ProductList = ({
   useEffect(() => {
     setProducts(fqlxProducts);
   }, [fqlxProducts.data]);
+
+  useEffect(() => {
+    getToothGroups();
+  }, [patientFile, activeProductTab, availableTeethByProductType]);
 
   // Reset products in state on component unmount
   useEffect(() => {
