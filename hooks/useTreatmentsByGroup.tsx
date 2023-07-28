@@ -136,7 +136,7 @@ export function useTreatmentsByGroup() {
 
     unLockedTeethGroup.forEach((tooth) => {
       const fqlxTooth = patientFile.teeth?.find(
-        (localTooth) => Number(localTooth.name) == tooth.toothNumber
+        (localTooth) => Number(localTooth.name) === tooth.toothNumber
       );
       const fqlxToothProducts = [
         ...(fqlxTooth?.crown.treatmentDoc.selectedProducts ?? []),
@@ -211,7 +211,7 @@ export function useTreatmentsByGroup() {
 
         teeth.forEach((tooth) => {
           const fqlxTooth = patientFile.teeth?.find(
-            (localTooth) => Number(localTooth.name) == tooth.toothNumber
+            (localTooth) => Number(localTooth.name) === tooth.toothNumber
           );
           const fqlxToothProducts = [
             ...(fqlxTooth?.crown.treatmentDoc.selectedProducts ?? []),

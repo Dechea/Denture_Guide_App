@@ -28,7 +28,7 @@ const ProductToothList = ({
     availableTeethByProductType,
   } = useProductStore();
   const { patientFile, toothGroups, getToothGroups } = useTreatmentsByGroup();
-  const [groupIndex, setGroupIndex] = useState<number | null>();
+  const [groupIndex, setGroupIndex] = useState<number | null>(null);
 
   useEffect(() => {
     getToothGroups();
@@ -54,7 +54,7 @@ const ProductToothList = ({
     onClickProduct(productToDelete, toothNumber, selectedProductsData);
   };
 
-  if (groupIndex == null) return;
+  if (groupIndex === null) return;
 
   return toothGroups[groupIndex]?.teeth.map(({ toothNumber }) => {
     const selected = selectedProducts[toothNumber] === productId;

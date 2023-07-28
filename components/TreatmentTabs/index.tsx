@@ -8,15 +8,6 @@ import TreatmentTabsPopover from '../TreatmentTabsPopover';
 import { PRODUCT_TYPE } from '../../zustand/product/interface';
 import { useTabsStatus } from '../../hooks/useTabsStatus';
 
-const defaultActiveTabs: { [key: string]: boolean } = {
-  implant: false,
-  abutment: false,
-  healingAbutment: false,
-  temporaryAbutment: false,
-  impression: false,
-  tools: true,
-};
-
 const TreatmentTabs = ({
   children,
   patientFileId,
@@ -25,9 +16,8 @@ const TreatmentTabs = ({
   patientFileId: string;
 }) => {
   const [activePopupFor, setActivePopupFor] = useState<PRODUCT_TYPE | null>();
-  const [localTabStatus, setLocalTabStatus] = useState<any>();
-  const { getTabsStatus, patientFile } = useTabsStatus();
-  const [tabsStatus, setTabsStatus] = useState(defaultActiveTabs);
+  const { tabsStatus, getTabsStatus, patientFile } = useTabsStatus();
+  const [localTabsStatus, setLocalTabsStatus] = useState(tabsStatus);
   const router = useRouter();
   const path: string = usePathname();
   const { treatments, recentAddedTreatment, setRecentAddedTreatment } =
@@ -37,9 +27,7 @@ const TreatmentTabs = ({
     const splitedRoute = value.split('/');
     const clickedTab = splitedRoute[
       splitedRoute.length - 1
-    ] as keyof typeof defaultActiveTabs;
-
-    const tabsStatus = getTabsStatus();
+    ] as keyof typeof tabsStatus;
 
     if (tabsStatus[clickedTab] === undefined || tabsStatus[clickedTab]) {
       router.push(value as __next_route_internal_types__.RouteImpl<string>);
@@ -53,23 +41,18 @@ const TreatmentTabs = ({
 
   useEffect(() => {
     if (Object.keys(recentAddedTreatment).length) {
-      if (!localTabStatus?.implant && tabsStatus.implant) {
+      if (!localTabsStatus?.implant && tabsStatus.implant) {
         setActivePopupFor(PRODUCT_TYPE.IMPLANT);
       }
-      if (!localTabStatus?.abutment && tabsStatus.abutment) {
+      if (!localTabsStatus?.abutment && tabsStatus.abutment) {
         setActivePopupFor(PRODUCT_TYPE.ABUTMENT);
       }
-      setLocalTabStatus(tabsStatus);
+      setLocalTabsStatus(tabsStatus);
     }
   }, [treatments, tabsStatus]);
 
   useEffect(() => {
-    const localTabsStatus = getTabsStatus();
-    setTabsStatus(localTabsStatus);
-
-    if (localTabStatus === undefined) {
-      setLocalTabStatus(localTabsStatus);
-    }
+    getTabsStatus();
   }, [patientFile]);
 
   return (

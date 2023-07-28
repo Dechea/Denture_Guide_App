@@ -3,7 +3,7 @@ import { useProductStore } from '../zustand/product';
 import { PRODUCT_TYPE, TREATMENT_GROUP } from '../zustand/product/interface';
 import { useTeethDiagramStore } from '../zustand/teethDiagram';
 import { Query } from '../fqlx-generated/typedefs';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 interface TabRequirementsProps {
   [key: string]: {
@@ -14,6 +14,10 @@ interface TabRequirementsProps {
 
 interface InitialTabsUnlockProps {
   [key: string]: string[];
+}
+
+interface TabsStatusProps {
+  [key: string]: boolean;
 }
 
 const tabRequirements: TabRequirementsProps = {
@@ -34,9 +38,19 @@ const initialTabsUnlock: InitialTabsUnlockProps = {
   [TREATMENT_GROUP.ABUTMENT_GROUP]: [PRODUCT_TYPE.ABUTMENT],
 };
 
+const defaultActiveTabs: TabsStatusProps = {
+  implant: false,
+  abutment: false,
+  healingAbutment: false,
+  temporaryAbutment: false,
+  impression: false,
+  tools: true,
+};
+
 export function useTabsStatus() {
   const { treatments } = useTeethDiagramStore();
   const { activePatientFileId } = useProductStore();
+  const [tabsStatus, setTabsStatus] = useState(defaultActiveTabs);
   const query = useQuery<Query>();
 
   const patientFile = useMemo(
@@ -48,20 +62,13 @@ export function useTabsStatus() {
   );
 
   const getTabsStatus = () => {
-    const tabsStatus: { [key: string]: boolean } = {
-      implant: false,
-      abutment: false,
-      healingAbutment: false,
-      temporaryAbutment: false,
-      impression: false,
-      tools: true,
-    };
+    const localTabsStatus: TabsStatusProps = { ...defaultActiveTabs };
 
     patientFile.teeth?.forEach((tooth) => {
       const treatment = treatments[tooth.name];
       const initialTabs = initialTabsUnlock[treatment?.treatmentgroup];
       initialTabs?.forEach((tab) => {
-        tabsStatus[tab] = true;
+        localTabsStatus[tab] = true;
       });
 
       const products = [
@@ -83,12 +90,12 @@ export function useTabsStatus() {
         );
         areRequirementsSatisfied &&
           nextStep.forEach((step) => {
-            tabsStatus[step] = true;
+            localTabsStatus[step] = true;
           });
       });
     });
-    return tabsStatus;
+    setTabsStatus(localTabsStatus);
   };
 
-  return { getTabsStatus, patientFile };
+  return { tabsStatus, getTabsStatus, patientFile };
 }
