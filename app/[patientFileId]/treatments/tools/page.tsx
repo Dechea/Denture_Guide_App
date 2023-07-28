@@ -1,32 +1,45 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { Tabs, View } from 'reshaped';
 import ProductList from '../../../../components/ProductList';
 import { ProductFilterForm } from '../../../../components/ProductFilterForm';
 import CarouselTeeth from '../../../../components/CarouselTeeth';
 import Loader from '../../../../components/Loader';
 import { filterCategories } from './filterCategories';
-import { AREA_TYPE, PRODUCT_TYPE } from '../../../../zustand/product/interface';
-import { IMPLANT } from '../../../../components/TeethDiagram/teeth/constants/treatmentVariants';
+import {
+  AREA_TYPE,
+  TREATMENT_GROUP,
+  PRODUCT_TYPE,
+} from '../../../../zustand/product/interface';
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
-
-const acceptableTreatment = { [AREA_TYPE.ROOT]: [IMPLANT] };
+import { useProductStore } from '../../../../zustand/product';
 
 export default function Tools({
   params,
 }: {
   params: { patientFileId: string };
 }) {
+  const { setActiveProductTab, setActivePatientFileId } = useProductStore();
+
   useAvailableTeethByTreatment({
-    acceptableTreatment,
     patientFileId: params.patientFileId,
     productType: PRODUCT_TYPE.TOOLS,
+    acceptedTreatmentGroups: [
+      TREATMENT_GROUP.IMPLANT_GROUP,
+      TREATMENT_GROUP.ABUTMENT_GROUP,
+      TREATMENT_GROUP.CROWN_GROUP,
+    ],
   });
+
+  useEffect(() => {
+    setActiveProductTab(PRODUCT_TYPE.TOOLS);
+    setActivePatientFileId(params.patientFileId);
+  }, []);
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/tools`}>
-      <CarouselTeeth patientFileId={params.patientFileId} />
+      <CarouselTeeth />
 
       <View direction='row' gap={11}>
         <View.Item columns={3} className='sticky !top-[180px]'>

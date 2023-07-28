@@ -4,6 +4,8 @@ import { Icon, Text, View, MenuItem, Card } from 'reshaped';
 import cx from 'classnames';
 import ToothIcon from '../Icons/Tooth';
 import { SelectedProducts, useProductStore } from '../../zustand/product';
+import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
+import { useEffect, useState } from 'react';
 
 interface ProductToothListProps {
   productId: string;
@@ -18,8 +20,23 @@ const ProductToothList = ({
   productId,
   onClickProduct,
 }: ProductToothListProps) => {
-  const { availableTeethByProductType, selectedProducts, setSelectedProducts } =
-    useProductStore();
+  const {
+    activeTreatmentGroup,
+    selectedProducts,
+    setSelectedProducts,
+    activeProductTab,
+    availableTeethByProductType,
+  } = useProductStore();
+  const { patientFile, toothGroups, getToothGroups } = useTreatmentsByGroup();
+  const [groupIndex, setGroupIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    getToothGroups();
+  }, [patientFile, activeProductTab, availableTeethByProductType]);
+
+  useEffect(() => {
+    setGroupIndex(activeTreatmentGroup);
+  }, [activeTreatmentGroup]);
 
   const handleClickOnToothOption = (toothNumber: number) => {
     const selectedProductsData = { ...selectedProducts };
@@ -37,12 +54,14 @@ const ProductToothList = ({
     onClickProduct(productToDelete, toothNumber, selectedProductsData);
   };
 
-  return availableTeethByProductType.map((availableTooth) => {
-    const selected = selectedProducts[availableTooth] === productId;
+  if (groupIndex === null) return;
+
+  return toothGroups[groupIndex]?.teeth.map(({ toothNumber }) => {
+    const selected = selectedProducts[toothNumber] === productId;
 
     return (
       <Card
-        key={`${availableTooth}`}
+        key={`${toothNumber}`}
         padding={0}
         className={cx(
           '!shadow-[0px_2px_3px_rgba(0,0,0,0.1),_0px_1px_2px_-1px_rgba(0,0,0,0.1)]',
@@ -53,7 +72,7 @@ const ProductToothList = ({
           selected={selected}
           size={'small'}
           roundedCorners={true}
-          onClick={() => handleClickOnToothOption(availableTooth)}
+          onClick={() => handleClickOnToothOption(toothNumber)}
           className='hover:!cursor-pointer'
         >
           <View
@@ -66,7 +85,7 @@ const ProductToothList = ({
           >
             <Icon svg={ToothIcon} size={5} />
             <Text variant='body-3' weight='medium'>
-              {availableTooth}
+              {toothNumber}
             </Text>
           </View>
         </MenuItem>

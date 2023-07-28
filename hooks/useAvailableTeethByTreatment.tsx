@@ -4,20 +4,24 @@ import { useEffect } from 'react';
 import { useProductStore } from '../zustand/product';
 import { useQuery } from 'fqlx-client';
 import { PatientFile, Query } from '../fqlx-generated/typedefs';
+import { AREA_TYPE, TREATMENT_GROUP } from '../zustand/product/interface';
 
 interface UseAvailableTeethByTreatmentProps {
-  acceptableTreatment: { [key: string]: string[] };
   patientFileId: string;
   productType: string;
+  acceptedTreatmentGroups: TREATMENT_GROUP[];
 }
 
 export function useAvailableTeethByTreatment({
-  acceptableTreatment,
   patientFileId,
   productType,
+  acceptedTreatmentGroups,
 }: UseAvailableTeethByTreatmentProps) {
-  const { setAvailableTeethByProductType, setSelectedProducts } =
-    useProductStore();
+  const {
+    setAvailableTeethByProductType,
+    setSelectedProducts,
+    setAcceptedTreatmentGroups,
+  } = useProductStore();
   const query = useQuery<Query>();
 
   const patientFile: PatientFile = query.PatientFile.byId(patientFileId)
@@ -32,30 +36,27 @@ export function useAvailableTeethByTreatment({
 
     patientFileTeeth.forEach((tooth) => {
       const toothNumber = Number(tooth.name);
+      availableTeeth.push(Number(toothNumber));
 
-      for (const [area, values] of Object.entries(acceptableTreatment)) {
-        // @ts-expect-error
-        if (values.includes(tooth[area]?.treatmentDoc?.treatment?.name)) {
-          availableTeeth.push(Number(toothNumber));
-          // @ts-expect-error
-          if (tooth[area]?.treatmentDoc?.selectedProducts?.length) {
-            // @ts-expect-error
-            tooth[area]?.treatmentDoc?.selectedProducts.forEach(
-              // @ts-expect-error
-              ({ selectedProduct }) => {
-                if (Object.keys(selectedProduct).includes(productType)) {
-                  alreadySelectedProducts[toothNumber] = selectedProduct.id;
-                }
+      Object.values(AREA_TYPE).forEach((area) => {
+        if (tooth[area]?.treatmentDoc?.selectedProducts?.length) {
+          tooth[area]?.treatmentDoc?.selectedProducts?.forEach(
+            ({ selectedProduct }) => {
+              if (
+                selectedProduct?.[productType as keyof typeof selectedProduct]
+              ) {
+                alreadySelectedProducts[toothNumber] =
+                  selectedProduct?.id ?? '';
               }
-            );
-          }
-          break;
+            }
+          );
         }
-      }
+      });
     });
 
     setAvailableTeethByProductType(availableTeeth);
     setSelectedProducts(alreadySelectedProducts);
+    setAcceptedTreatmentGroups(acceptedTreatmentGroups);
 
     return () => {
       setAvailableTeethByProductType([]);

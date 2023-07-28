@@ -4,23 +4,9 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Tabs, Text, View } from 'reshaped';
 import { useTeethDiagramStore } from '../../zustand/teethDiagram';
-import {
-  ADULT,
-  IMPLANT,
-  PROSTHESIS_ANCHOR,
-} from '../TeethDiagram/teeth/constants/treatmentVariants';
 import TreatmentTabsPopover from '../TreatmentTabsPopover';
-import { TreatmentVisualization } from '../../zustand/teethDiagram/interface';
 import { PRODUCT_TYPE } from '../../zustand/product/interface';
-
-const defaultActiveTabs = {
-  implant: false,
-  abutment: false,
-  healing: false,
-  temporary: false,
-  impression: false,
-  tools: true,
-};
+import { useTabsStatus } from '../../hooks/useTabsStatus';
 
 const TreatmentTabs = ({
   children,
@@ -29,9 +15,9 @@ const TreatmentTabs = ({
   children: React.ReactNode;
   patientFileId: string;
 }) => {
-  const [activeTabs, setActiveTabs] = useState(defaultActiveTabs);
   const [activePopupFor, setActivePopupFor] = useState<PRODUCT_TYPE | null>();
-
+  const { tabsStatus, getTabsStatus, patientFile } = useTabsStatus();
+  const [localTabsStatus, setLocalTabsStatus] = useState(tabsStatus);
   const router = useRouter();
   const path: string = usePathname();
   const { treatments, recentAddedTreatment, setRecentAddedTreatment } =
@@ -41,19 +27,11 @@ const TreatmentTabs = ({
     const splitedRoute = value.split('/');
     const clickedTab = splitedRoute[
       splitedRoute.length - 1
-    ] as keyof typeof defaultActiveTabs;
+    ] as keyof typeof tabsStatus;
 
-    if (activeTabs[clickedTab] === undefined || activeTabs[clickedTab]) {
+    if (tabsStatus[clickedTab] === undefined || tabsStatus[clickedTab]) {
       router.push(value as __next_route_internal_types__.RouteImpl<string>);
     }
-  };
-
-  const getTabsToActivate = (treatment: TreatmentVisualization) => {
-    const implant = treatment.rootVariant === IMPLANT;
-    const abutment =
-      treatment.crownVariant === PROSTHESIS_ANCHOR &&
-      treatment.rootVariant === ADULT;
-    return { implant, abutment };
   };
 
   const handleClosePopover = () => {
@@ -62,35 +40,20 @@ const TreatmentTabs = ({
   };
 
   useEffect(() => {
-    const localActiveTabs = { ...defaultActiveTabs };
-
-    Object.values(treatments).forEach((treatment) => {
-      const { implant, abutment } = getTabsToActivate(treatment);
-
-      if (implant) {
-        localActiveTabs.implant = true;
-        localActiveTabs.healing = true;
-        localActiveTabs.temporary = true;
-        localActiveTabs.impression = true;
-      }
-      if (abutment) {
-        localActiveTabs.abutment = true;
-      }
-    });
-
-    if (recentAddedTreatment) {
-      const { implant, abutment } = getTabsToActivate(recentAddedTreatment);
-
-      if (implant && !activeTabs.implant) {
+    if (Object.keys(recentAddedTreatment).length) {
+      if (!localTabsStatus?.implant && tabsStatus.implant) {
         setActivePopupFor(PRODUCT_TYPE.IMPLANT);
       }
-      if (abutment && !activeTabs.abutment) {
+      if (!localTabsStatus?.abutment && tabsStatus.abutment) {
         setActivePopupFor(PRODUCT_TYPE.ABUTMENT);
       }
+      setLocalTabsStatus(tabsStatus);
     }
+  }, [treatments, tabsStatus]);
 
-    setActiveTabs(localActiveTabs);
-  }, [treatments]);
+  useEffect(() => {
+    getTabsStatus();
+  }, [patientFile]);
 
   return (
     <View
@@ -116,7 +79,7 @@ const TreatmentTabs = ({
 
             <Tabs.Item value={`/${patientFileId}/treatments/implant`}>
               <TreatmentTabsPopover
-                activeTab={activeTabs.implant}
+                activeTab={tabsStatus.implant}
                 image={'/TreatmentTabsImplantsPopover.svg'}
                 activePopup={activePopupFor === PRODUCT_TYPE.IMPLANT}
                 onClosePopover={handleClosePopover}
@@ -127,7 +90,7 @@ const TreatmentTabs = ({
 
             <Tabs.Item value={`/${patientFileId}/treatments/abutment`}>
               <TreatmentTabsPopover
-                activeTab={activeTabs.abutment}
+                activeTab={tabsStatus.abutment}
                 image={'/TreatmentTabsAbutmentsPopover.svg'}
                 activePopup={activePopupFor === PRODUCT_TYPE.ABUTMENT}
                 onClosePopover={handleClosePopover}
@@ -138,27 +101,27 @@ const TreatmentTabs = ({
 
             <Tabs.Item value={`/${patientFileId}/treatments/healing`}>
               <TreatmentTabsPopover
-                activeTab={activeTabs.healing}
+                activeTab={tabsStatus.healingAbutment}
                 title='Healing Abutment'
               />
             </Tabs.Item>
 
             <Tabs.Item value={`/${patientFileId}/treatments/temporary`}>
               <TreatmentTabsPopover
-                activeTab={activeTabs.healing}
+                activeTab={tabsStatus.temporaryAbutment}
                 title='Temporary Abutments'
               />
             </Tabs.Item>
 
             <Tabs.Item value={`/${patientFileId}/treatments/impression`}>
               <TreatmentTabsPopover
-                activeTab={activeTabs.impression}
+                activeTab={tabsStatus.impression}
                 title='Impression'
               />
             </Tabs.Item>
             <Tabs.Item value={`/${patientFileId}/treatments/tools`}>
               <TreatmentTabsPopover
-                activeTab={activeTabs.tools}
+                activeTab={tabsStatus.tools}
                 title='Tools'
               />
             </Tabs.Item>

@@ -15,6 +15,7 @@ import { formWhereCondition } from './helper';
 import { AREA_TYPE, PRODUCT_TYPE } from '../../zustand/product/interface';
 import { convertCamelCaseToTitleCase } from '../../utils/helper';
 import { useProductCrudOps } from '../../hooks/useProductCrudOps';
+import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
 
 interface ProductListProps {
   productType: PRODUCT_TYPE;
@@ -32,7 +33,12 @@ const ProductList = ({
     setProducts,
     searchedProductManufacturerId,
     productFilters,
+    activeTreatmentGroup,
+    activeProductTab,
+    availableTeethByProductType,
+    setActiveTreatmentGroup,
   } = useProductStore();
+  const { patientFile, toothGroups, getToothGroups } = useTreatmentsByGroup();
 
   const query = useQuery<Query>();
   const { addOrUpdateProductInFqlx } = useProductCrudOps({ patientFileId });
@@ -89,6 +95,17 @@ const ProductList = ({
     addOrUpdateProductInFqlx((teeth) => {
       getMappedTeeth(teeth, productToDelete, toothNumber, selectedProducts);
     });
+
+    const activeTreatmentGroupIndex = Number(activeTreatmentGroup);
+
+    if (
+      toothGroups[activeTreatmentGroupIndex].teeth.every(
+        (tooth) => selectedProducts[`${tooth.toothNumber}`]
+      ) &&
+      activeTreatmentGroupIndex + 1 < toothGroups.length
+    ) {
+      setActiveTreatmentGroup(activeTreatmentGroupIndex + 1);
+    }
   };
 
   const productQuery = useMemo(
@@ -129,6 +146,10 @@ const ProductList = ({
   useEffect(() => {
     setProducts(fqlxProducts);
   }, [fqlxProducts.data]);
+
+  useEffect(() => {
+    getToothGroups();
+  }, [patientFile, activeProductTab, availableTeethByProductType]);
 
   // Reset products in state on component unmount
   useEffect(() => {

@@ -42,10 +42,8 @@ export const ProductCard = ({
       );
     }
 
-    return product[productType];
+    return product[productType as keyof typeof product];
   }, [product, productType]);
-
-  console.log({ productData });
 
   return (
     <View direction='row' paddingBlock={6} paddingInline={4} gap={8}>

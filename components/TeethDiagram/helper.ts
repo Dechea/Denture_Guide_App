@@ -34,18 +34,22 @@ import {
   twoRootsTeeth,
 } from './teeth/constants/tooth';
 import { rootId } from './teeth/constants/toothArea';
+import { INDICATION, TREATMENT_GROUP } from '../../zustand/product/interface';
 
 interface GetTreatmentsVariantArgs {
+  toothNumber?: number;
   treatments?: TreatmentVisualization;
   treatmentsData: Treatment[];
-  forCard?: Boolean;
+  forCard?: boolean;
 }
 
 export const getTreatmentsVariant = ({
-  treatments = {},
+  toothNumber = 0,
+  treatments = {} as TreatmentVisualization,
   treatmentsData,
   forCard = false,
 }: GetTreatmentsVariantArgs) => {
+  treatments.toothNumber = toothNumber;
   treatments.crownVariant = ADULT;
   treatments.rootVariant = ADULT;
 
@@ -78,15 +82,50 @@ export const getTreatmentsVariant = ({
       treatments.rootVariant = MISSING_ROOT;
     }
 
-    if (forCard) {
-      if (treatment?.name.includes(LINK) || treatment?.name.includes(ANCHOR)) {
-        treatments.leftAnchor = true;
-        treatments.rightAnchor = true;
-      }
+    if (forCard && treatment?.name.includes(LINK)) {
+      treatments.leftAnchor = true;
+      treatments.rightAnchor = true;
+    } else if (forCard && treatment?.name.includes(ANCHOR)) {
+      treatments.rightAnchor = true;
     }
   });
+
+  getGroupAndIndication(treatments);
+
   return treatments;
 };
+
+function getGroupAndIndication(treatments: TreatmentVisualization) {
+  if (treatments.rootVariant === IMPLANT) {
+    treatments.treatmentgroup = TREATMENT_GROUP.IMPLANT_GROUP;
+  } else if (
+    treatments.rootVariant === ADULT &&
+    treatments.crownVariant === PROSTHESIS_ANCHOR
+  ) {
+    treatments.treatmentgroup = TREATMENT_GROUP.ABUTMENT_GROUP;
+  } else if (
+    treatments.crownVariant === ARTIFICIAL_CROWN ||
+    treatments.crownVariant === BRIDGE_ANCHOR ||
+    treatments.crownVariant === BRIDGE_LINK ||
+    treatments.crownVariant === PROSTHESIS_LINK
+  ) {
+    treatments.treatmentgroup = TREATMENT_GROUP.CROWN_GROUP;
+  } else {
+    treatments.treatmentgroup = TREATMENT_GROUP.NO_GROUP;
+  }
+
+  if ([BRIDGE_ANCHOR, BRIDGE_LINK].includes(treatments.crownVariant ?? '')) {
+    treatments.indication = INDICATION.BRIDGE;
+  } else if (
+    [PROSTHESIS, PROSTHESIS_ANCHOR, PROSTHESIS_LINK].includes(
+      treatments.crownVariant ?? ''
+    )
+  ) {
+    treatments.indication = INDICATION.PROSTHESIS;
+  } else if (treatments.crownVariant === ARTIFICIAL_CROWN) {
+    treatments.indication = INDICATION.CROWN;
+  }
+}
 
 function getAnchorVariants(treatments: TreatmentVisualization[]) {
   treatments.forEach((value, index) => {
@@ -213,7 +252,7 @@ export const getMappedPatientFileData = (
   const patientFileData = { ...patientFile };
   const patientFileTeeth = [...patientFileData.teeth];
 
-  store.activeToothParts.forEach((toothPart) => {
+  store.activeToothParts.forEach((toothPart: string) => {
     const toothName = toothPart.split('-')[0];
 
     const treatment: { [key: string]: string } = {};
@@ -314,6 +353,7 @@ export const mapTreatmentVisualizationsFromTeeth = (teeth: Tooth[]) => {
   // Mapping treatment visualization from PatientFile data
   teeth.forEach((value) => {
     treatmentVisualization[value.name] = getTreatmentsVariant({
+      toothNumber: Number(value.name),
       treatmentsData: [
         value.root.treatmentDoc?.treatment,
         value.crown.treatmentDoc?.treatment,

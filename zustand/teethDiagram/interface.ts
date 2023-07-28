@@ -8,8 +8,8 @@ export interface TreatmentProps {
     toothVariant?: string;
     crownVariant?: string;
     rootVariant?: string;
-    anchorLeft?: boolean;
-    anchorRight?: boolean;
+    leftAnchor?: boolean;
+    rightAnchor?: boolean;
   };
   localizations: {
     name: string;
@@ -24,6 +24,9 @@ export interface TreatmentVisualization {
   crownVariant?: string;
   leftAnchor?: boolean;
   rightAnchor?: boolean;
+  toothNumber: number;
+  treatmentgroup: string;
+  indication: string;
 }
 
 export interface History {

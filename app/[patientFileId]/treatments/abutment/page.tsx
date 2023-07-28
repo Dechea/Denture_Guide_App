@@ -1,38 +1,44 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { Tabs, View } from 'reshaped';
 import ProductList from '../../../../components/ProductList';
 import { ProductFilterForm } from '../../../../components/ProductFilterForm';
 import CarouselTeeth from '../../../../components/CarouselTeeth';
 import Loader from '../../../../components/Loader';
 import { filterCategories } from './filterCategories';
-import { AREA_TYPE, PRODUCT_TYPE } from '../../../../zustand/product/interface';
-import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
 import {
-  ARTIFICIAL_CROWN,
-  BRIDGE_ANCHOR,
-  PROSTHESIS_ANCHOR,
-} from '../../../../components/TeethDiagram/teeth/constants/treatmentVariants';
-
-const acceptableTreatment = {
-  [AREA_TYPE.CROWN]: [ARTIFICIAL_CROWN, PROSTHESIS_ANCHOR, BRIDGE_ANCHOR],
-};
+  AREA_TYPE,
+  TREATMENT_GROUP,
+  PRODUCT_TYPE,
+} from '../../../../zustand/product/interface';
+import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
+import { useProductStore } from '../../../../zustand/product';
 
 export default function Abutment({
   params,
 }: {
   params: { patientFileId: string };
 }) {
+  const { setActiveProductTab, setActivePatientFileId } = useProductStore();
+
   useAvailableTeethByTreatment({
-    acceptableTreatment,
     patientFileId: params.patientFileId,
     productType: PRODUCT_TYPE.ABUTMENT,
+    acceptedTreatmentGroups: [
+      TREATMENT_GROUP.IMPLANT_GROUP,
+      TREATMENT_GROUP.ABUTMENT_GROUP,
+    ],
   });
+
+  useEffect(() => {
+    setActiveProductTab(PRODUCT_TYPE.ABUTMENT);
+    setActivePatientFileId(params.patientFileId);
+  }, []);
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/abutment`}>
-      <CarouselTeeth patientFileId={params.patientFileId} />
+      <CarouselTeeth />
 
       <View direction='row' gap={11}>
         <View.Item columns={3} className='sticky !top-[180px]'>
