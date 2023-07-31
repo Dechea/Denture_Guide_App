@@ -24,14 +24,21 @@ export const CarouselGroupTabs = () => {
 
   useEffect(() => {
     if (activeTreatmentGroup === null) {
+      let indexToActivate = -1;
       for (const [index, group] of Object.entries(toothGroups)) {
+        if (group.open && indexToActivate < 0) {
+          indexToActivate = Number(index);
+        }
         if (
           group.open &&
           !group.teeth.every((tooth) => selectedProducts[tooth.toothNumber])
         ) {
-          setActiveTreatmentGroup(Number(index));
+          indexToActivate = Number(index);
           break;
         }
+      }
+      if (indexToActivate >= 0) {
+        setActiveTreatmentGroup(indexToActivate);
       }
     } else if (toothGroups.length) {
       setImplicitFilters(
