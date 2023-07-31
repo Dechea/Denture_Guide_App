@@ -14,6 +14,7 @@ export const CarouselGroupTabs = () => {
     activeProductTab,
     availableTeethByProductType,
     selectedProducts,
+    setImplicitFilters,
   } = useProductStore();
   const { toothGroups, getToothGroups, patientFile } = useTreatmentsByGroup();
 
@@ -22,7 +23,7 @@ export const CarouselGroupTabs = () => {
   }, [patientFile, activeProductTab, availableTeethByProductType]);
 
   useEffect(() => {
-    if (!activeTreatmentGroup) {
+    if (activeTreatmentGroup === null) {
       for (const [index, group] of Object.entries(toothGroups)) {
         if (
           group.open &&
@@ -32,8 +33,12 @@ export const CarouselGroupTabs = () => {
           break;
         }
       }
+    } else if (toothGroups.length) {
+      setImplicitFilters(
+        JSON.parse(toothGroups[activeTreatmentGroup].treatmentgroup)
+      );
     }
-  }, [toothGroups]);
+  }, [toothGroups, activeTreatmentGroup]);
 
   useEffect(() => {
     return () => {

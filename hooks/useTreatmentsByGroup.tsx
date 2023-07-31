@@ -78,7 +78,6 @@ const mapImplicitFilters: MapImplicitFiltersProps = {
     implicitFilters.diameterPlatform,
   ],
   [PRODUCT_TYPE.HEALING_ABUTMENT]: [
-    implicitFilters.indication,
     implicitFilters.implantLine,
     implicitFilters.diameterPlatform,
     implicitFilters.platformSwitch,
@@ -143,7 +142,7 @@ export function useTreatmentsByGroup() {
         ...(fqlxTooth?.root.treatmentDoc.selectedProducts ?? []),
       ];
 
-      const filterValues: { [key: string]: string } = {};
+      const filterValues: { [key: string]: string[] } = {};
 
       const isProductSelected = fqlxToothProducts.some(
         (product) =>
@@ -154,7 +153,7 @@ export function useTreatmentsByGroup() {
 
       filterParams?.forEach((filter) => {
         if (filter.name === 'indication') {
-          filterValues[filter.name] = tooth.indication;
+          filterValues[filter.name] = [`"${tooth.indication}"`];
         } else {
           const previousTabProduct = fqlxToothProducts.find(
             ({ selectedProduct }) =>
@@ -162,11 +161,22 @@ export function useTreatmentsByGroup() {
                 filter.productType as keyof typeof selectedProduct
               ]
           );
-          filterValues[filter.name] =
-            // @ts-ignore
-            previousTabProduct?.selectedProduct?.[filter.productType]?.[
-              filter.name
+          if (previousTabProduct) {
+            const filterValue =
+              // @ts-ignore
+              previousTabProduct?.selectedProduct?.[filter.productType]?.[
+                filter.name
+              ];
+            const isString =
+              // @ts-ignore
+              typeof previousTabProduct?.selectedProduct?.[
+                filter.productType
+              ]?.[filter.name] === 'string';
+
+            filterValues[filter.name] = [
+              isString ? `"${filterValue}"` : filterValue,
             ];
+          }
         }
       });
 

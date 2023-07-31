@@ -3,6 +3,7 @@ import { PRODUCT_TYPE } from '../../zustand/product/interface';
 export const formWhereCondition = (
   searchedProductManufacturerId: string,
   productFilters: { [key: string]: string[] },
+  implicitFilters: { [key: string]: string[] },
   productType: PRODUCT_TYPE
 ) => {
   const conditions: string[] = [];
@@ -39,13 +40,23 @@ export const formWhereCondition = (
 
   conditions.unshift(`(product) => product.${productType} != null`);
 
-  Object.entries(productFilters).forEach(([category, fields]) => {
-    if (fields.length) {
-      conditions.push(
-        `[${fields.join(',')}].includes(product.${productType}.${category})`
-      );
+  Object.entries({ ...productFilters, ...implicitFilters }).forEach(
+    ([category, fields]) => {
+      if (fields.length) {
+        if (['abutmentLine', 'heightGingiva'].includes(category)) {
+          conditions.push(
+            `product.${productType}.${category}.any((value) => [${fields.join(
+              ','
+            )}].includes(value))`
+          );
+        } else {
+          conditions.push(
+            `[${fields.join(',')}].includes(product.${productType}.${category})`
+          );
+        }
+      }
     }
-  });
+  );
 
   const condition = conditions.join(' && ');
 

@@ -47,8 +47,8 @@ const TreatmentTabs = ({
       if (!localTabsStatus?.abutment && tabsStatus.abutment) {
         setActivePopupFor(PRODUCT_TYPE.ABUTMENT);
       }
-      setLocalTabsStatus(tabsStatus);
     }
+    setLocalTabsStatus(tabsStatus);
   }, [treatments, tabsStatus]);
 
   useEffect(() => {
