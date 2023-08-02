@@ -32,6 +32,7 @@ export default function Counter({ initialCount, onCountChange }: CounterProps) {
         variant='outline'
         size='small'
         onClick={() => handleCountChange(-1)}
+        disabled={count === 1}
       />
 
       <Text
