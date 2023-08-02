@@ -14,28 +14,34 @@ export default function ImageWithDetailsCard({
   title,
 }: ImageWithDetailsCardProps) {
   return (
-    <View direction='row' align='stretch' gap={4}>
+    <View direction="row" align="stretch" gap={4}>
       <Image
         src={imageUrl}
         alt={title}
-        width='72px'
-        height='72px'
-        borderRadius='medium'
+        width="72px"
+        height="72px"
+        borderRadius="medium"
       />
 
       <View.Item grow>
-        <View align='stretch' height='100%' className='!justify-between'>
-          <View align='start' gap={0.25}>
-            <Text variant='body-3' weight='medium'>
+        <View align="stretch" height="100%" className="!justify-between">
+          <View align="start" gap={0.25}>
+            <Text variant="body-3" weight="medium">
               {title}
             </Text>
-            <Text variant='caption-1' weight='regular' color='neutral-faded'>
+            <Text variant="caption-1" weight="regular" color="neutral-faded">
               {description}
             </Text>
           </View>
 
-          <View direction='row' justify='start' align='center' gap={4}>
-            <Text variant='caption-1' weight='regular'>
+          <View
+            direction="row"
+            justify="start"
+            align="center"
+            gap={4}
+            paddingTop={4}
+          >
+            <Text variant="body-3" weight="medium">
               {isNaN(price) ? 0 : price} €
             </Text>
           </View>

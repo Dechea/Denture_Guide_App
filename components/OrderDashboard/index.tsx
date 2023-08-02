@@ -13,14 +13,16 @@ export default function OrderDashboard(): JSX.Element {
   } = useToggle();
 
   return (
-    <View direction='column' width='100%' height='100%' divided>
+    <View direction="column" width="100%" height="100%" divided>
       <View.Item>
         <OrderDashboardHeader activateNewOrderModal={activateNewOrderModal} />
       </View.Item>
 
-      <View.Item grow>
-        <PatientList activateNewOrderModal={activateNewOrderModal} />
-      </View.Item>
+      <View direction="column" width="100%" align="center">
+        <View direction="column" align="center" maxWidth="1280px" width="100%">
+          <PatientList activateNewOrderModal={activateNewOrderModal} />
+        </View>
+      </View>
 
       <CreateOrder
         activeModal={activeNewOrderModal}
