@@ -1,6 +1,7 @@
 'use client';
 
-import { View, Image, Avatar, Actionable, Divider } from 'reshaped';
+import { UserButton } from '@clerk/nextjs';
+import { View, Image,  Actionable, Divider } from 'reshaped';
 
 const NAVBAR_WIDTH = 64;
 
@@ -30,7 +31,7 @@ export default function Navbar(): JSX.Element {
         <View.Item grow>
           <View direction='column' justify='end' height='100%'>
             <Actionable>
-              <Avatar src='/defaultAvatar.svg' size={8} />
+              <UserButton />
             </Actionable>
           </View>
         </View.Item>
