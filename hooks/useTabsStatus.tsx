@@ -55,9 +55,11 @@ export function useTabsStatus() {
 
   const patientFile = useMemo(
     () =>
-      query.PatientFile.byId(activePatientFileId)
-        .project({ teeth: true })
-        .exec(),
+      activePatientFileId
+        ? query.PatientFile.byId(activePatientFileId)
+            .project({ teeth: true })
+            .exec()
+        : { teeth: [] },
     [activePatientFileId, query.PatientFile]
   );
 
