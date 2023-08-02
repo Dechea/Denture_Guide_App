@@ -45,22 +45,22 @@ export default function PatientList({
   return (
     <>
       {!!patientFiles?.data.length && (
-        <View direction='column' padding={10} height={'100%'}>
+        <View direction="column" padding={10} height={'100%'} width="100%">
           <View.Item>
-            <View direction='row' align='center' justify='start'>
+            <View direction="row" align="center" justify="start">
               <View.Item columns={4}>
-                <Text variant='body-3' color='neutral-faded' weight='medium'>
+                <Text variant="body-3" color="neutral-faded" weight="medium">
                   Patient
                 </Text>
               </View.Item>
               <View.Item columns={4}>
-                <Text variant='body-3' color='neutral-faded' weight='medium'>
+                <Text variant="body-3" color="neutral-faded" weight="medium">
                   Status
                 </Text>
               </View.Item>
 
               <View.Item columns={4}>
-                <Text variant='body-3' color='neutral-faded' weight='medium'>
+                <Text variant="body-3" color="neutral-faded" weight="medium">
                   Date
                 </Text>
               </View.Item>
@@ -70,7 +70,7 @@ export default function PatientList({
             <Divider />
           </View.Item>
           <View.Item>
-            <View direction='column' align={'stretch'} height={'100%'}>
+            <View direction="column" align={'stretch'} height={'100%'}>
               <InfiniteScroll
                 dataLength={patientFiles?.data?.length || 0}
                 next={fetchMorePatients}
@@ -87,11 +87,11 @@ export default function PatientList({
                     <Card
                       href={`/${patientFile.id}/treatments`}
                       padding={4}
-                      className='w-[100%] !px-0 !border-0'
+                      className="w-[100%] !px-0 !border-0"
                     >
-                      <View direction='row' align='center' justify='start'>
+                      <View direction="row" align="center" justify="start">
                         <View.Item columns={4}>
-                          <View direction='row' gap={4} align='center'>
+                          <View direction="row" gap={4} align="center">
                             <Avatar
                               src={
                                 patientFile.patient?.avatar ||
@@ -101,9 +101,9 @@ export default function PatientList({
                             />
 
                             <Text
-                              variant='body-2'
-                              color='neutral'
-                              weight='medium'
+                              variant="body-2"
+                              color="neutral"
+                              weight="medium"
                             >
                               {patientFile.patient?.name}
                             </Text>
@@ -111,7 +111,7 @@ export default function PatientList({
                         </View.Item>
 
                         <View.Item columns={4}>
-                          <View direction='row' align='center' width='100%'>
+                          <View direction="row" align="center" width="100%">
                             <View.Item grow>
                               <Badge
                                 color={
@@ -121,9 +121,9 @@ export default function PatientList({
                                 }
                               >
                                 <Text
-                                  variant='caption-1'
-                                  color='neutral'
-                                  weight='medium'
+                                  variant="caption-1"
+                                  color="neutral"
+                                  weight="medium"
                                 >
                                   {patientFile.patient?.status ||
                                     'Status will be here'}
@@ -135,9 +135,9 @@ export default function PatientList({
 
                         <View.Item columns={4}>
                           <Text
-                            variant='body-3'
-                            color='neutral'
-                            weight='regular'
+                            variant="body-3"
+                            color="neutral"
+                            weight="regular"
                           >
                             {moment(patientFile?.ts?.isoString).format(
                               'MMM DD, YYYY'
