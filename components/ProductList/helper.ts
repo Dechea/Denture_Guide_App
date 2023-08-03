@@ -43,7 +43,11 @@ export const formWhereCondition = (
   Object.entries({ ...productFilters, ...implicitFilters }).forEach(
     ([category, fields]) => {
       if (fields.length) {
-        if (['abutmentLine', 'heightGingiva'].includes(category)) {
+        if (category === 'abutmentLine') {
+          conditions.push(
+            `product.${productType}.abutmentLines.includes(${fields[0]})`
+          );
+        } else if (category === 'heightGingiva') {
           conditions.push(
             `product.${productType}.${category}.any((value) => [${fields.join(
               ','

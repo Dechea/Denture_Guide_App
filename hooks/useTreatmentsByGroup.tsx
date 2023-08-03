@@ -69,6 +69,7 @@ const implicitFilters: ImplicitFiltersProps = {
     name: 'platformSwitch',
     productType: PRODUCT_TYPE.ABUTMENT,
   },
+  heightGingiva: { name: 'heightGingiva', productType: PRODUCT_TYPE.ABUTMENT },
 };
 
 const mapImplicitFilters: MapImplicitFiltersProps = {
@@ -81,6 +82,7 @@ const mapImplicitFilters: MapImplicitFiltersProps = {
     implicitFilters.implantLine,
     implicitFilters.diameterPlatform,
     implicitFilters.platformSwitch,
+    implicitFilters.heightGingiva,
   ],
   [PRODUCT_TYPE.TEMPORARY_ABUTMENT]: [
     implicitFilters.indication,
@@ -169,15 +171,19 @@ export function useTreatmentsByGroup() {
               previousTabProduct?.selectedProduct?.[filter.productType]?.[
                 filter.name
               ];
-            const isString =
+            const filterValueType =
               // @ts-ignore
               typeof previousTabProduct?.selectedProduct?.[
                 filter.productType
-              ]?.[filter.name] === 'string';
+              ]?.[filter.name];
 
-            filterValues[filter.name] = [
-              isString ? `"${filterValue}"` : filterValue,
-            ];
+            if (filterValueType === 'string') {
+              filterValues[filter.name] = [`"${filterValue}"`];
+            } else if (filterValueType === 'number') {
+              filterValues[filter.name] = [filterValue];
+            } else {
+              filterValues[filter.name] = filterValue;
+            }
           }
         }
       });
@@ -273,7 +279,9 @@ export function useTreatmentsByGroup() {
           treatmentgroup: key,
           teeth: value.teeth,
           open: true,
-          tooltipText: key,
+          tooltipText: Object.values(JSON.parse(key))
+            .join(', ')
+            .replaceAll('"', ''),
           areProductsSelected: value.areProductsSelected,
         };
       }

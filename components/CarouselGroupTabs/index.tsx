@@ -72,11 +72,7 @@ export const CarouselGroupTabs = () => {
               <Tooltip
                 position='top'
                 active={isEmptyFilterGroup ? false : undefined}
-                text={
-                  toothGroups[index]?.open
-                    ? tooth.treatmentgroup
-                    : toothGroups[index]?.tooltipText
-                }
+                text={toothGroups[index].tooltipText}
               >
                 {(attributes) => (
                   <Actionable attributes={attributes}>
