@@ -15,6 +15,7 @@ interface ProductStore {
   activePatientFileId: string;
   searchedProductManufacturerId: string;
   productFilters: { [key: string]: string[] };
+  implicitFilters: { [key: string]: string[] };
   availableTeethByProductType: number[];
   selectedProducts: SelectedProducts;
   acceptedTreatmentGroups: TREATMENT_GROUP[];
@@ -24,6 +25,7 @@ interface ProductStore {
   setActiveProductTab: (productTab: string) => void;
   setActivePatientFileId: (patientFileId: string) => void;
   setProductFilters: (filters: { [key: string]: string[] }) => void;
+  setImplicitFilters: (filters: { [key: string]: string[] }) => void;
   setAvailableTeethByProductType: (availableTeeth: number[]) => void;
   setSelectedProducts: (products: SelectedProducts) => void;
   setAcceptedTreatmentGroups: (treatmentGroups: TREATMENT_GROUP[]) => void;
@@ -38,6 +40,7 @@ export const useProductStore = create<ProductStore>()((set) => ({
   activePatientFileId: '',
   searchedProductManufacturerId: '',
   productFilters: {},
+  implicitFilters: {},
   availableTeethByProductType: [],
   selectedProducts: {},
   acceptedTreatmentGroups: [],
@@ -53,6 +56,7 @@ export const useProductStore = create<ProductStore>()((set) => ({
   setSearchedProductManufacturerId: (id) =>
     set({ searchedProductManufacturerId: id }),
   setProductFilters: (filters) => set({ productFilters: filters }),
+  setImplicitFilters: (filters) => set({ implicitFilters: filters }),
   setAvailableTeethByProductType: (availableTeeth) =>
     set({ availableTeethByProductType: availableTeeth }),
   setSelectedProducts: (products: SelectedProducts) =>

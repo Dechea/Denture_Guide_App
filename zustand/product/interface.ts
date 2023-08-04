@@ -20,9 +20,9 @@ export enum TREATMENT_GROUP {
 }
 
 export enum INDICATION {
-  CROWN = 'crown',
-  BRIDGE = 'bridge',
-  PROSTHESIS = 'prosthesis',
+  CROWN = 'CROWN',
+  BRIDGE = 'BRIDGE',
+  PROSTHESIS = 'PROSTHESIS',
 }
 
 export interface ProductFilterCategory {

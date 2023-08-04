@@ -14,6 +14,7 @@ export const CarouselGroupTabs = () => {
     activeProductTab,
     availableTeethByProductType,
     selectedProducts,
+    setImplicitFilters,
   } = useProductStore();
   const { toothGroups, getToothGroups, patientFile } = useTreatmentsByGroup();
 
@@ -22,18 +23,29 @@ export const CarouselGroupTabs = () => {
   }, [patientFile, activeProductTab, availableTeethByProductType]);
 
   useEffect(() => {
-    if (!activeTreatmentGroup) {
+    if (activeTreatmentGroup === null) {
+      let indexToActivate = -1;
       for (const [index, group] of Object.entries(toothGroups)) {
+        if (group.open && indexToActivate < 0) {
+          indexToActivate = Number(index);
+        }
         if (
           group.open &&
           !group.teeth.every((tooth) => selectedProducts[tooth.toothNumber])
         ) {
-          setActiveTreatmentGroup(Number(index));
+          indexToActivate = Number(index);
           break;
         }
       }
+      if (indexToActivate >= 0) {
+        setActiveTreatmentGroup(indexToActivate);
+      }
+    } else if (toothGroups.length) {
+      setImplicitFilters(
+        JSON.parse(toothGroups[activeTreatmentGroup].treatmentgroup)
+      );
     }
-  }, [toothGroups]);
+  }, [toothGroups, activeTreatmentGroup]);
 
   useEffect(() => {
     return () => {
@@ -60,11 +72,7 @@ export const CarouselGroupTabs = () => {
               <Tooltip
                 position='top'
                 active={isEmptyFilterGroup ? false : undefined}
-                text={
-                  toothGroups[index]?.open
-                    ? tooth.treatmentgroup
-                    : toothGroups[index]?.tooltipText
-                }
+                text={toothGroups[index].tooltipText}
               >
                 {(attributes) => (
                   <Actionable attributes={attributes}>
