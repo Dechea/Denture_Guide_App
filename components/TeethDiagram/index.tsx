@@ -2,42 +2,6 @@
 
 import { useEffect } from 'react';
 import { Modal, View, useToggle } from 'reshaped';
-import {
-  Tooth11Composed,
-  Tooth12Composed,
-  Tooth13Composed,
-  Tooth14Composed,
-  Tooth15Composed,
-  Tooth16Composed,
-  Tooth17Composed,
-  Tooth18Composed,
-  Tooth21Composed,
-  Tooth22Composed,
-  Tooth23Composed,
-  Tooth24Composed,
-  Tooth25Composed,
-  Tooth26Composed,
-  Tooth27Composed,
-  Tooth28Composed,
-  Tooth31Composed,
-  Tooth32Composed,
-  Tooth33Composed,
-  Tooth34Composed,
-  Tooth35Composed,
-  Tooth36Composed,
-  Tooth37Composed,
-  Tooth38Composed,
-  Tooth41Composed,
-  Tooth42Composed,
-  Tooth43Composed,
-  Tooth44Composed,
-  Tooth45Composed,
-  Tooth46Composed,
-  Tooth47Composed,
-  Tooth48Composed,
-} from './teeth/composed-tooth';
-import TeethDiagram from './container';
-import Jaw from './container/Jaw';
 import Treatments from '../Treatments';
 import { useTeethDiagramStore } from '../../zustand/teethDiagram';
 import { useQuery } from 'fqlx-client';
@@ -64,6 +28,7 @@ import { useKeyboardNavigation } from './useKeyboardNavigation';
 import Toolbar from './Toolbar';
 import TreatmentOptionCard from '../TreatmentOptionCard';
 import UnionIcon from '../Icons/Union';
+import ComposedTeeth from './composedTeeth';
 
 export default function TeethDiagramWithTreatments({
   patientFileId,
@@ -289,44 +254,7 @@ export default function TeethDiagramWithTreatments({
       </View>
 
       <View width='75.55%' maxWidth='1632px'>
-        <TeethDiagram>
-          <Jaw customStyles='pb-[2.205882352%]'>
-            <Tooth18Composed />
-            <Tooth17Composed />
-            <Tooth16Composed />
-            <Tooth15Composed />
-            <Tooth14Composed />
-            <Tooth13Composed />
-            <Tooth12Composed />
-            <Tooth11Composed />
-            <Tooth21Composed />
-            <Tooth22Composed />
-            <Tooth23Composed />
-            <Tooth24Composed />
-            <Tooth25Composed />
-            <Tooth26Composed />
-            <Tooth27Composed />
-            <Tooth28Composed />
-          </Jaw>
-          <Jaw customStyles='pt-[2.205882352%]'>
-            <Tooth48Composed />
-            <Tooth47Composed />
-            <Tooth46Composed />
-            <Tooth45Composed />
-            <Tooth44Composed />
-            <Tooth43Composed />
-            <Tooth42Composed />
-            <Tooth41Composed />
-            <Tooth31Composed />
-            <Tooth32Composed />
-            <Tooth33Composed />
-            <Tooth34Composed />
-            <Tooth35Composed />
-            <Tooth36Composed />
-            <Tooth37Composed />
-            <Tooth38Composed />
-          </Jaw>
-        </TeethDiagram>
+        <ComposedTeeth />
       </View>
 
       <Modal
