@@ -12,7 +12,7 @@
     UpdateMethods,
     FirstWhereMethods,
     SetMethods,
-  } from 'fqlx-client'
+  } from 'fauna-typed'
   
 export interface Ts {
     /**
@@ -1491,29 +1491,17 @@ export interface Ts {
  */
  material?: string;
 /**
- * level for the Implant
+ * levels for the Implant
  */
- level?: string;
-/**
- * engaging for the Implant
- */
- engaging?: boolean;
+ levels?: string[];
 /**
  * platformSwitch for the Implant
  */
  platformSwitch?: boolean;
 /**
- * guided for the Implant
- */
- guided?: boolean;
-/**
  * insertionPost for the Implant
  */
  insertionPost?: string;
-/**
- * sterile for the Implant
- */
- sterile?: boolean;
 /**
  * length for the Implant
  */
@@ -1526,10 +1514,6 @@ export interface Ts {
  * diameterPlatform for the Implant
  */
  diameterPlatform?: number;
-/**
- * singleUse for the Implant
- */
- singleUse?: boolean;
 
   }
 
@@ -1544,29 +1528,17 @@ export interface Ts {
  */
  material?: string;
 /**
- * level for the Implant
+ * levels for the Implant
  */
- level?: string;
-/**
- * engaging for the Implant
- */
- engaging?: boolean;
+ levels?: string[];
 /**
  * platformSwitch for the Implant
  */
  platformSwitch?: boolean;
 /**
- * guided for the Implant
- */
- guided?: boolean;
-/**
  * insertionPost for the Implant
  */
  insertionPost?: string;
-/**
- * sterile for the Implant
- */
- sterile?: boolean;
 /**
  * length for the Implant
  */
@@ -1579,10 +1551,6 @@ export interface Ts {
  * diameterPlatform for the Implant
  */
  diameterPlatform?: number;
-/**
- * singleUse for the Implant
- */
- singleUse?: boolean;
 
   } 
 
@@ -1608,16 +1576,12 @@ export interface Ts {
        * @param {ImplantInput | string} input - will be the Implant which you want to add.
          * @param { string } input.implantLine ImplantLine for the Implant
 * @param { string } input.material Material for the Implant
-* @param { string } input.level Level for the Implant
-* @param { boolean } input.engaging Engaging for the Implant
+* @param { string[] } input.levels Levels for the Implant
 * @param { boolean } input.platformSwitch PlatformSwitch for the Implant
-* @param { boolean } input.guided Guided for the Implant
 * @param { string } input.insertionPost InsertionPost for the Implant
-* @param { boolean } input.sterile Sterile for the Implant
 * @param { number } input.length Length for the Implant
 * @param { number } input.lengthNeck LengthNeck for the Implant
 * @param { number } input.diameterPlatform DiameterPlatform for the Implant
-* @param { boolean } input.singleUse SingleUse for the Implant
        *
        * @returns {CreateMethods<Implant>} return new document.
        * 
@@ -1625,31 +1589,23 @@ export interface Ts {
        * query.Implant.create({  
  * implantLine: "Value of the implantLine"   
  * material: "Value of the material"   
- * level: "Value of the level"   
- * engaging: "Value of the engaging"   
+ * levels: "Value of the levels"   
  * platformSwitch: "Value of the platformSwitch"   
- * guided: "Value of the guided"   
  * insertionPost: "Value of the insertionPost"   
- * sterile: "Value of the sterile"   
  * length: "Value of the length"   
  * lengthNeck: "Value of the lengthNeck"   
  * diameterPlatform: "Value of the diameterPlatform"   
- * singleUse: "Value of the singleUse"   
        * }).exec()
        * OR
        * query.Implant.create(`{  
  * implantLine: "Value of the implantLine"   
  * material: "Value of the material"   
- * level: "Value of the level"   
- * engaging: "Value of the engaging"   
+ * levels: "Value of the levels"   
  * platformSwitch: "Value of the platformSwitch"   
- * guided: "Value of the guided"   
  * insertionPost: "Value of the insertionPost"   
- * sterile: "Value of the sterile"   
  * length: "Value of the length"   
  * lengthNeck: "Value of the lengthNeck"   
  * diameterPlatform: "Value of the diameterPlatform"   
- * singleUse: "Value of the singleUse"   
        * }`).exec()
        * 
        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
@@ -1700,17 +1656,13 @@ export interface Ts {
  */
  abutmentLine?: string;
 /**
- * guided for the Abutment
- */
- guided?: string;
-/**
  * platformSwitch for the Abutment
  */
  platformSwitch?: boolean;
 /**
- * workflow for the Abutment
+ * workflows for the Abutment
  */
- workflow?: string[];
+ workflows?: string[];
 /**
  * retention for the Abutment
  */
@@ -1720,41 +1672,21 @@ export interface Ts {
  */
  material?: string;
 /**
- * sterile for the Abutment
- */
- sterile?: boolean;
-/**
- * connectionType for the Abutment
- */
- connectionType?: string;
-/**
- * heightProsthetic for the Abutment
- */
- heightProsthetic?: number;
-/**
- * maxTorque for the Abutment
- */
- maxTorque?: number;
-/**
  * angle for the Abutment
  */
- angle?: string;
+ angle?: number;
 /**
  * diameterPlatform for the Abutment
  */
  diameterPlatform?: number;
 /**
- * gingivaHeight for the Abutment
+ * heightsGingiva for the Abutment
  */
- gingivaHeight?: number;
+ heightsGingiva?: number[];
 /**
  * indication for the Abutment
  */
  indication?: string;
-/**
- * singleUse for the Abutment
- */
- singleUse?: boolean;
 
   }
 
@@ -1769,17 +1701,13 @@ export interface Ts {
  */
  abutmentLine?: string;
 /**
- * guided for the Abutment
- */
- guided?: string;
-/**
  * platformSwitch for the Abutment
  */
  platformSwitch?: boolean;
 /**
- * workflow for the Abutment
+ * workflows for the Abutment
  */
- workflow?: string[];
+ workflows?: string[];
 /**
  * retention for the Abutment
  */
@@ -1789,41 +1717,21 @@ export interface Ts {
  */
  material?: string;
 /**
- * sterile for the Abutment
- */
- sterile?: boolean;
-/**
- * connectionType for the Abutment
- */
- connectionType?: string;
-/**
- * heightProsthetic for the Abutment
- */
- heightProsthetic?: number;
-/**
- * maxTorque for the Abutment
- */
- maxTorque?: number;
-/**
  * angle for the Abutment
  */
- angle?: string;
+ angle?: number;
 /**
  * diameterPlatform for the Abutment
  */
  diameterPlatform?: number;
 /**
- * gingivaHeight for the Abutment
+ * heightsGingiva for the Abutment
  */
- gingivaHeight?: number;
+ heightsGingiva?: number[];
 /**
  * indication for the Abutment
  */
  indication?: string;
-/**
- * singleUse for the Abutment
- */
- singleUse?: boolean;
 
   } 
 
@@ -1849,20 +1757,14 @@ export interface Ts {
        * @param {AbutmentInput | string} input - will be the Abutment which you want to add.
          * @param { string } input.implantLine ImplantLine for the Abutment
 * @param { string } input.abutmentLine AbutmentLine for the Abutment
-* @param { string } input.guided Guided for the Abutment
 * @param { boolean } input.platformSwitch PlatformSwitch for the Abutment
-* @param { string[] } input.workflow Workflow for the Abutment
+* @param { string[] } input.workflows Workflows for the Abutment
 * @param { string } input.retention Retention for the Abutment
 * @param { string } input.material Material for the Abutment
-* @param { boolean } input.sterile Sterile for the Abutment
-* @param { string } input.connectionType ConnectionType for the Abutment
-* @param { number } input.heightProsthetic HeightProsthetic for the Abutment
-* @param { number } input.maxTorque MaxTorque for the Abutment
-* @param { string } input.angle Angle for the Abutment
+* @param { number } input.angle Angle for the Abutment
 * @param { number } input.diameterPlatform DiameterPlatform for the Abutment
-* @param { number } input.gingivaHeight GingivaHeight for the Abutment
+* @param { number[] } input.heightsGingiva HeightsGingiva for the Abutment
 * @param { string } input.indication Indication for the Abutment
-* @param { boolean } input.singleUse SingleUse for the Abutment
        *
        * @returns {CreateMethods<Abutment>} return new document.
        * 
@@ -1870,39 +1772,27 @@ export interface Ts {
        * query.Abutment.create({  
  * implantLine: "Value of the implantLine"   
  * abutmentLine: "Value of the abutmentLine"   
- * guided: "Value of the guided"   
  * platformSwitch: "Value of the platformSwitch"   
- * workflow: "Value of the workflow"   
+ * workflows: "Value of the workflows"   
  * retention: "Value of the retention"   
  * material: "Value of the material"   
- * sterile: "Value of the sterile"   
- * connectionType: "Value of the connectionType"   
- * heightProsthetic: "Value of the heightProsthetic"   
- * maxTorque: "Value of the maxTorque"   
  * angle: "Value of the angle"   
  * diameterPlatform: "Value of the diameterPlatform"   
- * gingivaHeight: "Value of the gingivaHeight"   
+ * heightsGingiva: "Value of the heightsGingiva"   
  * indication: "Value of the indication"   
- * singleUse: "Value of the singleUse"   
        * }).exec()
        * OR
        * query.Abutment.create(`{  
  * implantLine: "Value of the implantLine"   
  * abutmentLine: "Value of the abutmentLine"   
- * guided: "Value of the guided"   
  * platformSwitch: "Value of the platformSwitch"   
- * workflow: "Value of the workflow"   
+ * workflows: "Value of the workflows"   
  * retention: "Value of the retention"   
  * material: "Value of the material"   
- * sterile: "Value of the sterile"   
- * connectionType: "Value of the connectionType"   
- * heightProsthetic: "Value of the heightProsthetic"   
- * maxTorque: "Value of the maxTorque"   
  * angle: "Value of the angle"   
  * diameterPlatform: "Value of the diameterPlatform"   
- * gingivaHeight: "Value of the gingivaHeight"   
+ * heightsGingiva: "Value of the heightsGingiva"   
  * indication: "Value of the indication"   
- * singleUse: "Value of the singleUse"   
        * }`).exec()
        * 
        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
@@ -1949,10 +1839,6 @@ export interface Ts {
  */
  implantLine?: string;
 /**
- * abutmentLine for the HealingAbutment
- */
- abutmentLine?: string;
-/**
  * shape for the HealingAbutment
  */
  shape?: string;
@@ -1961,29 +1847,21 @@ export interface Ts {
  */
  platformSwitch?: boolean;
 /**
+ * wprkflows for the HealingAbutment
+ */
+ wprkflows?: string[];
+/**
  * material for the HealingAbutment
  */
  material?: string;
-/**
- * sterile for the HealingAbutment
- */
- sterile?: boolean;
-/**
- * maxTorque for the HealingAbutment
- */
- maxTorque?: number;
 /**
  * diameterPlatform for the HealingAbutment
  */
  diameterPlatform?: number;
 /**
- * gingivaHeight for the HealingAbutment
+ * heightGingiva for the HealingAbutment
  */
- gingivaHeight?: number;
-/**
- * singleUse for the HealingAbutment
- */
- singleUse?: boolean;
+ heightGingiva?: number;
 
   }
 
@@ -1994,10 +1872,6 @@ export interface Ts {
  */
  implantLine?: string;
 /**
- * abutmentLine for the HealingAbutment
- */
- abutmentLine?: string;
-/**
  * shape for the HealingAbutment
  */
  shape?: string;
@@ -2006,29 +1880,21 @@ export interface Ts {
  */
  platformSwitch?: boolean;
 /**
+ * wprkflows for the HealingAbutment
+ */
+ wprkflows?: string[];
+/**
  * material for the HealingAbutment
  */
  material?: string;
-/**
- * sterile for the HealingAbutment
- */
- sterile?: boolean;
-/**
- * maxTorque for the HealingAbutment
- */
- maxTorque?: number;
 /**
  * diameterPlatform for the HealingAbutment
  */
  diameterPlatform?: number;
 /**
- * gingivaHeight for the HealingAbutment
+ * heightGingiva for the HealingAbutment
  */
- gingivaHeight?: number;
-/**
- * singleUse for the HealingAbutment
- */
- singleUse?: boolean;
+ heightGingiva?: number;
 
   } 
 
@@ -2053,43 +1919,34 @@ export interface Ts {
        * 
        * @param {HealingAbutmentInput | string} input - will be the HealingAbutment which you want to add.
          * @param { string } input.implantLine ImplantLine for the HealingAbutment
-* @param { string } input.abutmentLine AbutmentLine for the HealingAbutment
 * @param { string } input.shape Shape for the HealingAbutment
 * @param { boolean } input.platformSwitch PlatformSwitch for the HealingAbutment
+* @param { string[] } input.wprkflows Wprkflows for the HealingAbutment
 * @param { string } input.material Material for the HealingAbutment
-* @param { boolean } input.sterile Sterile for the HealingAbutment
-* @param { number } input.maxTorque MaxTorque for the HealingAbutment
 * @param { number } input.diameterPlatform DiameterPlatform for the HealingAbutment
-* @param { number } input.gingivaHeight GingivaHeight for the HealingAbutment
-* @param { boolean } input.singleUse SingleUse for the HealingAbutment
+* @param { number } input.heightGingiva HeightGingiva for the HealingAbutment
        *
        * @returns {CreateMethods<HealingAbutment>} return new document.
        * 
        * @example
        * query.HealingAbutment.create({  
  * implantLine: "Value of the implantLine"   
- * abutmentLine: "Value of the abutmentLine"   
  * shape: "Value of the shape"   
  * platformSwitch: "Value of the platformSwitch"   
+ * wprkflows: "Value of the wprkflows"   
  * material: "Value of the material"   
- * sterile: "Value of the sterile"   
- * maxTorque: "Value of the maxTorque"   
  * diameterPlatform: "Value of the diameterPlatform"   
- * gingivaHeight: "Value of the gingivaHeight"   
- * singleUse: "Value of the singleUse"   
+ * heightGingiva: "Value of the heightGingiva"   
        * }).exec()
        * OR
        * query.HealingAbutment.create(`{  
  * implantLine: "Value of the implantLine"   
- * abutmentLine: "Value of the abutmentLine"   
  * shape: "Value of the shape"   
  * platformSwitch: "Value of the platformSwitch"   
+ * wprkflows: "Value of the wprkflows"   
  * material: "Value of the material"   
- * sterile: "Value of the sterile"   
- * maxTorque: "Value of the maxTorque"   
  * diameterPlatform: "Value of the diameterPlatform"   
- * gingivaHeight: "Value of the gingivaHeight"   
- * singleUse: "Value of the singleUse"   
+ * heightGingiva: "Value of the heightGingiva"   
        * }`).exec()
        * 
        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
@@ -2136,13 +1993,9 @@ export interface Ts {
  */
  implantLine?: string;
 /**
- * abutmentLine for the TemporaryAbutment
+ * abutmentLines for the TemporaryAbutment
  */
- abutmentLine?: string;
-/**
- * guided for the TemporaryAbutment
- */
- guided?: string;
+ abutmentLines?: string[];
 /**
  * platformSwitch for the TemporaryAbutment
  */
@@ -2156,41 +2009,13 @@ export interface Ts {
  */
  material?: string;
 /**
- * sterile for the TemporaryAbutment
- */
- sterile?: boolean;
-/**
- * connectionType for the TemporaryAbutment
- */
- connectionType?: string;
-/**
- * heightProsthetic for the TemporaryAbutment
- */
- heightProsthetic?: number;
-/**
- * maxTorque for the TemporaryAbutment
- */
- maxTorque?: number;
-/**
- * angle for the TemporaryAbutment
- */
- angle?: string;
-/**
  * diameterPlatform for the TemporaryAbutment
  */
  diameterPlatform?: number;
 /**
- * gingivaHeight for the TemporaryAbutment
- */
- gingivaHeight?: number;
-/**
  * indication for the TemporaryAbutment
  */
  indication?: string;
-/**
- * singleUse for the TemporaryAbutment
- */
- singleUse?: boolean;
 
   }
 
@@ -2201,13 +2026,9 @@ export interface Ts {
  */
  implantLine?: string;
 /**
- * abutmentLine for the TemporaryAbutment
+ * abutmentLines for the TemporaryAbutment
  */
- abutmentLine?: string;
-/**
- * guided for the TemporaryAbutment
- */
- guided?: string;
+ abutmentLines?: string[];
 /**
  * platformSwitch for the TemporaryAbutment
  */
@@ -2221,41 +2042,13 @@ export interface Ts {
  */
  material?: string;
 /**
- * sterile for the TemporaryAbutment
- */
- sterile?: boolean;
-/**
- * connectionType for the TemporaryAbutment
- */
- connectionType?: string;
-/**
- * heightProsthetic for the TemporaryAbutment
- */
- heightProsthetic?: number;
-/**
- * maxTorque for the TemporaryAbutment
- */
- maxTorque?: number;
-/**
- * angle for the TemporaryAbutment
- */
- angle?: string;
-/**
  * diameterPlatform for the TemporaryAbutment
  */
  diameterPlatform?: number;
 /**
- * gingivaHeight for the TemporaryAbutment
- */
- gingivaHeight?: number;
-/**
  * indication for the TemporaryAbutment
  */
  indication?: string;
-/**
- * singleUse for the TemporaryAbutment
- */
- singleUse?: boolean;
 
   } 
 
@@ -2280,58 +2073,34 @@ export interface Ts {
        * 
        * @param {TemporaryAbutmentInput | string} input - will be the TemporaryAbutment which you want to add.
          * @param { string } input.implantLine ImplantLine for the TemporaryAbutment
-* @param { string } input.abutmentLine AbutmentLine for the TemporaryAbutment
-* @param { string } input.guided Guided for the TemporaryAbutment
+* @param { string[] } input.abutmentLines AbutmentLines for the TemporaryAbutment
 * @param { boolean } input.platformSwitch PlatformSwitch for the TemporaryAbutment
 * @param { string } input.retention Retention for the TemporaryAbutment
 * @param { string } input.material Material for the TemporaryAbutment
-* @param { boolean } input.sterile Sterile for the TemporaryAbutment
-* @param { string } input.connectionType ConnectionType for the TemporaryAbutment
-* @param { number } input.heightProsthetic HeightProsthetic for the TemporaryAbutment
-* @param { number } input.maxTorque MaxTorque for the TemporaryAbutment
-* @param { string } input.angle Angle for the TemporaryAbutment
 * @param { number } input.diameterPlatform DiameterPlatform for the TemporaryAbutment
-* @param { number } input.gingivaHeight GingivaHeight for the TemporaryAbutment
 * @param { string } input.indication Indication for the TemporaryAbutment
-* @param { boolean } input.singleUse SingleUse for the TemporaryAbutment
        *
        * @returns {CreateMethods<TemporaryAbutment>} return new document.
        * 
        * @example
        * query.TemporaryAbutment.create({  
  * implantLine: "Value of the implantLine"   
- * abutmentLine: "Value of the abutmentLine"   
- * guided: "Value of the guided"   
+ * abutmentLines: "Value of the abutmentLines"   
  * platformSwitch: "Value of the platformSwitch"   
  * retention: "Value of the retention"   
  * material: "Value of the material"   
- * sterile: "Value of the sterile"   
- * connectionType: "Value of the connectionType"   
- * heightProsthetic: "Value of the heightProsthetic"   
- * maxTorque: "Value of the maxTorque"   
- * angle: "Value of the angle"   
  * diameterPlatform: "Value of the diameterPlatform"   
- * gingivaHeight: "Value of the gingivaHeight"   
  * indication: "Value of the indication"   
- * singleUse: "Value of the singleUse"   
        * }).exec()
        * OR
        * query.TemporaryAbutment.create(`{  
  * implantLine: "Value of the implantLine"   
- * abutmentLine: "Value of the abutmentLine"   
- * guided: "Value of the guided"   
+ * abutmentLines: "Value of the abutmentLines"   
  * platformSwitch: "Value of the platformSwitch"   
  * retention: "Value of the retention"   
  * material: "Value of the material"   
- * sterile: "Value of the sterile"   
- * connectionType: "Value of the connectionType"   
- * heightProsthetic: "Value of the heightProsthetic"   
- * maxTorque: "Value of the maxTorque"   
- * angle: "Value of the angle"   
  * diameterPlatform: "Value of the diameterPlatform"   
- * gingivaHeight: "Value of the gingivaHeight"   
  * indication: "Value of the indication"   
- * singleUse: "Value of the singleUse"   
        * }`).exec()
        * 
        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
@@ -2382,13 +2151,17 @@ export interface Ts {
  */
  implantLine?: string;
 /**
- * abutmentLine for the Impression
+ * abutmentLines for the Impression
  */
- abutmentLine?: string;
+ abutmentLines?: string[];
 /**
  * diameterPlatform for the Impression
  */
  diameterPlatform?: number;
+/**
+ * platformSwitch for the Impression
+ */
+ platformSwitch?: boolean;
 
   }
 
@@ -2403,13 +2176,17 @@ export interface Ts {
  */
  implantLine?: string;
 /**
- * abutmentLine for the Impression
+ * abutmentLines for the Impression
  */
- abutmentLine?: string;
+ abutmentLines?: string[];
 /**
  * diameterPlatform for the Impression
  */
  diameterPlatform?: number;
+/**
+ * platformSwitch for the Impression
+ */
+ platformSwitch?: boolean;
 
   } 
 
@@ -2435,8 +2212,9 @@ export interface Ts {
        * @param {ImpressionInput | string} input - will be the Impression which you want to add.
          * @param { string } input.type Type for the Impression
 * @param { string } input.implantLine ImplantLine for the Impression
-* @param { string } input.abutmentLine AbutmentLine for the Impression
+* @param { string[] } input.abutmentLines AbutmentLines for the Impression
 * @param { number } input.diameterPlatform DiameterPlatform for the Impression
+* @param { boolean } input.platformSwitch PlatformSwitch for the Impression
        *
        * @returns {CreateMethods<Impression>} return new document.
        * 
@@ -2444,15 +2222,17 @@ export interface Ts {
        * query.Impression.create({  
  * type: "Value of the type"   
  * implantLine: "Value of the implantLine"   
- * abutmentLine: "Value of the abutmentLine"   
+ * abutmentLines: "Value of the abutmentLines"   
  * diameterPlatform: "Value of the diameterPlatform"   
+ * platformSwitch: "Value of the platformSwitch"   
        * }).exec()
        * OR
        * query.Impression.create(`{  
  * type: "Value of the type"   
  * implantLine: "Value of the implantLine"   
- * abutmentLine: "Value of the abutmentLine"   
+ * abutmentLines: "Value of the abutmentLines"   
  * diameterPlatform: "Value of the diameterPlatform"   
+ * platformSwitch: "Value of the platformSwitch"   
        * }`).exec()
        * 
        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
@@ -2507,14 +2287,6 @@ export interface Ts {
  */
  material?: string;
 /**
- * sterile for the LabScrew
- */
- sterile?: boolean;
-/**
- * singleUse for the LabScrew
- */
- singleUse?: boolean;
-/**
  * maxTorque for the LabScrew
  */
  maxTorque?: number;
@@ -2523,9 +2295,9 @@ export interface Ts {
  */
  length?: number;
 /**
- * diameterPlatform for the LabScrew
+ * diameterPlatforms for the LabScrew
  */
- diameterPlatform?: number[];
+ diameterPlatforms?: number[];
 
   }
 
@@ -2544,14 +2316,6 @@ export interface Ts {
  */
  material?: string;
 /**
- * sterile for the LabScrew
- */
- sterile?: boolean;
-/**
- * singleUse for the LabScrew
- */
- singleUse?: boolean;
-/**
  * maxTorque for the LabScrew
  */
  maxTorque?: number;
@@ -2560,9 +2324,9 @@ export interface Ts {
  */
  length?: number;
 /**
- * diameterPlatform for the LabScrew
+ * diameterPlatforms for the LabScrew
  */
- diameterPlatform?: number[];
+ diameterPlatforms?: number[];
 
   } 
 
@@ -2589,11 +2353,9 @@ export interface Ts {
          * @param { string } input.implantLine ImplantLine for the LabScrew
 * @param { string } input.abutmentLine AbutmentLine for the LabScrew
 * @param { string } input.material Material for the LabScrew
-* @param { boolean } input.sterile Sterile for the LabScrew
-* @param { boolean } input.singleUse SingleUse for the LabScrew
 * @param { number } input.maxTorque MaxTorque for the LabScrew
 * @param { number } input.length Length for the LabScrew
-* @param { number[] } input.diameterPlatform DiameterPlatform for the LabScrew
+* @param { number[] } input.diameterPlatforms DiameterPlatforms for the LabScrew
        *
        * @returns {CreateMethods<LabScrew>} return new document.
        * 
@@ -2602,22 +2364,18 @@ export interface Ts {
  * implantLine: "Value of the implantLine"   
  * abutmentLine: "Value of the abutmentLine"   
  * material: "Value of the material"   
- * sterile: "Value of the sterile"   
- * singleUse: "Value of the singleUse"   
  * maxTorque: "Value of the maxTorque"   
  * length: "Value of the length"   
- * diameterPlatform: "Value of the diameterPlatform"   
+ * diameterPlatforms: "Value of the diameterPlatforms"   
        * }).exec()
        * OR
        * query.LabScrew.create(`{  
  * implantLine: "Value of the implantLine"   
  * abutmentLine: "Value of the abutmentLine"   
  * material: "Value of the material"   
- * sterile: "Value of the sterile"   
- * singleUse: "Value of the singleUse"   
  * maxTorque: "Value of the maxTorque"   
  * length: "Value of the length"   
- * diameterPlatform: "Value of the diameterPlatform"   
+ * diameterPlatforms: "Value of the diameterPlatforms"   
        * }`).exec()
        * 
        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
@@ -2668,25 +2426,13 @@ export interface Ts {
  */
  material?: string;
 /**
- * platformSwitch for the ImplantReplica
- */
- platformSwitch?: boolean;
-/**
- * sterile for the ImplantReplica
- */
- sterile?: boolean;
-/**
- * singleUse for the ImplantReplica
- */
- singleUse?: boolean;
-/**
  * diameterPlatform for the ImplantReplica
  */
  diameterPlatform?: number;
 /**
- * workflow for the ImplantReplica
+ * workflows for the ImplantReplica
  */
- workflow?: boolean;
+ workflows?: string[];
 
   }
 
@@ -2701,25 +2447,13 @@ export interface Ts {
  */
  material?: string;
 /**
- * platformSwitch for the ImplantReplica
- */
- platformSwitch?: boolean;
-/**
- * sterile for the ImplantReplica
- */
- sterile?: boolean;
-/**
- * singleUse for the ImplantReplica
- */
- singleUse?: boolean;
-/**
  * diameterPlatform for the ImplantReplica
  */
  diameterPlatform?: number;
 /**
- * workflow for the ImplantReplica
+ * workflows for the ImplantReplica
  */
- workflow?: boolean;
+ workflows?: string[];
 
   } 
 
@@ -2745,11 +2479,8 @@ export interface Ts {
        * @param {ImplantReplicaInput | string} input - will be the ImplantReplica which you want to add.
          * @param { string } input.implantLine ImplantLine for the ImplantReplica
 * @param { string } input.material Material for the ImplantReplica
-* @param { boolean } input.platformSwitch PlatformSwitch for the ImplantReplica
-* @param { boolean } input.sterile Sterile for the ImplantReplica
-* @param { boolean } input.singleUse SingleUse for the ImplantReplica
 * @param { number } input.diameterPlatform DiameterPlatform for the ImplantReplica
-* @param { boolean } input.workflow Workflow for the ImplantReplica
+* @param { string[] } input.workflows Workflows for the ImplantReplica
        *
        * @returns {CreateMethods<ImplantReplica>} return new document.
        * 
@@ -2757,21 +2488,15 @@ export interface Ts {
        * query.ImplantReplica.create({  
  * implantLine: "Value of the implantLine"   
  * material: "Value of the material"   
- * platformSwitch: "Value of the platformSwitch"   
- * sterile: "Value of the sterile"   
- * singleUse: "Value of the singleUse"   
  * diameterPlatform: "Value of the diameterPlatform"   
- * workflow: "Value of the workflow"   
+ * workflows: "Value of the workflows"   
        * }).exec()
        * OR
        * query.ImplantReplica.create(`{  
  * implantLine: "Value of the implantLine"   
  * material: "Value of the material"   
- * platformSwitch: "Value of the platformSwitch"   
- * sterile: "Value of the sterile"   
- * singleUse: "Value of the singleUse"   
  * diameterPlatform: "Value of the diameterPlatform"   
- * workflow: "Value of the workflow"   
+ * workflows: "Value of the workflows"   
        * }`).exec()
        * 
        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
@@ -2814,18 +2539,6 @@ export interface Ts {
 
   export interface Screwdriver {
     /**
- * material for the Screwdriver
- */
- material?: string;
-/**
- * sterile for the Screwdriver
- */
- sterile?: boolean;
-/**
- * singleUse for the Screwdriver
- */
- singleUse?: boolean;
-/**
  * lengthFunctional for the Screwdriver
  */
  lengthFunctional?: number;
@@ -2843,18 +2556,6 @@ export interface Ts {
 
   export interface ScrewdriverInput {
     /**
- * material for the Screwdriver
- */
- material?: string;
-/**
- * sterile for the Screwdriver
- */
- sterile?: boolean;
-/**
- * singleUse for the Screwdriver
- */
- singleUse?: boolean;
-/**
  * lengthFunctional for the Screwdriver
  */
  lengthFunctional?: number;
@@ -2889,10 +2590,7 @@ export interface Ts {
        * create method creates a Screwdriver document in the collection with the provided property values.
        * 
        * @param {ScrewdriverInput | string} input - will be the Screwdriver which you want to add.
-         * @param { string } input.material Material for the Screwdriver
-* @param { boolean } input.sterile Sterile for the Screwdriver
-* @param { boolean } input.singleUse SingleUse for the Screwdriver
-* @param { number } input.lengthFunctional LengthFunctional for the Screwdriver
+         * @param { number } input.lengthFunctional LengthFunctional for the Screwdriver
 * @param { number } input.lengthFull LengthFull for the Screwdriver
 * @param { string } input.type Type for the Screwdriver
        *
@@ -2900,18 +2598,12 @@ export interface Ts {
        * 
        * @example
        * query.Screwdriver.create({  
- * material: "Value of the material"   
- * sterile: "Value of the sterile"   
- * singleUse: "Value of the singleUse"   
  * lengthFunctional: "Value of the lengthFunctional"   
  * lengthFull: "Value of the lengthFull"   
  * type: "Value of the type"   
        * }).exec()
        * OR
        * query.Screwdriver.create(`{  
- * material: "Value of the material"   
- * sterile: "Value of the sterile"   
- * singleUse: "Value of the singleUse"   
  * lengthFunctional: "Value of the lengthFunctional"   
  * lengthFull: "Value of the lengthFull"   
  * type: "Value of the type"   
@@ -2961,10 +2653,6 @@ export interface Ts {
  */
  material?: string;
 /**
- * sterile for the OrientationAid
- */
- sterile?: boolean;
-/**
  * singleUse for the OrientationAid
  */
  singleUse?: boolean;
@@ -2989,10 +2677,6 @@ export interface Ts {
  * material for the OrientationAid
  */
  material?: string;
-/**
- * sterile for the OrientationAid
- */
- sterile?: boolean;
 /**
  * singleUse for the OrientationAid
  */
@@ -3033,7 +2717,6 @@ export interface Ts {
        * 
        * @param {OrientationAidInput | string} input - will be the OrientationAid which you want to add.
          * @param { string } input.material Material for the OrientationAid
-* @param { boolean } input.sterile Sterile for the OrientationAid
 * @param { boolean } input.singleUse SingleUse for the OrientationAid
 * @param { number } input.lengthFunctional LengthFunctional for the OrientationAid
 * @param { number } input.lengthFull LengthFull for the OrientationAid
@@ -3044,7 +2727,6 @@ export interface Ts {
        * @example
        * query.OrientationAid.create({  
  * material: "Value of the material"   
- * sterile: "Value of the sterile"   
  * singleUse: "Value of the singleUse"   
  * lengthFunctional: "Value of the lengthFunctional"   
  * lengthFull: "Value of the lengthFull"   
@@ -3053,7 +2735,6 @@ export interface Ts {
        * OR
        * query.OrientationAid.create(`{  
  * material: "Value of the material"   
- * sterile: "Value of the sterile"   
  * singleUse: "Value of the singleUse"   
  * lengthFunctional: "Value of the lengthFunctional"   
  * lengthFull: "Value of the lengthFull"   
@@ -3104,10 +2785,6 @@ export interface Ts {
  */
  material?: string;
 /**
- * sterile for the ProtectionAid
- */
- sterile?: boolean;
-/**
  * singleUse for the ProtectionAid
  */
  singleUse?: boolean;
@@ -3115,10 +2792,6 @@ export interface Ts {
  * diameterPlatform for the ProtectionAid
  */
  diameterPlatform?: number;
-/**
- * heightProsthetic for the ProtectionAid
- */
- heightProsthetic?: number;
 
   }
 
@@ -3129,10 +2802,6 @@ export interface Ts {
  */
  material?: string;
 /**
- * sterile for the ProtectionAid
- */
- sterile?: boolean;
-/**
  * singleUse for the ProtectionAid
  */
  singleUse?: boolean;
@@ -3140,10 +2809,6 @@ export interface Ts {
  * diameterPlatform for the ProtectionAid
  */
  diameterPlatform?: number;
-/**
- * heightProsthetic for the ProtectionAid
- */
- heightProsthetic?: number;
 
   } 
 
@@ -3168,28 +2833,22 @@ export interface Ts {
        * 
        * @param {ProtectionAidInput | string} input - will be the ProtectionAid which you want to add.
          * @param { string } input.material Material for the ProtectionAid
-* @param { boolean } input.sterile Sterile for the ProtectionAid
 * @param { boolean } input.singleUse SingleUse for the ProtectionAid
 * @param { number } input.diameterPlatform DiameterPlatform for the ProtectionAid
-* @param { number } input.heightProsthetic HeightProsthetic for the ProtectionAid
        *
        * @returns {CreateMethods<ProtectionAid>} return new document.
        * 
        * @example
        * query.ProtectionAid.create({  
  * material: "Value of the material"   
- * sterile: "Value of the sterile"   
  * singleUse: "Value of the singleUse"   
  * diameterPlatform: "Value of the diameterPlatform"   
- * heightProsthetic: "Value of the heightProsthetic"   
        * }).exec()
        * OR
        * query.ProtectionAid.create(`{  
  * material: "Value of the material"   
- * sterile: "Value of the sterile"   
  * singleUse: "Value of the singleUse"   
  * diameterPlatform: "Value of the diameterPlatform"   
- * heightProsthetic: "Value of the heightProsthetic"   
        * }`).exec()
        * 
        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
@@ -3244,10 +2903,6 @@ export interface Ts {
  */
  material?: string;
 /**
- * sterile for the ClampingAid
- */
- sterile?: boolean;
-/**
  * singleUse for the ClampingAid
  */
  singleUse?: boolean;
@@ -3272,10 +2927,6 @@ export interface Ts {
  * material for the ClampingAid
  */
  material?: string;
-/**
- * sterile for the ClampingAid
- */
- sterile?: boolean;
 /**
  * singleUse for the ClampingAid
  */
@@ -3310,7 +2961,6 @@ export interface Ts {
          * @param { string } input.implantLine ImplantLine for the ClampingAid
 * @param { string } input.abutmentLine AbutmentLine for the ClampingAid
 * @param { string } input.material Material for the ClampingAid
-* @param { boolean } input.sterile Sterile for the ClampingAid
 * @param { boolean } input.singleUse SingleUse for the ClampingAid
 * @param { number } input.diameterPlatform DiameterPlatform for the ClampingAid
        *
@@ -3321,7 +2971,6 @@ export interface Ts {
  * implantLine: "Value of the implantLine"   
  * abutmentLine: "Value of the abutmentLine"   
  * material: "Value of the material"   
- * sterile: "Value of the sterile"   
  * singleUse: "Value of the singleUse"   
  * diameterPlatform: "Value of the diameterPlatform"   
        * }).exec()
@@ -3330,7 +2979,6 @@ export interface Ts {
  * implantLine: "Value of the implantLine"   
  * abutmentLine: "Value of the abutmentLine"   
  * material: "Value of the material"   
- * sterile: "Value of the sterile"   
  * singleUse: "Value of the singleUse"   
  * diameterPlatform: "Value of the diameterPlatform"   
        * }`).exec()

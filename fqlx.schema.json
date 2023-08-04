@@ -110,100 +110,71 @@
       "implant": {
         "implantLine": "string",
         "material": "string",
-        "level": "string",
-        "engaging": "boolean",
+        "levels": "string[]",
         "platformSwitch": "boolean",
-        "guided": "boolean",
         "insertionPost": "string",
-        "sterile": "boolean",
         "length": "number",
         "lengthNeck": "number",
-        "diameterPlatform": "number",
-        "singleUse": "boolean"
+        "diameterPlatform": "number"
       },
       "abutment": {
         "implantLine": "string",
         "abutmentLine": "string",
-        "guided": "string",
         "platformSwitch": "boolean",
-        "workflow": "string[]",
+        "workflows": "string[]",
         "retention": "string",
         "material": "string",
-        "sterile": "boolean",
-        "connectionType": "string",
-        "heightProsthetic": "number",
-        "maxTorque": "number",
-        "angle": "string",
+        "angle": "number",
         "diameterPlatform": "number",
-        "gingivaHeight": "number",
-        "indication": "string",
-        "singleUse": "boolean"
+        "heightsGingiva": "number[]",
+        "indication": "string"
       },
       "healingAbutment": {
         "implantLine": "string",
-        "abutmentLine": "string",
         "shape": "string",
         "platformSwitch": "boolean",
+        "wprkflows": "string[]",
         "material": "string",
-        "sterile": "boolean",
-        "maxTorque": "number",
         "diameterPlatform": "number",
-        "gingivaHeight": "number",
-        "singleUse": "boolean"
+        "heightGingiva": "number"
       },
       "temporaryAbutment": {
         "implantLine": "string",
-        "abutmentLine": "string",
-        "guided": "string",
+        "abutmentLines": "string[]",
         "platformSwitch": "boolean",
         "retention": "string",
         "material": "string",
-        "sterile": "boolean",
-        "connectionType": "string",
-        "heightProsthetic": "number",
-        "maxTorque": "number",
-        "angle": "string",
         "diameterPlatform": "number",
-        "gingivaHeight": "number",
-        "indication": "string",
-        "singleUse": "boolean"
+        "indication": "string"
       },
       "impression": {
         "type": "string",
         "implantLine": "string",
-        "abutmentLine": "string",
-        "diameterPlatform": "number"
+        "abutmentLines": "string[]",
+        "diameterPlatform": "number",
+        "platformSwitch": "boolean"
       },
       "labScrew": {
         "implantLine": "string",
         "abutmentLine": "string",
         "material": "string",
-        "sterile": "boolean",
-        "singleUse": "boolean",
         "maxTorque": "number",
         "length": "number",
-        "diameterPlatform": "number[]"
+        "diameterPlatforms": "number[]"
       },
       "implantReplica": {
         "implantLine": "string",
         "material": "string",
-        "platformSwitch": "boolean",
-        "sterile": "boolean",
-        "singleUse": "boolean",
         "diameterPlatform": "number",
-        "workflow": "boolean"
+        "workflows": "string[]"
       },
       "screwdriver": {
-        "material": "string",
-        "sterile": "boolean",
-        "singleUse": "boolean",
         "lengthFunctional": "number",
         "lengthFull": "number",
         "type": "string"
       },
       "orientationAid": {
         "material": "string",
-        "sterile": "boolean",
         "singleUse": "boolean",
         "lengthFunctional": "number",
         "lengthFull": "number",
@@ -211,16 +182,13 @@
       },
       "protectionAid": {
         "material": "string",
-        "sterile": "boolean",
         "singleUse": "boolean",
-        "diameterPlatform": "number",
-        "heightProsthetic": "number"
+        "diameterPlatform": "number"
       },
       "clampingAid": {
         "implantLine": "string",
         "abutmentLine": "string",
         "material": "string",
-        "sterile": "boolean",
         "singleUse": "boolean",
         "diameterPlatform": "number"
       }
