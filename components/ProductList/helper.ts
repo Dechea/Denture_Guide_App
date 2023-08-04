@@ -47,11 +47,11 @@ export const formWhereCondition = (
           conditions.push(
             `product.${productType}.abutmentLines.includes(${fields[0]})`
           );
-        } else if (category === 'heightGingiva') {
+        } else if (category === 'heightsGingiva') {
           conditions.push(
-            `product.${productType}.${category}.any((value) => [${fields.join(
+            `[${fields.join(
               ','
-            )}].includes(value))`
+            )}].includes(product.${productType}.heightGingiva)`
           );
         } else {
           conditions.push(

@@ -69,7 +69,10 @@ const implicitFilters: ImplicitFiltersProps = {
     name: 'platformSwitch',
     productType: PRODUCT_TYPE.ABUTMENT,
   },
-  heightGingiva: { name: 'heightGingiva', productType: PRODUCT_TYPE.ABUTMENT },
+  heightsGingiva: {
+    name: 'heightsGingiva',
+    productType: PRODUCT_TYPE.ABUTMENT,
+  },
 };
 
 const mapImplicitFilters: MapImplicitFiltersProps = {
@@ -82,7 +85,7 @@ const mapImplicitFilters: MapImplicitFiltersProps = {
     implicitFilters.implantLine,
     implicitFilters.diameterPlatform,
     implicitFilters.platformSwitch,
-    implicitFilters.heightGingiva,
+    implicitFilters.heightsGingiva,
   ],
   [PRODUCT_TYPE.TEMPORARY_ABUTMENT]: [
     implicitFilters.indication,
@@ -139,7 +142,8 @@ export function useTreatmentsByGroup() {
 
     unLockedTeethGroup.forEach((tooth) => {
       const fqlxTooth = patientFile.teeth?.find(
-        (localTooth) => Number(localTooth.name) === tooth.toothNumber
+        (localTooth: { name: any }) =>
+          Number(localTooth.name) === tooth.toothNumber
       );
       const fqlxToothProducts = [
         ...(fqlxTooth?.crown.treatmentDoc.selectedProducts ?? []),
@@ -171,15 +175,14 @@ export function useTreatmentsByGroup() {
               previousTabProduct?.selectedProduct?.[filter.productType]?.[
                 filter.name
               ];
-            const filterValueType =
-              // @ts-ignore
-              typeof previousTabProduct?.selectedProduct?.[
-                filter.productType
-              ]?.[filter.name];
+            const filterValueType = typeof filterValue;
 
-            if (filterValueType === 'string') {
+            if (filterValueType === 'string' && filterValue) {
               filterValues[filter.name] = [`"${filterValue}"`];
-            } else if (filterValueType === 'number') {
+            } else if (
+              filterValueType === 'number' ||
+              filterValueType === 'boolean'
+            ) {
               filterValues[filter.name] = [filterValue];
             } else {
               filterValues[filter.name] = filterValue;
@@ -229,7 +232,8 @@ export function useTreatmentsByGroup() {
 
         teeth.forEach((tooth) => {
           const fqlxTooth = patientFile.teeth?.find(
-            (localTooth) => Number(localTooth.name) === tooth.toothNumber
+            (localTooth: { name: any }) =>
+              Number(localTooth.name) === tooth.toothNumber
           );
           const fqlxToothProducts = [
             ...(fqlxTooth?.crown.treatmentDoc.selectedProducts ?? []),
