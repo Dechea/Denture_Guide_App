@@ -56,7 +56,7 @@ const TreatmentTabs = ({
 
   useEffect(() => {
     getTabsStatus();
-  }, [patientFile]);
+  }, [patientFile, treatments]);
 
   return (
     <View
