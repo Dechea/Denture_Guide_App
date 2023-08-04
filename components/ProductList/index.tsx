@@ -162,19 +162,19 @@ const ProductList = ({
 
   return (
     <>
-      <View direction='row' align='center' paddingBottom={6}>
+      <View direction="row" align="center" paddingBottom={6}>
         <View.Item grow>
-          <View direction='row' gap={2} align='end'>
-            <Text variant='featured-3' weight='bold'>
+          <View direction="row" gap={2} align="end">
+            <Text variant="featured-3" weight="bold">
               {convertCamelCaseToTitleCase(productType)}
             </Text>
 
-            <View direction='row' align='center' paddingBottom={0.5}>
+            <View direction="row" align="center" paddingBottom={0.5}>
               <Text
-                variant='body-3'
-                weight='regular'
-                color='neutral-faded'
-                align='end'
+                variant="body-3"
+                weight="regular"
+                color="neutral-faded"
+                align="end"
               >
                 {productsCount}
               </Text>

@@ -15,9 +15,9 @@ export default function Counter({ initialCount, onCountChange }: CounterProps) {
 
   const handleCountChange = (incrementOrDecrementCount: number) => {
     const localCount =
-      count + incrementOrDecrementCount > 0
+      count + incrementOrDecrementCount > 1
         ? count + incrementOrDecrementCount
-        : 0;
+        : 1;
 
     if (count || localCount) {
       onCountChange(localCount);
@@ -32,6 +32,7 @@ export default function Counter({ initialCount, onCountChange }: CounterProps) {
         variant='outline'
         size='small'
         onClick={() => handleCountChange(-1)}
+        disabled={count === 1}
       />
 
       <Text
