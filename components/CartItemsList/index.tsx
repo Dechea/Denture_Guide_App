@@ -35,27 +35,27 @@ export default function CartItemsList({
 
         return (
           <View key={tooth.name} gap={8}>
-            <View direction='row' gap={2} align='center'>
-              <Text variant='featured-3' weight='medium'>
+            <View direction="row" gap={2} align="center">
+              <Text variant="featured-3" weight="medium">
                 {tooth.name}
               </Text>
-              <Text variant='featured-3' weight='medium'>
+              <Text variant="featured-3" weight="medium">
                 {`${tooth.root.treatmentDoc.treatment.name} ${tooth.crown.treatmentDoc.treatment.name}`}
               </Text>
             </View>
 
-            <View align='center' width='100%' divided gap={6}>
+            <View align="center" width="100%" divided gap={6}>
               {products.map(({ selectedProduct, quantity }) => {
                 const localization = selectedProduct?.localizations?.[1];
 
                 return (
                   <View
                     key={selectedProduct?.id as string}
-                    width='100%'
-                    direction='row'
-                    align='center'
-                    className='justify-between'
-                    gap={4}
+                    width="100%"
+                    direction="row"
+                    align="center"
+                    className="justify-between"
+                    gap={24}
                   >
                     <View.Item grow>
                       <ImageWithDetailsCard
@@ -66,7 +66,7 @@ export default function CartItemsList({
                       />
                     </View.Item>
 
-                    <View direction='row' align='center' gap={4}>
+                    <View direction="row" align="center" gap={4}>
                       <Counter
                         initialCount={Number(quantity)}
                         onCountChange={(count: number) =>

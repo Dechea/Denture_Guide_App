@@ -13,7 +13,7 @@ export default function RootLayout({ children, params }: RootLayoutProps) {
     <>
       <Suspense
         fallback={
-          <View height='56px' width='100%' justify='center' align='center'>
+          <View height="56px" width="100%" justify="center" align="center">
             <Loader />
           </View>
         }
