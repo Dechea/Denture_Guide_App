@@ -40,27 +40,31 @@ export const formWhereCondition = (
 
   conditions.unshift(`(product) => product.${productType} != null`);
 
-  Object.entries({ ...productFilters, ...implicitFilters }).forEach(
-    ([category, fields]) => {
-      if (fields.length) {
-        if (category === 'abutmentLine') {
-          conditions.push(
-            `product.${productType}.abutmentLines.includes(${fields[0]})`
-          );
-        } else if (category === 'heightsGingiva') {
-          conditions.push(
-            `[${fields.join(
-              ','
-            )}].includes(product.${productType}.heightGingiva)`
-          );
-        } else {
-          conditions.push(
-            `[${fields.join(',')}].includes(product.${productType}.${category})`
-          );
-        }
+  Object.entries(implicitFilters).forEach(([category, fields]) => {
+    if (fields.length) {
+      if (category === 'abutmentLine') {
+        conditions.push(
+          `product.${productType}.abutmentLines.includes(${fields[0]})`
+        );
+      } else if (category === 'heightsGingiva') {
+        conditions.push(
+          `[${fields.join(',')}].includes(product.${productType}.heightGingiva)`
+        );
+      } else {
+        conditions.push(
+          `[${fields.join(',')}].includes(product.${productType}.${category})`
+        );
       }
     }
-  );
+  });
+
+  Object.entries(productFilters).forEach(([category, fields]) => {
+    if (fields.length) {
+      conditions.push(
+        `[${fields.join(',')}].includes(product.${productType}.${category})`
+      );
+    }
+  });
 
   const condition = conditions.join(' && ');
 
