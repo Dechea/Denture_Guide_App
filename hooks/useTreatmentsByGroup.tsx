@@ -85,7 +85,6 @@ const mapImplicitFilters: MapImplicitFiltersProps = {
     implicitFilters.implantLine,
     implicitFilters.diameterPlatform,
     implicitFilters.platformSwitch,
-    implicitFilters.heightsGingiva,
   ],
   [PRODUCT_TYPE.TEMPORARY_ABUTMENT]: [
     implicitFilters.indication,
