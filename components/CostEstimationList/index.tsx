@@ -90,6 +90,7 @@ export default function CostEstimationList({
                             color='neutral-faded'
                             variant='body-3'
                             weight='regular'
+                            className='break-words'
                           >
                             {productValue
                               ? `${productKey}: ${productValue}`

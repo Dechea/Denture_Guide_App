@@ -28,7 +28,7 @@ import { useKeyboardNavigation } from './useKeyboardNavigation';
 import Toolbar from './Toolbar';
 import TreatmentOptionCard from '../TreatmentOptionCard';
 import UnionIcon from '../Icons/Union';
-import ComposedTeeth from './composedTeeth';
+import ComposedTeethDiagram from './composedTeethDiagram';
 
 export default function TeethDiagramWithTreatments({
   patientFileId,
@@ -254,7 +254,7 @@ export default function TeethDiagramWithTreatments({
       </View>
 
       <View width='75.55%' maxWidth='1632px'>
-        <ComposedTeeth />
+        <ComposedTeethDiagram />
       </View>
 
       <Modal

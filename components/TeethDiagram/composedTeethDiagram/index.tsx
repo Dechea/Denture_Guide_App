@@ -37,7 +37,7 @@ import {
   Tooth48Composed,
 } from '../teeth/composed-tooth';
 
-export default function ComposedTeeth() {
+export default function ComposedTeethDiagram() {
   return (
     <TeethDiagram>
       <Jaw customStyles='pb-[2.205882352%]'>
