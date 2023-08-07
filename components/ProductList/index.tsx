@@ -37,6 +37,7 @@ const ProductList = ({
     activeProductTab,
     availableTeethByProductType,
     setActiveTreatmentGroup,
+    implicitFilters,
   } = useProductStore();
   const { patientFile, toothGroups, getToothGroups } = useTreatmentsByGroup();
 
@@ -114,10 +115,11 @@ const ProductList = ({
         formWhereCondition(
           searchedProductManufacturerId,
           productFilters,
+          implicitFilters,
           productType
         )
       ),
-    [searchedProductManufacturerId, productFilters]
+    [searchedProductManufacturerId, productFilters, implicitFilters]
   );
 
   const fqlxProducts = useMemo(

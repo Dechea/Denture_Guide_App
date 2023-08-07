@@ -7,6 +7,7 @@ import { useTeethDiagramStore } from '../../zustand/teethDiagram';
 import TreatmentTabsPopover from '../TreatmentTabsPopover';
 import { PRODUCT_TYPE } from '../../zustand/product/interface';
 import { useTabsStatus } from '../../hooks/useTabsStatus';
+import { useProductStore } from '../../zustand/product';
 
 const TreatmentTabs = ({
   children,
@@ -22,6 +23,7 @@ const TreatmentTabs = ({
   const path: string = usePathname();
   const { treatments, recentAddedTreatment, setRecentAddedTreatment } =
     useTeethDiagramStore((state) => state);
+  const { setImplicitFilters } = useProductStore();
 
   const onChangeTab = ({ value }: { value: string }) => {
     const splitedRoute = value.split('/');
@@ -30,6 +32,7 @@ const TreatmentTabs = ({
     ] as keyof typeof tabsStatus;
 
     if (tabsStatus[clickedTab] === undefined || tabsStatus[clickedTab]) {
+      setImplicitFilters({});
       router.push(value as __next_route_internal_types__.RouteImpl<string>);
     }
   };
@@ -47,13 +50,13 @@ const TreatmentTabs = ({
       if (!localTabsStatus?.abutment && tabsStatus.abutment) {
         setActivePopupFor(PRODUCT_TYPE.ABUTMENT);
       }
-      setLocalTabsStatus(tabsStatus);
     }
+    setLocalTabsStatus(tabsStatus);
   }, [treatments, tabsStatus]);
 
   useEffect(() => {
     getTabsStatus();
-  }, [patientFile]);
+  }, [patientFile, treatments]);
 
   return (
     <View

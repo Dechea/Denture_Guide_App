@@ -69,6 +69,10 @@ const implicitFilters: ImplicitFiltersProps = {
     name: 'platformSwitch',
     productType: PRODUCT_TYPE.ABUTMENT,
   },
+  heightsGingiva: {
+    name: 'heightsGingiva',
+    productType: PRODUCT_TYPE.ABUTMENT,
+  },
 };
 
 const mapImplicitFilters: MapImplicitFiltersProps = {
@@ -78,7 +82,6 @@ const mapImplicitFilters: MapImplicitFiltersProps = {
     implicitFilters.diameterPlatform,
   ],
   [PRODUCT_TYPE.HEALING_ABUTMENT]: [
-    implicitFilters.indication,
     implicitFilters.implantLine,
     implicitFilters.diameterPlatform,
     implicitFilters.platformSwitch,
@@ -110,9 +113,11 @@ export function useTreatmentsByGroup() {
 
   const patientFile = useMemo(
     () =>
-      query.PatientFile.byId(activePatientFileId)
-        .project({ teeth: true })
-        .exec(),
+      activePatientFileId
+        ? query.PatientFile.byId(activePatientFileId)
+            .project({ teeth: true })
+            .exec()
+        : { teeth: [] },
     [activePatientFileId, query.PatientFile]
   );
 
@@ -136,14 +141,15 @@ export function useTreatmentsByGroup() {
 
     unLockedTeethGroup.forEach((tooth) => {
       const fqlxTooth = patientFile.teeth?.find(
-        (localTooth) => Number(localTooth.name) === tooth.toothNumber
+        (localTooth: { name: any }) =>
+          Number(localTooth.name) === tooth.toothNumber
       );
       const fqlxToothProducts = [
         ...(fqlxTooth?.crown.treatmentDoc.selectedProducts ?? []),
         ...(fqlxTooth?.root.treatmentDoc.selectedProducts ?? []),
       ];
 
-      const filterValues: { [key: string]: string } = {};
+      const filterValues: { [key: string]: string[] } = {};
 
       const isProductSelected = fqlxToothProducts.some(
         (product) =>
@@ -154,7 +160,7 @@ export function useTreatmentsByGroup() {
 
       filterParams?.forEach((filter) => {
         if (filter.name === 'indication') {
-          filterValues[filter.name] = tooth.indication;
+          filterValues[filter.name] = [`"${tooth.indication}"`];
         } else {
           const previousTabProduct = fqlxToothProducts.find(
             ({ selectedProduct }) =>
@@ -162,11 +168,25 @@ export function useTreatmentsByGroup() {
                 filter.productType as keyof typeof selectedProduct
               ]
           );
-          filterValues[filter.name] =
-            // @ts-ignore
-            previousTabProduct?.selectedProduct?.[filter.productType]?.[
-              filter.name
-            ];
+          if (previousTabProduct) {
+            const filterValue =
+              // @ts-ignore
+              previousTabProduct?.selectedProduct?.[filter.productType]?.[
+                filter.name
+              ];
+            const filterValueType = typeof filterValue;
+
+            if (filterValueType === 'string' && filterValue) {
+              filterValues[filter.name] = [`"${filterValue}"`];
+            } else if (
+              filterValueType === 'number' ||
+              filterValueType === 'boolean'
+            ) {
+              filterValues[filter.name] = [filterValue];
+            } else {
+              filterValues[filter.name] = filterValue;
+            }
+          }
         }
       });
 
@@ -211,7 +231,8 @@ export function useTreatmentsByGroup() {
 
         teeth.forEach((tooth) => {
           const fqlxTooth = patientFile.teeth?.find(
-            (localTooth) => Number(localTooth.name) === tooth.toothNumber
+            (localTooth: { name: any }) =>
+              Number(localTooth.name) === tooth.toothNumber
           );
           const fqlxToothProducts = [
             ...(fqlxTooth?.crown.treatmentDoc.selectedProducts ?? []),
@@ -261,7 +282,9 @@ export function useTreatmentsByGroup() {
           treatmentgroup: key,
           teeth: value.teeth,
           open: true,
-          tooltipText: key,
+          tooltipText: Object.values(JSON.parse(key))
+            .join(', ')
+            .replaceAll('"', ''),
           areProductsSelected: value.areProductsSelected,
         };
       }
