@@ -94,6 +94,7 @@ export const ProductCard = ({
                       width='100%'
                       height='100%'
                       gap={1}
+                      wrap={false}
                     >
                       <View direction='row' width='50%' gap={1}>
                         <Text
@@ -111,8 +112,12 @@ export const ProductCard = ({
                         </View.Item>
                       </View>
 
-                      <View direction='row'>
-                        <Text variant='body-3' weight='regular'>
+                      <View direction='row' width='49%'>
+                        <Text
+                          variant='body-3'
+                          weight='regular'
+                          className='break-all'
+                        >
                           {String(value)}
                         </Text>
                       </View>
@@ -138,7 +143,13 @@ export const ProductCard = ({
             justify='end'
             width='24.453%'
           >
-            <View direction='row' align='center' width='100%' gap={1}>
+            <View
+              direction='row'
+              wrap={false}
+              align='center'
+              width='100%'
+              gap={1}
+            >
               <Icon svg={ArrowDownIcon} />
               <Text variant='body-3' weight='medium'>
                 Select {convertCamelCaseToTitleCase(productType)} for:
