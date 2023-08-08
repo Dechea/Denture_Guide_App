@@ -199,13 +199,6 @@ const ProductList = ({
             </Badge>
           );
         })}
-        {Object.entries(productFilters).map(([key, value]) => {
-          return (
-            <Badge key={key} variant="faded">
-              {`${key}: ${value}`}
-            </Badge>
-          );
-        })}
       </View>
 
       {products?.data?.length ? (
