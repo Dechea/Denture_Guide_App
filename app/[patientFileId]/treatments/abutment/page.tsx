@@ -12,6 +12,7 @@ import {
 } from '../../../../zustand/product/interface';
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
 import { useProductStore } from '../../../../zustand/product';
+import NewProductCard from '../../../../components/NewProductCard';
 
 export default function Abutment({
   params,
@@ -37,24 +38,24 @@ export default function Abutment({
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/abutment`}>
       <CarouselTeeth />
-      <View direction='column' width='100%' align='center'>
+      <View direction="column" width="100%" align="center">
         <View
-          direction='row'
+          direction="row"
           gap={12}
-          maxWidth='1280px'
-          width='100%'
-          justify='center'
+          maxWidth="1280px"
+          width="100%"
+          justify="center"
         >
           <View.Item columns={9}>
             <View paddingEnd={6} paddingTop={8}>
               <Suspense
                 fallback={
-                  <View height='70vh'>
+                  <View height="70vh">
                     <Loader />
                   </View>
                 }
               >
-                <ProductList
+                <NewProductCard
                   productType={PRODUCT_TYPE.ABUTMENT}
                   areaType={AREA_TYPE.CROWN}
                   patientFileId={params.patientFileId}
