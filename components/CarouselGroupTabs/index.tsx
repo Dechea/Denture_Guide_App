@@ -6,6 +6,41 @@ import { Actionable, Tabs, Tooltip, View } from 'reshaped';
 import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
 import { useProductStore } from '../../zustand/product';
 import { useEffect } from 'react';
+import { TreatmentVisualization } from '../../zustand/teethDiagram/interface';
+import { TriggerAttributes } from 'reshaped/components/_private/Flyout/Flyout.types';
+
+const ToothGroup = ({
+  active,
+  treatmentToothData,
+  attributes,
+}: {
+  active: boolean;
+  treatmentToothData: TreatmentVisualization[];
+  attributes?: TriggerAttributes;
+}) => {
+  return (
+    <Actionable attributes={attributes}>
+      <View
+        direction="row"
+        borderRadius="small"
+        paddingInline={2}
+        gap={1}
+        className={cx(
+          {
+            'opacity-50': !active,
+            'bg-[--rs-color-background-neutral-faded] !border-[--rs-color-border-neutral-faded]':
+              active,
+          },
+          'hover:border-[--rs-color-border-neutral-faded] border-[1px] border-[rgba(0.0,0.0,0.0,0.0)]'
+        )}
+      >
+        {treatmentToothData?.map((tooth) => {
+          return <CarouselTooth key={tooth.toothNumber} tooth={tooth} />;
+        })}
+      </View>
+    </Actionable>
+  );
+};
 
 export const CarouselGroupTabs = () => {
   const {
@@ -69,39 +104,26 @@ export const CarouselGroupTabs = () => {
 
           return (
             <Tabs.Item value={`${index}`} key={`${tooth.treatmentgroup}`}>
-              <Tooltip
-                position='top'
-                active={isEmptyFilterGroup ? false : undefined}
-                text={toothGroups[index].tooltipText}
-              >
-                {(attributes) => (
-                  <Actionable attributes={attributes}>
-                    <View
-                      direction='row'
-                      borderRadius='small'
-                      paddingInline={2}
-                      gap={1}
-                      className={cx(
-                        {
-                          'opacity-50': !active,
-                          'bg-[--rs-color-background-neutral-faded] !border-[--rs-color-border-neutral-faded]':
-                            active,
-                        },
-                        'hover:border-[--rs-color-border-neutral-faded] border-[1px] border-[rgba(0.0,0.0,0.0,0.0)]'
-                      )}
-                    >
-                      {treatmentToothData?.map((tooth) => {
-                        return (
-                          <CarouselTooth
-                            key={tooth.toothNumber}
-                            tooth={tooth}
-                          />
-                        );
-                      })}
-                    </View>
-                  </Actionable>
-                )}
-              </Tooltip>
+              {tooth.open ? (
+                <ToothGroup
+                  treatmentToothData={treatmentToothData}
+                  active={active}
+                />
+              ) : (
+                <Tooltip
+                  position="top"
+                  active={isEmptyFilterGroup ? false : undefined}
+                  text={toothGroups[index].tooltipText}
+                >
+                  {(attributes) => (
+                    <ToothGroup
+                      treatmentToothData={treatmentToothData}
+                      active={active}
+                      attributes={attributes}
+                    />
+                  )}
+                </Tooltip>
+              )}
             </Tabs.Item>
           );
         })}
