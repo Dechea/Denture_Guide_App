@@ -3,7 +3,7 @@
 import { useQuery } from 'fqlx-client';
 import { useEffect, useMemo } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Card, Text, View } from 'reshaped';
+import { Badge, Card, Text, View } from 'reshaped';
 import { Product, Query, Tooth } from '../../fqlx-generated/typedefs';
 import Loader from '../Loader';
 import { ProductCard } from '../ProductCard';
@@ -162,7 +162,7 @@ const ProductList = ({
 
   return (
     <>
-      <View direction="row" align="center" paddingBottom={6}>
+      <View direction="row" align="center" paddingBottom={3}>
         <View.Item grow>
           <View direction="row" gap={2} align="end">
             <Text variant="featured-3" weight="bold">
@@ -183,6 +183,22 @@ const ProductList = ({
         </View.Item>
 
         <ShareButton />
+      </View>
+
+      <View
+        wrap={true}
+        width={'100%'}
+        direction={'row'}
+        paddingBottom={5}
+        gap={2}
+      >
+        {Object.entries(implicitFilters).map(([key, value]) => {
+          return (
+            <Badge key={key} variant="faded">
+              {`${key}: ${value}`}
+            </Badge>
+          );
+        })}
       </View>
 
       {products?.data?.length ? (
