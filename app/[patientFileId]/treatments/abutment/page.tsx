@@ -46,8 +46,8 @@ export default function Abutment({
           width="100%"
           justify="center"
         >
-          <View.Item columns={{ m: 12, l: 9 }}>
-            <View paddingTop={8}>
+          <View.Item columns={{ s: 12, m: 9 }}>
+            <View paddingTop={5.5} className="mb-x24">
               <Suspense
                 fallback={
                   <View height="70vh">

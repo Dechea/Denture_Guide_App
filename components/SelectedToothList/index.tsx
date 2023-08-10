@@ -12,7 +12,7 @@ export default function SelectedToothList() {
       height="100%"
       padding={6}
       paddingBottom={10}
-      className="border-l border-[--rs-color-border-neutral-faded]"
+      className="max-[640px]:!border-none border-l border-[--rs-color-border-neutral-faded]"
     >
       <View direction="row" align="center" width="100%" gap={1}>
         <Icon svg={ArrowDownIcon} />

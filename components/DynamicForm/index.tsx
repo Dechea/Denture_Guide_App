@@ -1,4 +1,4 @@
-import { Select, Tabs, Text, View } from 'reshaped';
+import { DropdownMenu, Select, Tabs, Text, View } from 'reshaped';
 
 interface DynamicFormProps {
   id: string;
@@ -13,7 +13,7 @@ export default function DynamicForm({
   filters: DynamicFormProps[];
 }) {
   return (
-    <View direction="row" width="100%" gap={10}>
+    <View direction="row" width="100%" gap={10} className="!gap-y-[24px]">
       {filters.map((field) => (
         <>
           {field.type === 'tabs' && (
@@ -31,16 +31,25 @@ export default function DynamicForm({
           )}
           {field.type === 'dropdown' && (
             <View.Item key={field.id} columns={6}>
-              <Text variant="caption-1" weight="regular">
+              <Text variant="caption-1" weight="regular" className="pb-x1">
                 {field.name}
               </Text>
-              <Select
-                variant="headless"
-                name="material"
-                options={field.options.map(({ name, value }) => {
-                  return { label: name, value: value };
-                })}
-              />
+              <DropdownMenu width="trigger">
+                <DropdownMenu.Trigger>
+                  {(attributes) => (
+                    <Select
+                      name={field.name}
+                      inputAttributes={attributes}
+                      placeholder={field.options[0].value}
+                    />
+                  )}
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content>
+                  {field.options.map(({ value }) => (
+                    <DropdownMenu.Item>{value}</DropdownMenu.Item>
+                  ))}
+                </DropdownMenu.Content>
+              </DropdownMenu>
             </View.Item>
           )}
         </>

@@ -2,7 +2,7 @@
 
 import { useQuery } from 'fqlx-client';
 import { useEffect, useMemo } from 'react';
-import { Card, Icon, Image, Text, TextField, View } from 'reshaped';
+import { Badge, Card, Icon, Image, Text, TextField, View } from 'reshaped';
 import { Query } from '../../fqlx-generated/typedefs';
 import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
 import { convertCamelCaseToTitleCase } from '../../utils/helper';
@@ -80,7 +80,7 @@ const NewProductCard = ({ productType, productOptions }: ProductListProps) => {
 
   return (
     <>
-      <View direction="row" align="center" paddingBottom={6} maxWidth="1280px">
+      <View direction="row" align="center" paddingBottom={4} maxWidth="1280px">
         <View.Item grow>
           <View direction="row" gap={2} align="end">
             <Text variant="featured-3" weight="bold">
@@ -110,15 +110,32 @@ const NewProductCard = ({ productType, productOptions }: ProductListProps) => {
         </View.Item>
       </View>
 
+      <View
+        wrap={true}
+        width={'100%'}
+        direction={'row'}
+        paddingBottom={10}
+        gap={2}
+      >
+        {Object.entries(implicitFilters).map(([key, value]) => {
+          return (
+            <Badge key={key} variant="faded">
+              {`${key}: ${value}`}
+            </Badge>
+          );
+        })}
+      </View>
+      {/*  md:!border-solid md:!border-2  md:!border-sky-500 */}
+      {/* border-[rgba(0.0,0.0,0.0,0.0)] */}
       <View width={'100%'} align="center">
-        <Card className="w-full !p-0">
-          <View direction={{ m: 'column', l: 'row' }} align="stretch" gap={10}>
-            <View.Item columns={{ m: 12, l: 8 }}>
+        <Card className="w-full !p-0 max-[640px]:!border-none">
+          <View direction={{ s: 'column', m: 'row' }} align="stretch" gap={10}>
+            <View.Item columns={{ s: 12, m: 8 }}>
               <View padding={6} paddingBottom={10}>
                 <View direction="row" gap={6}>
                   <Image
-                    width="140px"
-                    height="140px"
+                    width={{ s: '120px', l: '140px' }}
+                    height={{ s: '120px', l: '140px' }}
                     src={'/AbutmentImage.svg'}
                     alt={'abutment'}
                     borderRadius="medium"
@@ -130,7 +147,7 @@ const NewProductCard = ({ productType, productOptions }: ProductListProps) => {
                     </Text>
                     <View direction="row" gap={4}>
                       <Text>55</Text>
-                      <View direction="row">
+                      <View direction="row" gap={1}>
                         <Icon
                           svg={BarCodeIcon}
                           size={5}
@@ -162,7 +179,7 @@ const NewProductCard = ({ productType, productOptions }: ProductListProps) => {
             </View.Item>
 
             {/* Selected Teeth */}
-            <View.Item columns={{ m: 12, l: 4 }}>
+            <View.Item columns={{ s: 12, m: 4 }}>
               <View height="100%" backgroundColor="page-faded">
                 <SelectedToothList />
               </View>
