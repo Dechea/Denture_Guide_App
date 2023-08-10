@@ -51,7 +51,7 @@ export default function DynamicForm({
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content>
                   {field.options.map(({ value }) => (
-                    <DropdownMenu.Item>{value}</DropdownMenu.Item>
+                    <DropdownMenu.Item key={value}>{value}</DropdownMenu.Item>
                   ))}
                 </DropdownMenu.Content>
               </DropdownMenu>
