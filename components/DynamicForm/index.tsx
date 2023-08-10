@@ -19,7 +19,12 @@ export default function DynamicForm({
           {field.type === 'tabs' && (
             <View.Item columns={12} key={field.id}>
               <Tabs variant="pills-elevated" itemWidth="equal">
-                <Tabs.List>
+                <Tabs.List
+                  className={
+                    field.options.length > 2 &&
+                    `max-[640px]:[&_[role=tablist]]:flex-col max-[640px]:[&_[role=presentation]]:!w-full max-[640px]:[&_[role=presentation]]:!mx-[var(--rs-tabs-gap)] max-[640px]:[&_[role=tab]>span]:!justify-start`
+                  }
+                >
                   {field?.options.map(({ name, value }) => (
                     <Tabs.Item key={value} value={value}>
                       {name}
