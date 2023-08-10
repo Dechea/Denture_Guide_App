@@ -2,22 +2,31 @@
 
 import { useQuery } from 'fqlx-client';
 import { useEffect, useMemo } from 'react';
-import { Text, TextField, View } from 'reshaped';
+import { Card, Icon, Image, Text, TextField, View } from 'reshaped';
 import { Query } from '../../fqlx-generated/typedefs';
-import { useProductStore } from '../../zustand/product';
-import { formWhereCondition } from './helper';
-import { AREA_TYPE, PRODUCT_TYPE } from '../../zustand/product/interface';
-import { convertCamelCaseToTitleCase } from '../../utils/helper';
 import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
+import { convertCamelCaseToTitleCase } from '../../utils/helper';
+import { useProductStore } from '../../zustand/product';
+import { AREA_TYPE, PRODUCT_TYPE } from '../../zustand/product/interface';
+import DynamicForm from '../DynamicForm';
 import BarCodeIcon from '../Icons/Barcode';
+import SelectedToothList from '../SelectedToothList';
+import { formWhereCondition } from './helper';
 
+interface FormOption {
+  id: string;
+  name: string;
+  type: string;
+  options: { name: string; value: string }[];
+}
 interface ProductListProps {
   productType: PRODUCT_TYPE;
+  productOptions: FormOption[];
   areaType: AREA_TYPE;
   patientFileId: string;
 }
 
-const NewProductCard = ({ productType }: ProductListProps) => {
+const NewProductCard = ({ productType, productOptions }: ProductListProps) => {
   const {
     setProducts,
     searchedProductManufacturerId,
@@ -101,7 +110,66 @@ const NewProductCard = ({ productType }: ProductListProps) => {
         </View.Item>
       </View>
 
-      <View width={'100%'} height={'440px'} borderColor="primary"></View>
+      <View width={'100%'} align="center">
+        <Card className="w-full !p-0">
+          <View direction={{ m: 'column', l: 'row' }} align="stretch" gap={10}>
+            <View.Item columns={{ m: 12, l: 8 }}>
+              <View padding={6} paddingBottom={10}>
+                <View direction="row" gap={6}>
+                  <Image
+                    width="140px"
+                    height="140px"
+                    src={'/AbutmentImage.svg'}
+                    alt={'abutment'}
+                    borderRadius="medium"
+                  />
+
+                  <View gap={2}>
+                    <Text variant="featured-3" weight="medium">
+                      Camlog
+                    </Text>
+                    <View direction="row" gap={4}>
+                      <Text>55</Text>
+                      <View direction="row">
+                        <Icon
+                          svg={BarCodeIcon}
+                          size={5}
+                          color="neutral-faded"
+                        />
+                        <Text
+                          color="neutral-faded"
+                          variant="body-3"
+                          weight="regular"
+                        >
+                          K1043.3011
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+
+                {/* content */}
+                <View.Item grow>
+                  <View
+                    gap={16}
+                    paddingStart={{ l: 41 }}
+                    paddingTop={{ s: 8, l: 0 }}
+                  >
+                    <DynamicForm filters={productOptions} />
+                  </View>
+                </View.Item>
+              </View>
+            </View.Item>
+
+            {/* Selected Teeth */}
+            <View.Item columns={{ m: 12, l: 4 }}>
+              <View height="100%" backgroundColor="page-faded">
+                <SelectedToothList />
+              </View>
+            </View.Item>
+          </View>
+        </Card>
+      </View>
     </>
   );
 };

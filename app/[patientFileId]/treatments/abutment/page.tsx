@@ -2,7 +2,6 @@
 
 import { Suspense, useEffect } from 'react';
 import { Tabs, View } from 'reshaped';
-import ProductList from '../../../../components/ProductList';
 import CarouselTeeth from '../../../../components/CarouselTeeth';
 import Loader from '../../../../components/Loader';
 import {
@@ -13,6 +12,7 @@ import {
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
 import { useProductStore } from '../../../../zustand/product';
 import NewProductCard from '../../../../components/NewProductCard';
+import { abutmentProductOptions } from '../../../../__mocks__/abutment';
 
 export default function Abutment({
   params,
@@ -46,8 +46,8 @@ export default function Abutment({
           width="100%"
           justify="center"
         >
-          <View.Item columns={9}>
-            <View paddingEnd={6} paddingTop={8}>
+          <View.Item columns={{ m: 12, l: 9 }}>
+            <View paddingTop={8}>
               <Suspense
                 fallback={
                   <View height="70vh">
@@ -57,6 +57,7 @@ export default function Abutment({
               >
                 <NewProductCard
                   productType={PRODUCT_TYPE.ABUTMENT}
+                  productOptions={abutmentProductOptions}
                   areaType={AREA_TYPE.CROWN}
                   patientFileId={params.patientFileId}
                 />
