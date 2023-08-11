@@ -14,6 +14,14 @@ import { useProductStore } from '../../../../zustand/product';
 import NewProductCard from '../../../../components/NewProductCard';
 import { abutmentProductOptions } from '../../../../__mocks__/abutment';
 
+const defaultAbutment = {
+  retention: '"SCREWED"',
+  workflows: '"ANALOG"',
+  material: '"TITANIUM"',
+  heightGingiva: '0.5',
+  angle: '0',
+};
+
 export default function Abutment({
   params,
 }: {
@@ -60,6 +68,7 @@ export default function Abutment({
                   productOptions={abutmentProductOptions}
                   areaType={AREA_TYPE.CROWN}
                   patientFileId={params.patientFileId}
+                  defaultProduct={defaultAbutment}
                 />
               </Suspense>
             </View>

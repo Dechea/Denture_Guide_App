@@ -117,16 +117,21 @@ export const abutmentFormDigital = [
   { id: 1, name: 'CAM-Rohling', count: 3 },
 ];
 
-export const abutmentProductOptions = [
+export const abutmentProductOptions: {
+  id: string;
+  name: string;
+  type: string;
+  options: any;
+}[] = [
   {
     id: '5901f64f-35b9-4161-bada-b73b617da1f4',
     name: 'retention',
     type: 'tabs',
     options: [
-      { name: 'Screwed', value: 'Screwed' },
-      { name: 'Cemented', value: 'Cemented' },
-      { name: 'Attachment', value: 'Attachment' },
-      { name: 'Bar', value: 'Bar' },
+      { name: 'Screwed', value: '"SCREWED"' },
+      { name: 'Cemented', value: '"CEMENTED"' },
+      { name: 'Attachment', value: '"ATTACHMENT"' },
+      { name: 'Bar', value: '"BAR"' },
     ],
   },
   {
@@ -134,26 +139,26 @@ export const abutmentProductOptions = [
     name: 'workflows',
     type: 'tabs',
     options: [
-      { name: 'Digital', value: 'Digital' },
-      { name: 'Analog', value: 'Analog' },
+      { name: 'Digital', value: '"DIGITAL"' },
+      { name: 'Analog', value: '"ANALOG"' },
     ],
   },
   {
     id: '8f8cda28-dc23-4200-a18e-4c88672d14f6',
     name: 'material',
     type: 'dropdown',
-    options: [{ name: 'Titanium', value: 'Titanium' }],
+    options: [{ name: 'Titanium', value: '"TITANIUM"' }],
   },
   {
     id: 'c3b1c3da-3808-47bd-8fbf-d6c7e873d6c1',
-    name: 'heightsGingiva',
+    name: 'heightGingiva',
     type: 'dropdown',
-    options: [{ name: '0.4mm', value: '0.4mm' }],
+    options: [{ name: '0.4mm', value: '"0.4mm"' }],
   },
   {
     id: 'e00deddd-87ff-4ef6-9675-e3f99791f1d5',
     name: 'angle',
     type: 'dropdown',
-    options: [{ name: '20°', value: '20°' }],
+    options: [{ name: '0°', value: '0' }],
   },
 ];

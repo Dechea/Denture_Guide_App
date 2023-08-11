@@ -1,17 +1,18 @@
 'use client';
 
 import { useQuery } from 'fqlx-client';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Badge, Card, Icon, Image, Text, TextField, View } from 'reshaped';
-import { Query } from '../../fqlx-generated/typedefs';
+import { Query, Tooth } from '../../fqlx-generated/typedefs';
 import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
 import { convertCamelCaseToTitleCase } from '../../utils/helper';
-import { useProductStore } from '../../zustand/product';
+import { SelectedProducts, useProductStore } from '../../zustand/product';
 import { AREA_TYPE, PRODUCT_TYPE } from '../../zustand/product/interface';
 import DynamicForm from '../DynamicForm';
 import BarCodeIcon from '../Icons/Barcode';
 import SelectedToothList from '../SelectedToothList';
-import { formWhereCondition } from './helper';
+import { formBaseCondition, formWhereCondition } from './helper';
+import { useProductCrudOps } from '../../hooks/useProductCrudOps';
 
 interface FormOption {
   id: string;
@@ -24,59 +25,156 @@ interface ProductListProps {
   productOptions: FormOption[];
   areaType: AREA_TYPE;
   patientFileId: string;
+  defaultProduct: { [key: string]: string };
 }
 
-const NewProductCard = ({ productType, productOptions }: ProductListProps) => {
+const NewProductCard = ({
+  productType,
+  defaultProduct,
+  productOptions,
+  areaType,
+  patientFileId,
+}: ProductListProps) => {
   const {
-    setProducts,
     searchedProductManufacturerId,
-    productFilters,
     activeProductTab,
     availableTeethByProductType,
     implicitFilters,
+    activeTreatmentGroup,
+    setActiveTreatmentGroup,
   } = useProductStore();
-  const { patientFile, getToothGroups } = useTreatmentsByGroup();
+  const { patientFile, toothGroups, getToothGroups } = useTreatmentsByGroup();
+  const { addOrUpdateProductInFqlx } = useProductCrudOps({ patientFileId });
+  const [productState, setProductState] = useState(defaultProduct);
 
   const query = useQuery<Query>();
+
+  const getMappedTeeth = (
+    teeth: Tooth[],
+    productToDelete: string,
+    toothNumber: number,
+    selectedProducts: SelectedProducts
+  ) => {
+    teeth.forEach((tooth: Tooth) => {
+      const localToothNumber = Number(tooth.name);
+
+      for (const area of Object.values(AREA_TYPE)) {
+        const toothInArea =
+          area === areaType && localToothNumber === toothNumber;
+
+        // remove old, unselected product
+        if (toothInArea) {
+          tooth[area].treatmentDoc.selectedProducts = tooth[
+            area
+          ].treatmentDoc.selectedProducts?.filter(
+            ({ selectedProduct }) => selectedProduct?.id !== productToDelete
+          );
+        }
+
+        // convert existing products from object to ref
+        if (tooth[area].treatmentDoc.selectedProducts?.length) {
+          tooth[area].treatmentDoc.selectedProducts?.forEach((product) => {
+            // @ts-expect-error
+            product.selectedProduct = `Product.byId("${product.selectedProduct?.id}")`;
+          });
+        } else {
+          tooth[area].treatmentDoc.selectedProducts = [];
+        }
+
+        // add new product
+        if (toothInArea && selectedProducts[toothNumber]) {
+          tooth[area].treatmentDoc.selectedProducts?.push({
+            // @ts-expect-error
+            selectedProduct: `Product.byId("${selectedProducts[toothNumber]}")`,
+            quantity: 1,
+          });
+        }
+      }
+    });
+  };
 
   const productQuery = useMemo(
     () =>
       query.Product.all().where(
-        formWhereCondition(
-          searchedProductManufacturerId,
-          productFilters,
-          implicitFilters,
-          productType
-        )
+        formWhereCondition(implicitFilters, productType, productState)
       ),
-    [searchedProductManufacturerId, productFilters, implicitFilters]
+    [searchedProductManufacturerId, implicitFilters, productState]
   );
 
-  const fqlxProducts = useMemo(
-    () => productQuery.exec(),
+  const baseQuery = useMemo(() => {
+    return query.Product.all().where(
+      formBaseCondition(implicitFilters, productType)
+    );
+  }, [implicitFilters, productType]);
 
-    [productQuery]
-  );
+  const fqlxProducts = useMemo(() => productQuery.exec(), [productQuery]);
 
   const productsCount = useMemo(
     () => productQuery.count().exec(),
     [productQuery]
   );
 
-  useEffect(() => {
-    setProducts(fqlxProducts);
-  }, [fqlxProducts.data]);
+  const filterOptions = useMemo(() => {
+    const localOptions: {
+      id: string;
+      name: string;
+      type: string;
+      options: string[];
+    }[] = [];
+    productOptions.map(({ name }) => {
+      let options = baseQuery
+        .map(`(product) => product.${productType}.${name}`)
+        .distinct<string>()
+        .exec().data;
+      options = options.map((option) => {
+        return typeof option === 'string' ? `"${option}"` : `${option}`;
+      });
+      localOptions.push({
+        ...(productOptions.find(
+          (productOption) => productOption.name === name
+        ) || {
+          id: '',
+          name: '',
+          type: '',
+        }),
+        options,
+      });
+    });
+    return localOptions;
+  }, [baseQuery, productState]);
 
   useEffect(() => {
     getToothGroups();
   }, [patientFile, activeProductTab, availableTeethByProductType]);
 
-  // Reset products in state on component unmount
-  useEffect(() => {
-    return () => {
-      setProducts({ data: [] });
-    };
-  }, []);
+  const updateProductState = (name: string, value: string) => {
+    console.log(name, value);
+    setProductState((prevDefault) => ({
+      ...prevDefault,
+      [name]: value,
+    }));
+  };
+
+  const handleClickOnProduct = (
+    productToDelete: string,
+    toothNumber: number,
+    selectedProducts: SelectedProducts
+  ) => {
+    addOrUpdateProductInFqlx((teeth) => {
+      getMappedTeeth(teeth, productToDelete, toothNumber, selectedProducts);
+    });
+
+    const activeTreatmentGroupIndex = Number(activeTreatmentGroup);
+
+    if (
+      toothGroups[activeTreatmentGroupIndex].teeth.every(
+        (tooth) => selectedProducts[`${tooth.toothNumber}`]
+      ) &&
+      activeTreatmentGroupIndex + 1 < toothGroups.length
+    ) {
+      setActiveTreatmentGroup(activeTreatmentGroupIndex + 1);
+    }
+  };
 
   return (
     <>
@@ -143,10 +241,16 @@ const NewProductCard = ({ productType, productOptions }: ProductListProps) => {
 
                   <View gap={2}>
                     <Text variant="featured-3" weight="medium">
-                      Camlog
+                      {fqlxProducts?.data?.[0]?.localizations?.[1].name}
                     </Text>
                     <View direction="row" gap={4}>
-                      <Text>55</Text>
+                      <Text>
+                        {
+                          fqlxProducts?.data?.[0]?.localizations?.[1].price
+                            .amount
+                        }{' '}
+                        €
+                      </Text>
                       <View direction="row" gap={1}>
                         <Icon
                           svg={BarCodeIcon}
@@ -158,7 +262,7 @@ const NewProductCard = ({ productType, productOptions }: ProductListProps) => {
                           variant="body-3"
                           weight="regular"
                         >
-                          K1043.3011
+                          {fqlxProducts?.data?.[0]?.manufacturerProductId}
                         </Text>
                       </View>
                     </View>
@@ -172,7 +276,11 @@ const NewProductCard = ({ productType, productOptions }: ProductListProps) => {
                     paddingStart={{ l: 41 }}
                     paddingTop={{ s: 8, l: 0 }}
                   >
-                    <DynamicForm filters={productOptions} />
+                    <DynamicForm
+                      filters={filterOptions}
+                      state={productState}
+                      updateState={updateProductState}
+                    />
                   </View>
                 </View.Item>
               </View>
@@ -181,7 +289,10 @@ const NewProductCard = ({ productType, productOptions }: ProductListProps) => {
             {/* Selected Teeth */}
             <View.Item columns={{ s: 12, m: 4 }}>
               <View height="100%" backgroundColor="page-faded">
-                <SelectedToothList />
+                <SelectedToothList
+                  productId={fqlxProducts?.data?.[0]?.manufacturerProductId}
+                  onClickProduct={handleClickOnProduct}
+                />
               </View>
             </View.Item>
           </View>
