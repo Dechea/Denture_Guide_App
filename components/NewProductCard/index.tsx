@@ -18,14 +18,12 @@ interface Field {
   id: string;
   name: string;
   type: string;
-  options: { name: string; value: string }[];
 }
 interface NewProductCardProps {
   productType: PRODUCT_TYPE;
   productFields: Field[];
   areaType: AREA_TYPE;
   patientFileId: string;
-  defaultProduct: { [key: string]: string };
 }
 
 const NewProductCard = ({
@@ -127,20 +125,25 @@ const NewProductCard = ({
   };
 
   useMemo(() => {
-    if (fqlxProducts.data.length == 0) {
-      const localProduct = defaultProductQuery.exec();
-      const defaultProduct: { [key: string]: string } = {};
-      Object.keys(productState).forEach(
-        (key) =>
-          (defaultProduct[key] = formatFqlxOption(
-            key,
-            // @ts-ignore
-            localProduct?.abutment?.[key]
-          ))
-      );
+    let localProduct = {};
 
-      setProductState(defaultProduct);
+    if (fqlxProducts.data.length == 0) {
+      localProduct = defaultProductQuery.exec();
+    } else if (Object.keys(productState).length == 0) {
+      localProduct = fqlxProducts.data[0];
     }
+
+    const defaultProduct: { [key: string]: string } = {};
+    productFields.forEach(
+      ({ name }) =>
+        (defaultProduct[name] = formatFqlxOption(
+          name,
+          // @ts-ignore
+          localProduct?.abutment?.[name]
+        ))
+    );
+
+    setProductState(defaultProduct);
   }, [defaultProductQuery]);
 
   const filterOptions = useMemo(() => {
