@@ -30,7 +30,6 @@ interface ProductListProps {
 
 const NewProductCard = ({
   productType,
-  defaultProduct,
   productOptions,
   areaType,
   patientFileId,
@@ -45,7 +44,8 @@ const NewProductCard = ({
   } = useProductStore();
   const { patientFile, toothGroups, getToothGroups } = useTreatmentsByGroup();
   const { addOrUpdateProductInFqlx } = useProductCrudOps({ patientFileId });
-  const [productState, setProductState] = useState(defaultProduct);
+  const [productState, setProductState] = useState({});
+  const [lastOptionClicked, setLastOptionClicked] = useState<string>('');
 
   const query = useQuery<Query>();
 
@@ -101,6 +101,17 @@ const NewProductCard = ({
     [searchedProductManufacturerId, implicitFilters, productState]
   );
 
+  const defaultProductQuery = useMemo(
+    () =>
+      query.Product.all().firstWhere(
+        formWhereCondition(implicitFilters, productType, {
+          [lastOptionClicked]:
+            productState[lastOptionClicked as keyof typeof productState],
+        })
+      ),
+    [lastOptionClicked]
+  );
+
   const baseQuery = useMemo(() => {
     return query.Product.all().where(
       formBaseCondition(implicitFilters, productType)
@@ -114,6 +125,30 @@ const NewProductCard = ({
     [productQuery]
   );
 
+  const formatFqlxOption = (category: string, value: string) => {
+    if (category === 'workflows') {
+      value = value[0];
+    }
+    return typeof value === 'string' ? `"${value}"` : `${value}`;
+  };
+
+  useMemo(() => {
+    if (fqlxProducts.data.length == 0) {
+      const localProduct = defaultProductQuery.exec();
+      const defaultProduct: { [key: string]: string } = {};
+      Object.keys(productState).forEach(
+        (key) =>
+          (defaultProduct[key] = formatFqlxOption(
+            key,
+            // @ts-ignore
+            localProduct?.abutment?.[key]
+          ))
+      );
+
+      setProductState(defaultProduct);
+    }
+  }, [defaultProductQuery]);
+
   const filterOptions = useMemo(() => {
     const localOptions: {
       id: string;
@@ -126,12 +161,7 @@ const NewProductCard = ({
         .map(`(product) => product.${productType}.${name}`)
         .distinct<string>()
         .exec().data;
-      options = options.map((option) => {
-        if (name === 'workflows') {
-          option = option[0];
-        }
-        return typeof option === 'string' ? `"${option}"` : `${option}`;
-      });
+      options = options.map((option) => formatFqlxOption(name, option));
       localOptions.push({
         ...(productOptions.find(
           (productOption) => productOption.name === name
@@ -150,12 +180,13 @@ const NewProductCard = ({
     getToothGroups();
   }, [patientFile, activeProductTab, availableTeethByProductType]);
 
-  const updateProductState = (name: string, value: string) => {
-    console.log(name, value);
+  const handleOptionClick = (category: string, value: string) => {
     setProductState((prevDefault) => ({
       ...prevDefault,
-      [name]: value,
+      [category]: value,
     }));
+
+    setLastOptionClicked(category);
   };
 
   const handleClickOnProduct = (
@@ -226,8 +257,6 @@ const NewProductCard = ({
           );
         })}
       </View>
-      {/*  md:!border-solid md:!border-2  md:!border-sky-500 */}
-      {/* border-[rgba(0.0,0.0,0.0,0.0)] */}
       <View width={'100%'} align="center">
         <Card className="w-full !p-0 max-[640px]:!border-none">
           <View direction={{ s: 'column', m: 'row' }} align="stretch" gap={10}>
@@ -241,7 +270,6 @@ const NewProductCard = ({
                     alt={'abutment'}
                     borderRadius="medium"
                   />
-
                   <View gap={2}>
                     <Text variant="featured-3" weight="medium">
                       {fqlxProducts?.data?.[0]?.localizations?.[1].name}
@@ -271,8 +299,6 @@ const NewProductCard = ({
                     </View>
                   </View>
                 </View>
-
-                {/* content */}
                 <View.Item grow>
                   <View
                     gap={16}
@@ -282,14 +308,12 @@ const NewProductCard = ({
                     <DynamicForm
                       filters={filterOptions}
                       state={productState}
-                      updateState={updateProductState}
+                      updateState={handleOptionClick}
                     />
                   </View>
                 </View.Item>
               </View>
             </View.Item>
-
-            {/* Selected Teeth */}
             <View.Item columns={{ s: 12, m: 4 }}>
               <View height="100%" backgroundColor="page-faded">
                 <SelectedToothList
