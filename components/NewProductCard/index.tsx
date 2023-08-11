@@ -121,18 +121,21 @@ const NewProductCard = ({
       type: string;
       options: string[];
     }[] = [];
-    productOptions.map(({ name }) => {
+    productOptions.forEach(({ name }) => {
       let options = baseQuery
         .map(`(product) => product.${productType}.${name}`)
         .distinct<string>()
         .exec().data;
       options = options.map((option) => {
+        if (name === 'workflows') {
+          option = option[0];
+        }
         return typeof option === 'string' ? `"${option}"` : `${option}`;
       });
       localOptions.push({
         ...(productOptions.find(
           (productOption) => productOption.name === name
-        ) || {
+        ) ?? {
           id: '',
           name: '',
           type: '',
