@@ -12,7 +12,7 @@ import {
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
 import { useProductStore } from '../../../../zustand/product';
 import NewProductCard from '../../../../components/NewProductCard';
-import { abutmentProductOptions } from '../../../../__mocks__/abutment';
+import { abutmentProductFields } from './filterFields';
 
 const defaultAbutment = {
   retention: '"SCREWED"',
@@ -65,7 +65,7 @@ export default function Abutment({
               >
                 <NewProductCard
                   productType={PRODUCT_TYPE.ABUTMENT}
-                  productOptions={abutmentProductOptions}
+                  productFields={abutmentProductFields}
                   areaType={AREA_TYPE.CROWN}
                   patientFileId={params.patientFileId}
                   defaultProduct={defaultAbutment}

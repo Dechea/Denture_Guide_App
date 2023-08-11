@@ -1,37 +1,30 @@
 import { DropdownMenu, Select, Tabs, Text, View } from 'reshaped';
 
-interface Filter {
+interface Field {
   id: string;
   name: string;
   type: string;
   options: string[];
 }
 
-interface DynamicFormProps {
-  filters: Filter[];
-  state: { [key: string]: string };
-  updateState: (name: string, value: string) => void;
+interface FormProps {
+  fields: Field[];
+  values: { [key: string]: string };
+  onChangeValue: (name: string, value: string) => void;
 }
 
-export default function DynamicForm({
-  filters,
-  state,
-  updateState,
-}: DynamicFormProps) {
-  const handleChange = (name: string, value: string) =>
-    updateState(name, value);
-
+export default function Form({ fields, values, onChangeValue }: FormProps) {
   return (
     <View direction="row" width="100%" gap={10} className="!gap-y-[24px]">
-      {filters.map((field) => (
+      {fields.map((field) => (
         <>
           {field.type === 'tabs' && (
             <View.Item columns={12} key={field.id}>
               <Tabs
-                value={state[field.name]}
+                value={values[field.name]}
                 variant="pills-elevated"
                 itemWidth="equal"
-                onChange={({ value }) => handleChange(field.name, value)}
+                onChange={({ value }) => onChangeValue(field.name, value)}
               >
                 <Tabs.List
                   className={
@@ -59,8 +52,7 @@ export default function DynamicForm({
                     <Select
                       name={field.name}
                       inputAttributes={attributes}
-                      placeholder={state[field.name]}
-                      value={state[field.name]}
+                      value={values[field.name]}
                     />
                   )}
                 </DropdownMenu.Trigger>
@@ -68,7 +60,7 @@ export default function DynamicForm({
                   {field.options.map((value) => (
                     <DropdownMenu.Item
                       key={value}
-                      onClick={() => handleChange(field.name, value)}
+                      onClick={() => onChangeValue(field.name, value)}
                     >
                       {value}
                     </DropdownMenu.Item>
