@@ -8,21 +8,21 @@ import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
 import { convertCamelCaseToTitleCase } from '../../utils/helper';
 import { SelectedProducts, useProductStore } from '../../zustand/product';
 import { AREA_TYPE, PRODUCT_TYPE } from '../../zustand/product/interface';
-import DynamicForm from '../DynamicForm';
+import Form from '../Form';
 import BarCodeIcon from '../Icons/Barcode';
 import SelectedToothList from '../SelectedToothList';
 import { formBaseCondition, formWhereCondition } from './helper';
 import { useProductCrudOps } from '../../hooks/useProductCrudOps';
 
-interface FormOption {
+interface Field {
   id: string;
   name: string;
   type: string;
   options: { name: string; value: string }[];
 }
-interface ProductListProps {
+interface NewProductCardProps {
   productType: PRODUCT_TYPE;
-  productOptions: FormOption[];
+  productFields: Field[];
   areaType: AREA_TYPE;
   patientFileId: string;
   defaultProduct: { [key: string]: string };
@@ -30,10 +30,10 @@ interface ProductListProps {
 
 const NewProductCard = ({
   productType,
-  productOptions,
+  productFields,
   areaType,
   patientFileId,
-}: ProductListProps) => {
+}: NewProductCardProps) => {
   const {
     searchedProductManufacturerId,
     activeProductTab,
@@ -112,12 +112,6 @@ const NewProductCard = ({
     [lastOptionClicked]
   );
 
-  const baseQuery = useMemo(() => {
-    return query.Product.all().where(
-      formBaseCondition(implicitFilters, productType)
-    );
-  }, [implicitFilters, productType]);
-
   const fqlxProducts = useMemo(() => productQuery.exec(), [productQuery]);
 
   const productsCount = useMemo(
@@ -156,14 +150,16 @@ const NewProductCard = ({
       type: string;
       options: string[];
     }[] = [];
-    productOptions.forEach(({ name }) => {
-      let options = baseQuery
+
+    productFields.forEach(({ name }) => {
+      let options = query.Product.all()
+        .where(formBaseCondition(implicitFilters, productType))
         .map(`(product) => product.${productType}.${name}`)
         .distinct<string>()
         .exec().data;
       options = options.map((option) => formatFqlxOption(name, option));
       localOptions.push({
-        ...(productOptions.find(
+        ...(productFields.find(
           (productOption) => productOption.name === name
         ) ?? {
           id: '',
@@ -173,8 +169,9 @@ const NewProductCard = ({
         options,
       });
     });
+
     return localOptions;
-  }, [baseQuery, productState]);
+  }, [implicitFilters, productType, productState]);
 
   useEffect(() => {
     getToothGroups();
@@ -257,6 +254,7 @@ const NewProductCard = ({
           );
         })}
       </View>
+
       <View width={'100%'} align="center">
         <Card className="w-full !p-0 max-[640px]:!border-none">
           <View direction={{ s: 'column', m: 'row' }} align="stretch" gap={10}>
@@ -270,7 +268,8 @@ const NewProductCard = ({
                     alt={'abutment'}
                     borderRadius="medium"
                   />
-                  <View gap={2}>
+
+                  <View gap={2} grow>
                     <Text variant="featured-3" weight="medium">
                       {fqlxProducts?.data?.[0]?.localizations?.[1].name}
                     </Text>
@@ -305,10 +304,10 @@ const NewProductCard = ({
                     paddingStart={{ l: 41 }}
                     paddingTop={{ s: 8, l: 0 }}
                   >
-                    <DynamicForm
-                      filters={filterOptions}
-                      state={productState}
-                      updateState={handleOptionClick}
+                    <Form
+                      fields={filterOptions}
+                      values={productState}
+                      onChangeValue={handleOptionClick}
                     />
                   </View>
                 </View.Item>

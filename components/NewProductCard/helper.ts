@@ -24,6 +24,7 @@ const getBaseConditions = (
       }
     }
   });
+
   return conditions;
 };
 
@@ -50,5 +51,6 @@ export const formBaseCondition = (
   productType: PRODUCT_TYPE
 ) => {
   const conditions = getBaseConditions(implicitFilters, productType, []);
+
   return conditions.join(' && ');
 };
