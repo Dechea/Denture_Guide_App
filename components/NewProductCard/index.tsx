@@ -4,6 +4,7 @@ import { useQuery } from 'fqlx-client';
 import { useEffect, useMemo, useState } from 'react';
 import { Badge, Card, Icon, Image, Text, TextField, View } from 'reshaped';
 import { Query, Tooth } from '../../fqlx-generated/typedefs';
+import { useProductCrudOps } from '../../hooks/useProductCrudOps';
 import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
 import { convertCamelCaseToTitleCase } from '../../utils/helper';
 import { SelectedProducts, useProductStore } from '../../zustand/product';
@@ -12,7 +13,6 @@ import Form from '../Form';
 import BarCodeIcon from '../Icons/Barcode';
 import SelectedToothList from '../SelectedToothList';
 import { formBaseCondition, formWhereCondition } from './helper';
-import { useProductCrudOps } from '../../hooks/useProductCrudOps';
 
 interface Field {
   id: string;
@@ -43,7 +43,10 @@ const NewProductCard = ({
   const { patientFile, toothGroups, getToothGroups } = useTreatmentsByGroup();
   const { addOrUpdateProductInFqlx } = useProductCrudOps({ patientFileId });
   const [productState, setProductState] = useState({});
-  const [lastOptionClicked, setLastOptionClicked] = useState<string>('');
+  const [lastOptionClicked, setLastOptionClicked] = useState<{
+    category: string;
+    state: any;
+  }>({ category: '', state: null });
 
   const query = useQuery<Query>();
 
@@ -99,17 +102,6 @@ const NewProductCard = ({
     [searchedProductManufacturerId, implicitFilters, productState]
   );
 
-  const defaultProductQuery = useMemo(
-    () =>
-      query.Product.all().firstWhere(
-        formWhereCondition(implicitFilters, productType, {
-          [lastOptionClicked]:
-            productState[lastOptionClicked as keyof typeof productState],
-        })
-      ),
-    [lastOptionClicked]
-  );
-
   const fqlxProducts = useMemo(() => productQuery.exec(), [productQuery]);
 
   const productsCount = useMemo(
@@ -126,25 +118,39 @@ const NewProductCard = ({
 
   useMemo(() => {
     let localProduct = {};
+    let toUpdateProduct = false;
 
-    if (fqlxProducts.data.length == 0) {
-      localProduct = defaultProductQuery.exec();
+    if (fqlxProducts?.data?.length == 0) {
+      localProduct = query.Product.all()
+        .firstWhere(
+          formWhereCondition(implicitFilters, productType, {
+            [lastOptionClicked.category]:
+              productState[
+                lastOptionClicked.category as keyof typeof productState
+              ],
+          })
+        )
+        .exec();
+      toUpdateProduct = true;
     } else if (Object.keys(productState).length == 0) {
       localProduct = fqlxProducts.data[0];
+      toUpdateProduct = true;
     }
 
-    const defaultProduct: { [key: string]: string } = {};
-    productFields.forEach(
-      ({ name }) =>
-        (defaultProduct[name] = formatFqlxOption(
-          name,
-          // @ts-ignore
-          localProduct?.abutment?.[name]
-        ))
-    );
+    if (toUpdateProduct) {
+      const defaultProduct: { [key: string]: string } = {};
+      productFields.forEach(
+        ({ name }) =>
+          (defaultProduct[name] = formatFqlxOption(
+            name,
+            // @ts-ignore
+            localProduct?.[productType]?.[name]
+          ))
+      );
 
-    setProductState(defaultProduct);
-  }, [defaultProductQuery]);
+      setProductState(() => defaultProduct);
+    }
+  }, [lastOptionClicked]);
 
   const filterOptions = useMemo(() => {
     const localOptions: {
@@ -155,12 +161,14 @@ const NewProductCard = ({
     }[] = [];
 
     productFields.forEach(({ name }) => {
-      let options = query.Product.all()
+      const fqlxOptions = query.Product.all()
         .where(formBaseCondition(implicitFilters, productType))
         .map(`(product) => product.${productType}.${name}`)
         .distinct<string>()
         .exec().data;
-      options = options.map((option) => formatFqlxOption(name, option));
+      const options = fqlxOptions.map((option) =>
+        formatFqlxOption(name, option)
+      );
       localOptions.push({
         ...(productFields.find(
           (productOption) => productOption.name === name
@@ -186,7 +194,7 @@ const NewProductCard = ({
       [category]: value,
     }));
 
-    setLastOptionClicked(category);
+    setLastOptionClicked({ category, state: productState });
   };
 
   const handleClickOnProduct = (
