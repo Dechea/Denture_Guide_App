@@ -152,12 +152,14 @@ const NewProductCard = ({
     }
   }, [lastOptionClicked]);
 
+  console.log({ productFields });
+
   const filterOptions = useMemo(() => {
     const localOptions: {
       id: string;
       name: string;
       type: string;
-      options: string[];
+      options: { isAvailable: boolean; name: string; value: string }[];
     }[] = [];
 
     productFields.forEach(({ name }) => {
@@ -166,9 +168,24 @@ const NewProductCard = ({
         .map(`(product) => product.${productType}.${name}`)
         .distinct<string>()
         .exec().data;
-      const options = fqlxOptions.map((option) =>
-        formatFqlxOption(name, option)
-      );
+      const options = fqlxOptions.map((option) => {
+        if (name === 'workflows') {
+          option = option[0];
+        }
+        option = typeof option === 'string' ? `"${option}"` : `${option}`;
+        const stateWithOption = { ...productState, [name]: option };
+        const matching = query.Product.all()
+          .where(
+            formWhereCondition(implicitFilters, productType, stateWithOption)
+          )
+          .count()
+          .exec();
+        return {
+          isAvailable: Boolean(matching),
+          name: option,
+          value: option,
+        };
+      });
       localOptions.push({
         ...(productFields.find(
           (productOption) => productOption.name === name
@@ -217,6 +234,8 @@ const NewProductCard = ({
       setActiveTreatmentGroup(activeTreatmentGroupIndex + 1);
     }
   };
+
+  console.log(filterOptions);
 
   return (
     <>

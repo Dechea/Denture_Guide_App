@@ -4,7 +4,7 @@ interface Field {
   id: string;
   name: string;
   type: string;
-  options: string[];
+  options: { isAvailable: boolean; name: string; value: string }[];
 }
 
 interface FormProps {
@@ -32,9 +32,11 @@ export default function Form({ fields, values, onChangeValue }: FormProps) {
                     `max-[640px]:[&_[role=tablist]]:flex-col max-[640px]:[&_[role=presentation]]:!w-full max-[640px]:[&_[role=presentation]]:!mx-[var(--rs-tabs-gap)] max-[640px]:[&_[role=tab]>span]:!justify-start`
                   }
                 >
-                  {field?.options.map((value) => (
+                  {field?.options.map(({ isAvailable, name, value }) => (
                     <Tabs.Item key={value} value={value}>
-                      {value}
+                      <Text color={!isAvailable ? 'disabled' : 'neutral'}>
+                        {name}
+                      </Text>
                     </Tabs.Item>
                   ))}
                 </Tabs.List>
@@ -58,12 +60,14 @@ export default function Form({ fields, values, onChangeValue }: FormProps) {
                   )}
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content>
-                  {field.options.map((value) => (
+                  {field.options.map(({ isAvailable, name, value }) => (
                     <DropdownMenu.Item
                       key={value}
                       onClick={() => onChangeValue(field.name, value)}
                     >
-                      {value}
+                      <Text color={!isAvailable ? 'disabled' : 'neutral'}>
+                        {name}
+                      </Text>
                     </DropdownMenu.Item>
                   ))}
                 </DropdownMenu.Content>
