@@ -91,6 +91,7 @@ const mapImplicitFilters: MapImplicitFiltersProps = {
     implicitFilters.implantLine,
     implicitFilters.abutmentLine,
     implicitFilters.diameterPlatform,
+    implicitFilters.platformSwitch,
   ],
   [PRODUCT_TYPE.IMPRESSION]: [
     implicitFilters.implantLine,
