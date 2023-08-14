@@ -2,11 +2,8 @@
 
 import { Suspense, useEffect } from 'react';
 import { Tabs, View } from 'reshaped';
-import ProductList from '../../../../components/ProductList';
-import { ProductFilterForm } from '../../../../components/ProductFilterForm';
 import CarouselTeeth from '../../../../components/CarouselTeeth';
 import Loader from '../../../../components/Loader';
-import { filterCategories } from './filterCategories';
 import {
   AREA_TYPE,
   TREATMENT_GROUP,
@@ -14,6 +11,8 @@ import {
 } from '../../../../zustand/product/interface';
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
 import { useProductStore } from '../../../../zustand/product';
+import NewProductCard from '../../../../components/NewProductCard';
+import { abutmentProductFields } from './filterFields';
 
 export default function Abutment({
   params,
@@ -47,13 +46,8 @@ export default function Abutment({
           width="100%"
           justify="center"
         >
-          <View.Item columns={3} className="sticky !top-[180px]">
-            <View
-              paddingStart={6}
-              paddingTop={8}
-              height="calc(100vh - 240px)"
-              className="overflow-y-auto scrollbar-0"
-            >
+          <View.Item columns={{ s: 12, m: 9 }}>
+            <View paddingTop={5.5} className="mb-x24">
               <Suspense
                 fallback={
                   <View height="70vh">
@@ -61,25 +55,9 @@ export default function Abutment({
                   </View>
                 }
               >
-                <ProductFilterForm
-                  filterCategories={filterCategories}
+                <NewProductCard
                   productType={PRODUCT_TYPE.ABUTMENT}
-                />
-              </Suspense>
-            </View>
-          </View.Item>
-
-          <View.Item columns={9}>
-            <View paddingEnd={6} paddingTop={8}>
-              <Suspense
-                fallback={
-                  <View height="70vh">
-                    <Loader />
-                  </View>
-                }
-              >
-                <ProductList
-                  productType={PRODUCT_TYPE.ABUTMENT}
+                  productFields={abutmentProductFields}
                   areaType={AREA_TYPE.CROWN}
                   patientFileId={params.patientFileId}
                 />
