@@ -28,4 +28,9 @@ export const abutmentProductFields: {
     name: 'angle',
     type: 'dropdown',
   },
+  {
+    id: 'cf3ddee0-06a4-4e26-9675-e3f99791f1d5',
+    name: 'type',
+    type: 'tabs',
+  },
 ];
