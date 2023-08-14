@@ -346,7 +346,7 @@ const NewProductCard = ({
             <View.Item columns={{ s: 12, m: 4 }}>
               <View height="100%" backgroundColor="page-faded">
                 <SelectedToothList
-                  productId={fqlxProducts?.data?.[0]?.manufacturerProductId}
+                  productId={fqlxProducts?.data?.[0]?.id ?? ''}
                   onClickProduct={handleClickOnProduct}
                 />
               </View>
