@@ -1,4 +1,4 @@
-import { DropdownMenu, Select, Tabs, Text, View } from 'reshaped';
+import { DropdownMenu, Select, Tabs, Text, View, Switch } from 'reshaped';
 
 interface Field {
   id: string;
@@ -14,6 +14,7 @@ interface FormProps {
 }
 
 export default function Form({ fields, values, onChangeValue }: FormProps) {
+  console.log(values);
   return (
     <View direction="row" width="100%" gap={10} className="!gap-y-[24px]">
       {fields.map((field) => (
@@ -41,6 +42,24 @@ export default function Form({ fields, values, onChangeValue }: FormProps) {
                   ))}
                 </Tabs.List>
               </Tabs>
+            </View.Item>
+          )}
+          {field.type === 'switch' && (
+            <View.Item key={field.id} columns={12}>
+              <View>
+                <Switch
+                  name="switch"
+                  checked={Boolean(values[field.name] === 'true')}
+                  onChange={({ checked }) => {
+                    console.log({ checked });
+                    onChangeValue(field.name, `${checked}`);
+                  }}
+                >
+                  <Text variant="body-3" weight="regular">
+                    {field.name}
+                  </Text>
+                </Switch>
+              </View>
             </View.Item>
           )}
           {field.type === 'dropdown' && (
