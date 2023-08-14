@@ -52,6 +52,7 @@ export default function Form({ fields, values, onChangeValue }: FormProps) {
                     <Select
                       name={field.name}
                       inputAttributes={attributes}
+                      placeholder={values[field.name]}
                       value={values[field.name]}
                     />
                   )}
