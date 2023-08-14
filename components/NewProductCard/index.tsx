@@ -99,7 +99,7 @@ const NewProductCard = ({
       query.Product.all().where(
         formWhereCondition(implicitFilters, productType, productState)
       ),
-    [searchedProductManufacturerId, implicitFilters, productState]
+    [implicitFilters, productState]
   );
 
   const fqlxProducts = useMemo(() => productQuery.exec(), [productQuery]);
@@ -109,8 +109,9 @@ const NewProductCard = ({
     [productQuery]
   );
 
-  const formatFqlxOption = (category: string, value: string) => {
+  const formatFqlxOption = (category: string, value: any) => {
     if (category === 'workflows') {
+      console.log(category, typeof value, value);
       value = value[0];
     }
     return typeof value === 'string' ? `"${value}"` : `${value}`;
@@ -139,20 +140,22 @@ const NewProductCard = ({
 
     if (toUpdateProduct) {
       const defaultProduct: { [key: string]: string } = {};
-      productFields.forEach(
-        ({ name }) =>
-          (defaultProduct[name] = formatFqlxOption(
+      productFields.forEach(({ name }) => {
+        if (
+          // @ts-ignore
+          localProduct?.[productType]?.[name] != undefined
+        ) {
+          defaultProduct[name] = formatFqlxOption(
             name,
             // @ts-ignore
             localProduct?.[productType]?.[name]
-          ))
-      );
+          );
+        }
+      });
 
       setProductState(() => defaultProduct);
     }
-  }, [lastOptionClicked]);
-
-  console.log({ productFields });
+  }, [lastOptionClicked, fqlxProducts]);
 
   const filterOptions = useMemo(() => {
     const localOptions: {
@@ -235,7 +238,9 @@ const NewProductCard = ({
     }
   };
 
-  console.log(filterOptions);
+  useEffect(() => {
+    setProductState({});
+  }, []);
 
   return (
     <>
@@ -294,7 +299,7 @@ const NewProductCard = ({
                   <Image
                     width={{ s: '120px', l: '140px' }}
                     height={{ s: '120px', l: '140px' }}
-                    src={'/AbutmentImage.svg'}
+                    src={fqlxProducts?.data?.[0]?.image}
                     alt={'abutment'}
                     borderRadius="medium"
                   />
