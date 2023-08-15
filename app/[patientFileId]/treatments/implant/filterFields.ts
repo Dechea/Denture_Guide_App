@@ -9,6 +9,11 @@ export const implantProductFields: {
     type: 'tabs',
   },
   {
+    id: '5901f5e4f-35b9-4161-bada-b73b617da1f4',
+    name: 'useCase',
+    type: 'tabs',
+  },
+  {
     id: 'cf3ddee0-06a4-4e26-b4ee-fb3858070c23',
     name: 'insertionPost',
     type: 'tabs',
