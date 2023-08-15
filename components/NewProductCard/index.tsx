@@ -263,15 +263,6 @@ const NewProductCard = ({
             </View>
           </View>
         </View.Item>
-
-        <View.Item columns={4}>
-          <TextField
-            icon={BarCodeIcon}
-            name="email"
-            size="medium"
-            placeholder="Search by code e.g K1043.XXXX "
-          />
-        </View.Item>
       </View>
 
       <View
@@ -305,9 +296,28 @@ const NewProductCard = ({
                   />
 
                   <View gap={2} grow>
-                    <Text variant="featured-3" weight="medium">
-                      {fqlxProducts?.data?.[0]?.localizations?.[1].name}
-                    </Text>
+                    <View
+                      direction="row"
+                      align="center"
+                      className="!justify-between !items-start"
+                    >
+                      <View.Item grow>
+                        <Text variant="featured-3" weight="medium">
+                          {fqlxProducts?.data?.[0]?.localizations?.[1].name}
+                        </Text>
+                      </View.Item>
+
+                      <View maxWidth={41}>
+                        <TextField
+                          icon={BarCodeIcon}
+                          name="email"
+                          size="medium"
+                          placeholder={
+                            fqlxProducts?.data?.[0]?.manufacturerProductId
+                          }
+                        />
+                      </View>
+                    </View>
                     <View direction="row" gap={4}>
                       <Text>
                         {
@@ -322,13 +332,6 @@ const NewProductCard = ({
                           size={5}
                           color="neutral-faded"
                         />
-                        <Text
-                          color="neutral-faded"
-                          variant="body-3"
-                          weight="regular"
-                        >
-                          {fqlxProducts?.data?.[0]?.manufacturerProductId}
-                        </Text>
                       </View>
                     </View>
                   </View>
