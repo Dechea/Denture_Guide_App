@@ -23,6 +23,13 @@ interface NewProductCardProps {
   productFields: Field[];
 }
 
+interface FilterOption {
+  id: string;
+  name: string;
+  type: string;
+  options: { isAvailable: boolean; name: string; value: string }[];
+}
+
 const NewProductCard = ({
   productType,
   productFields,
@@ -40,6 +47,7 @@ const NewProductCard = ({
     value: string;
     state: any;
   } | null>(null);
+  const [filterOptions, setFilterOptions] = useState<FilterOption[]>([]);
 
   const query = useQuery<Query>();
 
@@ -106,54 +114,118 @@ const NewProductCard = ({
     }
   }, [lastOptionClicked, fqlxProducts]);
 
-  const filterOptions = useMemo(() => {
-    const localOptions: {
-      id: string;
-      name: string;
-      type: string;
-      options: { isAvailable: boolean; name: string; value: string }[];
-    }[] = [];
+  const fetchImplicitFilters = async () => {
+    const localOptions: FilterOption[] = [];
+
+    const distinctOptionPromises: Promise<any>[] = [];
 
     productFields.forEach(({ name }) => {
-      const fqlxOptions = query.Product.all()
-        .where(formBaseCondition(implicitFilters, productType))
-        .map(`(product) => product.${productType}.${name}`)
-        .distinct<string>()
-        .exec().data;
+      try {
+        const fqlxOptions = query.Product.all()
+          .where(formBaseCondition(implicitFilters, productType))
+          .map(`(product) => product.${productType}.${name}`)
+          .distinct<string>()
+          .exec();
 
-      const options = fqlxOptions.map((option) => {
+        distinctOptionPromises.push(fqlxOptions as unknown as Promise<any>);
+      } catch (error) {
+        if (error instanceof Promise) {
+          distinctOptionPromises.push(error);
+        }
+      }
+    });
+
+    const promisifiedDistinctOptions = await Promise.all(
+      distinctOptionPromises
+    );
+    const distinctOptions = promisifiedDistinctOptions?.map(
+      (option) => option?.data
+    );
+
+    const productCountPromises: Promise<any>[][] = [];
+
+    productFields.forEach(({ name }, index) => {
+      const productFieldPromises: Promise<any>[] = [];
+
+      distinctOptions[index].forEach((option: any) => {
         if (name === 'workflows') {
           option = option[0];
         }
         option = typeof option === 'string' ? `"${option}"` : `${option}`;
         const stateWithOption = { ...productState, [name]: option };
-        const matching = query.Product.all()
-          .where(
-            formWhereCondition(implicitFilters, productType, stateWithOption)
-          )
-          .count()
-          .exec();
 
-        return {
-          isAvailable: Boolean(matching),
-          name: option,
-          value: option,
-        };
+        try {
+          const matching = query.Product.all()
+            .where(
+              formWhereCondition(implicitFilters, productType, stateWithOption)
+            )
+            .count()
+            .exec();
+
+          productFieldPromises.push(matching as unknown as Promise<any>);
+        } catch (error) {
+          if (error instanceof Promise) {
+            productFieldPromises.push(error);
+          }
+        }
       });
+
+      productCountPromises.push(productFieldPromises);
+    });
+
+    for (
+      let productFieldIndex = 0;
+      productFieldIndex < productFields.length;
+      productFieldIndex++
+    ) {
+      const productField = productFields[productFieldIndex];
+      const promisifiedOptions: {
+        isAvailable: boolean;
+        name: string;
+        value: string;
+      }[] = [];
+
+      for (
+        let distinctOptionIndex = 0;
+        distinctOptionIndex < distinctOptions[productFieldIndex].length;
+        distinctOptionIndex++
+      ) {
+        const distinctOption =
+          distinctOptions[productFieldIndex][distinctOptionIndex];
+
+        const mappedDistinctOption =
+          typeof distinctOption === 'string'
+            ? `"${distinctOption}"`
+            : `${distinctOption}`;
+
+        const promisifiedProductsCount = await Promise.all(
+          productCountPromises[productFieldIndex]
+        );
+
+        promisifiedOptions.push({
+          isAvailable: Boolean(promisifiedProductsCount[distinctOptionIndex]),
+          name: mappedDistinctOption,
+          value: mappedDistinctOption,
+        });
+      }
 
       localOptions.push({
         ...(productFields.find(
-          (productOption) => productOption.name === name
+          (productOption) => productOption.name === productField.name
         ) ?? {
           id: '',
           name: '',
           type: '',
         }),
-        options,
+        options: promisifiedOptions,
       });
-    });
+    }
 
-    return localOptions;
+    setFilterOptions(localOptions);
+  };
+
+  useEffect(() => {
+    fetchImplicitFilters();
   }, [implicitFilters, productState]);
 
   const handleOptionClick = (category: string, value: string) => {
