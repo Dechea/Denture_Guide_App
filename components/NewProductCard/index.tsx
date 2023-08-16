@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from 'fqlx-client';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Image, Text, TextField, View } from 'reshaped';
 import { Query } from '../../fqlx-generated/typedefs';
 import { useProductStore } from '../../zustand/product';
@@ -27,8 +27,13 @@ const NewProductCard = ({
   productType,
   productFields,
 }: NewProductCardProps) => {
-  const { implicitFilters, productState, setProductState, setActiveProductId } =
-    useProductStore((state) => state);
+  const {
+    implicitFilters,
+    productState,
+    activeTreatmentGroup,
+    setProductState,
+    setActiveProductId,
+  } = useProductStore((state) => state);
   const [lastOptionClicked, setLastOptionClicked] = useState<{
     category: string;
     value: string;
@@ -55,6 +60,8 @@ const NewProductCard = ({
   const fqlxProducts = useMemo(() => productQuery.exec(), [productQuery]);
 
   useMemo(() => {
+    console.log('update in memo');
+
     let localProduct = {};
     let toUpdateProduct = false;
 
@@ -63,6 +70,10 @@ const NewProductCard = ({
         lastOptionClicked != null
           ? { [lastOptionClicked.category]: lastOptionClicked.value }
           : {};
+      console.log(
+        'old val, ',
+        formWhereCondition(implicitFilters, productType, oldValue)
+      );
       localProduct = query.Product.all()
         .firstWhere(formWhereCondition(implicitFilters, productType, oldValue))
         .exec();
@@ -148,6 +159,10 @@ const NewProductCard = ({
       [category]: value,
     });
   };
+
+  useEffect(() => {
+    setLastOptionClicked(null);
+  }, [activeTreatmentGroup]);
 
   return (
     <>
