@@ -14,7 +14,6 @@ interface FormProps {
 }
 
 export default function Form({ fields, values, onChangeValue }: FormProps) {
-  console.log(values);
   return (
     <View direction="row" width="100%" gap={10} className="!gap-y-[24px]">
       {fields.map((field) => (
@@ -51,7 +50,6 @@ export default function Form({ fields, values, onChangeValue }: FormProps) {
                   name="switch"
                   checked={Boolean(values[field.name] === 'true')}
                   onChange={({ checked }) => {
-                    console.log({ checked });
                     onChangeValue(field.name, `${checked}`);
                   }}
                 >

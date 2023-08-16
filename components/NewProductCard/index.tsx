@@ -59,6 +59,10 @@ const NewProductCard = ({
     let toUpdateProduct = false;
 
     if (fqlxProducts?.data?.length == 0) {
+      const oldValue =
+        lastOptionClicked != null
+          ? { [lastOptionClicked.category]: lastOptionClicked.value }
+          : {};
       localProduct = query.Product.all()
         .firstWhere(formWhereCondition(implicitFilters, productType, oldValue))
         .exec();
