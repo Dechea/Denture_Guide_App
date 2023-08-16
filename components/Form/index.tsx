@@ -67,30 +67,26 @@ export default function Form({ fields, values, onChangeValue }: FormProps) {
               <Text variant="caption-1" weight="regular" className="pb-x1">
                 {field.name}
               </Text>
-              <DropdownMenu width="trigger">
-                <DropdownMenu.Trigger>
-                  {(attributes) => (
-                    <Select
-                      name={field.name}
-                      inputAttributes={attributes}
-                      placeholder={values[field.name]}
-                      value={values[field.name]}
-                    />
-                  )}
-                </DropdownMenu.Trigger>
-                <DropdownMenu.Content>
-                  {field.options.map(({ isAvailable, name, value }) => (
-                    <DropdownMenu.Item
-                      key={value}
-                      onClick={() => onChangeValue(field.name, value)}
-                    >
-                      <Text color={!isAvailable ? 'disabled' : 'neutral'}>
-                        {name}
-                      </Text>
-                    </DropdownMenu.Item>
-                  ))}
-                </DropdownMenu.Content>
-              </DropdownMenu>
+              <select
+                className="px-x1 py-x2  border border-[--rs-color-border-neutral-faded] rounded w-full "
+                onChange={(event) =>
+                  onChangeValue(field.name, event.target.value)
+                }
+              >
+                {field.options.map(({ isAvailable, name, value }) => (
+                  <option
+                    key={value}
+                    value={value}
+                    selected={values[field.name] === name}
+                    className={`${
+                      !isAvailable &&
+                      '!text-[var(--rs-color-foreground-disabled)]'
+                    }`}
+                  >
+                    {name}
+                  </option>
+                ))}
+              </select>
             </View.Item>
           )}
         </>
