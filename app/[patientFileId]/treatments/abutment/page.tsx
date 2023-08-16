@@ -11,8 +11,8 @@ import {
 } from '../../../../zustand/product/interface';
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
 import { useProductStore } from '../../../../zustand/product';
-import NewProductCard from '../../../../components/NewProductCard';
 import { abutmentProductFields } from './filterFields';
+import NewProductView from '../../../../components/NewProductView';
 
 export default function Abutment({
   params,
@@ -55,7 +55,7 @@ export default function Abutment({
                   </View>
                 }
               >
-                <NewProductCard
+                <NewProductView
                   productType={PRODUCT_TYPE.ABUTMENT}
                   productFields={abutmentProductFields}
                   areaType={AREA_TYPE.CROWN}

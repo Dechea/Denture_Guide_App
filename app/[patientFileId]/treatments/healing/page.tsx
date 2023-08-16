@@ -11,8 +11,8 @@ import {
 } from '../../../../zustand/product/interface';
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
 import { useProductStore } from '../../../../zustand/product';
-import NewProductCard from '../../../../components/NewProductCard';
 import { healingProductFields } from './filterFields';
+import NewProductView from '../../../../components/NewProductView';
 
 export default function Healing({
   params,
@@ -52,7 +52,7 @@ export default function Healing({
                   </View>
                 }
               >
-                <NewProductCard
+                <NewProductView
                   productType={PRODUCT_TYPE.HEALING_ABUTMENT}
                   productFields={healingProductFields}
                   areaType={AREA_TYPE.ROOT}

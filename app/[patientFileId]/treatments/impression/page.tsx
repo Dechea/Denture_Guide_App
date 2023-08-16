@@ -11,8 +11,8 @@ import {
 } from '../../../../zustand/product/interface';
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
 import { useProductStore } from '../../../../zustand/product';
-import NewProductCard from '../../../../components/NewProductCard';
 import { impressionProductFields } from './filterFields';
+import NewProductView from '../../../../components/NewProductView';
 
 export default function Impression({
   params,
@@ -52,7 +52,7 @@ export default function Impression({
                   </View>
                 }
               >
-                <NewProductCard
+                <NewProductView
                   productType={PRODUCT_TYPE.IMPRESSION}
                   productFields={impressionProductFields}
                   areaType={AREA_TYPE.ROOT}
