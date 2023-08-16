@@ -14,6 +14,11 @@ export const abutmentProductFields: {
     type: 'tabs',
   },
   {
+    id: 'cf3dde40-06a4-4e26-b4ee-fb3858070c23',
+    name: 'platformSwitch',
+    type: 'switch',
+  },
+  {
     id: '8f8cda28-dc23-4200-a18e-4c88672d14f6',
     name: 'material',
     type: 'dropdown',
