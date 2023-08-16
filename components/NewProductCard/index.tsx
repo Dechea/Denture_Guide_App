@@ -217,9 +217,11 @@ const NewProductCard = ({
           </View.Item>
         </View>
       ) : (
-        <Text variant="featured-3" weight="medium">
-          No Product Found
-        </Text>
+        <View paddingTop={{ s: 8, l: 2 }} align="center">
+          <Text variant="featured-3" weight="medium">
+            No Product Found
+          </Text>
+        </View>
       )}
     </>
   );
