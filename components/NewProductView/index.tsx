@@ -172,7 +172,12 @@ const NewProductView = ({
 
       <View width={'100%'} align="center">
         <Card className="w-full !p-0 max-[640px]:!border-none">
-          <View direction={{ s: 'column', m: 'row' }} align="stretch" gap={10}>
+          <View
+            direction={{ s: 'column', m: 'row' }}
+            align="stretch"
+            gap={10}
+            className="min-h-[200px]"
+          >
             <View.Item columns={{ s: 12, m: 8 }}>
               <Suspense
                 fallback={
@@ -230,7 +235,9 @@ const NewProductView = ({
               </Suspense>
             </View.Item>
 
-            <NewProductToothList onClickProduct={handleClickOnProduct} />
+            {productsCount && (
+              <NewProductToothList onClickProduct={handleClickOnProduct} />
+            )}
           </View>
         </Card>
       </View>

@@ -190,8 +190,12 @@ const NewProductCard = ({
         distinctOptionIndex < distinctOptions[productFieldIndex].length;
         distinctOptionIndex++
       ) {
-        const distinctOption =
+        let distinctOption =
           distinctOptions[productFieldIndex][distinctOptionIndex];
+
+        if (productField.name === 'workflows') {
+          distinctOption = distinctOption[0];
+        }
 
         const mappedDistinctOption =
           typeof distinctOption === 'string'
@@ -220,6 +224,8 @@ const NewProductCard = ({
         options: promisifiedOptions,
       });
     }
+
+    console.log(localOptions);
 
     setFilterOptions(localOptions);
   };
