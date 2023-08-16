@@ -1,4 +1,4 @@
-import { DropdownMenu, Select, Tabs, Text, View, Switch } from 'reshaped';
+import { Switch, Tabs, Text, View } from 'reshaped';
 
 interface Field {
   id: string;

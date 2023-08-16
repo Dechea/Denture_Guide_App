@@ -11,8 +11,8 @@ import {
 } from '../../../../zustand/product/interface';
 import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeethByTreatment';
 import { useProductStore } from '../../../../zustand/product';
-import NewProductCard from '../../../../components/NewProductCard';
 import { implantProductFields } from './filterFields';
+import NewProductView from '../../../../components/NewProductView';
 
 export default function Implant({
   params,
@@ -53,7 +53,7 @@ export default function Implant({
                   </View>
                 }
               >
-                <NewProductCard
+                <NewProductView
                   productType={PRODUCT_TYPE.IMPLANT}
                   productFields={implantProductFields}
                   areaType={AREA_TYPE.ROOT}
