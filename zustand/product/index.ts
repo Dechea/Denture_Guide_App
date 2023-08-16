@@ -60,7 +60,7 @@ export const useProductStore = create<ProductStore>()((set) => ({
     })),
   setProducts: (products) => set({ products }),
   setProductState: (productState: { [key: string]: string }) => {
-    set((state) => ({ ...state.productState, productState }));
+    set({ productState });
   },
   setProductCount: (count: number) => set({ productCount: count }),
   setActiveProductId: (id: string) => set({ activeProductId: id }),

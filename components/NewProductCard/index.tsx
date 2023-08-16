@@ -8,7 +8,10 @@ import { useProductStore } from '../../zustand/product';
 import { PRODUCT_TYPE } from '../../zustand/product/interface';
 import Form from '../Form';
 import BarCodeIcon from '../Icons/Barcode';
-import { formBaseCondition, formWhereCondition } from './helper';
+import {
+  formBaseCondition,
+  formWhereCondition,
+} from '../NewProductView/helper';
 
 interface Field {
   id: string;
@@ -28,8 +31,9 @@ const NewProductCard = ({
     useProductStore((state) => state);
   const [lastOptionClicked, setLastOptionClicked] = useState<{
     category: string;
+    value: string;
     state: any;
-  }>({ category: '', state: null });
+  } | null>(null);
 
   const query = useQuery<Query>();
 
@@ -56,22 +60,15 @@ const NewProductCard = ({
 
     if (fqlxProducts?.data?.length == 0) {
       localProduct = query.Product.all()
-        .firstWhere(
-          formWhereCondition(implicitFilters, productType, {
-            [lastOptionClicked.category]:
-              productState[
-                lastOptionClicked.category as keyof typeof productState
-              ],
-          })
-        )
+        .firstWhere(formWhereCondition(implicitFilters, productType, oldValue))
         .exec();
       toUpdateProduct = true;
     } else if (Object.keys(productState).length == 0) {
-      localProduct = fqlxProducts.data[0];
+      localProduct = fqlxProducts.data?.[0];
       toUpdateProduct = true;
     }
 
-    if (toUpdateProduct) {
+    if (toUpdateProduct && localProduct != null) {
       const defaultProduct: { [key: string]: string } = {};
       productFields.forEach(({ name }) => {
         if (
@@ -137,12 +134,10 @@ const NewProductCard = ({
     });
 
     return localOptions;
-  }, [implicitFilters, productType, productState]);
+  }, [fqlxProducts]);
 
   const handleOptionClick = (category: string, value: string) => {
-    // const lastOptionClicked = { ...{ category }, state: { ...productState } };
-    // setLastOptionClicked(lastOptionClicked);
-    setLastOptionClicked({ category, state: productState });
+    setLastOptionClicked({ category, value, state: productState });
 
     setProductState({
       ...productState,
@@ -182,15 +177,14 @@ const NewProductCard = ({
                   />
                 </View>
               </View>
-              <View direction="row" gap={4}>
-                <Text>
-                  {fqlxProducts?.data?.[0]?.localizations?.[1].price.amount} €
-                </Text>
-              </View>
+
+              <Text>
+                {fqlxProducts?.data?.[0]?.localizations?.[1].price.amount} €
+              </Text>
             </View>
           </View>
           <View.Item grow>
-            <View gap={16} paddingStart={{ l: 41 }} paddingTop={{ s: 8, l: 0 }}>
+            <View paddingStart={{ l: 41 }} paddingTop={{ s: 8, l: 0 }}>
               <Form
                 fields={filterOptions}
                 values={productState}
