@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from 'fqlx-client';
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Image, Text, TextField, View } from 'reshaped';
 import { Query } from '../../fqlx-generated/typedefs';
 import { useProductStore } from '../../zustand/product';
@@ -32,6 +32,7 @@ const NewProductCard = ({
     productState,
     activeTreatmentGroup,
     setProductState,
+    activeProductId,
     setActiveProductId,
   } = useProductStore((state) => state);
   const [lastOptionClicked, setLastOptionClicked] = useState<{
@@ -60,20 +61,14 @@ const NewProductCard = ({
   const fqlxProducts = useMemo(() => productQuery.exec(), [productQuery]);
 
   useMemo(() => {
-    console.log('update in memo');
-
     let localProduct = {};
     let toUpdateProduct = false;
-
     if (fqlxProducts?.data?.length == 0) {
       const oldValue =
         lastOptionClicked != null
           ? { [lastOptionClicked.category]: lastOptionClicked.value }
           : {};
-      console.log(
-        'old val, ',
-        formWhereCondition(implicitFilters, productType, oldValue)
-      );
+
       localProduct = query.Product.all()
         .firstWhere(formWhereCondition(implicitFilters, productType, oldValue))
         .exec();
@@ -85,6 +80,7 @@ const NewProductCard = ({
 
     if (toUpdateProduct && localProduct != null) {
       const defaultProduct: { [key: string]: string } = {};
+
       productFields.forEach(({ name }) => {
         if (
           // @ts-ignore
@@ -101,6 +97,12 @@ const NewProductCard = ({
       setProductState(defaultProduct);
       // @ts-ignore
       setActiveProductId(localProduct?.id);
+    } else if (
+      fqlxProducts?.data?.length &&
+      fqlxProducts?.data?.[0]?.id !== activeProductId
+    ) {
+      // @ts-ignore
+      setActiveProductId(fqlxProducts?.data?.[0]?.id);
     }
   }, [lastOptionClicked, fqlxProducts]);
 
@@ -118,6 +120,7 @@ const NewProductCard = ({
         .map(`(product) => product.${productType}.${name}`)
         .distinct<string>()
         .exec().data;
+
       const options = fqlxOptions.map((option) => {
         if (name === 'workflows') {
           option = option[0];
@@ -130,12 +133,14 @@ const NewProductCard = ({
           )
           .count()
           .exec();
+
         return {
           isAvailable: Boolean(matching),
           name: option,
           value: option,
         };
       });
+
       localOptions.push({
         ...(productFields.find(
           (productOption) => productOption.name === name
@@ -149,7 +154,7 @@ const NewProductCard = ({
     });
 
     return localOptions;
-  }, [fqlxProducts]);
+  }, [implicitFilters, productState]);
 
   const handleOptionClick = (category: string, value: string) => {
     setLastOptionClicked({ category, value, state: productState });
@@ -161,12 +166,13 @@ const NewProductCard = ({
   };
 
   useEffect(() => {
+    setProductState({});
     setLastOptionClicked(null);
   }, [activeTreatmentGroup]);
 
   return (
     <>
-      {!!fqlxProducts?.data.length ? (
+      {!!fqlxProducts?.data?.length ? (
         <View padding={6} paddingBottom={10}>
           <View direction="row" gap={6}>
             <Image
@@ -190,9 +196,7 @@ const NewProductCard = ({
                     icon={BarCodeIcon}
                     name="email"
                     size="medium"
-                    defaultValue={
-                      fqlxProducts?.data?.[0]?.manufacturerProductId
-                    }
+                    placeholder={fqlxProducts?.data?.[0]?.manufacturerProductId}
                   />
                 </View>
               </View>
