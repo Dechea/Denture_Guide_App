@@ -35,7 +35,7 @@ export default function PrintCostEstimationHeader({
         <View gap={16}>
           <View gap={3}>
             <Text variant='body-3' weight='regular' color='neutral-faded'>
-              Total / Inc. 7% VAT
+              Total / Inc. 19% VAT
             </Text>
 
             <View direction='row' align='center'>
