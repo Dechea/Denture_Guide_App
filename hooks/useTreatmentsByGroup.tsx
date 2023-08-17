@@ -59,6 +59,7 @@ const mapProductRequirements: MapProductRequirementsProps = {
 
 const implicitFilters: ImplicitFiltersProps = {
   indication: { name: 'indication', productType: '' },
+  indications: { name: 'indications', productType: '' },
   implantLine: { name: 'implantLine', productType: PRODUCT_TYPE.IMPLANT },
   diameterPlatform: {
     name: 'diameterPlatform',
@@ -77,7 +78,7 @@ const implicitFilters: ImplicitFiltersProps = {
 
 const mapImplicitFilters: MapImplicitFiltersProps = {
   [PRODUCT_TYPE.ABUTMENT]: [
-    implicitFilters.indication,
+    implicitFilters.indications,
     implicitFilters.implantLine,
     implicitFilters.diameterPlatform,
   ],
@@ -91,6 +92,7 @@ const mapImplicitFilters: MapImplicitFiltersProps = {
     implicitFilters.implantLine,
     implicitFilters.abutmentLine,
     implicitFilters.diameterPlatform,
+    implicitFilters.platformSwitch,
   ],
   [PRODUCT_TYPE.IMPRESSION]: [
     implicitFilters.implantLine,
@@ -159,7 +161,7 @@ export function useTreatmentsByGroup() {
       );
 
       filterParams?.forEach((filter) => {
-        if (filter.name === 'indication') {
+        if (['indications', 'indication'].includes(filter.name)) {
           filterValues[filter.name] = [`"${tooth.indication}"`];
         } else {
           const previousTabProduct = fqlxToothProducts.find(

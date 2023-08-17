@@ -17,6 +17,10 @@ const getBaseConditions = (
         conditions.push(
           `[${fields.join(',')}].includes(product.${productType}.heightGingiva)`
         );
+      } else if (category === 'indications') {
+        conditions.push(
+          `product.${productType}.${category}.includes(${fields[0]})`
+        );
       } else {
         conditions.push(
           `[${fields.join(',')}].includes(product.${productType}.${category})`

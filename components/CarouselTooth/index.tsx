@@ -20,7 +20,7 @@ interface CarouselToothProps {
 }
 
 const styles = {
-  activeTooth: '[&_svg>*]:!pointer-events-none [&_svg]:opacity-30 ',
+  activeTooth: '[&_svg>*]:!pointer-events-none opacity-30',
   inactiveTooth: '[&_svg>*]:!pointer-events-none ',
 };
 
@@ -46,13 +46,19 @@ export const CarouselTooth = ({ tooth }: CarouselToothProps) => {
   }, [selectedProductsList]);
 
   return (
-    <Popover key={products.length} triggerType='hover' padding={3}>
+    <Popover
+      position="bottom"
+      forcePosition
+      key={products.length}
+      triggerType="hover"
+      padding={3}
+    >
       <Popover.Trigger>
         {(attributes) => {
           return (
             <Actionable attributes={attributes}>
               <View height={30} width={15}>
-                <ToothContainer customStyles='!w-full pointer-events-none'>
+                <ToothContainer customStyles="!w-full pointer-events-none">
                   <Tooth
                     variant={tooth.toothVariant}
                     tooth={tooth.toothNumber}
@@ -70,22 +76,20 @@ export const CarouselTooth = ({ tooth }: CarouselToothProps) => {
                       leftAnchor={tooth.leftAnchor}
                       rightAnchor={tooth.rightAnchor}
                     />
-
-                    {selected && (
-                      <View
-                        position='absolute'
-                        width='100%'
-                        height='100%'
-                        direction='row'
-                        insetTop={3}
-                        align='center'
-                        justify='center'
-                        className='[&_svg]:!opacity-100 [&_svg>*]:!stroke-[--rs-color-background-page] [&_svg>*]:!fill-[--rs-color-background-primary]'
-                      >
-                        <Icon svg={TickIcon} size={6} />
-                      </View>
-                    )}
                   </Tooth>
+                  {selected && (
+                    <View
+                      position="absolute"
+                      width="100%"
+                      height="100%"
+                      direction="row"
+                      align="center"
+                      justify="center"
+                      className="[&_svg>*]:!stroke-[--rs-color-background-page] [&_svg>*]:!fill-[--rs-color-background-primary]"
+                    >
+                      <Icon svg={TickIcon} size={6} color="primary" />
+                    </View>
+                  )}
 
                   <ToothNumber
                     tooth={tooth.toothNumber}
@@ -97,7 +101,13 @@ export const CarouselTooth = ({ tooth }: CarouselToothProps) => {
           );
         }}
       </Popover.Trigger>
-      <Popover.Content className={products.length ? 'visible' : 'hidden'}>
+      <Popover.Content
+        className={
+          products.length
+            ? 'visible !max-h-[calc(100vh-248px)] !overflow-y-auto'
+            : 'hidden'
+        }
+      >
         <View divided gap={4.25}>
           {products.map(({ selectedProduct }) => {
             const localization = selectedProduct?.localizations?.[1];
@@ -105,28 +115,28 @@ export const CarouselTooth = ({ tooth }: CarouselToothProps) => {
             return (
               <View
                 key={selectedProduct?.id as string}
-                align='start'
-                direction='row'
-                gap={4}
+                align="start"
+                direction="row"
+                gap={8}
                 wrap={false}
               >
                 <Image
                   src={selectedProduct?.image}
                   alt={selectedProduct?.image}
-                  height='48px'
-                  width='48px'
-                  borderRadius='medium'
+                  height="48px"
+                  width="48px"
+                  borderRadius="medium"
                 />
 
-                <View gap={1} width={58} textAlign='start'>
-                  <Text variant='body-3' weight='bold'>
+                <View gap={1} width={58} textAlign="start">
+                  <Text variant="body-3" weight="bold">
                     {localization?.name}
                   </Text>
 
                   <Text
-                    variant='caption-1'
-                    weight='regular'
-                    color='neutral-faded'
+                    variant="caption-1"
+                    weight="regular"
+                    color="neutral-faded"
                   >
                     {localization?.description}
                   </Text>
