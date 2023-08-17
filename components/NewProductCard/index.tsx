@@ -112,7 +112,7 @@ const NewProductCard = ({
       // @ts-ignore
       setActiveProductId(fqlxProducts?.data?.[0]?.id);
     }
-  }, [lastOptionClicked, fqlxProducts]);
+  }, [lastOptionClicked, productState]);
 
   const fetchImplicitFilters = async () => {
     const localOptions: FilterOption[] = [];
@@ -225,8 +225,6 @@ const NewProductCard = ({
       });
     }
 
-    console.log(localOptions);
-
     setFilterOptions(localOptions);
   };
 
@@ -274,7 +272,7 @@ const NewProductCard = ({
                     icon={BarCodeIcon}
                     name="email"
                     size="medium"
-                    placeholder={fqlxProducts?.data?.[0]?.manufacturerProductId}
+                    value={fqlxProducts?.data?.[0]?.manufacturerProductId}
                   />
                 </View>
               </View>
