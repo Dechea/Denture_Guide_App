@@ -18,74 +18,78 @@ export default function Form({ fields, values, onChangeValue }: FormProps) {
     <View direction="row" width="100%" gap={10} className="!gap-y-[24px]">
       {fields.map((field) => (
         <>
-          {field.type === 'tabs' && (
-            <View.Item columns={12} key={field.id}>
-              <Tabs
-                value={values[field.name]}
-                variant="pills-elevated"
-                itemWidth="equal"
-                onChange={({ value }) => onChangeValue(field.name, value)}
-              >
-                <Tabs.List
-                  className={
-                    field.options.length > 2 &&
-                    `max-[640px]:[&_[role=tablist]]:flex-col max-[640px]:[&_[role=presentation]]:!w-full max-[640px]:[&_[role=presentation]]:!mx-[var(--rs-tabs-gap)] max-[640px]:[&_[role=tab]>span]:!justify-start`
-                  }
-                >
-                  {field?.options.map(({ isAvailable, name, value }) => (
-                    <Tabs.Item key={value} value={value}>
-                      <Text color={!isAvailable ? 'disabled' : 'neutral'}>
-                        {name}
+          {field.options.length > 1 && (
+            <>
+              {field.type === 'tabs' && (
+                <View.Item columns={12} key={field.id}>
+                  <Tabs
+                    value={values[field.name]}
+                    variant="pills-elevated"
+                    itemWidth="equal"
+                    onChange={({ value }) => onChangeValue(field.name, value)}
+                  >
+                    <Tabs.List
+                      className={
+                        field.options.length > 2 &&
+                        `max-[640px]:[&_[role=tablist]]:flex-col max-[640px]:[&_[role=presentation]]:!w-full max-[640px]:[&_[role=presentation]]:!mx-[var(--rs-tabs-gap)] max-[640px]:[&_[role=tab]>span]:!justify-start`
+                      }
+                    >
+                      {field?.options.map(({ isAvailable, name, value }) => (
+                        <Tabs.Item key={value} value={value}>
+                          <Text color={!isAvailable ? 'disabled' : 'neutral'}>
+                            {name}
+                          </Text>
+                        </Tabs.Item>
+                      ))}
+                    </Tabs.List>
+                  </Tabs>
+                </View.Item>
+              )}
+              {field.type === 'switch' && (
+                <View.Item key={field.id} columns={12}>
+                  <View>
+                    <Switch
+                      name="switch"
+                      checked={Boolean(values[field.name] === 'true')}
+                      onChange={({ checked }) => {
+                        onChangeValue(field.name, `${checked}`);
+                      }}
+                    >
+                      <Text variant="body-3" weight="regular">
+                        {field.name}
                       </Text>
-                    </Tabs.Item>
-                  ))}
-                </Tabs.List>
-              </Tabs>
-            </View.Item>
-          )}
-          {field.type === 'switch' && (
-            <View.Item key={field.id} columns={12}>
-              <View>
-                <Switch
-                  name="switch"
-                  checked={Boolean(values[field.name] === 'true')}
-                  onChange={({ checked }) => {
-                    onChangeValue(field.name, `${checked}`);
-                  }}
-                >
-                  <Text variant="body-3" weight="regular">
+                    </Switch>
+                  </View>
+                </View.Item>
+              )}
+              {field.type === 'dropdown' && (
+                <View.Item key={field.id} columns={6}>
+                  <Text variant="caption-1" weight="regular" className="pb-x1">
                     {field.name}
                   </Text>
-                </Switch>
-              </View>
-            </View.Item>
-          )}
-          {field.type === 'dropdown' && (
-            <View.Item key={field.id} columns={6}>
-              <Text variant="caption-1" weight="regular" className="pb-x1">
-                {field.name}
-              </Text>
-              <select
-                className="px-x1 py-x2  border border-[--rs-color-border-neutral-faded] rounded w-full "
-                onChange={(event) =>
-                  onChangeValue(field.name, event.target.value)
-                }
-              >
-                {field.options.map(({ isAvailable, name, value }) => (
-                  <option
-                    key={value}
-                    value={value}
-                    selected={values[field.name] === name}
-                    className={`${
-                      !isAvailable &&
-                      '!text-[var(--rs-color-foreground-disabled)]'
-                    }`}
+                  <select
+                    className="px-x1 py-x2  border border-[--rs-color-border-neutral-faded] rounded w-full "
+                    onChange={(event) =>
+                      onChangeValue(field.name, event.target.value)
+                    }
                   >
-                    {name}
-                  </option>
-                ))}
-              </select>
-            </View.Item>
+                    {field.options.map(({ isAvailable, name, value }) => (
+                      <option
+                        key={value}
+                        value={value}
+                        selected={values[field.name] === name}
+                        className={`${
+                          !isAvailable &&
+                          '!text-[var(--rs-color-foreground-disabled)]'
+                        }`}
+                      >
+                        {name}
+                      </option>
+                    ))}
+                  </select>
+                </View.Item>
+              )}
+            </>
           )}
         </>
       ))}
