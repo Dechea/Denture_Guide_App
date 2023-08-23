@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from 'fqlx-client';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Image, Text, TextField, View } from 'reshaped';
 import { Query } from '../../fqlx-generated/typedefs';
 import { useProductStore } from '../../zustand/product';
@@ -114,7 +114,7 @@ const NewProductCard = ({
     }
   }, [lastOptionClicked, productState]);
 
-  const fetchImplicitFilters = async () => {
+  const fetchImplicitFilters = useCallback(async () => {
     const localOptions: FilterOption[] = [];
 
     const distinctOptionPromises: Promise<any>[] = [];
@@ -226,20 +226,25 @@ const NewProductCard = ({
     }
 
     setFilterOptions(localOptions);
-  };
+  }, [productFields, implicitFilters, productType, productState]);
+
+  const handleOptionClick = useCallback(
+    (category: string, value: string) => {
+      setLastOptionClicked({ category, value, state: productState });
+
+      setProductState({
+        ...productState,
+        [category]: value,
+      });
+    },
+    [productState]
+  );
 
   useEffect(() => {
-    fetchImplicitFilters();
+    const timer = setTimeout(() => fetchImplicitFilters(), 500);
+
+    return () => clearTimeout(timer);
   }, [implicitFilters, productState]);
-
-  const handleOptionClick = (category: string, value: string) => {
-    setLastOptionClicked({ category, value, state: productState });
-
-    setProductState({
-      ...productState,
-      [category]: value,
-    });
-  };
 
   useEffect(() => {
     setProductState({});
