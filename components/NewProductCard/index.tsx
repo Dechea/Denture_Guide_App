@@ -280,7 +280,7 @@ const NewProductCard = ({
     setLastOptionClicked(null);
 
     if (
-      activeTreatmentGroup &&
+      activeTreatmentGroup != null &&
       toothGroups[activeTreatmentGroup]?.teeth.length
     ) {
       const selectedTeeth = Object.keys(selectedProducts);
