@@ -12,6 +12,7 @@ import {
   formBaseCondition,
   formWhereCondition,
 } from '../NewProductView/helper';
+import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
 
 interface Field {
   id: string;
@@ -38,6 +39,7 @@ const NewProductCard = ({
     implicitFilters,
     productState,
     activeTreatmentGroup,
+    selectedProducts,
     setProductState,
     activeProductId,
     setActiveProductId,
@@ -48,6 +50,7 @@ const NewProductCard = ({
     state: any;
   } | null>(null);
   const [filterOptions, setFilterOptions] = useState<FilterOption[]>([]);
+  const { toothGroups, getToothGroups } = useTreatmentsByGroup();
 
   const query = useQuery<Query>();
 
@@ -240,6 +243,28 @@ const NewProductCard = ({
     [productState]
   );
 
+  const setInitialProduct = async (productId: string) => {
+    const firstProduct = await query.Product.byId(productId).exec();
+    const localProductState: { [key: string]: string } = {};
+
+    productFields.forEach(({ name }) => {
+      if (
+        // @ts-ignore
+        firstProduct?.[productType]?.[name]
+      ) {
+        localProductState[name] = formatFqlxOption(
+          name,
+          // @ts-ignore
+          firstProduct?.[productType]?.[name]
+        );
+      }
+    });
+
+    setProductState(localProductState);
+    // @ts-ignore
+    setActiveProductId(firstProduct?.id);
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => fetchImplicitFilters(), 500);
 
@@ -247,9 +272,26 @@ const NewProductCard = ({
   }, [implicitFilters, productState]);
 
   useEffect(() => {
+    getToothGroups();
+  }, [activeTreatmentGroup]);
+
+  useEffect(() => {
     setProductState({});
     setLastOptionClicked(null);
-  }, [activeTreatmentGroup]);
+
+    if (
+      activeTreatmentGroup &&
+      toothGroups[activeTreatmentGroup]?.teeth.length
+    ) {
+      const selectedTeeth = Object.keys(selectedProducts);
+      for (const { toothNumber } of toothGroups[activeTreatmentGroup].teeth) {
+        if (selectedTeeth.includes(`${toothNumber}`)) {
+          setInitialProduct(selectedProducts[toothNumber]);
+          break;
+        }
+      }
+    }
+  }, [toothGroups]);
 
   return (
     <>
