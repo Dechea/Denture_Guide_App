@@ -250,7 +250,7 @@ const NewProductCard = ({
     productFields.forEach(({ name }) => {
       if (
         // @ts-ignore
-        firstProduct?.[productType]?.[name]
+        firstProduct?.[productType]?.[name] !== undefined
       ) {
         localProductState[name] = formatFqlxOption(
           name,
