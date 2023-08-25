@@ -45,7 +45,6 @@ const NewProductCard = ({
     setFilterFields: setProductState,
     activeProductId,
     setActiveProductId,
-    searchedProductManufacturerId,
     setSearchedProductManufacturerId,
   } = useProductStore((state) => state);
   const [lastOptionClicked, setLastOptionClicked] = useState<{
@@ -79,8 +78,10 @@ const NewProductCard = ({
   }, [productQuery]);
 
   useMemo(() => {
-    let localProduct = {};
+    // @ts-expect-error
+    let localProduct: Product = {};
     let toUpdateProduct = false;
+
     if (fqlxProducts?.data?.length == 0) {
       const oldValue =
         lastOptionClicked != null
@@ -114,10 +115,9 @@ const NewProductCard = ({
       });
 
       setProductState(defaultProduct);
-      // @ts-ignore
-      setActiveProductId(localProduct?.id);
-      // @ts-ignore
+      setActiveProductId(localProduct?.id as string);
       setSearchedProductManufacturerId(localProduct?.manufacturerProductId);
+      setSearchProductValue(localProduct?.manufacturerProductId);
     } else if (
       fqlxProducts?.data?.length &&
       fqlxProducts?.data?.[0]?.id !== activeProductId
@@ -127,6 +127,7 @@ const NewProductCard = ({
       setSearchedProductManufacturerId(
         fqlxProducts?.data?.[0]?.manufacturerProductId
       );
+      setSearchProductValue(fqlxProducts?.data?.[0]?.manufacturerProductId);
     }
   }, [lastOptionClicked, fqlxProducts]);
 
@@ -286,12 +287,6 @@ const NewProductCard = ({
   }, [implicitFilters, productState]);
 
   useEffect(() => {
-    if (!searchProductValue && searchedProductManufacturerId) {
-      setSearchProductValue(searchedProductManufacturerId);
-    }
-  }, [searchedProductManufacturerId, searchProductValue]);
-
-  useEffect(() => {
     getToothGroups();
   }, [activeTreatmentGroup]);
 
@@ -314,10 +309,6 @@ const NewProductCard = ({
   }, [toothGroups]);
 
   const handleProductAutocompleteChange = (manufactureId: string | number) => {
-    if (!manufactureId) {
-      setSearchedProductManufacturerId('');
-    }
-
     setSearchProductValue(String(manufactureId));
   };
 
@@ -393,6 +384,7 @@ const NewProductCard = ({
     setActiveProductId(product?.id as string);
 
     setSearchedProductManufacturerId(product?.manufacturerProductId);
+    setSearchProductValue(product?.manufacturerProductId);
   };
 
   return (
