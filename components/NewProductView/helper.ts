@@ -39,7 +39,7 @@ export const formWhereCondition = (
 ) => {
   const conditions = getBaseConditions(implicitFilters, productType, []);
 
-  Object.entries(productState).forEach(([category, value]) => {
+  Object.entries(productState || {}).forEach(([category, value]) => {
     if (category === 'workflows') {
       conditions.push(`product.${productType}.${category}.includes(${value})`);
     } else {
@@ -56,5 +56,33 @@ export const formBaseCondition = (
 ) => {
   const conditions = getBaseConditions(implicitFilters, productType, []);
 
+  return conditions.join(' && ');
+};
+
+export const formProductSearchQuery = (
+  implicitFilters: {
+    [key: string]: string[];
+  },
+  productType: PRODUCT_TYPE,
+  searchedProductManufacturerId: string
+) => {
+  const conditions = getBaseConditions(implicitFilters, productType, []);
+  conditions.push(
+    `product.manufacturerProductId?.includes("${searchedProductManufacturerId}")`
+  );
+  return conditions.join(' && ');
+};
+
+export const formProductSearchByManufacturingIdQuery = (
+  implicitFilters: {
+    [key: string]: string[];
+  },
+  productType: PRODUCT_TYPE,
+  searchedProductManufacturerId: string
+) => {
+  const conditions = getBaseConditions(implicitFilters, productType, []);
+  conditions.push(
+    `product.manufacturerProductId == "${searchedProductManufacturerId}"`
+  );
   return conditions.join(' && ');
 };

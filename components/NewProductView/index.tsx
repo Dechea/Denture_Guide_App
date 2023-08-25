@@ -36,9 +36,9 @@ const NewProductView = ({
     availableTeethByProductType,
     implicitFilters,
     activeTreatmentGroup,
-    productState,
+    filterFields: productState,
     setActiveTreatmentGroup,
-    setProductState,
+    setFilterFields: setProductState,
   } = useProductStore();
   const { patientFile, toothGroups, getToothGroups } = useTreatmentsByGroup();
   const { addOrUpdateProductInFqlx } = useProductCrudOps({ patientFileId });
@@ -89,17 +89,13 @@ const NewProductView = ({
     });
   };
 
-  const productQuery = useMemo(
-    () =>
-      query.Product.all().where(
-        formWhereCondition(implicitFilters, productType, productState)
-      ),
-    [implicitFilters, productState]
-  );
-
   const productsCount = useMemo(
-    () => productQuery.count().exec(),
-    [productQuery]
+    () =>
+      query.Product.all()
+        .where(formWhereCondition(implicitFilters, productType, productState))
+        .count()
+        .exec(),
+    [implicitFilters, productState]
   );
 
   const handleClickOnProduct = (
@@ -127,9 +123,9 @@ const NewProductView = ({
     getToothGroups();
   }, [patientFile, activeProductTab, availableTeethByProductType]);
 
-  useEffect(() => {
-    setProductState({});
-  }, []);
+  // useEffect(() => {
+  //   setProductState({});
+  // }, []);
 
   return (
     <>

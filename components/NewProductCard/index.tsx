@@ -1,18 +1,21 @@
 'use client';
 
-import { useQuery } from 'fqlx-client';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Image, Text, TextField, View } from 'reshaped';
-import { Query } from '../../fqlx-generated/typedefs';
+import { PaginateData, useQuery } from 'fqlx-client';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Image, Text, View } from 'reshaped';
+import { Product, Query } from '../../fqlx-generated/typedefs';
 import { useProductStore } from '../../zustand/product';
 import { PRODUCT_TYPE } from '../../zustand/product/interface';
+import AutoComplete from '../AutoComplete';
 import Form from '../Form';
 import BarCodeIcon from '../Icons/Barcode';
 import {
   formBaseCondition,
+  formProductSearchByManufacturingIdQuery,
   formWhereCondition,
 } from '../NewProductView/helper';
 import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
+import SearchProductDropdown from './SearchProductDropdown';
 
 interface Field {
   id: string;
@@ -37,12 +40,14 @@ const NewProductCard = ({
 }: NewProductCardProps) => {
   const {
     implicitFilters,
-    productState,
+    filterFields: productState,
     activeTreatmentGroup,
     selectedProducts,
-    setProductState,
+    setFilterFields: setProductState,
     activeProductId,
     setActiveProductId,
+    searchedProductManufacturerId,
+    setSearchedProductManufacturerId,
   } = useProductStore((state) => state);
   const [lastOptionClicked, setLastOptionClicked] = useState<{
     category: string;
@@ -51,6 +56,9 @@ const NewProductCard = ({
   } | null>(null);
   const [filterOptions, setFilterOptions] = useState<FilterOption[]>([]);
   const { toothGroups, getToothGroups } = useTreatmentsByGroup();
+  // const [fqlxProducts, setFqlxProducts] =
+  //   useState<PaginateData<Product> | null>(null);
+  // const [fetchedProductId, setFetchedProductId] = useState<string>('');
 
   const query = useQuery<Query>();
 
@@ -61,15 +69,17 @@ const NewProductCard = ({
     return typeof value === 'string' ? `"${value}"` : `${value}`;
   };
 
-  const productQuery = useMemo(
-    () =>
-      query.Product.all().where(
-        formWhereCondition(implicitFilters, productType, productState)
-      ),
-    [implicitFilters, productState]
-  );
+  const productQuery = useMemo(() => {
+    return query.Product.all().where(
+      formWhereCondition(implicitFilters, productType, productState)
+    );
+  }, [implicitFilters, productState]);
 
-  const fqlxProducts = useMemo(() => productQuery.exec(), [productQuery]);
+  const fqlxProducts = useMemo(() => {
+    const fqlxProducts = productQuery.exec();
+    // setFqlxProducts(fqlxProducts);
+    return fqlxProducts;
+  }, [productQuery]);
 
   useMemo(() => {
     let localProduct = {};
@@ -83,6 +93,7 @@ const NewProductCard = ({
       localProduct = query.Product.all()
         .firstWhere(formWhereCondition(implicitFilters, productType, oldValue))
         .exec();
+
       toUpdateProduct = true;
     } else if (Object.keys(productState).length == 0) {
       localProduct = fqlxProducts.data?.[0];
@@ -108,14 +119,19 @@ const NewProductCard = ({
       setProductState(defaultProduct);
       // @ts-ignore
       setActiveProductId(localProduct?.id);
+      // @ts-ignore
+      setSearchedProductManufacturerId(localProduct?.manufacturerProductId);
     } else if (
       fqlxProducts?.data?.length &&
       fqlxProducts?.data?.[0]?.id !== activeProductId
     ) {
       // @ts-ignore
       setActiveProductId(fqlxProducts?.data?.[0]?.id);
+      setSearchedProductManufacturerId(
+        fqlxProducts?.data?.[0]?.manufacturerProductId
+      );
     }
-  }, [lastOptionClicked, productState]);
+  }, [lastOptionClicked, fqlxProducts]);
 
   const fetchImplicitFilters = useCallback(async () => {
     const localOptions: FilterOption[] = [];
@@ -227,11 +243,10 @@ const NewProductCard = ({
         options: promisifiedOptions,
       });
     }
-
     setFilterOptions(localOptions);
   }, [productFields, implicitFilters, productType, productState]);
 
-  const handleOptionClick = useCallback(
+  const handleFilterOptionClick = useCallback(
     (category: string, value: string) => {
       setLastOptionClicked({ category, value, state: productState });
 
@@ -293,6 +308,80 @@ const NewProductCard = ({
     }
   }, [toothGroups]);
 
+  const updateSearchedManufacturerId = (
+    searchedProductManufacturerId: string | number
+  ) => {
+    setSearchedProductManufacturerId(String(searchedProductManufacturerId));
+  };
+
+  // useMemo(() => {
+  //   const response = query.Product.all()
+  //     .where(
+  //       formProductSearchByManufacturingIdQuery(
+  //         implicitFilters,
+  //         productType,
+  //         fetchedProductId
+  //       )
+  //     )
+  //     .exec();
+
+  //   const defaultProduct: { [key: string]: string } = {};
+
+  //   productFields.forEach(({ name }) => {
+  //     if (
+  //       // @ts-ignore
+  //       response.data?.[0]?.[productType]?.[name] != undefined
+  //     ) {
+  //       defaultProduct[name] = formatFqlxOption(
+  //         name,
+  //         // @ts-ignore
+  //         response.data?.[0]?.[productType]?.[name]
+  //       );
+  //     }
+  //   });
+
+  //   setProductState(defaultProduct);
+  //   setActiveProductId(searchedProductManufacturerId);
+  // }, [fetchedProductId]);
+
+  const handleSearchOptionClick = async (product: Product) => {
+    // const response = query.Product.all()
+    //   .where(
+    //     formProductSearchByManufacturingIdQuery(
+    //       implicitFilters,
+    //       productType,
+    //       fetchedProductId
+    //     )
+    //   )
+    //   .exec();
+
+    const response = await query.Product.byId(product?.id as string).exec();
+
+    console.log({ response });
+
+    const defaultProduct: { [key: string]: string } = {};
+
+    productFields.forEach(({ name }) => {
+      if (
+        // @ts-ignore
+        response.data?.[0]?.[productType]?.[name] != undefined
+      ) {
+        defaultProduct[name] = formatFqlxOption(
+          name,
+          // @ts-ignore
+          response.data?.[0]?.[productType]?.[name]
+        );
+      }
+    });
+
+    setProductState(defaultProduct);
+    setActiveProductId(product?.id);
+
+    setSearchedProductManufacturerId(product?.manufacturerProductId);
+  };
+
+  console.log({ fqlxProducts });
+
   return (
     <>
       {!!fqlxProducts?.data?.length ? (
@@ -315,15 +404,25 @@ const NewProductCard = ({
                 </View.Item>
 
                 <View maxWidth={41}>
-                  <TextField
-                    icon={BarCodeIcon}
-                    name="email"
-                    size="medium"
-                    value={fqlxProducts?.data?.[0]?.manufacturerProductId}
+                  <AutoComplete
+                    name="autocomplete"
+                    onChange={(val) => updateSearchedManufacturerId(val)}
+                    value={searchedProductManufacturerId}
+                    onSelectOption={(id) => handleSearchOptionClick(id)}
+                    DropdownComponent={({ onClick }) => (
+                      <SearchProductDropdown
+                        onClick={onClick}
+                        productType={productType}
+                        searchedProduct={searchedProductManufacturerId}
+                      />
+                    )}
+                    icon={<BarCodeIcon />}
+                    setSearchedProductManufacturerId={
+                      setSearchedProductManufacturerId
+                    }
                   />
                 </View>
               </View>
-
               <Text>
                 {fqlxProducts?.data?.[0]?.localizations?.[1].price.amount} €
               </Text>
@@ -334,7 +433,7 @@ const NewProductCard = ({
               <Form
                 fields={filterOptions}
                 values={productState}
-                onChangeValue={handleOptionClick}
+                onChangeValue={handleFilterOptionClick}
               />
             </View>
           </View.Item>
