@@ -250,7 +250,7 @@ const NewProductCard = ({
     productFields.forEach(({ name }) => {
       if (
         // @ts-ignore
-        firstProduct?.[productType]?.[name]
+        firstProduct?.[productType]?.[name] !== undefined
       ) {
         localProductState[name] = formatFqlxOption(
           name,
@@ -280,7 +280,7 @@ const NewProductCard = ({
     setLastOptionClicked(null);
 
     if (
-      activeTreatmentGroup &&
+      activeTreatmentGroup != null &&
       toothGroups[activeTreatmentGroup]?.teeth.length
     ) {
       const selectedTeeth = Object.keys(selectedProducts);
