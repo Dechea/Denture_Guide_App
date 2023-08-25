@@ -1,6 +1,6 @@
 'use client';
 
-import { PaginateData, useQuery } from 'fqlx-client';
+import { useQuery } from 'fqlx-client';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Image, Text, View } from 'reshaped';
 import { Product, Query } from '../../fqlx-generated/typedefs';
@@ -11,7 +11,6 @@ import Form from '../Form';
 import BarCodeIcon from '../Icons/Barcode';
 import {
   formBaseCondition,
-  formProductSearchByManufacturingIdQuery,
   formWhereCondition,
 } from '../NewProductView/helper';
 import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
@@ -56,9 +55,7 @@ const NewProductCard = ({
   } | null>(null);
   const [filterOptions, setFilterOptions] = useState<FilterOption[]>([]);
   const { toothGroups, getToothGroups } = useTreatmentsByGroup();
-  // const [fqlxProducts, setFqlxProducts] =
-  //   useState<PaginateData<Product> | null>(null);
-  // const [fetchedProductId, setFetchedProductId] = useState<string>('');
+  const [searchProductValue, setSearchProductValue] = useState<string>('');
 
   const query = useQuery<Query>();
 
@@ -281,10 +278,18 @@ const NewProductCard = ({
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => fetchImplicitFilters(), 500);
+    const timer = setTimeout(() => {
+      fetchImplicitFilters();
+    }, 500);
 
     return () => clearTimeout(timer);
   }, [implicitFilters, productState]);
+
+  useEffect(() => {
+    if (!searchProductValue && searchedProductManufacturerId) {
+      setSearchProductValue(searchedProductManufacturerId);
+    }
+  }, [searchedProductManufacturerId, searchProductValue]);
 
   useEffect(() => {
     getToothGroups();
@@ -308,11 +313,23 @@ const NewProductCard = ({
     }
   }, [toothGroups]);
 
-  const updateSearchedManufacturerId = (
-    searchedProductManufacturerId: string | number
-  ) => {
-    setSearchedProductManufacturerId(String(searchedProductManufacturerId));
+  const handleProductAutocompleteChange = (manufactureId: string | number) => {
+    if (!manufactureId) {
+      setSearchedProductManufacturerId('');
+    }
+
+    setSearchProductValue(String(manufactureId));
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchProductValue) {
+        setSearchedProductManufacturerId(searchProductValue);
+      }
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [searchProductValue]);
 
   // useMemo(() => {
   //   const response = query.Product.all()
@@ -344,7 +361,7 @@ const NewProductCard = ({
   //   setActiveProductId(searchedProductManufacturerId);
   // }, [fetchedProductId]);
 
-  const handleSearchOptionClick = async (product: Product) => {
+  const handleSearchedOptionClick = async (product: Product) => {
     // const response = query.Product.all()
     //   .where(
     //     formProductSearchByManufacturingIdQuery(
@@ -356,8 +373,6 @@ const NewProductCard = ({
     //   .exec();
 
     const response = await query.Product.byId(product?.id as string).exec();
-
-    console.log({ response });
 
     const defaultProduct: { [key: string]: string } = {};
 
@@ -375,12 +390,10 @@ const NewProductCard = ({
     });
 
     setProductState(defaultProduct);
-    setActiveProductId(product?.id);
+    setActiveProductId(product?.id as string);
 
     setSearchedProductManufacturerId(product?.manufacturerProductId);
   };
-
-  console.log({ fqlxProducts });
 
   return (
     <>
@@ -406,20 +419,14 @@ const NewProductCard = ({
                 <View maxWidth={41}>
                   <AutoComplete
                     name="autocomplete"
-                    onChange={(val) => updateSearchedManufacturerId(val)}
-                    value={searchedProductManufacturerId}
-                    onSelectOption={(id) => handleSearchOptionClick(id)}
-                    DropdownComponent={({ onClick }) => (
-                      <SearchProductDropdown
-                        onClick={onClick}
-                        productType={productType}
-                        searchedProduct={searchedProductManufacturerId}
-                      />
-                    )}
-                    icon={<BarCodeIcon />}
-                    setSearchedProductManufacturerId={
-                      setSearchedProductManufacturerId
+                    onChange={handleProductAutocompleteChange}
+                    value={searchProductValue}
+                    onSelectOption={(option) =>
+                      handleSearchedOptionClick(option as unknown as Product)
                     }
+                    DropdownComponent={SearchProductDropdown}
+                    DropdownComponentProps={{ productType }}
+                    icon={<BarCodeIcon />}
                   />
                 </View>
               </View>

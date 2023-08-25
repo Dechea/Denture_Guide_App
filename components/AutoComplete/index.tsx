@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useRef, useState } from 'react';
+import { Suspense, useMemo, useRef, useState } from 'react';
 import { Button, Card, DropdownMenu, TextField, View } from 'reshaped';
 import useOutsideClick from '../../hooks/useOutsideClick';
 import ClearIcon from '../Icons/Clear';
@@ -16,11 +16,12 @@ interface AutoCompleteProps {
   value: string | number;
   name: string;
   onChange: (text: string) => void;
-  onSelectOption?: (value: string) => void;
+  onSelectOption?: (value: Option) => void;
   options?: Option[];
   placeholder?: string;
   icon?: React.ReactElement;
   DropdownComponent?: React.ElementType;
+  DropdownComponentProps?: { [key: string]: any };
 }
 
 export default function AutoComplete({
@@ -31,6 +32,7 @@ export default function AutoComplete({
   value,
   icon,
   DropdownComponent,
+  DropdownComponentProps,
 }: AutoCompleteProps) {
   const [active, setActive] = useState(false);
   const dropdownRef = useRef(null);
@@ -40,7 +42,7 @@ export default function AutoComplete({
     setActive(false);
   });
 
-  const handleOptionClick = (optionValue: string) => {
+  const handleOptionClick = (optionValue: Option) => {
     onSelectOption?.(optionValue);
     setActive(false);
   };
@@ -51,9 +53,16 @@ export default function AutoComplete({
     setActive(true);
   };
 
-  const dropdownComponent = DropdownComponent ? (
-    <DropdownComponent onClick={handleOptionClick} />
-  ) : null;
+  const dropdownComponent = useMemo(
+    () =>
+      DropdownComponent ? (
+        <DropdownComponent
+          onClick={handleOptionClick}
+          {...DropdownComponentProps}
+        />
+      ) : null,
+    [DropdownComponent]
+  );
 
   return (
     <View attributes={{ ref: dropdownRef }}>
@@ -94,7 +103,7 @@ export default function AutoComplete({
                   options?.map((option) => (
                     <DropdownMenu.Item
                       key={option.id}
-                      onClick={() => handleOptionClick(option.value)}
+                      onClick={() => handleOptionClick(option)}
                     >
                       {option.label}
                     </DropdownMenu.Item>
