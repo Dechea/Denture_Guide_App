@@ -124,7 +124,6 @@ const NewProductCard = ({
       // @ts-ignore
       setActiveProductId(localProduct?.id);
 
-      setSearchProductValue(() => localProduct?.manufacturerProductId);
       setSearchedProductManufacturerId(localProduct?.manufacturerProductId);
     } else if (
       fqlxProducts?.data?.length &&
@@ -136,7 +135,6 @@ const NewProductCard = ({
       setSearchedProductManufacturerId(
         fqlxProducts?.data?.[0]?.manufacturerProductId
       );
-      setSearchProductValue(fqlxProducts?.data?.[0]?.manufacturerProductId);
     }
   }, [lastOptionClicked, fqlxProducts]);
 
@@ -287,7 +285,6 @@ const NewProductCard = ({
     setActiveProductId(firstProduct?.id);
 
     setSearchedProductManufacturerId(firstProduct?.manufacturerProductId);
-    setSearchProductValue(firstProduct?.manufacturerProductId);
   };
 
   useEffect(() => {
@@ -347,7 +344,6 @@ const NewProductCard = ({
     setFilterFields(defaultProduct);
     setActiveProductId(product?.id as string);
     setSearchedProductManufacturerId(product?.manufacturerProductId);
-    setSearchProductValue(product?.manufacturerProductId);
   };
 
   useEffect(() => {
