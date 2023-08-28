@@ -45,6 +45,7 @@ const NewProductCard = ({
     setFilterFields,
     activeProductId,
     setActiveProductId,
+    searchedProductManufacturerId,
     setSearchedProductManufacturerId,
   } = useProductStore((state) => state);
   const [lastOptionClicked, setLastOptionClicked] = useState<{
@@ -122,14 +123,16 @@ const NewProductCard = ({
       setFilterFields(defaultProduct);
       // @ts-ignore
       setActiveProductId(localProduct?.id);
+
+      setSearchProductValue(() => localProduct?.manufacturerProductId);
       setSearchedProductManufacturerId(localProduct?.manufacturerProductId);
-      setSearchProductValue(localProduct?.manufacturerProductId);
     } else if (
       fqlxProducts?.data?.length &&
       fqlxProducts?.data?.[0]?.id !== activeProductId
     ) {
       // @ts-ignore
       setActiveProductId(fqlxProducts?.data?.[0]?.id);
+
       setSearchedProductManufacturerId(
         fqlxProducts?.data?.[0]?.manufacturerProductId
       );
@@ -139,6 +142,7 @@ const NewProductCard = ({
 
   const fetchImplicitFilters = useCallback(async () => {
     const localOptions: FilterOption[] = [];
+
     const distinctOptionPromises: Promise<any>[] = [];
 
     productFields.forEach(({ name }) => {
@@ -281,7 +285,9 @@ const NewProductCard = ({
     setFilterFields(localProductState);
     // @ts-ignore
     setActiveProductId(firstProduct?.id);
+
     setSearchedProductManufacturerId(firstProduct?.manufacturerProductId);
+    setSearchProductValue(firstProduct?.manufacturerProductId);
   };
 
   useEffect(() => {
@@ -315,8 +321,22 @@ const NewProductCard = ({
   }, [toothGroups]);
 
   const handleProductAutocompleteChange = (manufactureId: string | number) => {
+    if (!manufactureId) {
+      setSearchedProductManufacturerId('');
+    }
+
     setSearchProductValue(String(manufactureId));
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchProductValue) {
+        setSearchedProductManufacturerId(searchProductValue);
+      }
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [searchProductValue]);
 
   const handleSearchedOptionClick = async (product: Product) => {
     const response = await query.Product.byId(product?.id as string).exec();
@@ -329,6 +349,12 @@ const NewProductCard = ({
     setSearchedProductManufacturerId(product?.manufacturerProductId);
     setSearchProductValue(product?.manufacturerProductId);
   };
+
+  useEffect(() => {
+    if (searchedProductManufacturerId) {
+      setSearchProductValue(searchedProductManufacturerId);
+    }
+  }, [searchedProductManufacturerId]);
 
   return (
     <>
@@ -354,7 +380,6 @@ const NewProductCard = ({
                 <View.Item grow>
                   <Text variant="featured-3" weight="medium">
                     {fqlxProducts?.data?.[0]?.localizations?.[1].name}
-                    {/* {fqlxProducts?.data?.[0]?.manufacturerProductId} */}
                   </Text>
                 </View.Item>
 
