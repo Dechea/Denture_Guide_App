@@ -43,15 +43,19 @@ export default function SearchProductDropdown({
     );
   }
 
-  return products
-    ?.slice(0, 10)
-    ?.map((product) => (
-      <MenuItemWithImage
-        key={product.id}
-        image={product.image}
-        title={product?.manufacturer?.name || ''}
-        description={product.manufacturerProductId}
-        onClick={() => onClick?.(product)}
-      />
-    ));
+  return products?.slice(0, 10)?.map((product) => (
+    <MenuItemWithImage
+      key={product.id}
+      image={product.image}
+      imageAlt={product?.manufacturer?.name ?? ''}
+      onClick={() => onClick?.(product)}
+    >
+      <Text variant="caption-1" weight="medium">
+        {product?.manufacturer?.name ?? ''}
+      </Text>
+      <Text variant="body-3" weight="regular">
+        {product.manufacturerProductId}
+      </Text>
+    </MenuItemWithImage>
+  ));
 }
