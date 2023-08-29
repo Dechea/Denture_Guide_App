@@ -1,12 +1,11 @@
 'use client';
 
 import { useQuery } from 'fqlx-client';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Image, Text, View } from 'reshaped';
+import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import { Button, Image, Loader, Text, View, Autocomplete } from 'reshaped';
 import { Product, Query } from '../../fqlx-generated/typedefs';
 import { useProductStore } from '../../zustand/product';
 import { PRODUCT_TYPE } from '../../zustand/product/interface';
-import AutoComplete from '../AutoComplete';
 import Form from '../Form';
 import BarCodeIcon from '../Icons/Barcode';
 import {
@@ -15,6 +14,7 @@ import {
 } from '../NewProductView/helper';
 import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
 import SearchProductDropdown from './SearchProductDropdown';
+import ClearIcon from '../Icons/Clear';
 
 interface Field {
   id: string;
@@ -380,17 +380,39 @@ const NewProductCard = ({
                 </View.Item>
 
                 <View maxWidth={41}>
-                  <AutoComplete
+                  <Autocomplete
                     name="autocomplete"
-                    onChange={handleProductAutocompleteChange}
                     value={searchProductValue}
-                    onSelectOption={(option) =>
-                      handleSearchedOptionClick(option as unknown as Product)
+                    onChange={({ value }) =>
+                      handleProductAutocompleteChange(value)
                     }
-                    DropdownComponent={SearchProductDropdown}
-                    DropdownComponentProps={{ productType }}
+                    endSlot={
+                      <Button
+                        size="small"
+                        variant="ghost"
+                        icon={ClearIcon}
+                        onClick={() => handleProductAutocompleteChange('')}
+                      />
+                    }
                     icon={<BarCodeIcon />}
-                  />
+                  >
+                    <Suspense
+                      fallback={
+                        <View width="100%" align="center" paddingBlock={4}>
+                          <Loader />
+                        </View>
+                      }
+                    >
+                      <SearchProductDropdown
+                        productType={productType}
+                        onClick={(option) =>
+                          handleSearchedOptionClick(
+                            option as unknown as Product
+                          )
+                        }
+                      />
+                    </Suspense>
+                  </Autocomplete>
                 </View>
               </View>
               <Text>

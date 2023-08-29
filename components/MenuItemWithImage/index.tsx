@@ -1,7 +1,8 @@
 import React from 'react';
-import { DropdownMenu, Image, Text, View } from 'reshaped';
+import { Autocomplete, Image, View } from 'reshaped';
 
 interface MenuItemWithImageProps {
+  value: string;
   image?: string;
   imageAlt: string;
   onClick: () => void;
@@ -9,13 +10,14 @@ interface MenuItemWithImageProps {
 }
 
 export default function MenuItemWithImage({
+  value,
   image,
   imageAlt,
   onClick,
   children,
 }: MenuItemWithImageProps) {
   return (
-    <DropdownMenu.Item onClick={onClick}>
+    <Autocomplete.Item value={value} onClick={onClick}>
       <View direction="row" gap={2} wrap={false}>
         <Image
           src={image}
@@ -26,6 +28,6 @@ export default function MenuItemWithImage({
         />
         <View gap={1}>{children}</View>
       </View>
-    </DropdownMenu.Item>
+    </Autocomplete.Item>
   );
 }

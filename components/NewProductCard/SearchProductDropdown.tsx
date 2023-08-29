@@ -46,6 +46,7 @@ export default function SearchProductDropdown({
   return products?.slice(0, 10)?.map((product) => (
     <MenuItemWithImage
       key={product.id}
+      value={product.manufacturerProductId}
       image={product.image}
       imageAlt={product?.manufacturer?.name ?? ''}
       onClick={() => onClick?.(product)}
