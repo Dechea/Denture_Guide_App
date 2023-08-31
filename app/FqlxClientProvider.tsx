@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import { View } from 'reshaped';
 import { useRouter, usePathname } from 'next/navigation';
 import Loader from '../components/Loader';
-import Navbar from '../components/Navbar';
 
 const FAUNA_ENDPOINT = 'https://db.fauna.com';
 
@@ -74,10 +73,7 @@ export default function FqlxClientProvider({
           loader={<Loader />}
         >
           <View direction='row' height='100vh' align='stretch'>
-            <View.Item>
-              <Navbar />
-            </View.Item>
-            <View.Item grow>{children}</View.Item>
+            {children}
           </View>
         </FqlxProvider>
       )}
