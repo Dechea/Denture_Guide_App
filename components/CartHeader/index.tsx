@@ -20,7 +20,8 @@ export default function CartHeader({ totalProductsCount }: CartHeaderProps) {
       zIndex={55}
       backgroundColor="page-faded"
       direction="row"
-      paddingBlock={8}
+      paddingBlock={4}
+      paddingInline={{ s: 6, l: 35 }}
       align="center"
       gap={4}
       className="border-b border-[--rs-color-border-neutral-faded]"
@@ -28,14 +29,13 @@ export default function CartHeader({ totalProductsCount }: CartHeaderProps) {
       <View direction="column" width="100%" align="center">
         <View
           direction="row"
-          maxWidth="1280px"
-          gap={3}
+          gap={4}
           align="center"
-          justify="start"
           width="100%"
-          paddingInline={6}
+          maxWidth="1000px"
         >
           <Button
+            variant="outline"
             icon={<Icon svg={BackwardIcon} size={4} />}
             onClick={() => router.back()}
           />

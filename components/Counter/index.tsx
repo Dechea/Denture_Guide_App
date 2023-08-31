@@ -26,29 +26,29 @@ export default function Counter({ initialCount, onCountChange }: CounterProps) {
   };
 
   return (
-    <View direction='row' paddingInline={3} gap={3} align='center'>
+    <View direction="row" gap={3} align="center">
       <Button
-        icon={<Icon svg={MinusIcon} size={3} className='self-center' />}
-        variant='outline'
-        size='small'
+        icon={<Icon svg={MinusIcon} size={3} className="self-center" />}
+        variant="outline"
+        size="small"
         onClick={() => handleCountChange(-1)}
         disabled={count === 1}
       />
 
       <Text
-        variant='body-3'
-        weight='regular'
-        color='neutral-faded'
-        className='min-w-[20px]'
-        align='center'
+        variant="body-3"
+        weight="regular"
+        color="neutral-faded"
+        className="min-w-[20px]"
+        align="center"
       >
         {count}
       </Text>
 
       <Button
-        size='small'
-        icon={<Icon svg={PlusIcon} size={3} className='self-center' />}
-        variant='outline'
+        size="small"
+        icon={<Icon svg={PlusIcon} size={3} className="self-center" />}
+        variant="outline"
         onClick={() => handleCountChange(+1)}
       />
     </View>
