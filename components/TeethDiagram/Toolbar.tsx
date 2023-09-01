@@ -25,7 +25,7 @@ export default function Toolbar({ onUndo, onRedo }: ToolbarProps) {
   const isRedoActive = historyIndex < history.length;
 
   return (
-    <View direction='row' gap={2} paddingTop={4} paddingEnd={6}>
+    <View direction='row' gap={2}>
       <Tooltip
         text={
           <View direction='row' align='center'>
