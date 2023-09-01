@@ -35,6 +35,7 @@ export default function TreatmentOptionCard({
           <View width={'100%'} height='100%'>
             <View position='absolute' insetEnd={2} insetTop={2}>
               <Hidden hide={{ s: true, m: false }}>
+                {/*@ts-expect-error*/}
                 <Badge size='medium' variant='outline'>
                   {shortcutButtonText}
                 </Badge>
