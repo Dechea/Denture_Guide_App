@@ -14,14 +14,17 @@ const NewProductToothList = ({
   const { activeProductId } = useProductStore();
 
   return (
-    <View.Item columns={{ s: 12, m: 4 }}>
-      <View height="100%" backgroundColor="page-faded">
-        <SelectedToothList
-          productId={activeProductId}
-          onClickProduct={onClickProduct}
-        />
-      </View>
-    </View.Item>
+    <View
+      width='100%'
+      height='100%'
+      align='stretch'
+      className='max-[900px]:!border-none border-l border-[--rs-color-border-neutral-faded] min-[900px]:!bg-page-faded'
+    >
+      <SelectedToothList
+        productId={activeProductId}
+        onClickProduct={onClickProduct}
+      />
+    </View>
   );
 };
 

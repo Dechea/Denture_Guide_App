@@ -35,34 +35,27 @@ export default function Implant({
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/implant`}>
       <CarouselTeeth />
-
-      <View direction="column" width="100%" align="center">
-        <View
-          direction="row"
-          gap={12}
-          maxWidth="1280px"
-          width="100%"
-          justify="center"
-        >
-          <View.Item columns={{ s: 12, m: 9 }}>
-            <View paddingTop={5.5} className="mb-x24">
-              <Suspense
-                fallback={
-                  <View height="70vh">
-                    <Loader />
-                  </View>
-                }
-              >
-                <NewProductView
-                  productType={PRODUCT_TYPE.IMPLANT}
-                  productFields={implantProductFields}
-                  areaType={AREA_TYPE.ROOT}
-                  patientFileId={params.patientFileId}
-                />
-              </Suspense>
+      <View
+        width='100%'
+        align='center'
+        paddingTop={5.5}
+        paddingInline={35}
+        paddingBottom={16}
+      >
+        <Suspense
+          fallback={
+            <View height='70vh'>
+              <Loader />
             </View>
-          </View.Item>
-        </View>
+          }
+        >
+          <NewProductView
+            productType={PRODUCT_TYPE.IMPLANT}
+            productFields={implantProductFields}
+            areaType={AREA_TYPE.ROOT}
+            patientFileId={params.patientFileId}
+          />
+        </Suspense>
       </View>
     </Tabs.Panel>
   );

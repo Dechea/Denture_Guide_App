@@ -16,3 +16,7 @@
   size: auto;
   margin-block: 30mm;
 }
+
+.background-transparent {
+  background: transparent !important;
+}

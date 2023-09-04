@@ -266,16 +266,16 @@ export default function TeethDiagramWithTreatments({
         active={active}
         position='bottom'
         transparentOverlay
-        className='bg-transparent !w-100% md:!w-[calc(100%-64px)] md:!left-[64px] !shadow-[0px_-5px_20px_rgba(0,0,0,0.01),_0px_-22px_75px_rgba(0,0,0,0.07)] !p-0 !rounded-[0px] !outline-none !z-50'
+        className='background-transparent !w-100% md:!w-[calc(100%-64px)] md:!left-[64px] !p-0 !rounded-[0px] !outline-none !z-50'
         attributes={{ tabIndex: -1 }}
       >
-        <View className='bg-[rgba(0,0,0,0.04)]' height={4.5}>
+        <View className='!bg-transparent' height={20}>
           <Hidden hide={{ s: false, m: true }}>
             <Button
               size={'medium'}
               icon={UnionIcon}
               rounded
-              className='!absolute right-x6 !top-3'
+              className='!absolute right-x6 !z-[10] !bg-page -bottom-x4'
               onClick={deactivate}
             />
           </Hidden>
@@ -286,7 +286,9 @@ export default function TeethDiagramWithTreatments({
           justify='center'
           paddingTop={{ s: 9, m: 8 }}
           paddingInline={6}
-          className={'min-h-[301px] sm:min-h-[249px]'}
+          className={
+            'min-h-[301px] sm:min-h-[249px] bg-white !shadow-[0px_-5px_20px_rgba(0,0,0,0.01),_0px_-22px_75px_rgba(0,0,0,0.07)]'
+          }
         >
           <Treatments onSelectTreatment={handleTreatmentsClick} />
 

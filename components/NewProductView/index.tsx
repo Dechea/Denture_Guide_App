@@ -2,7 +2,17 @@
 
 import { useQuery } from 'fqlx-client';
 import { Suspense, useEffect, useMemo } from 'react';
-import { Badge, Card, Skeleton, Text, View } from 'reshaped';
+import {
+  Badge,
+  Button,
+  Card,
+  Hidden,
+  Modal,
+  Skeleton,
+  Text,
+  View,
+  useToggle,
+} from 'reshaped';
 import { Query, Tooth } from '../../fqlx-generated/typedefs';
 import { useProductCrudOps } from '../../hooks/useProductCrudOps';
 import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
@@ -131,27 +141,25 @@ const NewProductView = ({
     setProductState({});
   }, []);
 
-  return (
-    <>
-      <View direction="row" align="center" paddingBottom={4} maxWidth="1280px">
-        <View.Item grow>
-          <View direction="row" gap={2} align="end">
-            <Text variant="featured-3" weight="bold">
-              {convertCamelCaseToTitleCase(productType)}
-            </Text>
+  const { activate, deactivate, active } = useToggle(false);
 
-            <View direction="row" align="center" paddingBottom={0.5}>
-              <Text
-                variant="body-3"
-                weight="regular"
-                color="neutral-faded"
-                align="end"
-              >
-                {productsCount}
-              </Text>
-            </View>
-          </View>
-        </View.Item>
+  return (
+    <View width='100%' align='center' maxWidth={{ l: '1000px', xl: '1280px' }}>
+      <View width='100%' direction='row' gap={2} align='end' paddingBottom={4}>
+        <Text variant='featured-3' weight='bold'>
+          {convertCamelCaseToTitleCase(productType)}
+        </Text>
+
+        <View direction='row' align='center' paddingBottom={0.5}>
+          <Text
+            variant='body-3'
+            weight='regular'
+            color='neutral-faded'
+            align='end'
+          >
+            {productsCount}
+          </Text>
+        </View>
       </View>
 
       <View
@@ -163,26 +171,26 @@ const NewProductView = ({
       >
         {Object.entries(implicitFilters).map(([key, value]) => {
           return (
-            <Badge key={key} variant="faded">
+            <Badge key={key} variant='faded'>
               {`${key}: ${value}`}
             </Badge>
           );
         })}
       </View>
 
-      <View width={'100%'} align="center">
-        <Card className="w-full !p-0 max-[640px]:!border-none">
+      <View width='100%' align='center'>
+        <Card className='w-full !p-0 max-[640px]:!border-none'>
           <View
             direction={{ s: 'column', m: 'row' }}
-            align="stretch"
+            align='stretch'
             gap={10}
-            className="min-h-[200px]"
+            className='min-h-[200px]'
           >
-            <View.Item columns={{ s: 12, m: 8 }}>
+            <View.Item columns={{ s: 12, l: 8 }}>
               <Suspense
                 fallback={
                   <View padding={6} paddingBottom={10}>
-                    <View direction="row" gap={6}>
+                    <View direction='row' gap={6}>
                       <Skeleton
                         width={{ s: '120px', l: '140px' }}
                         height={{ s: '120px', l: '140px' }}
@@ -190,14 +198,14 @@ const NewProductView = ({
 
                       <View gap={2} grow>
                         <View
-                          direction="row"
-                          align="start"
-                          className="!justify-between"
+                          direction='row'
+                          align='start'
+                          className='!justify-between'
                         >
-                          <Skeleton width="100%" height="50px" />
+                          <Skeleton width='100%' height='50px' />
                         </View>
-                        <View direction="row" gap={4}>
-                          <Skeleton width="100%" />
+                        <View direction='row' gap={4}>
+                          <Skeleton width='100%' />
                         </View>
                       </View>
                     </View>
@@ -207,20 +215,20 @@ const NewProductView = ({
                         paddingStart={{ l: 41 }}
                         paddingTop={{ s: 8, l: 0 }}
                       >
-                        <Skeleton width="100%" height="46px" />
-                        <Skeleton width="100%" height="46px" />
-                        <Skeleton width="140px" height="20px" />
-                        <View direction="row" gap={4}>
+                        <Skeleton width='100%' height='46px' />
+                        <Skeleton width='100%' height='46px' />
+                        <Skeleton width='140px' height='20px' />
+                        <View direction='row' gap={4}>
                           <View.Item columns={6}>
-                            <Skeleton height="56px" />
+                            <Skeleton height='56px' />
                           </View.Item>
                           <View.Item columns={6}>
-                            <Skeleton height="56px" />
+                            <Skeleton height='56px' />
                           </View.Item>
                         </View>
-                        <View direction="row" gap={4}>
+                        <View direction='row' gap={4}>
                           <View.Item columns={6}>
-                            <Skeleton height="56px" />
+                            <Skeleton height='56px' />
                           </View.Item>
                         </View>
                       </View>
@@ -235,14 +243,79 @@ const NewProductView = ({
               </Suspense>
             </View.Item>
 
-            {productsCount && (
-              <NewProductToothList onClickProduct={handleClickOnProduct} />
-            )}
+            <Hidden hide={{ s: true, l: false }}>
+              <View.Item columns={{ s: 12, l: 4 }} grow>
+                {productsCount && (
+                  <NewProductToothList onClickProduct={handleClickOnProduct} />
+                )}
+              </View.Item>
+            </Hidden>
+
+            <Hidden hide={{ s: false, l: true }}>
+              <View.Item columns={12} grow>
+                <View padding={6} paddingBottom={13.75}>
+                  <Button
+                    color='primary'
+                    variant='solid'
+                    size='large'
+                    onClick={() => activate()}
+                    fullWidth
+                    className='!w-[100%]'
+                  >
+                    {`Select ${productType} for...`}
+                  </Button>
+                </View>
+              </View.Item>
+            </Hidden>
+            <ToothListModal
+              onClickProduct={handleClickOnProduct}
+              active={active}
+              deactivate={deactivate}
+            />
           </View>
         </Card>
       </View>
-    </>
+    </View>
   );
 };
 
 export default NewProductView;
+
+const ToothListModal = ({
+  onClickProduct,
+  active,
+  deactivate,
+}: {
+  onClickProduct: (
+    productToDelete: string,
+    toothNumber: number,
+    selectedProducts: SelectedProducts
+  ) => void;
+  active: boolean;
+  deactivate: () => void;
+}) => {
+  return (
+    <Modal
+      active={active}
+      position='bottom'
+      onClose={deactivate}
+      className='!rounded-[0px]'
+    >
+      <View
+        direction='row'
+        align='center'
+        paddingInline={6}
+        paddingBottom={4}
+        className='!justify-between'
+      >
+        <Button variant='ghost' onClick={() => deactivate()}>
+          Cancel
+        </Button>
+        <Button variant='ghost' color='primary' onClick={() => deactivate()}>
+          Done
+        </Button>
+      </View>
+      <NewProductToothList onClickProduct={onClickProduct} />
+    </Modal>
+  );
+};

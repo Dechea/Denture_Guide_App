@@ -2,7 +2,7 @@
 
 import { useQuery } from 'fqlx-client';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Image, Text, TextField, View } from 'reshaped';
+import { Button, Hidden, Image, Text, TextField, View } from 'reshaped';
 import { Query } from '../../fqlx-generated/typedefs';
 import { useProductStore } from '../../zustand/product';
 import { PRODUCT_TYPE } from '../../zustand/product/interface';
@@ -74,9 +74,9 @@ const NewProductCard = ({
   useMemo(() => {
     let localProduct = {};
     let toUpdateProduct = false;
-    if (fqlxProducts?.data?.length == 0) {
+    if (fqlxProducts?.data?.length === 0) {
       const oldValue =
-        lastOptionClicked != null
+        lastOptionClicked !== null
           ? { [lastOptionClicked.category]: lastOptionClicked.value }
           : {};
 
@@ -84,18 +84,18 @@ const NewProductCard = ({
         .firstWhere(formWhereCondition(implicitFilters, productType, oldValue))
         .exec();
       toUpdateProduct = true;
-    } else if (Object.keys(productState).length == 0) {
+    } else if (Object.keys(productState).length === 0) {
       localProduct = fqlxProducts.data?.[0];
       toUpdateProduct = true;
     }
 
-    if (toUpdateProduct && localProduct != null) {
+    if (toUpdateProduct && localProduct !== null) {
       const defaultProduct: { [key: string]: string } = {};
 
       productFields.forEach(({ name }) => {
         if (
           // @ts-ignore
-          localProduct?.[productType]?.[name] != undefined
+          localProduct?.[productType]?.[name] !== undefined
         ) {
           defaultProduct[name] = formatFqlxOption(
             name,
@@ -280,7 +280,7 @@ const NewProductCard = ({
     setLastOptionClicked(null);
 
     if (
-      activeTreatmentGroup != null &&
+      activeTreatmentGroup !== null &&
       toothGroups[activeTreatmentGroup]?.teeth.length
     ) {
       const selectedTeeth = Object.keys(selectedProducts);
@@ -294,43 +294,46 @@ const NewProductCard = ({
   }, [toothGroups]);
 
   return (
-    <>
+    <View>
       {!!fqlxProducts?.data?.length ? (
-        <View padding={6} paddingBottom={10}>
-          <View direction="row" gap={6}>
-            <Image
-              width={{ s: '120px', l: '140px' }}
-              height={{ s: '120px', l: '140px' }}
-              src={fqlxProducts?.data?.[0]?.image}
-              alt={'abutment'}
-              borderRadius="medium"
-            />
-
-            <View gap={2} grow>
-              <View direction="row" align="start" className="!justify-between">
+        <View padding={6} paddingBottom={{ l: 10 }} gap={6}>
+          <View direction={{ s: 'column', l: 'row' }} gap={{ s: 12, l: 16 }}>
+            <View.Item grow>
+              <View width='100%' direction='row' gap={6} align='start'>
+                <Image
+                  width='80px'
+                  height='80px'
+                  src={fqlxProducts?.data?.[0]?.image}
+                  alt={'abutment'}
+                  borderRadius='medium'
+                />
                 <View.Item grow>
-                  <Text variant="featured-3" weight="medium">
-                    {fqlxProducts?.data?.[0]?.localizations?.[1].name}
-                  </Text>
+                  <View width='100%' gap={2}>
+                    <Text variant='body-3' weight='medium'>
+                      {fqlxProducts?.data?.[0]?.localizations?.[1].name}
+                    </Text>
+
+                    <Text>
+                      {fqlxProducts?.data?.[0]?.localizations?.[1].price.amount}{' '}
+                      €
+                    </Text>
+                  </View>
                 </View.Item>
-
-                <View maxWidth={41}>
-                  <TextField
-                    icon={BarCodeIcon}
-                    name="email"
-                    size="medium"
-                    value={fqlxProducts?.data?.[0]?.manufacturerProductId}
-                  />
-                </View>
               </View>
+            </View.Item>
 
-              <Text>
-                {fqlxProducts?.data?.[0]?.localizations?.[1].price.amount} €
-              </Text>
+            <View maxWidth={{ l: 41 }}>
+              <TextField
+                icon={BarCodeIcon}
+                name='email'
+                size='medium'
+                value={fqlxProducts?.data?.[0]?.manufacturerProductId}
+              />
             </View>
           </View>
+
           <View.Item grow>
-            <View paddingStart={{ l: 41 }} paddingTop={{ s: 8, l: 0 }}>
+            <View paddingStart={{ l: 26 }}>
               <Form
                 fields={filterOptions}
                 values={productState}
@@ -340,13 +343,13 @@ const NewProductCard = ({
           </View.Item>
         </View>
       ) : (
-        <View paddingTop={{ s: 8, l: 2 }} align="center">
-          <Text variant="featured-3" weight="medium">
+        <View paddingTop={{ s: 8, l: 2 }} align='center'>
+          <Text variant='featured-3' weight='medium'>
             No Product Found
           </Text>
         </View>
       )}
-    </>
+    </View>
   );
 };
 

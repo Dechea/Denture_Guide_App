@@ -65,7 +65,12 @@ const TreatmentTabs = ({
       className='overflow-y-scroll max-h-[calc(100vh-60px)]'
       attributes={{ id: 'scrollableProductList' }}
     >
-      <Tabs onChange={onChangeTab} itemWidth='equal' value={path}>
+      <Tabs
+        onChange={onChangeTab}
+        itemWidth='equal'
+        variant='pills-elevated'
+        value={path}
+      >
         <View
           position='sticky'
           insetTop={0}
@@ -73,7 +78,7 @@ const TreatmentTabs = ({
           zIndex={50}
           height={11}
         >
-          <Tabs.List>
+          <Tabs.List className='&_[role=tablist]:overflow-x-auto'>
             <Tabs.Item value={`/${patientFileId}/treatments`}>
               <View width={'100%'} align='start'>
                 <Text>Treatments</Text>
