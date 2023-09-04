@@ -14,53 +14,53 @@ export const CartCostEstimation = ({
   totalCostOfProducts,
 }: CartCostEstimationProps) => {
   return (
-    <Card padding={0}>
+    <Card padding={0} className='max-[900px]:!rounded-none'>
       <View gap={10} padding={4} paddingBottom={{ s: 8, l: 4 }}>
         <View gap={4}>
           <View
-            direction="row"
-            width="100%"
-            align="center"
-            className="!justify-between"
+            direction='row'
+            width='100%'
+            align='center'
+            className='!justify-between'
           >
             <Link
               href={`/${patientFileId}/cost-estimation`}
-              className="no-underline"
+              className='no-underline'
             >
-              <View direction="row" align="center" gap={1}>
-                <Icon svg={CostEstimationIcon} size={4} color="neutral" />
+              <View direction='row' align='center' gap={1}>
+                <Icon svg={CostEstimationIcon} size={4} color='neutral' />
 
-                <View className="!border-b border-[--rs-color-on-background-neutral]">
-                  <Text variant="body-3" weight="medium" color="neutral">
+                <View className='!border-b border-[--rs-color-on-background-neutral]'>
+                  <Text variant='body-3' weight='medium' color='neutral'>
                     Cost Estimation
                   </Text>
                 </View>
               </View>
             </Link>
-            <Text variant="body-3" weight="medium">
+            <Text variant='body-3' weight='medium'>
               {totalCostOfProducts} €
             </Text>
           </View>
           <Divider />
           <View
-            direction="row"
-            width="100%"
-            align="center"
-            className="!justify-between"
+            direction='row'
+            width='100%'
+            align='center'
+            className='!justify-between'
           >
-            <View direction="row" align="center" gap={1}>
-              <Text variant="body-3" weight="bold">
+            <View direction='row' align='center' gap={1}>
+              <Text variant='body-3' weight='bold'>
                 Total
               </Text>
             </View>
-            <Text variant="body-3" weight="bold">
+            <Text variant='body-3' weight='bold'>
               {totalCostOfProducts} €
             </Text>
           </View>
         </View>
-        <Button color="primary" className="!rounded-medium">
+        <Button color='primary' className='!rounded-medium'>
           <View paddingBlock={1}>
-            <Text variant="body-2" weight="medium">
+            <Text variant='body-2' weight='medium'>
               Place Order
             </Text>
           </View>

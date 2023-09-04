@@ -87,10 +87,7 @@ export default function PatientList({
               }
             >
               {patientFiles?.data?.map((patientFile, index) => (
-                <View
-                  key={patientFile.id}
-                  className='!rounded-t-medium !bg-page'
-                >
+                <View key={patientFile.id} className='!rounded-medium !bg-page'>
                   <Card
                     href={`/${patientFile.id}/treatments`}
                     padding={4}

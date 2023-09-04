@@ -145,7 +145,14 @@ const NewProductView = ({
 
   return (
     <View width='100%' align='center' maxWidth={{ l: '1000px', xl: '1280px' }}>
-      <View width='100%' direction='row' gap={2} align='end' paddingBottom={4}>
+      <View
+        width='100%'
+        direction='row'
+        gap={2}
+        align='end'
+        paddingBottom={4}
+        paddingStart={6}
+      >
         <Text variant='featured-3' weight='bold'>
           {convertCamelCaseToTitleCase(productType)}
         </Text>
@@ -167,6 +174,7 @@ const NewProductView = ({
         width={'100%'}
         direction={'row'}
         paddingBottom={10}
+        paddingStart={6}
         gap={2}
       >
         {Object.entries(implicitFilters).map(([key, value]) => {
@@ -179,11 +187,11 @@ const NewProductView = ({
       </View>
 
       <View width='100%' align='center'>
-        <Card className='w-full !p-0 max-[640px]:!border-none'>
+        <Card className='w-full !p-0 max-[900px]:!border-none'>
           <View
             direction={{ s: 'column', m: 'row' }}
             align='stretch'
-            gap={10}
+            gap={{ s: 6, l: 10 }}
             className='min-h-[200px]'
           >
             <View.Item columns={{ s: 12, l: 8 }}>

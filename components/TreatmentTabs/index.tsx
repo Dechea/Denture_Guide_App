@@ -78,7 +78,7 @@ const TreatmentTabs = ({
           zIndex={50}
           height={11}
         >
-          <Tabs.List className='&_[role=tablist]:overflow-x-auto'>
+          <Tabs.List className='[&_[role=tablist]]:overflow-x-auto'>
             <Tabs.Item value={`/${patientFileId}/treatments`}>
               <View width={'100%'} align='start'>
                 <Text>Treatments</Text>

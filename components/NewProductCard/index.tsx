@@ -296,7 +296,12 @@ const NewProductCard = ({
   return (
     <View>
       {!!fqlxProducts?.data?.length ? (
-        <View padding={6} paddingBottom={{ l: 10 }} gap={6}>
+        <View
+          paddingInline={6}
+          paddingTop={{ l: 6 }}
+          paddingBottom={{ l: 10 }}
+          gap={6}
+        >
           <View direction={{ s: 'column', l: 'row' }} gap={{ s: 12, l: 16 }}>
             <View.Item grow>
               <View width='100%' direction='row' gap={6} align='start'>

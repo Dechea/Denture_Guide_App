@@ -3,16 +3,8 @@
 import { useQuery } from 'fqlx-client';
 import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
-import {
-  Avatar,
-  Badge,
-  Button,
-  Divider,
-  Hidden,
-  Icon,
-  Text,
-  View,
-} from 'reshaped';
+
+import { Badge, Button, Divider, Hidden, Icon, Text, View } from 'reshaped';
 import { Query } from '../../fqlx-generated/typedefs';
 import CostEst from '../Icons/CostEst';
 import MenuIcon from '../Icons/MenuIcon';
@@ -54,8 +46,8 @@ export default function Header({ patientFileId }: HeaderProps) {
       <View
         direction='row'
         align='center'
-        paddingBlock={2}
-        paddingInline={6}
+        paddingBlock={{ s: 1, l: 2 }}
+        paddingInline={{ s: 2, l: 6 }}
         className='!justify-between'
       >
         <Button
@@ -63,13 +55,20 @@ export default function Header({ patientFileId }: HeaderProps) {
           variant='ghost'
           onClick={() => router.push('/')}
         >
-          <Text variant='body-3' weight='medium'>
-            Orders List
-          </Text>
+          <Hidden hide={{ s: true, l: false }}>
+            <Text variant='body-3' weight='medium'>
+              Orders List
+            </Text>
+          </Hidden>
+          <Hidden hide={{ s: false, l: true }}>
+            <Text variant='body-3' weight='medium'>
+              Orders
+            </Text>
+          </Hidden>
         </Button>
 
         <View direction='row' gap={3} align='center'>
-          <Text variant='body-3' weight='medium'>
+          <Text variant='body-3' weight='medium' className='truncate ...'>
             {patientFile?.patient?.name}
           </Text>
         </View>
@@ -81,8 +80,23 @@ export default function Header({ patientFileId }: HeaderProps) {
               icon={
                 <Badge.Container className='w-[24px]'>
                   <Hidden hide={{ s: false, m: true }}>
-                    <Badge rounded size='small'>
-                      {totalProductsInCart}
+                    <Badge
+                      className={
+                        totalProductsInCart > 0
+                          ? '!bg-critical text-neutral'
+                          : '!bg-neutral'
+                      }
+                      size='small'
+                    >
+                      <Text
+                        className={
+                          totalProductsInCart > 0
+                            ? '!text-white'
+                            : '!text-neutral'
+                        }
+                      >
+                        {totalProductsInCart}
+                      </Text>
                     </Badge>
                   </Hidden>
                   <Icon svg={CartIcon} size={4} />
@@ -98,11 +112,22 @@ export default function Header({ patientFileId }: HeaderProps) {
                       {totalCostOfProductsInCart} €
                     </Text>
                     <Badge
-                      className='!min-w-[25px]'
-                      color='critical'
+                      className={
+                        totalProductsInCart > 0
+                          ? '!bg-critical !min-w-[25px] text-neutral'
+                          : '!bg-neutral'
+                      }
                       size='small'
                     >
-                      {totalProductsInCart}
+                      <Text
+                        className={
+                          totalProductsInCart > 0
+                            ? '!text-white'
+                            : '!text-neutral'
+                        }
+                      >
+                        {totalProductsInCart}
+                      </Text>
                     </Badge>
                   </View>
                 </Hidden>

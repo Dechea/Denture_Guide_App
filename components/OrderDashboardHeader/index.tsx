@@ -11,7 +11,7 @@ export default function OrderDashboardHeader() {
         align='center'
         padding={4}
         borderColor='neutral-faded'
-        className='!justify-between items-center border-b bg-[var(--rs-color-background-neutral-faded)]'
+        className='!justify-between items-center border-b-0 bg-[var(--rs-color-background-neutral-faded)]'
       >
         <Image src='/decheaLogo.svg' alt='Dechea' height={'24px'} />
         <View>

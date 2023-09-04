@@ -47,9 +47,9 @@ export default function Abutment({
       <View
         width='100%'
         align='center'
-        paddingTop={5.5}
-        paddingInline={35}
-        paddingBottom={16}
+        paddingTop={{ s: 4, l: 6 }}
+        paddingInline={{ s: 0, l: 35 }}
+        paddingBottom={{ l: 16 }}
       >
         <Suspense
           fallback={

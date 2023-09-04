@@ -266,16 +266,16 @@ export default function TeethDiagramWithTreatments({
         active={active}
         position='bottom'
         transparentOverlay
-        className='background-transparent !w-100% md:!w-[calc(100%-64px)] md:!left-[64px] !p-0 !rounded-[0px] !outline-none !z-50'
+        className='background-transparent md:!w-[calc(100%-64px)] md:!left-[64px] !p-0 !rounded-[0px] !outline-none !z-50'
         attributes={{ tabIndex: -1 }}
       >
         <View className='!bg-transparent' height={20}>
-          <Hidden hide={{ s: false, m: true }}>
+          <Hidden hide={{ s: false, l: true }}>
             <Button
               size={'medium'}
               icon={UnionIcon}
               rounded
-              className='!absolute right-x6 !z-[10] !bg-page -bottom-x4'
+              className='!absolute right-x6 !z-[10] !shadow-[0px_1px_2px_-1px_rgba(0,0,0,0.10),_0px_2px_3px_0px_rgba(0,0,0,0.10)] !bg-page -bottom-x4'
               onClick={deactivate}
             />
           </Hidden>
