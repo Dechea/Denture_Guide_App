@@ -284,7 +284,7 @@ export default function TeethDiagramWithTreatments({
           gap={2}
           direction='row'
           justify='center'
-          paddingTop={{ s: 9, m: 8 }}
+          paddingBlock={{ s: 9, m: 8 }}
           paddingInline={6}
           className={
             'min-h-[301px] sm:min-h-[249px] bg-white !shadow-[0px_-5px_20px_rgba(0,0,0,0.01),_0px_-22px_75px_rgba(0,0,0,0.07)]'

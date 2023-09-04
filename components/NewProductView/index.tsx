@@ -252,7 +252,7 @@ const NewProductView = ({
             </View.Item>
 
             <Hidden hide={{ s: true, l: false }}>
-              <View.Item columns={{ s: 12, l: 4 }} grow>
+              <View.Item columns={4} grow>
                 {productsCount && (
                   <NewProductToothList onClickProduct={handleClickOnProduct} />
                 )}
@@ -307,7 +307,8 @@ const ToothListModal = ({
       active={active}
       position='bottom'
       onClose={deactivate}
-      className='!rounded-[0px]'
+      className='!rounded-[0px] !shadow-[0px_-15px_25px_0px_rgba(0,0,0,0.07),0px_-5px_10px_0px_rgba(0,0,0,0.05)]'
+      transparentOverlay
     >
       <View
         direction='row'

@@ -80,21 +80,8 @@ export default function Header({ patientFileId }: HeaderProps) {
               icon={
                 <Badge.Container className='w-[24px]'>
                   <Hidden hide={{ s: false, m: true }}>
-                    <Badge
-                      className={
-                        totalProductsInCart > 0
-                          ? '!bg-critical text-neutral'
-                          : '!bg-neutral'
-                      }
-                      size='small'
-                    >
-                      <Text
-                        className={
-                          totalProductsInCart > 0
-                            ? '!text-white'
-                            : '!text-neutral'
-                        }
-                      >
+                    <Badge className='!bg-neutral' size='small'>
+                      <Text className='!text-neutral'>
                         {totalProductsInCart}
                       </Text>
                     </Badge>
@@ -107,25 +94,12 @@ export default function Header({ patientFileId }: HeaderProps) {
             >
               <>
                 <Hidden hide={{ s: true, m: false }}>
-                  <View direction='row' align='center' justify='center' gap={2}>
+                  <View direction='row' align='center' justify='center' gap={3}>
                     <Text variant='body-3' weight='medium'>
                       {totalCostOfProductsInCart} €
                     </Text>
-                    <Badge
-                      className={
-                        totalProductsInCart > 0
-                          ? '!bg-critical !min-w-[25px] text-neutral'
-                          : '!bg-neutral'
-                      }
-                      size='small'
-                    >
-                      <Text
-                        className={
-                          totalProductsInCart > 0
-                            ? '!text-white'
-                            : '!text-neutral'
-                        }
-                      >
+                    <Badge className='!bg-neutral' size='small'>
+                      <Text className='!text-neutral'>
                         {totalProductsInCart}
                       </Text>
                     </Badge>
