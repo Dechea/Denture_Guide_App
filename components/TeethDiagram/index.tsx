@@ -255,9 +255,8 @@ export default function TeethDiagramWithTreatments({
       <View width='100%' align='end' paddingBottom={6} paddingEnd={2}>
         <Toolbar onUndo={undoFunction} onRedo={redoFunction} />
       </View>
-
-      <View width='100%' className='overflow-x-auto !scrollbar-thumb-[]'>
-        <View width='1096px'>
+      <View width='100%' maxWidth='1096px' className='overflow-x-auto'>
+        <View width='1096px' height={72}>
           <ComposedTeethDiagram />
         </View>
       </View>
@@ -266,7 +265,7 @@ export default function TeethDiagramWithTreatments({
         active={active}
         position='bottom'
         transparentOverlay
-        className='background-transparent md:!w-[calc(100%-64px)] md:!left-[64px] !p-0 !rounded-[0px] !outline-none !z-50'
+        className='background-transparent shadow-none !p-0 !rounded-[0px] !outline-none !z-50'
         attributes={{ tabIndex: -1 }}
       >
         <View className='!bg-transparent' height={20}>
