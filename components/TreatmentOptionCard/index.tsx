@@ -31,7 +31,6 @@ export default function TreatmentOptionCard({
         <Card ref={cardRef} onClick={onClick} padding={0} className='!h-[100%]'>
           <View width={'100%'} height='100%'>
             <View position='absolute' insetEnd={2} insetTop={2}>
-              {/* @ts-expect-error */}
               <Badge size='medium' variant='outline'>
                 {shortcutButtonText}
               </Badge>
