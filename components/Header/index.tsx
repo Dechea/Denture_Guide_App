@@ -67,8 +67,8 @@ export default function Header({ patientFileId }: HeaderProps) {
           </Hidden>
         </Button>
 
-        <View direction='row' gap={3} align='center'>
-          <Text variant='body-3' weight='medium' className='truncate ...'>
+        <View direction='row' gap={3} align='center' maxWidth={15}>
+          <Text variant='body-3' weight='medium' className='truncate'>
             {patientFile?.patient?.name}
           </Text>
         </View>
@@ -78,7 +78,7 @@ export default function Header({ patientFileId }: HeaderProps) {
             <Button
               variant='ghost'
               icon={
-                <Badge.Container className='w-[24px]'>
+                <Badge.Container className='w-8 pr-x2'>
                   <Hidden hide={{ s: false, m: true }}>
                     <Badge className='!bg-neutral' size='small'>
                       <Text className='!text-neutral'>

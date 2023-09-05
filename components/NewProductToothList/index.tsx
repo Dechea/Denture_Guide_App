@@ -18,7 +18,7 @@ const NewProductToothList = ({
       width='100%'
       height='100%'
       align='stretch'
-      className='max-[900px]:!border-none border-l border-[--rs-color-border-neutral-faded] min-[900px]:!bg-page-faded'
+      className='border-none des:border-l des:border-solid border-[--rs-color-border-neutral-faded] des:!bg-page-faded'
     >
       <SelectedToothList
         productId={activeProductId}

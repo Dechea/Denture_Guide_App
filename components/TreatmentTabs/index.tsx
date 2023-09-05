@@ -62,7 +62,7 @@ const TreatmentTabs = ({
     <View
       paddingBlock={0}
       paddingInline={2}
-      className='overflow-y-scroll max-h-[calc(100vh-60px)]'
+      className='overflow-y-scroll max-h-[calc(100svh-60px)]'
       attributes={{ id: 'scrollableProductList' }}
     >
       <Tabs

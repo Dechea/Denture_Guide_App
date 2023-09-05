@@ -53,7 +53,7 @@ export default function Abutment({
       >
         <Suspense
           fallback={
-            <View height='70vh'>
+            <View height='70svh'>
               <Loader />
             </View>
           }

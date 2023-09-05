@@ -295,7 +295,7 @@ const NewProductCard = ({
 
   return (
     <View>
-      {!!fqlxProducts?.data?.length ? (
+      {fqlxProducts?.data?.length ? (
         <View
           paddingInline={6}
           paddingTop={{ l: 6 }}

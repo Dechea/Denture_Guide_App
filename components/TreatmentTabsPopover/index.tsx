@@ -34,7 +34,7 @@ export default function TreatmentTabsPopover({
           </Actionable>
         )}
       </Popover.Trigger>
-      <Popover.Content className='mt-[10px] max-[900px]:fixed max-[900px]:left-0 max-[900px]:bottom-0 max-[900px]:!border-none'>
+      <Popover.Content className='mt-[10px] fixed des:static left-0 des:left-auto bottom-0 des:bottom-auto !border-none des:!border-solid'>
         <Hidden hide={{ s: true, m: false }}>
           <View
             gap={4}

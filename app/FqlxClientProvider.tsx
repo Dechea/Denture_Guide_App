@@ -72,7 +72,7 @@ export default function FqlxClientProvider({
           }}
           loader={<Loader />}
         >
-          <View height='100vh'>{children}</View>
+          <View height='100svh'>{children}</View>
         </FqlxProvider>
       )}
     </>

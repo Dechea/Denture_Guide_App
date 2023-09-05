@@ -187,7 +187,7 @@ const NewProductView = ({
       </View>
 
       <View width='100%' align='center'>
-        <Card className='w-full !p-0 max-[900px]:!border-none'>
+        <Card className='w-full !p-0 !border-none des:!border-solid'>
           <View
             direction={{ s: 'column', m: 'row' }}
             align='stretch'
