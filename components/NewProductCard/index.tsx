@@ -2,7 +2,7 @@
 
 import { useQuery } from 'fqlx-client';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, Hidden, Image, Text, TextField, View } from 'reshaped';
+import { Image, Text, TextField, View } from 'reshaped';
 import { Query } from '../../fqlx-generated/typedefs';
 import { useProductStore } from '../../zustand/product';
 import { PRODUCT_TYPE } from '../../zustand/product/interface';
