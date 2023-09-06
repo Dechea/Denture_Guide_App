@@ -19,7 +19,7 @@ export default function Abutment({
 }: {
   params: { patientFileId: string };
 }) {
-  const { setActiveProductTab, setActivePatientFileId, productState } =
+  const { setActiveProductTab, setActivePatientFileId, filterFields } =
     useProductStore();
 
   useAvailableTeethByTreatment({
@@ -36,8 +36,8 @@ export default function Abutment({
     setActivePatientFileId(params.patientFileId);
   }, []);
 
-  const filteredFields =
-    productState?.angle === '0'
+  const filteredAbutmentProductFields =
+    filterFields?.angle === '0'
       ? abutmentProductFields.filter((field) => field.name !== 'type')
       : abutmentProductFields;
 
@@ -60,7 +60,7 @@ export default function Abutment({
         >
           <NewProductView
             productType={PRODUCT_TYPE.ABUTMENT}
-            productFields={filteredFields}
+            productFields={filteredAbutmentProductFields}
             areaType={AREA_TYPE.CROWN}
             patientFileId={params.patientFileId}
           />

@@ -8,7 +8,6 @@ import {
   Card,
   Hidden,
   Modal,
-  Skeleton,
   Text,
   View,
   useToggle,
@@ -22,6 +21,7 @@ import { AREA_TYPE, PRODUCT_TYPE } from '../../zustand/product/interface';
 import { formWhereCondition } from './helper';
 import NewProductToothList from '../NewProductToothList';
 import NewProductCard from '../NewProductCard';
+import ProductCardSkeleton from './ProductCardSkeleton';
 
 interface Field {
   id: string;
@@ -46,9 +46,9 @@ const NewProductView = ({
     availableTeethByProductType,
     implicitFilters,
     activeTreatmentGroup,
-    productState,
+    filterFields,
     setActiveTreatmentGroup,
-    setProductState,
+    setProductFilters,
   } = useProductStore();
   const { patientFile, toothGroups, getToothGroups } = useTreatmentsByGroup();
   const { addOrUpdateProductInFqlx } = useProductCrudOps({ patientFileId });
@@ -99,17 +99,13 @@ const NewProductView = ({
     });
   };
 
-  const productQuery = useMemo(
-    () =>
-      query.Product.all().where(
-        formWhereCondition(implicitFilters, productType, productState)
-      ),
-    [implicitFilters, productState]
-  );
-
   const productsCount = useMemo(
-    () => productQuery.count().exec(),
-    [productQuery]
+    () =>
+      query.Product.all()
+        .where(formWhereCondition(implicitFilters, productType, filterFields))
+        .count()
+        .exec(),
+    [implicitFilters, filterFields]
   );
 
   const handleClickOnProduct = (
@@ -138,7 +134,7 @@ const NewProductView = ({
   }, [patientFile, activeProductTab, availableTeethByProductType]);
 
   useEffect(() => {
-    setProductState({});
+    setProductFilters({});
   }, []);
 
   const { activate, deactivate, active } = useToggle(false);
@@ -195,55 +191,7 @@ const NewProductView = ({
             className='min-h-[200px]'
           >
             <View.Item columns={{ s: 12, l: 8 }}>
-              <Suspense
-                fallback={
-                  <View padding={6} paddingBottom={10}>
-                    <View direction='row' gap={6}>
-                      <Skeleton
-                        width={{ s: '120px', l: '140px' }}
-                        height={{ s: '120px', l: '140px' }}
-                      />
-
-                      <View gap={2} grow>
-                        <View
-                          direction='row'
-                          align='start'
-                          className='!justify-between'
-                        >
-                          <Skeleton width='100%' height='50px' />
-                        </View>
-                        <View direction='row' gap={4}>
-                          <Skeleton width='100%' />
-                        </View>
-                      </View>
-                    </View>
-                    <View.Item grow>
-                      <View
-                        gap={6}
-                        paddingStart={{ l: 41 }}
-                        paddingTop={{ s: 8, l: 0 }}
-                      >
-                        <Skeleton width='100%' height='46px' />
-                        <Skeleton width='100%' height='46px' />
-                        <Skeleton width='140px' height='20px' />
-                        <View direction='row' gap={4}>
-                          <View.Item columns={6}>
-                            <Skeleton height='56px' />
-                          </View.Item>
-                          <View.Item columns={6}>
-                            <Skeleton height='56px' />
-                          </View.Item>
-                        </View>
-                        <View direction='row' gap={4}>
-                          <View.Item columns={6}>
-                            <Skeleton height='56px' />
-                          </View.Item>
-                        </View>
-                      </View>
-                    </View.Item>
-                  </View>
-                }
-              >
+              <Suspense fallback={<ProductCardSkeleton />}>
                 <NewProductCard
                   productType={productType}
                   productFields={productFields}
