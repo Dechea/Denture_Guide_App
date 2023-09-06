@@ -67,7 +67,7 @@ export default function Header({ patientFileId }: HeaderProps) {
           </Hidden>
         </Button>
 
-        <View direction='row' gap={3} align='center' maxWidth={15}>
+        <View direction='row' gap={3} align='center' maxWidth={'50%'}>
           <Text variant='body-3' weight='medium' className='truncate'>
             {patientFile?.patient?.name}
           </Text>
