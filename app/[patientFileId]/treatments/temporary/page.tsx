@@ -39,7 +39,7 @@ export default function Temporary({
         width='100%'
         align='center'
         paddingTop={{ s: 4, l: 6 }}
-        paddingInline={{ s: 0, l: 35 }}
+        paddingInline={{ s: 0, xl: 35 }}
         paddingBottom={{ l: 16 }}
       >
         <Suspense
