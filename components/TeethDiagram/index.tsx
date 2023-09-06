@@ -247,7 +247,7 @@ export default function TeethDiagramWithTreatments({
     <View
       width='100%'
       maxWidth={'1280px'}
-      paddingInline={{ m: 0, xl: 20 }}
+      paddingInline={{ xl: 20 }}
       align='center'
       className='!outline-none'
       attributes={{ tabIndex: 1 }}

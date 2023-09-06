@@ -126,7 +126,7 @@ export default function Cart({ params }: CartProps) {
           className='print:!p-0'
           maxWidth='1280px'
           justify='center'
-          paddingInline={{ l: 35 }}
+          paddingInline={{ l: 10, xl: 35 }}
         >
           <View.Item grow columns={{ s: 12, l: 7 }}>
             <CartItemsList
