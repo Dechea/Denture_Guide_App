@@ -246,18 +246,23 @@ export default function TeethDiagramWithTreatments({
   return (
     <View
       width='100%'
-      maxWidth={'1280px'}
+      maxWidth={'1920px'}
       paddingInline={{ xl: 20 }}
       align='center'
       className='!outline-none'
       attributes={{ tabIndex: 1 }}
     >
-      <View width='100%' align='end' paddingBottom={6} paddingEnd={2}>
-        <Toolbar onUndo={undoFunction} onRedo={redoFunction} />
-      </View>
-      <View width='100%' maxWidth='1096px' className='overflow-x-auto'>
-        <View width='1096px' height={72}>
-          <ComposedTeethDiagram />
+      <View width='100%' maxWidth={{ s: '1096px', xl: '1920px' }}>
+        <View width='100%' align='end' paddingBottom={6} paddingEnd={2}>
+          <Toolbar onUndo={undoFunction} onRedo={redoFunction} />
+        </View>
+        <View
+          maxWidth={{ s: '1096px', xl: '1920px' }}
+          className='overflow-x-auto'
+        >
+          <View width={{ s: '1096px', xl: '100%' }} height={{ s: 72, xl: 117 }}>
+            <ComposedTeethDiagram />
+          </View>
         </View>
       </View>
 
