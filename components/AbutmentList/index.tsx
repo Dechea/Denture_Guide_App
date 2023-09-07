@@ -18,21 +18,29 @@ const AbutmentList = ({
 }: abutmentProductListProps) => {
   const router = useRouter();
   return (
-    <View direction='row' align='stretch'>
+    <View direction="row" align="stretch">
       <View.Item>
-        <View padding={7} justify='center'>
-          <Image src={image} alt={heading} height='166px' width='166px' />
+        <View padding={7} justify="center">
+          <Image src={image} alt={heading} height="166px" width="166px" />
         </View>
       </View.Item>
 
       <View.Item grow>
-        <View direction='column' height={'100%'} paddingBlock={6} paddingInline={0} gap={1}>
-          <Text variant='body-2' weight='bold'>{heading} </Text>
+        <View
+          direction="column"
+          height={'100%'}
+          paddingBlock={6}
+          paddingInline={0}
+          gap={1}
+        >
+          <Text variant="body-2" weight="bold">
+            {heading}{' '}
+          </Text>
           <View paddingStart={6}>
             <ul>
               {description.map((listData: string, index: number) => (
                 <li key={index}>
-                  <Text color='neutral-faded' variant='body-3'>
+                  <Text color="neutral-faded" variant="body-3">
                     {listData}
                   </Text>
                 </li>
@@ -41,8 +49,8 @@ const AbutmentList = ({
           </View>
 
           <View.Item grow>
-            <View direction='column' justify='end' height={'100%'}>
-              <Text color='neutral' variant='body-3'>
+            <View direction="column" justify="end" height={'100%'}>
+              <Text color="neutral" variant="body-3">
                 {price} €
               </Text>
             </View>
@@ -53,12 +61,12 @@ const AbutmentList = ({
       <View.Item>
         <View gap={1} paddingBlock={6} paddingInline={8}>
           <View paddingBottom={2}>
-            <Text variant='caption-1' weight='medium' color='neutral-faded'>
+            <Text variant="caption-1" weight="medium" color="neutral-faded">
               Order for:
             </Text>
           </View>
 
-          <View borderColor='neutral-faded' borderRadius='small'>
+          <View borderColor="neutral-faded" borderRadius="small">
             {options?.map((data: abutmentOptionsProps, index: number) => (
               <View key={data.id}>
                 <SelectionMenuItem

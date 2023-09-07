@@ -61,26 +61,24 @@ const TreatmentTabs = ({
   return (
     <View
       paddingBlock={0}
-      paddingInline={2}
-      className='overflow-y-scroll max-h-[calc(100svh-60px)]'
+      className="overflow-y-scroll max-h-[calc(100svh-60px)]"
       attributes={{ id: 'scrollableProductList' }}
     >
       <Tabs
         onChange={onChangeTab}
-        itemWidth='equal'
-        variant='pills-elevated'
+        itemWidth="equal"
+        variant="pills-elevated"
         value={path}
       >
         <View
-          position='sticky'
+          position="sticky"
           insetTop={0}
-          backgroundColor='white'
+          backgroundColor="neutral-faded"
           zIndex={50}
-          height={11}
         >
-          <Tabs.List className='[&_[role=tablist]]:overflow-x-auto'>
+          <Tabs.List className="[&_[role=tablist]]:overflow-x-visible">
             <Tabs.Item value={`/${patientFileId}/treatments`}>
-              <View width={'100%'} align='start'>
+              <View width={'100%'} align="start">
                 <Text>Treatments</Text>
               </View>
             </Tabs.Item>
@@ -91,8 +89,8 @@ const TreatmentTabs = ({
                 image={'/TreatmentTabsImplantsPopover.svg'}
                 activePopup={activePopupFor === PRODUCT_TYPE.IMPLANT}
                 onClosePopover={handleClosePopover}
-                title='Implants'
-                description='You can select implants for each tooth in ‘Implants’ tab'
+                title="Implants"
+                description="You can select implants for each tooth in ‘Implants’ tab"
               />
             </Tabs.Item>
 
@@ -102,35 +100,35 @@ const TreatmentTabs = ({
                 image={'/TreatmentTabsAbutmentsPopover.svg'}
                 activePopup={activePopupFor === PRODUCT_TYPE.ABUTMENT}
                 onClosePopover={handleClosePopover}
-                title='Abutments'
-                description='You can select abutments for each tooth in ‘Abutments’ tab'
+                title="Abutments"
+                description="You can select abutments for each tooth in ‘Abutments’ tab"
               />
             </Tabs.Item>
 
             <Tabs.Item value={`/${patientFileId}/treatments/healing`}>
               <TreatmentTabsPopover
                 activeTab={tabsStatus.healingAbutment}
-                title='Healing Abutment'
+                title="Healing Abutment"
               />
             </Tabs.Item>
 
             <Tabs.Item value={`/${patientFileId}/treatments/temporary`}>
               <TreatmentTabsPopover
                 activeTab={tabsStatus.temporaryAbutment}
-                title='Temporary Abutments'
+                title="Temporary Abutments"
               />
             </Tabs.Item>
 
             <Tabs.Item value={`/${patientFileId}/treatments/impression`}>
               <TreatmentTabsPopover
                 activeTab={tabsStatus.impression}
-                title='Impression'
+                title="Impression"
               />
             </Tabs.Item>
             <Tabs.Item value={`/${patientFileId}/treatments/tools`}>
               <TreatmentTabsPopover
                 activeTab={tabsStatus.tools}
-                title='Tools'
+                title="Tools"
               />
             </Tabs.Item>
           </Tabs.List>

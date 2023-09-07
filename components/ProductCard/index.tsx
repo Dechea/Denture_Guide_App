@@ -46,60 +46,60 @@ export const ProductCard = ({
   }, [product, productType]);
 
   return (
-    <View direction='row' paddingBlock={6} paddingInline={4} gap={8}>
+    <View direction="row" paddingBlock={6} paddingInline={4} gap={8}>
       <Image
-        width='140px'
-        height='140px'
+        width="140px"
+        height="140px"
         src={product.image}
         alt={productName}
-        borderRadius='medium'
+        borderRadius="medium"
       />
 
       <View.Item grow>
-        <View direction='row'>
+        <View direction="row">
           <View.Item grow>
-            <View gap={12} direction='row'>
-              <View gap={5} width='100%'>
+            <View gap={12} direction="row">
+              <View gap={5} width="100%">
                 <View gap={1}>
-                  <View direction='row' align='center' gap={2}>
-                    <Text variant='body-1' weight='bold'>
+                  <View direction="row" align="center" gap={2}>
+                    <Text variant="body-1" weight="regular">
                       {productName ? productName?.split(',')[0] : '-'}
                     </Text>
                     <Text
-                      variant='caption-1'
-                      weight='medium'
-                      color='neutral-faded'
+                      variant="caption-1"
+                      weight="medium"
+                      color="neutral-faded"
                     >
                       {product.manufacturer.name}
                     </Text>
                   </View>
 
-                  <View direction='row' gap={1}>
-                    <Icon svg={BarCodeIcon} size={5} color='neutral-faded' />
+                  <View direction="row" gap={1}>
+                    <Icon svg={BarCodeIcon} size={5} color="neutral-faded" />
                     <Text
-                      color='neutral-faded'
-                      variant='body-3'
-                      weight='regular'
+                      color="neutral-faded"
+                      variant="body-3"
+                      weight="regular"
                     >
                       {product?.manufacturerProductId || '-'}
                     </Text>
                   </View>
                 </View>
 
-                <View gap={2} width='inherit'>
+                <View gap={2} width="inherit">
                   {Object.entries(productData ?? {}).map(([key, value]) => (
                     <View
                       key={key}
-                      direction='row'
-                      width='100%'
-                      height='100%'
+                      direction="row"
+                      width="100%"
+                      height="100%"
                       gap={1}
                     >
-                      <View direction='row' width='50%' gap={1}>
+                      <View direction="row" width="50%" gap={1}>
                         <Text
-                          variant='body-3'
-                          weight='regular'
-                          color='neutral-faded'
+                          variant="body-3"
+                          weight="regular"
+                          color="neutral-faded"
                         >
                           {key}
                         </Text>
@@ -111,8 +111,8 @@ export const ProductCard = ({
                         </View.Item>
                       </View>
 
-                      <View direction='row'>
-                        <Text variant='body-3' weight='regular'>
+                      <View direction="row">
+                        <Text variant="body-3" weight="regular">
                           {String(value)}
                         </Text>
                       </View>
@@ -120,8 +120,8 @@ export const ProductCard = ({
                   ))}
                 </View>
               </View>
-              <View direction='row' height='100%' gap={6} width='100%'>
-                <Text color='neutral' variant='body-3' weight='medium'>
+              <View direction="row" height="100%" gap={6} width="100%">
+                <Text color="neutral" variant="body-3" weight="medium">
                   {!isNaN(product.localizations[1].price.amount as number)
                     ? product.localizations[1].price.amount
                     : '-'}{' '}
@@ -131,21 +131,15 @@ export const ProductCard = ({
             </View>
           </View.Item>
 
-          <View
-            gap={3}
-            direction='row'
-            align='end'
-            justify='end'
-            width='24.453%'
-          >
-            <View direction='row' align='center' width='100%' gap={1}>
+          <View gap={3} direction="row" align="end" justify="end" width="20%">
+            <View direction="row" align="center" width="100%" gap={1}>
               <Icon svg={ArrowDownIcon} />
-              <Text variant='body-3' weight='medium'>
+              <Text variant="body-3" weight="medium">
                 Select {convertCamelCaseToTitleCase(productType)} for:
               </Text>
             </View>
 
-            <View direction='column' justify='start' gap={2} width='100%'>
+            <View direction="column" justify="start" gap={2} width="100%">
               <ProductToothList
                 productId={product.id as string}
                 onClickProduct={onClickProduct}

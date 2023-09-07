@@ -43,7 +43,7 @@ export default function Header({ patientFileId }: HeaderProps) {
       backgroundColor="white"
       className="print:!hidden"
     >
-      <div className="flex flex-row px-x4 py-x2">
+      <div className="flex flex-row px-x4 py-x2 bg-page-faded">
         <div className="basis-1/3 align-middle">
           <Button
             icon={<Icon svg={MenuIcon} size={4} />}
