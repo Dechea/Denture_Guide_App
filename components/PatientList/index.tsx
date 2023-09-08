@@ -99,14 +99,15 @@ export default function PatientList({
                               }
                               size={9}
                             />
-
-                            <Text
-                              variant='body-2'
-                              color='neutral'
-                              weight='medium'
-                            >
-                              {patientFile.patient?.name}
-                            </Text>
+                            <View.Item grow>
+                              <Text
+                                variant='body-2'
+                                color='neutral'
+                                weight='medium'
+                              >
+                                {patientFile.patient?.name}
+                              </Text>
+                            </View.Item>
                           </View>
                         </View.Item>
 

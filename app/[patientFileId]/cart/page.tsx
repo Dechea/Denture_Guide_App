@@ -27,6 +27,7 @@ import { useProductCrudOps } from '../../../hooks/useProductCrudOps';
 import { AREA_TYPE } from '../../../zustand/product/interface';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import CartOrder from '../../../components/CartOrder';
 
 const ShippingTabs = [
   { id: '1', title: 'Selected Products' },
@@ -133,13 +134,13 @@ export default function Cart({ params }: CartProps) {
   };
 
   return (
-    <View className='overflow-y-scroll !max-h-[calc(100svh-53px)]'>
+    <View className='overflow-y-scroll !max-h-[calc(100svh-53px)] print:block print:overflow-visible'>
       <CartHeader totalProductsCount={totalProductsInCart} />
       <View
         direction='column'
         width='100%'
         align='center'
-        paddingInline={{ l: 35 }}
+        paddingInline={{ xl: 35 }}
       >
         <Tabs
           variant='pills-elevated'
@@ -149,7 +150,7 @@ export default function Cart({ params }: CartProps) {
           <View paddingBlock={{ l: 6 }} width={'96%'}>
             <Tabs.List
               className={
-                '[&_[role=presentation]]:max-[1024px]:!grow [&_[role=presentation]]:max-[1024px]:!basis-0 [&_[role=tablist]]:max-[1024px]:!w-full'
+                '[&_[role=presentation]]:max-[1024px]:!grow [&_[role=presentation]]:max-[1024px]:!basis-0 [&_[role=tablist]]:max-[1024px]:!w-full print:!hidden'
               }
             >
               {ShippingTabs.map((tab) => (
@@ -171,7 +172,7 @@ export default function Cart({ params }: CartProps) {
             </Tabs.List>
           </View>
 
-          <View height='100%' paddingTop={11}>
+          <View height='100%' width='100%' paddingTop={11}>
             <Tabs.Panel value='1'>
               <View
                 direction={{ s: 'column', l: 'row' }}
@@ -493,12 +494,6 @@ export default function Cart({ params }: CartProps) {
                                 value={`${values.isBillingSame}`}
                                 defaultChecked={true}
                                 onChange={({ value, checked, event }) => {
-                                  // console.log(
-                                  //   checked,
-                                  //   typeof value,
-                                  //   values,
-                                  //   event
-                                  // );
                                   if (checked) {
                                     setValues({
                                       ...values,
@@ -546,6 +541,15 @@ export default function Cart({ params }: CartProps) {
                                       handleChange(event)
                                     }
                                   />
+                                  {errors.billingName &&
+                                    touched.billingName && (
+                                      <Text
+                                        variant={'body-3'}
+                                        color={'critical'}
+                                      >
+                                        This field is required
+                                      </Text>
+                                    )}
                                 </View.Item>
                                 <View.Item columns={12}>
                                   <Text
@@ -565,6 +569,15 @@ export default function Cart({ params }: CartProps) {
                                       handleChange(event)
                                     }
                                   />
+                                  {errors.billingStreet &&
+                                    touched.billingStreet && (
+                                      <Text
+                                        variant={'body-3'}
+                                        color={'critical'}
+                                      >
+                                        This field is required
+                                      </Text>
+                                    )}
                                 </View.Item>
                                 <View.Item columns={12}>
                                   <Text
@@ -605,6 +618,15 @@ export default function Cart({ params }: CartProps) {
                                       handleChange(event)
                                     }
                                   />
+                                  {errors.billingPostal &&
+                                    touched.billingPostal && (
+                                      <Text
+                                        variant={'body-3'}
+                                        color={'critical'}
+                                      >
+                                        This field is required
+                                      </Text>
+                                    )}
                                 </View.Item>
                                 <View.Item columns={{ s: 12, l: 6 }}>
                                   <Text
@@ -624,6 +646,15 @@ export default function Cart({ params }: CartProps) {
                                       handleChange(event)
                                     }
                                   />
+                                  {errors.billingCity &&
+                                    touched.billingCity && (
+                                      <Text
+                                        variant={'body-3'}
+                                        color={'critical'}
+                                      >
+                                        This field is required
+                                      </Text>
+                                    )}
                                 </View.Item>
                                 <View.Item columns={{ s: 12, l: 6 }}>
                                   <Text
@@ -643,6 +674,15 @@ export default function Cart({ params }: CartProps) {
                                       handleChange(event)
                                     }
                                   />
+                                  {errors.billingState &&
+                                    touched.billingState && (
+                                      <Text
+                                        variant={'body-3'}
+                                        color={'critical'}
+                                      >
+                                        This field is required
+                                      </Text>
+                                    )}
                                 </View.Item>
                                 <View.Item columns={{ s: 12, l: 6 }}>
                                   <Text
@@ -662,6 +702,15 @@ export default function Cart({ params }: CartProps) {
                                       handleChange(event)
                                     }
                                   />
+                                  {errors.billingCountry &&
+                                    touched.billingCountry && (
+                                      <Text
+                                        variant={'body-3'}
+                                        color={'critical'}
+                                      >
+                                        This field is required
+                                      </Text>
+                                    )}
                                 </View.Item>
                               </View>
                             </View.Item>
@@ -719,7 +768,9 @@ export default function Cart({ params }: CartProps) {
               </Formik>
             </Tabs.Panel>
 
-            <Tabs.Panel value='3'>Order</Tabs.Panel>
+            <Tabs.Panel value='3'>
+              <CartOrder params={params} setActiveTab={setActiveTab} />
+            </Tabs.Panel>
           </View>
         </Tabs>
       </View>
