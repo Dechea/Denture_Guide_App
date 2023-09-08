@@ -133,7 +133,7 @@ export default function Cart({ params }: CartProps) {
   };
 
   return (
-    <View className='overflow-y-scroll max-h-[calc(100vh-53px)]'>
+    <View className='overflow-y-scroll !max-h-[calc(100svh-53px)]'>
       <CartHeader totalProductsCount={totalProductsInCart} />
       <View
         direction='column'
@@ -247,6 +247,7 @@ export default function Cart({ params }: CartProps) {
                   errors,
                   touched,
                   isValid,
+                  setValues,
                 }) => (
                   <form onSubmit={handleSubmit}>
                     <View
@@ -279,7 +280,18 @@ export default function Cart({ params }: CartProps) {
                                 placeholder={'John Doe Jr. III'}
                                 className={'!rounded-medium'}
                                 value={values.name}
-                                onChange={({ event }) => handleChange(event)}
+                                onChange={({ value, event }) => {
+                                  console.log(values);
+                                  if (values.isBillingSame) {
+                                    setValues({
+                                      ...values,
+                                      name: value,
+                                      billingName: value,
+                                    });
+                                  } else {
+                                    handleChange(event);
+                                  }
+                                }}
                               />
                               {errors.name && touched.name && (
                                 <Text variant={'body-3'} color={'critical'}>
@@ -301,7 +313,17 @@ export default function Cart({ params }: CartProps) {
                                 placeholder={'Mozart 3 strasse'}
                                 className={'!rounded-medium'}
                                 value={values.street}
-                                onChange={({ event }) => handleChange(event)}
+                                onChange={({ value, event }) => {
+                                  if (values.isBillingSame) {
+                                    setValues({
+                                      ...values,
+                                      street: value,
+                                      billingStreet: value,
+                                    });
+                                  } else {
+                                    handleChange(event);
+                                  }
+                                }}
                               />
                               {errors.street && touched.street && (
                                 <Text variant={'body-3'} color={'critical'}>
@@ -325,7 +347,17 @@ export default function Cart({ params }: CartProps) {
                                 placeholder={'1A...'}
                                 className={'!rounded-medium'}
                                 value={values.streetno}
-                                onChange={({ event }) => handleChange(event)}
+                                onChange={({ value, event }) => {
+                                  if (values.isBillingSame) {
+                                    setValues({
+                                      ...values,
+                                      streetno: value,
+                                      billingStreetno: value,
+                                    });
+                                  } else {
+                                    handleChange(event);
+                                  }
+                                }}
                               />
                             </View.Item>
                             <View.Item columns={{ s: 12, l: 6 }}>
@@ -342,7 +374,17 @@ export default function Cart({ params }: CartProps) {
                                 placeholder={'XXX XXX'}
                                 className={'!rounded-medium'}
                                 value={values.postal}
-                                onChange={({ event }) => handleChange(event)}
+                                onChange={({ value, event }) => {
+                                  if (values.isBillingSame) {
+                                    setValues({
+                                      ...values,
+                                      postal: value,
+                                      billingPostal: value,
+                                    });
+                                  } else {
+                                    handleChange(event);
+                                  }
+                                }}
                               />
                               {errors.postal && touched.postal && (
                                 <Text variant={'body-3'} color={'critical'}>
@@ -364,7 +406,17 @@ export default function Cart({ params }: CartProps) {
                                 placeholder={'Berlin'}
                                 className={'!rounded-medium'}
                                 value={values.city}
-                                onChange={({ event }) => handleChange(event)}
+                                onChange={({ value, event }) => {
+                                  if (values.isBillingSame) {
+                                    setValues({
+                                      ...values,
+                                      city: value,
+                                      billingCity: value,
+                                    });
+                                  } else {
+                                    handleChange(event);
+                                  }
+                                }}
                               />
                               {errors.city && touched.city && (
                                 <Text variant={'body-3'} color={'critical'}>
@@ -386,7 +438,17 @@ export default function Cart({ params }: CartProps) {
                                 placeholder={'Bavaria'}
                                 className={'!rounded-medium'}
                                 value={values.state}
-                                onChange={({ event }) => handleChange(event)}
+                                onChange={({ value, event }) => {
+                                  if (values.isBillingSame) {
+                                    setValues({
+                                      ...values,
+                                      state: value,
+                                      billingState: value,
+                                    });
+                                  } else {
+                                    handleChange(event);
+                                  }
+                                }}
                               />
                               {errors.state && touched.state && (
                                 <Text variant={'body-3'} color={'critical'}>
@@ -405,10 +467,19 @@ export default function Cart({ params }: CartProps) {
                               <TextField
                                 name='country'
                                 variant={'outline'}
-                                placeholder={'Germany'}
                                 className={'!rounded-medium'}
                                 value={values.country}
-                                onChange={({ event }) => handleChange(event)}
+                                onChange={({ value, event }) => {
+                                  if (values.isBillingSame) {
+                                    setValues({
+                                      ...values,
+                                      country: value,
+                                      billingCountry: value,
+                                    });
+                                  } else {
+                                    handleChange(event);
+                                  }
+                                }}
                               />
                               {errors.country && touched.country && (
                                 <Text variant={'body-3'} color={'critical'}>
@@ -421,7 +492,29 @@ export default function Cart({ params }: CartProps) {
                                 name='isBillingSame'
                                 value={`${values.isBillingSame}`}
                                 defaultChecked={true}
-                                onChange={({ event }) => handleChange(event)}
+                                onChange={({ value, checked, event }) => {
+                                  // console.log(
+                                  //   checked,
+                                  //   typeof value,
+                                  //   values,
+                                  //   event
+                                  // );
+                                  if (checked) {
+                                    setValues({
+                                      ...values,
+                                      isBillingSame: true,
+                                      billingName: values.name,
+                                      billingStreet: values.street,
+                                      billingStreetno: values.streetno,
+                                      billingPostal: values.postal,
+                                      billingCity: values.city,
+                                      billingState: values.state,
+                                      billingCountry: values.country,
+                                    });
+                                  } else {
+                                    handleChange(event);
+                                  }
+                                }}
                               >
                                 My billing address is same as shipping address
                               </Checkbox>
