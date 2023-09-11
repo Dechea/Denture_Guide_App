@@ -1,6 +1,10 @@
 import { Link, Text, View } from 'reshaped';
 
-export default function OrderAddress({ setActiveTab }: any) {
+export default function OrderAddress({
+  setActiveTab,
+}: {
+  setActiveTab: (activeTab: string) => void;
+}) {
   return (
     <View
       direction={{ s: 'column', xl: 'row' }}

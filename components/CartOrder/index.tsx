@@ -5,7 +5,7 @@ import CartPrint from './CartPrint';
 
 interface CartProductListProps {
   params: { patientFileId: string };
-  setActiveTab: any;
+  setActiveTab: (activeTab: string) => void;
 }
 
 export default function CartOrder({
