@@ -1,9 +1,12 @@
 import { Link, Text, View } from 'reshaped';
+import { Address } from '../AddressForm/constants';
 
 export default function OrderAddress({
   setActiveTab,
+  addresses,
 }: {
   setActiveTab: (activeTab: string) => void;
+  addresses: Address[];
 }) {
   return (
     <View
@@ -19,10 +22,11 @@ export default function OrderAddress({
 
           <View gap={1}>
             <Text variant='body-3' weight='regular'>
-              Samantha Black
+              {addresses[0].name}
             </Text>
             <Text variant='body-3' weight='regular' color='neutral-faded'>
-              SpitalhofSpitalhofstraße 6, 87437 Kempten, Bavaria, Germany
+              {addresses[0].street} {addresses[0].streetNo}, {addresses[0].zip}{' '}
+              {addresses[0].city}, {addresses[0].state}, {addresses[0].country}
             </Text>
           </View>
           <Link color='inherit' onClick={() => setActiveTab('2')}>
@@ -38,10 +42,11 @@ export default function OrderAddress({
 
           <View gap={1}>
             <Text variant='body-3' weight='regular'>
-              Samantha Black
+              {addresses[1].name}
             </Text>
             <Text variant='body-3' weight='regular' color='neutral-faded'>
-              SpitalhofSpitalhofstraße 6, 87437 Kempten, Bavaria, Germany
+              {addresses[1].street} {addresses[1].streetNo}, {addresses[1].zip}{' '}
+              {addresses[1].city}, {addresses[1].state}, {addresses[1].country}
             </Text>
           </View>
           <Link color='inherit' onClick={() => setActiveTab('2')}>

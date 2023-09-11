@@ -2,6 +2,9 @@ import { Divider, Text, View } from 'reshaped';
 import OrderAddress from './OrderAddress';
 import CartProductList from './CartProductList';
 import CartPrint from './CartPrint';
+import { useUserStore } from '../../zustand/user';
+import { useQuery } from 'fqlx-client';
+import { Query } from '../../fqlx-generated/typedefs';
 
 interface CartProductListProps {
   params: { patientFileId: string };
@@ -12,6 +15,13 @@ export default function CartOrder({
   params,
   setActiveTab,
 }: CartProductListProps) {
+  const { organizationId } = useUserStore();
+  const query = useQuery<Query>();
+
+  const addresses = query.Organization.byId(organizationId)
+    .project({ addresses: true })
+    .exec().addresses;
+
   return (
     <View
       direction={{ s: 'column', xl: 'row' }}
@@ -46,7 +56,7 @@ export default function CartOrder({
             </View>
           </View>
 
-          <OrderAddress setActiveTab={setActiveTab} />
+          <OrderAddress setActiveTab={setActiveTab} addresses={addresses} />
 
           <Divider className='print:!border print:!border-solid print:!border-[--rs-color-border-neutral-faded]' />
           <CartProductList params={params} />
