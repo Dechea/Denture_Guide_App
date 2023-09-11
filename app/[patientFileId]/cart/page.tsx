@@ -30,8 +30,8 @@ interface CartProps {
 
 export default function Cart({ params }: CartProps) {
   const query = useQuery<Query>();
-
   const [activeTab, setActiveTab] = useState('1');
+  const [unlockedTabs, setUnlockedTabs] = useState<string[]>(['1']);
 
   const { totalProductsInCart, totalCostOfProductsInCart } =
     useProductCalculations(params.patientFileId);
@@ -123,6 +123,21 @@ export default function Cart({ params }: CartProps) {
     addOrUpdateProductInFqlx(getMappedTeeth);
   };
 
+  const handleTabClick = (tabId: string) => {
+    if (unlockedTabs.includes(tabId)) {
+      setActiveTab(tabId);
+    }
+  };
+
+  const activateTab = (tabId: string) => {
+    console.log(unlockedTabs, tabId);
+    if (!unlockedTabs.includes(tabId)) {
+      console.log('pushed');
+      setUnlockedTabs([...unlockedTabs, tabId]);
+    }
+    setActiveTab(tabId);
+  };
+
   return (
     <View
       height={'100%'}
@@ -139,7 +154,7 @@ export default function Cart({ params }: CartProps) {
         <Tabs
           variant='pills-elevated'
           value={activeTab}
-          onChange={({ value }) => setActiveTab(value)}
+          onChange={({ value }) => handleTabClick(value)}
         >
           <View paddingBlock={{ xl: 6 }} width={'96%'} maxWidth={'1280px'}>
             <Tabs.List
@@ -192,17 +207,18 @@ export default function Cart({ params }: CartProps) {
                   <CartCostEstimation
                     patientFileId={params.patientFileId}
                     totalCostOfProducts={totalCostOfProductsInCart}
+                    setActiveTab={activateTab}
                   />
                 </View.Item>
               </View>
             </Tabs.Panel>
 
             <Tabs.Panel value='2'>
-              <AddressForm setActiveTab={setActiveTab} />
+              <AddressForm setActiveTab={activateTab} />
             </Tabs.Panel>
 
             <Tabs.Panel value='3'>
-              <CartOrder params={params} setActiveTab={setActiveTab} />
+              <CartOrder params={params} setActiveTab={activateTab} />
             </Tabs.Panel>
           </View>
         </Tabs>

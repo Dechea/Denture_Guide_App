@@ -1,17 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import { Button, Card, Divider, Icon, Text, View } from 'reshaped';
+import { Button, Divider, Icon, Text, View } from 'reshaped';
 import CostEstimationIcon from '../Icons/CostEstimation';
 
 interface CartCostEstimationProps {
   patientFileId: string;
   totalCostOfProducts: number;
+  setActiveTab: (activeTab: string) => void;
 }
 
 export const CartCostEstimation = ({
   patientFileId,
   totalCostOfProducts,
+  setActiveTab,
 }: CartCostEstimationProps) => {
   return (
     <View
@@ -65,7 +67,11 @@ export const CartCostEstimation = ({
           </Text>
         </View>
       </View>
-      <Button color='primary' className='!rounded-medium'>
+      <Button
+        color='primary'
+        className='!rounded-medium'
+        onClick={() => setActiveTab('2')}
+      >
         <View paddingBlock={1}>
           <Text variant='body-2' weight='medium'>
             Place Order
