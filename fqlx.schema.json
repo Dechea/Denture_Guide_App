@@ -225,5 +225,20 @@
       "synonyms": "string[]",
       "locale": "string"
     }
+  },
+  "Organization": {
+    "name": "string",
+    "id": "string",
+    "addresses": "Address[]"
+  },
+  "Address": {
+    "name": "string",
+    "street": "string",
+    "streetNo": "string",
+    "zip": "string",
+    "city": "string",
+    "state": "string",
+    "country": "string",
+    "type": "string"
   }
 }
