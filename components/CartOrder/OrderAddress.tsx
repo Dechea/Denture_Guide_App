@@ -1,12 +1,12 @@
 import { Link, Text, View } from 'reshaped';
-import { Address } from '../AddressForm/constants';
+import { Address } from '../../fqlx-generated/typedefs';
 
 export default function OrderAddress({
   setActiveTab,
   addresses,
 }: {
   setActiveTab: (activeTab: string) => void;
-  addresses: Address[];
+  addresses: Address[] | undefined;
 }) {
   return (
     <View
@@ -22,11 +22,12 @@ export default function OrderAddress({
 
           <View gap={1}>
             <Text variant='body-3' weight='regular'>
-              {addresses[0].name}
+              {addresses?.[0].name}
             </Text>
             <Text variant='body-3' weight='regular' color='neutral-faded'>
-              {addresses[0].street} {addresses[0].streetNo}, {addresses[0].zip}{' '}
-              {addresses[0].city}, {addresses[0].state}, {addresses[0].country}
+              {addresses?.[0].street} {addresses?.[0].streetNo},{' '}
+              {addresses?.[0].zip} {addresses?.[0].city}, {addresses?.[0].state}
+              , {addresses?.[0].country}
             </Text>
           </View>
           <Link color='inherit' onClick={() => setActiveTab('2')}>
@@ -42,11 +43,12 @@ export default function OrderAddress({
 
           <View gap={1}>
             <Text variant='body-3' weight='regular'>
-              {addresses[1].name}
+              {addresses?.[1].name}
             </Text>
             <Text variant='body-3' weight='regular' color='neutral-faded'>
-              {addresses[1].street} {addresses[1].streetNo}, {addresses[1].zip}{' '}
-              {addresses[1].city}, {addresses[1].state}, {addresses[1].country}
+              {addresses?.[1].street} {addresses?.[1].streetNo},{' '}
+              {addresses?.[1].zip} {addresses?.[1].city}, {addresses?.[1].state}
+              , {addresses?.[1].country}
             </Text>
           </View>
           <Link color='inherit' onClick={() => setActiveTab('2')}>

@@ -1,4 +1,4 @@
-import { Button, Card, Divider, Text, View } from 'reshaped';
+import { Button, Divider, Text, View } from 'reshaped';
 import { useProductCalculations } from '../../hooks/useProductCalculations';
 import PrintIcon from '../Icons/Print';
 

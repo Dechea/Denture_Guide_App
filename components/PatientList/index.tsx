@@ -4,7 +4,7 @@ import { PaginateData, useQuery } from 'fqlx-client';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { Avatar, Badge, Button, Card, Divider, Text, View } from 'reshaped';
+import { Badge, Button, Card, Divider, Text, View } from 'reshaped';
 import { PatientFile, Query } from '../../fqlx-generated/typedefs';
 import PlusIcon from '../Icons/Plus';
 import Loader from '../Loader';
