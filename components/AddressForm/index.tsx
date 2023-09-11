@@ -91,7 +91,7 @@ const AddressForm = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <View direction={{ s: 'column', l: 'row' }} gap={{ xl: 26 }}>
+      <View direction={{ s: 'column', xl: 'row' }} gap={{ xl: 26 }}>
         <View.Item grow>
           <View
             className='overflow-y-auto'
@@ -445,9 +445,9 @@ const AddressForm = ({
             backgroundColor={'page'}
             padding={4}
             gap={6}
-            borderRadius={{ s: 'none', l: 'large' }}
+            borderRadius={{ s: 'none', xl: 'large' }}
             borderColor={'neutral-faded'}
-            width={{ s: '100%', l: 78 }}
+            width={{ s: '100%', xl: 78 }}
           >
             <View gap={4}>
               <View direction='row' className='!justify-between'>

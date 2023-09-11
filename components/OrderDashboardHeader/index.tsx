@@ -1,49 +1,22 @@
 'use client';
 
-import { Button, Text, View } from 'reshaped';
-import PlusIcon from '../Icons/Plus';
+import { UserButton } from '@clerk/nextjs';
+import { Actionable, Image, View } from 'reshaped';
 
-interface OrderDashboardHeaderProps {
-  activateNewOrderModal: () => void;
-}
-
-export default function OrderDashboardHeader({
-  activateNewOrderModal,
-}: OrderDashboardHeaderProps) {
+export default function OrderDashboardHeader() {
   return (
-    <View>
-      <View
-        direction='row'
-        align='center'
-        backgroundColor='neutral-faded'
-        paddingInline={10}
-      >
-        <View.Item columns={6}>
-          <View paddingBlock={8}>
-            <Text color='neutral' variant='featured-2' weight='bold'>
-              Orders
-            </Text>
-          </View>
-        </View.Item>
-        <View.Item columns={6}>
-          <View
-            direction='row'
-            justify='end'
-            align='center'
-            paddingBlock={8}
-            wrap={false}
-            height='48px'
-          >
-            <Button
-              icon={<PlusIcon />}
-              color='primary'
-              size='large'
-              onClick={activateNewOrderModal}
-            >
-              Create Order
-            </Button>
-          </View>
-        </View.Item>
+    <View
+      direction='row'
+      align='center'
+      padding={4}
+      borderColor='neutral-faded'
+      className='!justify-between border-t-0 border-l-0 border-r-0 items-center bg-[var(--rs-color-background-neutral-faded)]'
+    >
+      <Image src='/decheaLogo.svg' alt='Dechea' height={'24px'} />
+      <View>
+        <Actionable>
+          <UserButton />
+        </Actionable>
       </View>
     </View>
   );

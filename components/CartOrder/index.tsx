@@ -17,9 +17,9 @@ export default function CartOrder({
       direction={{ s: 'column', xl: 'row' }}
       width='100%'
       gap={{ xl: 26 }}
-      className='print:!block print:pt-x3 '
+      className='print:!block print:pt-x3'
     >
-      <View.Item columns={{ s: 12, xl: 7 }} className=''>
+      <View.Item grow>
         <View gap={14} paddingBottom={11} paddingInline={6}>
           <View gap={4}>
             <Text variant='body-2' weight='medium'>
@@ -52,10 +52,7 @@ export default function CartOrder({
           <CartProductList params={params} />
         </View>
       </View.Item>
-      <View.Item
-        columns={{ s: 12, xl: 5 }}
-        className='sticky bottom-0 print:!hidden'
-      >
+      <View.Item className='sticky bottom-0 print:!hidden'>
         <CartPrint params={params} />
       </View.Item>
     </View>

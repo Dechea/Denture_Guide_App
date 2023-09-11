@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { Badge, Card, Text, View } from 'reshaped';
+import { Badge, Card, Hidden, Text, View } from 'reshaped';
 
 interface TreatmentOptionCardProps {
   Icon: JSX.Element;
@@ -27,13 +27,18 @@ export default function TreatmentOptionCard({
 
   return (
     <View justify='center' align='center'>
-      <View height='111px' width='111px'>
+      <View
+        height={{ s: '59px', m: '85px', l: '111px' }}
+        width={{ s: '59px', m: '85px', l: '111px' }}
+      >
         <Card ref={cardRef} onClick={onClick} padding={0} className='!h-[100%]'>
           <View width={'100%'} height='100%'>
             <View position='absolute' insetEnd={2} insetTop={2}>
-              <Badge size='medium' variant='outline'>
-                {shortcutButtonText}
-              </Badge>
+              <Hidden hide={{ s: true, m: false }}>
+                <Badge size='medium' variant='outline'>
+                  {shortcutButtonText}
+                </Badge>
+              </Hidden>
             </View>
 
             <View width='100%' height='100%' justify='center' align='center'>
@@ -43,7 +48,7 @@ export default function TreatmentOptionCard({
         </Card>
       </View>
 
-      <View padding={2} maxWidth='111px' textAlign='center'>
+      <View width={{ s: '59px', m: '85px', l: '111px' }} textAlign='center'>
         <Text>{label}</Text>
       </View>
     </View>

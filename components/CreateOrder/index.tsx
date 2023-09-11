@@ -50,40 +50,42 @@ export default function CreateOrder({
       active={activeModal}
       onClose={deactivateModal}
       padding={6}
-      size="400px"
+      size='400px'
     >
-      <View gap={12} className="cursor-default">
-        <View gap={2} direction="row" align="center">
+      <View gap={12} className='cursor-default'>
+        <View gap={2} direction='row' align='center'>
           <View.Item grow>
-            <Text variant="featured-2" weight="bold" color="neutral">
+            <Text variant='featured-2' weight='bold' color='neutral'>
               Create Order for...
             </Text>
           </View.Item>
+
           <Button
             onClick={deactivateModal}
-            icon={<Icon svg={CrossIcon} />}
-            variant="ghost"
+            icon={<Icon svg={CrossIcon} size={6} />}
+            variant='ghost'
+            size='large'
           />
         </View>
 
         <View gap={1}>
-          <Text variant="body-3" weight="medium" color="neutral">
+          <Text variant='body-3' weight='medium' color='neutral'>
             Patient’s Name
           </Text>
-          <View direction="column" gap={3} align="center">
-            <View width="100%">
+          <View direction='column' gap={3} align='center'>
+            <View width='100%'>
               <TextField
-                size="large"
-                name="patientName"
-                placeholder="John..."
+                size='large'
+                name='patientName'
+                placeholder='John...'
                 onChange={handlePatientNameChange}
                 inputAttributes={{ autoComplete: 'off' }}
               />
             </View>
-            <View width="100%">
+            <View width='100%'>
               <Button
-                color="primary"
-                size="large"
+                color='primary'
+                size='large'
                 onClick={onCreatePatientFileButtonClick}
                 fullWidth
               >

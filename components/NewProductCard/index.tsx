@@ -353,75 +353,73 @@ const NewProductCard = ({
   }, [searchedProductManufacturerId]);
 
   return (
-    <>
-      {!fqlxProducts?.data?.length ? (
-        <View paddingTop={{ s: 8, l: 2 }} align="center">
-          <Text variant="featured-3" weight="medium">
-            No Product Found
-          </Text>
-        </View>
-      ) : (
-        <View padding={6} paddingBottom={10}>
-          <View direction="row" gap={6}>
-            <Image
-              width={{ s: '120px', l: '140px' }}
-              height={{ s: '120px', l: '140px' }}
-              src={fqlxProducts?.data?.[0]?.image}
-              alt={'abutment'}
-              borderRadius="medium"
-            />
-
-            <View gap={2} grow>
-              <View direction="row" align="start" className="!justify-between">
+    <View>
+      {fqlxProducts?.data?.length ? (
+        <View
+          paddingInline={6}
+          paddingTop={{ l: 6 }}
+          paddingBottom={{ l: 10 }}
+          gap={6}
+        >
+          <View direction={{ s: 'column', l: 'row' }} gap={{ s: 12, l: 16 }}>
+            <View.Item grow>
+              <View width='100%' direction='row' gap={6} align='start'>
+                <Image
+                  width='80px'
+                  height='80px'
+                  src={fqlxProducts?.data?.[0]?.image}
+                  alt={'abutment'}
+                  borderRadius='medium'
+                />
                 <View.Item grow>
-                  <Text variant="featured-3" weight="medium">
-                    {fqlxProducts?.data?.[0]?.localizations?.[1].name}
-                  </Text>
-                </View.Item>
+                  <View width='100%' gap={2}>
+                    <Text variant='body-3' weight='medium'>
+                      {fqlxProducts?.data?.[0]?.localizations?.[1].name}
+                    </Text>
 
-                <View maxWidth={41}>
-                  <Autocomplete
-                    name="autocomplete"
-                    value={searchProductValue}
-                    onChange={({ value }) =>
-                      handleProductAutocompleteChange(value)
-                    }
-                    endSlot={
-                      <Button
-                        size="small"
-                        variant="ghost"
-                        icon={ClearIcon}
-                        onClick={() => handleProductAutocompleteChange('')}
-                      />
-                    }
-                    icon={<BarCodeIcon />}
-                  >
-                    <Suspense
-                      fallback={
-                        <View width="100%" align="center" paddingBlock={4}>
-                          <Loader />
-                        </View>
-                      }
-                    >
-                      <SearchProductDropdown
-                        productType={productType}
-                        onClick={(option) =>
-                          handleSearchedOptionClick(
-                            option as unknown as Product
-                          )
-                        }
-                      />
-                    </Suspense>
-                  </Autocomplete>
-                </View>
+                    <Text>
+                      {fqlxProducts?.data?.[0]?.localizations?.[1].price.amount}{' '}
+                      €
+                    </Text>
+                  </View>
+                </View.Item>
               </View>
-              <Text>
-                {fqlxProducts?.data?.[0]?.localizations?.[1].price.amount} €
-              </Text>
+            </View.Item>
+            <View maxWidth={{ l: 41 }}>
+              <Autocomplete
+                name='autocomplete'
+                value={searchProductValue}
+                onChange={({ value }) => handleProductAutocompleteChange(value)}
+                endSlot={
+                  <Button
+                    size='small'
+                    variant='ghost'
+                    icon={ClearIcon}
+                    onClick={() => handleProductAutocompleteChange('')}
+                  />
+                }
+                icon={<BarCodeIcon />}
+              >
+                <Suspense
+                  fallback={
+                    <View width='100%' align='center' paddingBlock={4}>
+                      <Loader />
+                    </View>
+                  }
+                >
+                  <SearchProductDropdown
+                    productType={productType}
+                    onClick={(option) =>
+                      handleSearchedOptionClick(option as unknown as Product)
+                    }
+                  />
+                </Suspense>
+              </Autocomplete>
             </View>
           </View>
+
           <View.Item grow>
-            <View paddingStart={{ l: 41 }} paddingTop={{ s: 8, l: 0 }}>
+            <View paddingStart={{ l: 26 }}>
               <Form
                 fields={filterOptions}
                 values={filterFields}
@@ -430,8 +428,14 @@ const NewProductCard = ({
             </View>
           </View.Item>
         </View>
+      ) : (
+        <View paddingTop={{ s: 8, l: 2 }} align='center'>
+          <Text variant='featured-3' weight='medium'>
+            No Product Found
+          </Text>
+        </View>
       )}
-    </>
+    </View>
   );
 };
 

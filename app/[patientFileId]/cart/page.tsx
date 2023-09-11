@@ -124,20 +124,24 @@ export default function Cart({ params }: CartProps) {
   };
 
   return (
-    <View className='overflow-y-scroll !max-h-[calc(100svh-53px)] print:block print:overflow-visible'>
+    <View
+      height={'100%'}
+      className='overflow-y-scroll !max-h-[calc(100svh-53px)] print:block print:overflow-visible'
+    >
       <CartHeader totalProductsCount={totalProductsInCart} />
       <View
+        height={'100%'}
         direction='column'
-        width='100%'
         align='center'
         paddingInline={{ xl: 35 }}
+        className={'!max-h-[calc(100svh-153px)]'}
       >
         <Tabs
           variant='pills-elevated'
           value={activeTab}
           onChange={({ value }) => setActiveTab(value)}
         >
-          <View paddingBlock={{ l: 6 }} width={'96%'}>
+          <View paddingBlock={{ xl: 6 }} width={'96%'} maxWidth={'1280px'}>
             <Tabs.List
               className={
                 '[&_[role=presentation]]:max-[1024px]:!grow [&_[role=presentation]]:max-[1024px]:!basis-0 [&_[role=tablist]]:max-[1024px]:!w-full print:!hidden'
@@ -162,33 +166,33 @@ export default function Cart({ params }: CartProps) {
             </Tabs.List>
           </View>
 
-          <View height='100%' width='100%' paddingTop={11}>
+          <View
+            width='100%'
+            maxWidth='1280px'
+            align='center'
+            paddingTop={11}
+            className='[&_[role=tabpanel]]:w-full [&_[role=tabpanel]]:h-full'
+          >
             <Tabs.Panel value='1'>
               <View
-                direction={{ s: 'column', l: 'row' }}
-                width='100%'
-                gap={{ l: 34 }}
+                direction={{ s: 'column', xl: 'row' }}
+                gap={{ xl: 26 }}
                 className='print:!p-0'
-                maxWidth='1280px'
-                justify='center'
+                height='100%'
+                grow
               >
-                <View.Item grow columns={{ s: 12, l: 7 }}>
+                <View.Item grow>
                   <CartItemsList
                     teeth={patientFile.teeth}
                     onProductCountChange={handleProductCountChange}
                     onDeleteProduct={handleDeleteProduct}
                   />
                 </View.Item>
-                <View.Item
-                  columns={{ s: 12, l: 5 }}
-                  className='sticky bottom-0'
-                >
-                  <View width='100%'>
-                    <CartCostEstimation
-                      patientFileId={params.patientFileId}
-                      totalCostOfProducts={totalCostOfProductsInCart}
-                    />
-                  </View>
+                <View.Item className='sticky bottom-0'>
+                  <CartCostEstimation
+                    patientFileId={params.patientFileId}
+                    totalCostOfProducts={totalCostOfProductsInCart}
+                  />
                 </View.Item>
               </View>
             </Tabs.Panel>

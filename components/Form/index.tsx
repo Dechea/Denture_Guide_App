@@ -15,15 +15,15 @@ interface FormProps {
 
 export default function Form({ fields, values, onChangeValue }: FormProps) {
   return (
-    <View direction="row" width="100%" gap={10} className="!gap-y-[24px]">
+    <View direction='row' width='100%' gap={10} className='!gap-y-[24px]'>
       {fields.map((field) => (
         <>
           {field.type === 'tabs' && (
             <View.Item columns={12} key={field.id}>
               <Tabs
                 value={values[field.name]}
-                variant="pills-elevated"
-                itemWidth="equal"
+                variant='pills-elevated'
+                itemWidth='equal'
                 onChange={({ value }) => onChangeValue(field.name, value)}
               >
                 <Tabs.List
@@ -47,13 +47,13 @@ export default function Form({ fields, values, onChangeValue }: FormProps) {
             <View.Item key={field.id} columns={12}>
               <View>
                 <Switch
-                  name="switch"
+                  name='switch'
                   checked={Boolean(values[field.name] === 'true')}
                   onChange={({ checked }) => {
                     onChangeValue(field.name, `${checked}`);
                   }}
                 >
-                  <Text variant="body-3" weight="regular">
+                  <Text variant='body-3' weight='regular'>
                     {field.name}
                   </Text>
                 </Switch>
@@ -61,12 +61,12 @@ export default function Form({ fields, values, onChangeValue }: FormProps) {
             </View.Item>
           )}
           {field.type === 'dropdown' && (
-            <View.Item key={field.id} columns={6}>
-              <Text variant="caption-1" weight="regular" className="pb-x1">
+            <View.Item key={field.id} columns={{ s: 12, l: 6 }}>
+              <Text variant='caption-1' weight='regular' className='pb-x1'>
                 {field.name}
               </Text>
               <select
-                className="px-x1 py-x2  border border-[--rs-color-border-neutral-faded] rounded w-full "
+                className='px-x1 py-x2  border border-[--rs-color-border-neutral-faded] rounded w-full'
                 onChange={(event) =>
                   onChangeValue(field.name, event.target.value)
                 }

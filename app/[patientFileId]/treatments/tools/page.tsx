@@ -40,24 +40,24 @@ export default function Tools({
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/tools`}>
       <CarouselTeeth />
-      <View direction="column" width="100%" align="center">
+      <View direction='column' width='100%' align='center'>
         <View
-          direction="row"
+          direction='row'
           gap={12}
-          maxWidth="1280px"
-          width="100%"
-          justify="center"
+          maxWidth='1280px'
+          width='100%'
+          justify='center'
         >
-          <View.Item columns={3} className="sticky !top-[180px]">
+          <View.Item columns={3} className='sticky !top-[180px]'>
             <View
               paddingStart={6}
               paddingTop={8}
-              height="calc(100vh - 240px)"
-              className="overflow-y-auto scrollbar-0"
+              height='calc(100svh - 240px)'
+              className='overflow-y-auto scrollbar-0'
             >
               <Suspense
                 fallback={
-                  <View height="70vh">
+                  <View height='70svh'>
                     <Loader />
                   </View>
                 }
@@ -75,7 +75,7 @@ export default function Tools({
             <View paddingEnd={6} paddingTop={8}>
               <Suspense
                 fallback={
-                  <View height="70vh">
+                  <View height='70svh'>
                     <Loader />
                   </View>
                 }
