@@ -8,7 +8,7 @@ export default function TeethDiagramContainer({
   return (
     <View
       width='100%'
-      maxWidth='1632px'
+      // maxWidth='1632px'
       aspectRatio={1088 / 262}
       className={`teeth-diagram ${customStyles}`}
     >

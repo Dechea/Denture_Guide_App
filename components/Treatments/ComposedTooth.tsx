@@ -6,12 +6,20 @@ import { ToothContainer } from '../TeethDiagram/teeth/areas/tooth';
 
 interface ComposedToothProps {
   treatment: TreatmentProps['visualization'];
+  fullWidth?: boolean;
 }
 
-export const ComposedTooth = ({ treatment }: ComposedToothProps) => {
+export const ComposedTooth = ({
+  treatment,
+  fullWidth = false,
+}: ComposedToothProps) => {
   return (
-    <ToothContainer customStyles='!w-[64px] !aspect-[64/64] pointer-events-none [&_svg>*]:!pointer-events-none'>
-      <Tooth tooth={0} className='!h-[90%]' variant={treatment.toothVariant}>
+    <ToothContainer
+      customStyles={`${
+        fullWidth ? '!w-full' : '!w-[64px]'
+      } !aspect-[64/64] pointer-events-none [&_svg>*]:!pointer-events-none`}
+    >
+      <Tooth tooth={0} className="!h-[90%]" variant={treatment.toothVariant}>
         <Root variant={treatment.rootVariant} tooth={0} />
         <Crown
           variant={treatment.crownVariant}

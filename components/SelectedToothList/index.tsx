@@ -1,10 +1,11 @@
 import { Card, Icon, MenuItem, Text, View } from 'reshaped';
+import { useEffect, useState } from 'react';
+import cx from 'classnames';
 import ArrowDownIcon from '../Icons/ArrowDown';
 import ToothIcon from '../Icons/Tooth';
 import { SelectedProducts, useProductStore } from '../../zustand/product';
 import { convertCamelCaseToTitleCase } from '../../utils/helper';
 import { useTreatmentsByGroup } from '../../hooks/useTreatmentsByGroup';
-import { useEffect, useState } from 'react';
 
 interface SelectedToothListProps {
   productId: string;
@@ -55,44 +56,46 @@ export default function SelectedToothList({
 
   if (groupIndex === null) return;
   return (
-    <View
-      gap={3}
-      height="100%"
-      padding={6}
-      paddingBottom={10}
-      className="max-[640px]:!border-none border-l border-[--rs-color-border-neutral-faded]"
-    >
-      <View direction="row" align="center" width="100%" gap={1}>
+    <View gap={3} width='100%' height='100%' padding={6} paddingBottom={10}>
+      <View direction='row' align='center' width='100%' gap={1}>
         <Icon svg={ArrowDownIcon} />
-        <Text variant="body-3" weight="medium">
+        <Text variant='body-3' weight='medium'>
           {convertCamelCaseToTitleCase(activeProductTab)} for:
         </Text>
       </View>
 
-      <View direction="column" gap={2} width="100%">
+      <View direction='column' gap={2} width='100%'>
         {productId &&
           toothGroups[groupIndex]?.teeth.map(({ toothNumber }) => {
             const selected = selectedProducts[toothNumber] === productId;
-
             return (
-              <Card key={toothNumber} padding={0}>
+              <Card
+                key={toothNumber}
+                padding={0}
+                className={cx(
+                  '!shadow-[0px_2px_3px_rgba(0,0,0,0.1),_0px_1px_2px_-1px_rgba(0,0,0,0.1)]',
+
+                  {
+                    '!border-[--rs-color-foreground-primary]': selected,
+                  }
+                )}
+              >
                 <MenuItem
                   selected={selected}
                   size={'small'}
                   roundedCorners={true}
                   onClick={() => handleClickOnToothOption(toothNumber)}
-                  className="hover:!cursor-pointer"
                 >
                   <View
-                    direction="row"
-                    align="center"
+                    direction='row'
+                    align='center'
                     gap={3}
-                    width="100%"
+                    width='100%'
                     paddingStart={2}
                     paddingBlock={2}
                   >
                     <Icon svg={ToothIcon} size={5} />
-                    <Text variant="body-3" weight="medium">
+                    <Text variant='body-3' weight='medium'>
                       {toothNumber}
                     </Text>
                   </View>

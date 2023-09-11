@@ -14,8 +14,8 @@ export const CartCostEstimation = ({
   totalCostOfProducts,
 }: CartCostEstimationProps) => {
   return (
-    <Card padding={0}>
-      <View gap={10} padding={3} paddingTop={4}>
+    <Card padding={0} className='!rounded-none'>
+      <View gap={10} padding={4} paddingBottom={{ s: 8, l: 4 }}>
         <View gap={4}>
           <View
             direction='row'
@@ -58,7 +58,7 @@ export const CartCostEstimation = ({
             </Text>
           </View>
         </View>
-        <Button color='primary' className='!rounded-lg'>
+        <Button color='primary' className='!rounded-medium'>
           <View paddingBlock={1}>
             <Text variant='body-2' weight='medium'>
               Place Order

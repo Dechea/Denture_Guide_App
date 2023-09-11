@@ -47,10 +47,10 @@ export const CarouselTooth = ({ tooth }: CarouselToothProps) => {
 
   return (
     <Popover
-      position="bottom"
+      position='bottom'
       forcePosition
       key={products.length}
-      triggerType="hover"
+      triggerType='hover'
       padding={3}
     >
       <Popover.Trigger>
@@ -58,7 +58,7 @@ export const CarouselTooth = ({ tooth }: CarouselToothProps) => {
           return (
             <Actionable attributes={attributes}>
               <View height={30} width={15}>
-                <ToothContainer customStyles="!w-full pointer-events-none">
+                <ToothContainer customStyles='!w-full pointer-events-none'>
                   <Tooth
                     variant={tooth.toothVariant}
                     tooth={tooth.toothNumber}
@@ -79,15 +79,15 @@ export const CarouselTooth = ({ tooth }: CarouselToothProps) => {
                   </Tooth>
                   {selected && (
                     <View
-                      position="absolute"
-                      width="100%"
-                      height="100%"
-                      direction="row"
-                      align="center"
-                      justify="center"
-                      className="[&_svg>*]:!stroke-[--rs-color-background-page] [&_svg>*]:!fill-[--rs-color-background-primary]"
+                      position='absolute'
+                      width='100%'
+                      height='100%'
+                      direction='row'
+                      align='center'
+                      justify='center'
+                      className='[&_svg>*]:!stroke-[--rs-color-background-page] [&_svg>*]:!fill-[--rs-color-background-primary]'
                     >
-                      <Icon svg={TickIcon} size={6} color="primary" />
+                      <Icon svg={TickIcon} size={6} color='primary' />
                     </View>
                   )}
 
@@ -104,7 +104,7 @@ export const CarouselTooth = ({ tooth }: CarouselToothProps) => {
       <Popover.Content
         className={
           products.length
-            ? 'visible !max-h-[calc(100vh-248px)] !overflow-y-auto'
+            ? 'visible !max-h-[calc(100svh-248px)] !overflow-y-auto'
             : 'hidden'
         }
       >
@@ -115,28 +115,28 @@ export const CarouselTooth = ({ tooth }: CarouselToothProps) => {
             return (
               <View
                 key={selectedProduct?.id as string}
-                align="start"
-                direction="row"
+                align='start'
+                direction='row'
                 gap={8}
                 wrap={false}
               >
                 <Image
                   src={selectedProduct?.image}
                   alt={selectedProduct?.image}
-                  height="48px"
-                  width="48px"
-                  borderRadius="medium"
+                  height='48px'
+                  width='48px'
+                  borderRadius='medium'
                 />
 
-                <View gap={1} width={58} textAlign="start">
-                  <Text variant="body-3" weight="bold">
+                <View gap={1} width={58} textAlign='start'>
+                  <Text variant='body-3' weight='bold'>
                     {localization?.name}
                   </Text>
 
                   <Text
-                    variant="caption-1"
-                    weight="regular"
-                    color="neutral-faded"
+                    variant='caption-1'
+                    weight='regular'
+                    color='neutral-faded'
                   >
                     {localization?.description}
                   </Text>

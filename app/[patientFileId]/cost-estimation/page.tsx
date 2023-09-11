@@ -46,7 +46,7 @@ export default function CostEstimation({ params }: CostEstimationProps) {
   }, [selectedProducts]);
 
   return (
-    <View className='overflow-y-scroll max-h-[calc(100vh-53px)] print:block print:overflow-visible'>
+    <View className='overflow-y-scroll max-h-[calc(100svh-53px)] print:block print:overflow-visible'>
       <CostEstimationHeader />
 
       <PrintCostEstimationHeader patientFileId={params.patientFileId} />

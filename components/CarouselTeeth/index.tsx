@@ -6,22 +6,22 @@ import { CarouselGroupTabs } from '../CarouselGroupTabs';
 export default function CarouselTeeth() {
   return (
     <View
-      width='100%'
-      position='sticky'
-      insetTop={11}
+      width="100%"
+      position="sticky"
+      insetTop={10}
       zIndex={50}
-      backgroundColor='page-faded'
-      direction='row'
-      justify='center'
-      align='end'
-      borderColor='neutral-faded'
+      backgroundColor="page-faded"
+      direction="row"
+      justify="center"
+      align="end"
+      borderColor="neutral-faded"
       wrap={false}
       paddingBlock={4}
-      height='146px'
+      height="146px"
     >
       <Carousel
         gap={2}
-        className='flex justify-center items-center w-[calc(100%-20px)] h-full'
+        className="flex justify-center items-center w-[calc(100%-20px)] h-full"
       >
         <CarouselGroupTabs />
       </Carousel>

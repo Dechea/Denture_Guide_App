@@ -114,35 +114,35 @@ export default function Cart({ params }: CartProps) {
   };
 
   return (
-    <View className="overflow-y-scroll max-h-[calc(100vh-53px)]">
+    <View className='overflow-y-scroll !max-h-[calc(100svh-53px)]'>
       <CartHeader totalProductsCount={totalProductsInCart} />
-      <View direction="column" width="100%" align="center">
+      <View direction='column' width='100%' align='center'>
         <View
-          direction="row"
-          width="100%"
-          paddingBlock={8}
-          paddingInline={6}
-          gap={34}
-          className="print:!p-0"
-          maxWidth="1280px"
-          justify="center"
+          direction={{ s: 'column', l: 'row' }}
+          width='100%'
+          height='calc(100svh-120px)'
+          paddingTop={8}
+          gap={{ l: 34 }}
+          className='print:!p-0'
+          maxWidth='1280px'
+          justify='center'
+          paddingInline={{ l: 10, xl: 35 }}
         >
-          <View.Item columns={8}>
+          <View.Item grow columns={{ s: 12, l: 7 }}>
             <CartItemsList
               teeth={patientFile.teeth}
               onProductCountChange={handleProductCountChange}
               onDeleteProduct={handleDeleteProduct}
             />
           </View.Item>
-          <View.Item columns={4} className="sticky !top-[133px]">
-            <View maxWidth="306px" width="100%">
+          <View.Item columns={{ s: 12, l: 5 }} className='sticky bottom-0'>
+            <View width='100%'>
               <CartCostEstimation
                 patientFileId={params.patientFileId}
                 totalCostOfProducts={totalCostOfProductsInCart}
               />
             </View>
           </View.Item>
-          VI
         </View>
       </View>
     </View>

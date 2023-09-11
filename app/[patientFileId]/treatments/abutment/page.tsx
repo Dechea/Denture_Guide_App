@@ -19,11 +19,8 @@ export default function Abutment({
 }: {
   params: { patientFileId: string };
 }) {
-  const {
-    setActiveProductTab,
-    setActivePatientFileId,
-    filterFields: productState,
-  } = useProductStore();
+  const { setActiveProductTab, setActivePatientFileId, filterFields } =
+    useProductStore();
 
   useAvailableTeethByTreatment({
     patientFileId: params.patientFileId,
@@ -40,40 +37,34 @@ export default function Abutment({
   }, []);
 
   const filteredAbutmentProductFields =
-    productState?.angle === '0'
+    filterFields?.angle === '0'
       ? abutmentProductFields.filter((field) => field.name !== 'type')
       : abutmentProductFields;
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/abutment`}>
       <CarouselTeeth />
-      <View direction="column" width="100%" align="center">
-        <View
-          direction="row"
-          gap={12}
-          maxWidth="1280px"
-          width="100%"
-          justify="center"
-        >
-          <View.Item columns={{ s: 12, m: 9 }}>
-            <View paddingTop={5.5} className="mb-x24">
-              <Suspense
-                fallback={
-                  <View height="70vh">
-                    <Loader />
-                  </View>
-                }
-              >
-                <NewProductView
-                  productType={PRODUCT_TYPE.ABUTMENT}
-                  productFields={filteredAbutmentProductFields}
-                  areaType={AREA_TYPE.CROWN}
-                  patientFileId={params.patientFileId}
-                />
-              </Suspense>
+      <View
+        width='100%'
+        align='center'
+        paddingTop={{ s: 4, l: 6 }}
+        paddingInline={{ s: 0, xl: 35 }}
+        paddingBottom={{ l: 16 }}
+      >
+        <Suspense
+          fallback={
+            <View height='70svh'>
+              <Loader />
             </View>
-          </View.Item>
-        </View>
+          }
+        >
+          <NewProductView
+            productType={PRODUCT_TYPE.ABUTMENT}
+            productFields={filteredAbutmentProductFields}
+            areaType={AREA_TYPE.CROWN}
+            patientFileId={params.patientFileId}
+          />
+        </Suspense>
       </View>
     </Tabs.Panel>
   );

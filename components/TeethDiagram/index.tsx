@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Modal, View, useToggle } from 'reshaped';
+import { Button, Hidden, Modal, View, useToggle } from 'reshaped';
 import Treatments from '../Treatments';
 import { useTeethDiagramStore } from '../../zustand/teethDiagram';
 import { useQuery } from 'fqlx-client';
@@ -29,6 +29,7 @@ import Toolbar from './Toolbar';
 import TreatmentOptionCard from '../TreatmentOptionCard';
 import UnionIcon from '../Icons/Union';
 import ComposedTeethDiagram from './composedTeethDiagram';
+import BinIcon from '../Icons/Bin';
 
 export default function TeethDiagramWithTreatments({
   patientFileId,
@@ -245,31 +246,66 @@ export default function TeethDiagramWithTreatments({
   return (
     <View
       width='100%'
+      maxWidth={'1920px'}
+      paddingInline={{ xl: 20 }}
       align='center'
       className='!outline-none'
       attributes={{ tabIndex: 1 }}
     >
-      <View width='100%' align='end' paddingBottom={12}>
-        <Toolbar onUndo={undoFunction} onRedo={redoFunction} />
-      </View>
-
-      <View width='75.55%' maxWidth='1632px'>
-        <ComposedTeethDiagram />
+      <View width='100%' maxWidth={{ s: '1096px', xl: '1920px' }}>
+        <View width='100%' align='end' paddingBottom={6} paddingEnd={2}>
+          <Toolbar onUndo={undoFunction} onRedo={redoFunction} />
+        </View>
+        <View
+          maxWidth={{ s: '1096px', xl: '1920px' }}
+          className='overflow-x-auto'
+        >
+          <View width={{ s: '1096px', xl: '100%' }} height={{ s: 72, xl: 117 }}>
+            <ComposedTeethDiagram />
+          </View>
+        </View>
       </View>
 
       <Modal
         active={active}
         position='bottom'
         transparentOverlay
-        className='!w-[calc(100%-64px)] !left-[64px] !shadow-[0px_-5px_20px_rgba(0,0,0,0.01),_0px_-22px_75px_rgba(0,0,0,0.07)] !rounded-[0px] !pt-[32px] !pb-[74px] !outline-none'
+        className='background-transparent shadow-none !p-0 !rounded-[0px] !outline-none !z-50'
         attributes={{ tabIndex: -1 }}
       >
-        <View gap={2} direction='row' justify='center'>
+        <View className='!bg-transparent' height={20}>
+          <Hidden hide={{ s: false, l: true }}>
+            <Button
+              size={'medium'}
+              icon={UnionIcon}
+              rounded
+              className='!absolute right-x6 !z-[10] !shadow-[0px_1px_2px_-1px_rgba(0,0,0,0.10),_0px_2px_3px_0px_rgba(0,0,0,0.10)] !bg-page -bottom-x4'
+              onClick={deactivate}
+            />
+          </Hidden>
+        </View>
+        <View
+          gap={2}
+          direction='row'
+          justify='center'
+          paddingBlock={{ s: 9, m: 8 }}
+          paddingInline={6}
+          className={
+            'min-h-[301px] sm:min-h-[249px] bg-white !shadow-[0px_-5px_20px_rgba(0,0,0,0.01),_0px_-22px_75px_rgba(0,0,0,0.07)]'
+          }
+        >
           <Treatments onSelectTreatment={handleTreatmentsClick} />
 
-          <View paddingStart={8}>
+          <View>
             <TreatmentOptionCard
-              Icon={<UnionIcon />}
+              Icon={
+                <View
+                  width={{ s: '24px', l: '28px', xl: '33px' }}
+                  className='text-[--rs-color-foreground-neutral-faded]'
+                >
+                  <BinIcon />
+                </View>
+              }
               label='Delete'
               onClick={handleDeleteTreatment}
               shortcutButtonText='Del'
