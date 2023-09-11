@@ -90,6 +90,7 @@
       "locale": "string",
       "description": "string",
       "price": {
+        "tax": "number",
         "amount": "number",
         "currency": "string"
       }
@@ -227,18 +228,22 @@
     }
   },
   "Organization": {
-    "name": "string",
-    "id": "string",
-    "addresses": "Address[]"
+    "fields": {
+      "name": "string",
+      "id": "string",
+      "addresses": "Address[]"
+    }
   },
   "Address": {
-    "name": "string",
-    "street": "string",
-    "streetNo": "string",
-    "zip": "string",
-    "city": "string",
-    "state": "string",
-    "country": "string",
-    "type": "string"
+    "fields": {
+      "name": "string",
+      "street": "string",
+      "streetNo": "string",
+      "zip": "string",
+      "city": "string",
+      "state": "string",
+      "country": "string",
+      "type": "string"
+    }
   }
 }

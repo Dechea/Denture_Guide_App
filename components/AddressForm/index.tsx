@@ -82,22 +82,22 @@ const AddressForm = ({
     });
 
   const setInitialAddressData = async () => {
-    let shippingAddress = {} as Address,
-      billingAdress = {} as Address,
+    let shippingAddress = {},
+      billingAdress = {},
       billingSameAsShipping = true;
 
-    const savedAddresses = await query.Organization.byId(organizationId)
+    const savedAddresses = query.Organization.byId(organizationId)
       .project({ addresses: true })
       .exec().addresses;
 
-    for (const savedAddress of savedAddresses) {
+    savedAddresses?.forEach((savedAddress) => {
       const { type, ...address } = savedAddress;
       if (type === 'SHIPPING') {
         shippingAddress = address;
       } else if (type === 'BILLING') {
         billingAdress = address;
       }
-    }
+    });
 
     for (const key in shippingAddress) {
       if (
@@ -110,8 +110,8 @@ const AddressForm = ({
 
     setValues({
       isBillingSame: billingSameAsShipping,
-      shipping: shippingAddress,
-      billing: billingAdress,
+      shipping: shippingAddress as Address,
+      billing: billingAdress as Address,
     });
   };
 
@@ -121,7 +121,13 @@ const AddressForm = ({
     }
   }, []);
 
-  const submitFormData = async ({ shipping, billing }) => {
+  const submitFormData = async ({
+    shipping,
+    billing,
+  }: {
+    shipping: any;
+    billing: any;
+  }) => {
     shipping['type'] = 'SHIPPING';
     billing['type'] = 'BILLING';
 

@@ -136,7 +136,8 @@ export default function CartProductList({ params }: CartProductListProps) {
 
             const productPrice = isNaN(price) ? 0 : price;
 
-            const tax = productInfo.details?.localizations?.[1]?.price?.tax;
+            const tax =
+              productInfo.details?.localizations?.[1]?.price?.tax ?? 0;
 
             const priceWithoutTax =
               (100 / (100 + tax)) * (productPrice * productInfo.count);
