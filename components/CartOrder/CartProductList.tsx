@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { Divider, Hidden, Icon, Text, View } from 'reshaped';
 import { Product } from '../../fqlx-generated/typedefs';

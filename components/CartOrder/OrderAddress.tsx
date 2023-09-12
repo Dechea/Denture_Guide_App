@@ -8,6 +8,15 @@ export default function OrderAddress({
   setActiveTab: (activeTab: string) => void;
   addresses: Address[] | undefined;
 }) {
+  const stringifyAddress = (address: Address | null) => {
+    if (address) {
+      return `${address.street} ${address.streetNo}, 
+    ${address.zip} ${address.city}, ${address.state}
+    , ${address.country}`;
+    }
+    return '';
+  };
+
   return (
     <View
       direction={{ s: 'column', xl: 'row' }}
@@ -25,9 +34,7 @@ export default function OrderAddress({
               {addresses?.[0].name}
             </Text>
             <Text variant='body-3' weight='regular' color='neutral-faded'>
-              {addresses?.[0].street} {addresses?.[0].streetNo},{' '}
-              {addresses?.[0].zip} {addresses?.[0].city}, {addresses?.[0].state}
-              , {addresses?.[0].country}
+              {stringifyAddress(addresses?.[0] ?? null)}
             </Text>
           </View>
           <Link color='inherit' onClick={() => setActiveTab('2')}>
@@ -46,9 +53,7 @@ export default function OrderAddress({
               {addresses?.[1].name}
             </Text>
             <Text variant='body-3' weight='regular' color='neutral-faded'>
-              {addresses?.[1].street} {addresses?.[1].streetNo},{' '}
-              {addresses?.[1].zip} {addresses?.[1].city}, {addresses?.[1].state}
-              , {addresses?.[1].country}
+              {stringifyAddress(addresses?.[1] ?? null)}
             </Text>
           </View>
           <Link color='inherit' onClick={() => setActiveTab('2')}>

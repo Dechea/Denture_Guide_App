@@ -68,12 +68,16 @@ const AddressForm = ({
     }
   }, [organizationId]);
 
-  const updateBothValues = (key: string, value: any) => {
-    setValues({
-      ...values,
-      shipping: { ...values.shipping, [key]: value },
-      billing: { ...values.billing, [key]: value },
-    });
+  const handleShippingChange = (key: string, value: any, event: any) => {
+    if (values.isBillingSameAsShippingAddress) {
+      setValues({
+        ...values,
+        shipping: { ...values.shipping, [key]: value },
+        billing: { ...values.billing, [key]: value },
+      });
+    } else {
+      handleChange(event);
+    }
   };
 
   const submitFormData = async (shipping: any, billing: any) => {
@@ -115,15 +119,14 @@ const AddressForm = ({
                   className={'!rounded-medium'}
                   value={values.shipping.name}
                   onChange={({ value, event }) => {
-                    if (values.isBillingSameAsShippingAddress) {
-                      updateBothValues('name', value);
-                    } else {
-                      handleChange(event);
-                    }
+                    handleShippingChange('name', value, event);
                   }}
                 />
                 {errors.shipping?.name && touched.shipping?.name && (
-                  <FormHelperText message={'This field is required'} />
+                  <FormHelperText
+                    message={'This field is required'}
+                    variant={'error'}
+                  />
                 )}
               </View.Item>
               <View.Item columns={12}>
@@ -137,15 +140,14 @@ const AddressForm = ({
                   className={'!rounded-medium'}
                   value={values.shipping.street}
                   onChange={({ value, event }) => {
-                    if (values.isBillingSameAsShippingAddress) {
-                      updateBothValues('street', value);
-                    } else {
-                      handleChange(event);
-                    }
+                    handleShippingChange('street', value, event);
                   }}
                 />
                 {errors.shipping?.street && touched.shipping?.street && (
-                  <FormHelperText message={'This field is required'} />
+                  <FormHelperText
+                    message={'This field is required'}
+                    variant={'error'}
+                  />
                 )}
               </View.Item>
               <View.Item columns={12}>
@@ -158,16 +160,15 @@ const AddressForm = ({
                   placeholder={'1A...'}
                   className={'!rounded-medium'}
                   value={values.shipping.streetNo}
-                  onChange={({ value, event }) => {
-                    if (values.isBillingSameAsShippingAddress) {
-                      updateBothValues('streetNo', value);
-                    } else {
-                      handleChange(event);
-                    }
-                  }}
+                  onChange={({ value, event }) =>
+                    handleShippingChange('streetNo', value, event)
+                  }
                 />
                 {errors.shipping?.streetNo && touched.shipping?.streetNo && (
-                  <FormHelperText message={'This field is required'} />
+                  <FormHelperText
+                    message={'This field is required'}
+                    variant={'error'}
+                  />
                 )}
               </View.Item>
               <View.Item columns={{ s: 12, l: 6 }}>
@@ -181,15 +182,14 @@ const AddressForm = ({
                   className={'!rounded-medium'}
                   value={values.shipping.zip}
                   onChange={({ value, event }) => {
-                    if (values.isBillingSameAsShippingAddress) {
-                      updateBothValues('zip', value);
-                    } else {
-                      handleChange(event);
-                    }
+                    handleShippingChange('zip', value, event);
                   }}
                 />
                 {errors.shipping?.zip && touched.shipping?.zip && (
-                  <FormHelperText message={'This field is required'} />
+                  <FormHelperText
+                    message={'This field is required'}
+                    variant={'error'}
+                  />
                 )}
               </View.Item>
               <View.Item columns={{ s: 12, l: 6 }}>
@@ -203,15 +203,14 @@ const AddressForm = ({
                   className={'!rounded-medium'}
                   value={values.shipping.city}
                   onChange={({ value, event }) => {
-                    if (values.isBillingSameAsShippingAddress) {
-                      updateBothValues('city', value);
-                    } else {
-                      handleChange(event);
-                    }
+                    handleShippingChange('city', value, event);
                   }}
                 />
                 {errors.shipping?.city && touched.shipping?.city && (
-                  <FormHelperText message={'This field is required'} />
+                  <FormHelperText
+                    message={'This field is required'}
+                    variant={'error'}
+                  />
                 )}
               </View.Item>
               <View.Item columns={{ s: 12, l: 6 }}>
@@ -225,15 +224,14 @@ const AddressForm = ({
                   className={'!rounded-medium'}
                   value={values.shipping.state}
                   onChange={({ value, event }) => {
-                    if (values.isBillingSameAsShippingAddress) {
-                      updateBothValues('state', value);
-                    } else {
-                      handleChange(event);
-                    }
+                    handleShippingChange('state', value, event);
                   }}
                 />
                 {errors.shipping?.state && touched.shipping?.state && (
-                  <FormHelperText message={'This field is required'} />
+                  <FormHelperText
+                    message={'This field is required'}
+                    variant={'error'}
+                  />
                 )}
               </View.Item>
               <View.Item columns={{ s: 12, l: 6 }}>
@@ -246,22 +244,21 @@ const AddressForm = ({
                   className={'!rounded-medium'}
                   value={values.shipping.country}
                   onChange={({ value, event }) => {
-                    if (values.isBillingSameAsShippingAddress) {
-                      updateBothValues('country', value);
-                    } else {
-                      handleChange(event);
-                    }
+                    handleShippingChange('country', value, event);
                   }}
                 />
                 {errors.shipping?.country && touched.shipping?.country && (
-                  <FormHelperText message={'This field is required'} />
+                  <FormHelperText
+                    message={'This field is required'}
+                    variant={'error'}
+                  />
                 )}
               </View.Item>
               <View.Item columns={12}>
                 <Checkbox
                   name='isBillingSameAsShippingAddress'
                   value={`${values.isBillingSameAsShippingAddress}`}
-                  defaultChecked={true}
+                  checked={values.isBillingSameAsShippingAddress}
                   onChange={({ checked, event }) => {
                     if (checked) {
                       setValues({
@@ -311,7 +308,10 @@ const AddressForm = ({
                       onChange={({ event }) => handleChange(event)}
                     />
                     {errors.billing?.name && touched.billing?.name && (
-                      <FormHelperText message={'This field is required'} />
+                      <FormHelperText
+                        message={'This field is required'}
+                        variant={'error'}
+                      />
                     )}
                   </View.Item>
                   <View.Item columns={12}>
@@ -331,7 +331,10 @@ const AddressForm = ({
                       onChange={({ event }) => handleChange(event)}
                     />
                     {errors.billing?.street && touched.billing?.street && (
-                      <FormHelperText message={'This field is required'} />
+                      <FormHelperText
+                        message={'This field is required'}
+                        variant={'error'}
+                      />
                     )}
                   </View.Item>
                   <View.Item columns={12}>
@@ -352,7 +355,10 @@ const AddressForm = ({
                     />
                     {errors.shipping?.streetNo &&
                       touched.shipping?.streetNo && (
-                        <FormHelperText message={'This field is required'} />
+                        <FormHelperText
+                          message={'This field is required'}
+                          variant={'error'}
+                        />
                       )}
                   </View.Item>
                   <View.Item columns={{ s: 12, l: 6 }}>
@@ -372,7 +378,10 @@ const AddressForm = ({
                       onChange={({ event }) => handleChange(event)}
                     />
                     {errors.billing?.zip && touched.billing?.zip && (
-                      <FormHelperText message={'This field is required'} />
+                      <FormHelperText
+                        message={'This field is required'}
+                        variant={'error'}
+                      />
                     )}
                   </View.Item>
                   <View.Item columns={{ s: 12, l: 6 }}>
@@ -392,7 +401,10 @@ const AddressForm = ({
                       onChange={({ event }) => handleChange(event)}
                     />
                     {errors.billing?.city && touched.billing?.city && (
-                      <FormHelperText message={'This field is required'} />
+                      <FormHelperText
+                        message={'This field is required'}
+                        variant={'error'}
+                      />
                     )}
                   </View.Item>
                   <View.Item columns={{ s: 12, l: 6 }}>
@@ -412,7 +424,10 @@ const AddressForm = ({
                       onChange={({ event }) => handleChange(event)}
                     />
                     {errors.billing?.state && touched.billing?.state && (
-                      <FormHelperText message={'This field is required'} />
+                      <FormHelperText
+                        message={'This field is required'}
+                        variant={'error'}
+                      />
                     )}
                   </View.Item>
                   <View.Item columns={{ s: 12, l: 6 }}>
@@ -432,7 +447,10 @@ const AddressForm = ({
                       onChange={({ event }) => handleChange(event)}
                     />
                     {errors.billing?.country && touched.billing?.country && (
-                      <FormHelperText message={'This field is required'} />
+                      <FormHelperText
+                        message={'This field is required'}
+                        variant={'error'}
+                      />
                     )}
                   </View.Item>
                 </View>
@@ -470,7 +488,11 @@ const AddressForm = ({
               </View>
             </View>
             <Button type='submit' color='primary' className='!rounded-medium'>
-              <View padding={1}>Review Order</View>
+              <View padding={1}>
+                <Text variant={'body-2'} weight={'medium'}>
+                  Review Order
+                </Text>
+              </View>
             </Button>
           </View>
         </View.Item>

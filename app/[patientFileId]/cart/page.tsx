@@ -130,9 +130,7 @@ export default function Cart({ params }: CartProps) {
   };
 
   const activateTab = (tabId: string) => {
-    console.log(unlockedTabs, tabId);
     if (!unlockedTabs.includes(tabId)) {
-      console.log('pushed');
       setUnlockedTabs([...unlockedTabs, tabId]);
     }
     setActiveTab(tabId);
@@ -159,7 +157,7 @@ export default function Cart({ params }: CartProps) {
           <View paddingBlock={{ xl: 6 }} width={'96%'} maxWidth={'1280px'}>
             <Tabs.List
               className={
-                '[&_[role=presentation]]:max-[1024px]:!grow [&_[role=presentation]]:max-[1024px]:!basis-0 [&_[role=tablist]]:max-[1024px]:!w-full print:!hidden'
+                '[&_[role=presentation]]:max-lg:!grow [&_[role=presentation]]:max-lg:!basis-0 [&_[role=tablist]]:max-lg:!w-full print:!hidden'
               }
             >
               {ShippingTabs.map((tab) => (

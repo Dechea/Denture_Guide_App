@@ -13,24 +13,18 @@ export enum AddressType {
   BILLING = 'BILLING',
 }
 
+const initialAddress = {
+  name: '',
+  street: '',
+  streetNo: '',
+  zip: '',
+  city: '',
+  state: '',
+  country: '',
+};
+
 export const initialFormData = {
-  shipping: {
-    name: '',
-    street: '',
-    streetNo: '',
-    zip: '',
-    city: '',
-    state: '',
-    country: '',
-  },
+  shipping: { ...initialAddress },
   isBillingSameAsShippingAddress: true,
-  billing: {
-    name: '',
-    street: '',
-    streetNo: '',
-    zip: '',
-    city: '',
-    state: '',
-    country: '',
-  },
+  billing: { ...initialAddress },
 };
