@@ -157,7 +157,7 @@ export default function Cart({ params }: CartProps) {
           <View paddingBlock={{ xl: 6 }} width={'96%'} maxWidth={'1280px'}>
             <Tabs.List
               className={
-                '[&_[role=presentation]]:max-lg:!grow [&_[role=presentation]]:max-lg:!basis-0 [&_[role=tablist]]:max-lg:!w-full print:!hidden'
+                '[&_[role=presentation]]:max-lg:!grow [&_[role=presentation]]:max-lg:!basis-0 [&_[role=tablist]]:max-lg:!w-full print:!hidden [&_[role=tablist]]:max-[1024px]:overflow-x-auto'
               }
             >
               {ShippingTabs.map((tab) => (

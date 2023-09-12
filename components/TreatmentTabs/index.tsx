@@ -61,7 +61,7 @@ const TreatmentTabs = ({
   return (
     <View
       paddingBlock={0}
-      className='overflow-y-scroll max-h-[calc(100svh-60px)]'
+      className='overflow-y-scroll overflow-x-clip max-h-[calc(100svh-60px)]'
       attributes={{ id: 'scrollableProductList' }}
     >
       <Tabs
@@ -77,7 +77,7 @@ const TreatmentTabs = ({
           zIndex={50}
           width={'99%'}
         >
-          <Tabs.List className='[&_[role=tablist]]:overflow-x-visible'>
+          <Tabs.List className='[&_[role=tablist]]:overflow-x-auto'>
             <Tabs.Item value={`/${patientFileId}/treatments`}>
               <View width={'100%'} align='start'>
                 <Text>Treatments</Text>

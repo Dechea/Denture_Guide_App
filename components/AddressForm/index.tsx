@@ -88,9 +88,9 @@ const AddressForm = ({
       await query.Organization.byId(organizationId)
         .update(`{addresses: ${JSON.stringify([shipping, billing])}}`)
         .exec();
-
-      setActiveTab('3');
     }
+
+    setActiveTab('3');
   };
 
   return (
