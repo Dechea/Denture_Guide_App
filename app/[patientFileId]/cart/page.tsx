@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Badge, Tabs, View } from 'reshaped';
 import { useQuery } from 'fqlx-client';
 import { CartCostEstimation } from '../../../components/CartCostEstimation';
@@ -17,6 +17,7 @@ import { useProductCrudOps } from '../../../hooks/useProductCrudOps';
 import { AREA_TYPE } from '../../../zustand/product/interface';
 import CartOrder from '../../../components/CartOrder';
 import AddressForm from '../../../components/AddressForm';
+import { useUserStore } from '../../../zustand/user';
 
 const ShippingTabs = [
   { id: '1', title: 'Selected Products' },
@@ -32,6 +33,7 @@ export default function Cart({ params }: CartProps) {
   const query = useQuery<Query>();
   const [activeTab, setActiveTab] = useState('1');
   const [unlockedTabs, setUnlockedTabs] = useState<string[]>(['1']);
+  const { setAddressFormData } = useUserStore();
 
   const { totalProductsInCart, totalCostOfProductsInCart } =
     useProductCalculations(params.patientFileId);
@@ -133,8 +135,13 @@ export default function Cart({ params }: CartProps) {
     if (!unlockedTabs.includes(tabId)) {
       setUnlockedTabs([...unlockedTabs, tabId]);
     }
+
     setActiveTab(tabId);
   };
+
+  useEffect(() => {
+    setAddressFormData(null);
+  }, []);
 
   return (
     <View

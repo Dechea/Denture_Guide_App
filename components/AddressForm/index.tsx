@@ -23,7 +23,8 @@ const AddressForm = ({
 }: {
   setActiveTab: (activeTab: string) => void;
 }) => {
-  const { organizationId } = useUserStore();
+  const { organizationId, addressFormData, setAddressFormData } =
+    useUserStore();
   const query = useQuery<Query>();
   const { values, handleChange, handleSubmit, errors, touched, setValues } =
     useFormik({
@@ -63,10 +64,16 @@ const AddressForm = ({
   };
 
   useEffect(() => {
-    if (organizationId) {
+    if (addressFormData !== null) {
+      setValues(addressFormData);
+    } else if (organizationId) {
       setInitialAddressData();
     }
   }, [organizationId]);
+
+  useEffect(() => {
+    setAddressFormData(values);
+  }, [values]);
 
   const handleShippingChange = (key: string, value: any, event: any) => {
     if (values.isBillingSameAsShippingAddress) {
