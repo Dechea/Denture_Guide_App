@@ -32,8 +32,8 @@ const ShippingForm = ({
         ),
     });
 
-  const [isShippingSaved, setIsShippingSaved] = useState(0);
-  const [isBillingSaved, setIsBillingSaved] = useState(0);
+  const [savedShippingIndex, setSavedShippingIndex] = useState(0);
+  const [savedBillingIndex, setSavedBillingIndex] = useState(0);
   const [mount, setMount] = useState(true);
 
   const organizationAddresses = query.Organization.byId(organizationId)
@@ -55,24 +55,28 @@ const ShippingForm = ({
         type: AddressType.BILLING,
       } as Address;
 
-    setIsShippingSaved(0);
-    setIsBillingSaved(0);
+    setSavedShippingIndex(0);
+    setSavedBillingIndex(0);
 
     organizationAddresses?.forEach((address, index) => {
       if (address.type === AddressType.SHIPPING && address.default === true) {
         shippingAddress = address;
-        setIsShippingSaved(index + 1);
+        setSavedShippingIndex(index + 1);
       } else if (
         address.type === AddressType.BILLING &&
         address.default === true
       ) {
         billingAddress = address;
-        setIsBillingSaved(index + 1);
+        setSavedBillingIndex(index + 1);
       }
     });
 
+    if (!setBilling && !setShipping) {
+      return;
+    }
+
     setValues({
-      ...values,
+      isBillingSameAsShippingAddress: false,
       shipping: setShipping ? shippingAddress : values.shipping,
       billing: setBilling ? billingAddress : values.billing,
     });
@@ -82,7 +86,6 @@ const ShippingForm = ({
     const updatedValues = { ...values, isBillingSameAsShippingAddress: false };
     let setShipping = false,
       setBilling = false;
-    console.log(addressFormData, organizationAddresses, mount);
 
     if (addressFormData?.shipping !== undefined && mount) {
       updatedValues.shipping = addressFormData?.shipping;
@@ -96,8 +99,6 @@ const ShippingForm = ({
       setBilling = true;
     }
 
-    console.log(mount, setShipping, setBilling, updatedValues);
-
     if (mount) {
       setValues(updatedValues);
       setMount(false);
@@ -107,7 +108,6 @@ const ShippingForm = ({
   }, [organizationAddresses]);
 
   useEffect(() => {
-    console.log(values);
     setAddressFormData(values);
   }, [values]);
 
@@ -116,22 +116,20 @@ const ShippingForm = ({
     billing: Address,
     isBillingSameAsShippingAddress: boolean
   ) => {
-    console.log(shipping, billing, isBillingSameAsShippingAddress);
-
     const localAddresses = [...(organizationAddresses ?? [])];
 
     if (isBillingSameAsShippingAddress) {
       billing = {
         ...shipping,
-        default: !isBillingSaved,
+        default: !savedBillingIndex,
         type: AddressType.BILLING,
       };
     }
 
-    if (!isShippingSaved) {
+    if (!savedShippingIndex) {
       localAddresses.push(shipping);
     }
-    if (!isBillingSaved || isBillingSameAsShippingAddress) {
+    if (!savedBillingIndex || isBillingSameAsShippingAddress) {
       localAddresses.push(billing);
     }
 
@@ -220,17 +218,17 @@ const ShippingForm = ({
 
   const handleShippingChange = (event: any) => {
     if (event.target.name === 'isBillingSameAsShippingAddress') {
-      console.log(event.target.value, typeof event.target.value);
       const updatedValues = { ...values };
-      if (event.target.value === 'true' && isBillingSaved) {
+      if (event.target.value === 'true' && savedBillingIndex) {
         updatedValues.isBillingSameAsShippingAddress = false;
         updatedValues.billing = {
-          ...organizationAddresses?.[isBillingSaved - 1],
+          ...organizationAddresses?.[savedBillingIndex - 1],
         };
       } else {
         updatedValues.isBillingSameAsShippingAddress = true;
         updatedValues.billing = { ...updatedValues.shipping };
       }
+
       setValues(updatedValues);
       return;
     }
@@ -260,7 +258,7 @@ const ShippingForm = ({
             <Text variant={'featured-3'} weight={'medium'}>
               Shipping Addresses
             </Text>
-            {isShippingSaved ? (
+            {savedShippingIndex ? (
               <AddressList
                 organizationAddresses={organizationAddresses ?? []}
                 selectedAddress={JSON.stringify(values.shipping)}
@@ -284,7 +282,7 @@ const ShippingForm = ({
                 values={values.shipping}
               />
             )}
-            {isShippingSaved && (
+            {!!savedShippingIndex && (
               <NewAddressButton
                 addressType={AddressType.SHIPPING}
                 handleNewAddress={handleAddNewAddress}
@@ -295,7 +293,7 @@ const ShippingForm = ({
             <Text variant={'featured-3'} weight={'medium'}>
               Billing Addresses
             </Text>
-            {isBillingSaved ? (
+            {savedBillingIndex ? (
               <AddressList
                 organizationAddresses={organizationAddresses ?? []}
                 selectedAddress={JSON.stringify(addressFormData?.billing)}
@@ -316,7 +314,7 @@ const ShippingForm = ({
                 values={values.billing}
               />
             )}
-            {isBillingSaved && (
+            {!!savedBillingIndex && (
               <NewAddressButton
                 addressType={AddressType.BILLING}
                 handleNewAddress={handleAddNewAddress}
