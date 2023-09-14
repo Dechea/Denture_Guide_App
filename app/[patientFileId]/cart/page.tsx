@@ -16,7 +16,7 @@ import { useProductCalculations } from '../../../hooks/useProductCalculations';
 import { useProductCrudOps } from '../../../hooks/useProductCrudOps';
 import { AREA_TYPE } from '../../../zustand/product/interface';
 import CartOrder from '../../../components/CartOrder';
-import AddressForm from '../../../components/AddressForm';
+import ShippingForm from '../../../components/AddressForm';
 import { useUserStore } from '../../../zustand/user';
 
 const ShippingTabs = [
@@ -219,7 +219,7 @@ export default function Cart({ params }: CartProps) {
             </Tabs.Panel>
 
             <Tabs.Panel value='2'>
-              <AddressForm setActiveTab={activateTab} />
+              <ShippingForm setActiveTab={activateTab} />
             </Tabs.Panel>
 
             <Tabs.Panel value='3'>

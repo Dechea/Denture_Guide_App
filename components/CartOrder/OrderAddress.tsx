@@ -1,13 +1,16 @@
+'use client';
+
 import { Link, Text, View } from 'reshaped';
 import { Address } from '../../fqlx-generated/typedefs';
+import { useUserStore } from '../../zustand/user';
 
 export default function OrderAddress({
   setActiveTab,
-  addresses,
 }: {
   setActiveTab: (activeTab: string) => void;
-  addresses: Address[] | undefined;
 }) {
+  const { addressFormData } = useUserStore();
+
   const stringifyAddress = (address: Address | null) => {
     if (address) {
       return `${address.street} ${address.streetNo}, 
@@ -31,10 +34,10 @@ export default function OrderAddress({
 
           <View gap={1}>
             <Text variant='body-3' weight='regular'>
-              {addresses?.[0].name}
+              {addressFormData?.shipping.name}
             </Text>
             <Text variant='body-3' weight='regular' color='neutral-faded'>
-              {stringifyAddress(addresses?.[0] ?? null)}
+              {stringifyAddress(addressFormData?.shipping ?? null)}
             </Text>
           </View>
           <Link color='inherit' onClick={() => setActiveTab('2')}>
@@ -50,10 +53,10 @@ export default function OrderAddress({
 
           <View gap={1}>
             <Text variant='body-3' weight='regular'>
-              {addresses?.[1].name}
+              {addressFormData?.billing.name}
             </Text>
             <Text variant='body-3' weight='regular' color='neutral-faded'>
-              {stringifyAddress(addresses?.[1] ?? null)}
+              {stringifyAddress(addressFormData?.billing ?? null)}
             </Text>
           </View>
           <Link color='inherit' onClick={() => setActiveTab('2')}>

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Address } from '../../components/AddressForm/constants';
+import { Address } from '../../fqlx-generated/typedefs';
 
 interface AddressFormData {
   shipping: Address;

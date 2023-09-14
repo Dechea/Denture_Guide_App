@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-const addressValidationSchema = Yup.object().shape({
+export const addressValidationSchema = Yup.object().shape({
   name: Yup.string(),
   street: Yup.string().required(),
   zip: Yup.string().required(),
@@ -12,4 +12,8 @@ const addressValidationSchema = Yup.object().shape({
 export const addressFormValidationSchema = Yup.object().shape({
   shipping: addressValidationSchema,
   billing: addressValidationSchema,
+});
+
+export const addressModalValidationSchema = Yup.object().shape({
+  address: addressValidationSchema,
 });
