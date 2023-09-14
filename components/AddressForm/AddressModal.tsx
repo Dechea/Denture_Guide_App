@@ -1,8 +1,7 @@
 import { Modal, View, Text, Button } from 'reshaped';
 import UnionIcon from '../Icons/Union';
-import ShippingForm from '.';
 import { Address } from '../../fqlx-generated/typedefs';
-import AddressForm2 from './AddressForm';
+import AddressForm from './AddressForm';
 import { useFormik } from 'formik';
 import { addressModalValidationSchema } from './validationSchema';
 
@@ -17,6 +16,7 @@ function titleCase(text: string) {
 }
 
 interface AddressModalProps {
+  key?: string;
   active: boolean;
   deactivate: () => void;
   initialAddress: Address;
@@ -24,6 +24,7 @@ interface AddressModalProps {
 }
 
 const AddressModal = ({
+  key,
   active,
   deactivate,
   initialAddress,
@@ -42,15 +43,17 @@ const AddressModal = ({
           <Text variant='featured-3' weight='bold'>
             {titleCase(initialAddress.type ?? '')} Address
           </Text>
-          <View width={5} padding={1}>
-            <UnionIcon />
-          </View>
+          <Button
+            size={'medium'}
+            variant={'ghost'}
+            icon={<UnionIcon />}
+            onClick={deactivate}
+          />
         </View>
 
         <form onSubmit={handleSubmit}>
           <View paddingTop={11} paddingBottom={9}>
-            <AddressForm2
-              initialAddress={initialAddress}
+            <AddressForm
               values={values.address}
               addressType='address'
               errors={errors.address}

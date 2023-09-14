@@ -1,13 +1,11 @@
 'use client';
 
 import { View, TextField, Checkbox, Text, Hidden } from 'reshaped';
-import { AddressType } from './constants';
 import FormHelperText from '../FormHelperText';
 import { Address } from '../../fqlx-generated/typedefs';
 
 interface AddressFormProps {
   values: Address;
-  initialAddress: Address;
   addressType: string;
   isBillingSameAsShippingAddress?: boolean;
   errors: any;
@@ -17,9 +15,8 @@ interface AddressFormProps {
 
 const AddressForm = ({
   values,
-  initialAddress,
   addressType,
-  isBillingSameAsShippingAddress = false,
+  isBillingSameAsShippingAddress,
   errors,
   touched,
   handleChange,
@@ -200,10 +197,10 @@ const AddressForm = ({
           />
         )}
       </View.Item>
-      <Hidden hide={Boolean(initialAddress.type !== AddressType.SHIPPING)}>
+      <Hidden hide={isBillingSameAsShippingAddress === undefined}>
         <View.Item columns={12}>
           <Checkbox
-            name={`${addressType}.isBillingSameAsShippingAddress`}
+            name={`isBillingSameAsShippingAddress`}
             value={`${isBillingSameAsShippingAddress}`}
             checked={isBillingSameAsShippingAddress}
             onChange={({ event }) => handleChange(event)}

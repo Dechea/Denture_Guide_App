@@ -17,23 +17,33 @@ const ShippingForm = ({
 }: {
   setActiveTab: (activeTab: string) => void;
 }) => {
-  const { organizationId, setAddressFormData } = useUserStore();
+  const { organizationId, addressFormData, setAddressFormData } =
+    useUserStore();
   const query = useQuery<Query>();
   const { values, handleChange, handleSubmit, errors, touched, setValues } =
     useFormik({
       validationSchema: addressFormValidationSchema,
       initialValues: initialFormData,
-      onSubmit: (values) => submitFormData(values.shipping, values.billing),
+      onSubmit: (values) =>
+        submitFormData(
+          values.shipping,
+          values.billing,
+          values.isBillingSameAsShippingAddress
+        ),
     });
 
-  const [isShippingSaved, setIsShippingSaved] = useState(false);
-  const [isBillingSaved, setIsBillingSaved] = useState(false);
+  const [isShippingSaved, setIsShippingSaved] = useState(0);
+  const [isBillingSaved, setIsBillingSaved] = useState(0);
+  const [mount, setMount] = useState(true);
 
   const organizationAddresses = query.Organization.byId(organizationId)
     .project({ addresses: true })
     .exec().addresses;
 
-  const setInitialAddressData = async () => {
+  const setInitialAddressData = async (
+    setShipping: boolean,
+    setBilling: boolean
+  ) => {
     let shippingAddress = {
         ...initialAddress,
         default: true,
@@ -45,47 +55,91 @@ const ShippingForm = ({
         type: AddressType.BILLING,
       } as Address;
 
-    setIsShippingSaved(false);
-    setIsBillingSaved(false);
+    setIsShippingSaved(0);
+    setIsBillingSaved(0);
 
-    organizationAddresses?.forEach((address) => {
+    organizationAddresses?.forEach((address, index) => {
       if (address.type === AddressType.SHIPPING && address.default === true) {
         shippingAddress = address;
-        setIsShippingSaved(true);
+        setIsShippingSaved(index + 1);
       } else if (
         address.type === AddressType.BILLING &&
         address.default === true
       ) {
         billingAddress = address;
-        setIsBillingSaved(true);
+        setIsBillingSaved(index + 1);
       }
     });
 
-    const isBillingSameAsShippingAddress = Object.keys(shippingAddress).every(
-      (key) =>
-        shippingAddress[key as keyof typeof shippingAddress] ===
-        billingAddress[key as keyof typeof billingAddress]
-    );
-
     setValues({
-      isBillingSameAsShippingAddress: isBillingSameAsShippingAddress,
-      shipping: shippingAddress,
-      billing: billingAddress,
+      ...values,
+      shipping: setShipping ? shippingAddress : values.shipping,
+      billing: setBilling ? billingAddress : values.billing,
     });
   };
 
   useEffect(() => {
-    if (organizationId) {
-      setInitialAddressData();
+    const updatedValues = { ...values, isBillingSameAsShippingAddress: false };
+    let setShipping = false,
+      setBilling = false;
+    console.log(addressFormData, organizationAddresses, mount);
+
+    if (addressFormData?.shipping !== undefined && mount) {
+      updatedValues.shipping = addressFormData?.shipping;
+    } else if (organizationId) {
+      setShipping = true;
     }
+
+    if (addressFormData?.billing !== undefined && mount) {
+      updatedValues.billing = addressFormData?.billing;
+    } else if (organizationId) {
+      setBilling = true;
+    }
+
+    console.log(mount, setShipping, setBilling, updatedValues);
+
+    if (mount) {
+      setValues(updatedValues);
+      setMount(false);
+    }
+
+    setInitialAddressData(!mount || setShipping, !mount || setBilling);
   }, [organizationAddresses]);
 
   useEffect(() => {
+    console.log(values);
     setAddressFormData(values);
   }, [values]);
 
-  const submitFormData = async (shipping: Address, billing: Address) => {
-    console.log(shipping, billing);
+  const submitFormData = async (
+    shipping: Address,
+    billing: Address,
+    isBillingSameAsShippingAddress: boolean
+  ) => {
+    console.log(shipping, billing, isBillingSameAsShippingAddress);
+
+    const localAddresses = [...(organizationAddresses ?? [])];
+
+    if (isBillingSameAsShippingAddress) {
+      billing = {
+        ...shipping,
+        default: !isBillingSaved,
+        type: AddressType.BILLING,
+      };
+    }
+
+    if (!isShippingSaved) {
+      localAddresses.push(shipping);
+    }
+    if (!isBillingSaved || isBillingSameAsShippingAddress) {
+      localAddresses.push(billing);
+    }
+
+    setAddressFormData({ isBillingSameAsShippingAddress, shipping, billing });
+
+    await query.Organization.byId(organizationId)
+      .update(`{addresses: ${JSON.stringify(localAddresses)}}`)
+      .exec();
 
     setActiveTab('3');
   };
@@ -117,6 +171,11 @@ const ShippingForm = ({
     await query.Organization.byId(organizationId)
       .update(`{addresses: ${JSON.stringify(localAddresses)}}`)
       .exec();
+
+    setValues({
+      ...values,
+      [addressType.toLowerCase()]: localAddresses[defaultIndex],
+    });
   };
 
   const handleAddNewAddress = async (newAddress: Address) => {
@@ -159,6 +218,36 @@ const ShippingForm = ({
       .exec();
   };
 
+  const handleShippingChange = (event: any) => {
+    if (event.target.name === 'isBillingSameAsShippingAddress') {
+      console.log(event.target.value, typeof event.target.value);
+      const updatedValues = { ...values };
+      if (event.target.value === 'true' && isBillingSaved) {
+        updatedValues.isBillingSameAsShippingAddress = false;
+        updatedValues.billing = {
+          ...organizationAddresses?.[isBillingSaved - 1],
+        };
+      } else {
+        updatedValues.isBillingSameAsShippingAddress = true;
+        updatedValues.billing = { ...updatedValues.shipping };
+      }
+      setValues(updatedValues);
+      return;
+    }
+
+    if (values.isBillingSameAsShippingAddress) {
+      const [_, key] = event.target.name.split('.');
+
+      setValues({
+        ...values,
+        shipping: { ...values.shipping, [key]: event.target.value },
+        billing: { ...values.billing, [key]: event.target.value },
+      });
+    } else {
+      handleChange(event);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit}>
       <View
@@ -185,9 +274,8 @@ const ShippingForm = ({
               />
             ) : (
               <AddressForm
-                initialAddress={values.shipping}
                 addressType={AddressType.SHIPPING.toLowerCase()}
-                handleChange={handleChange}
+                handleChange={handleShippingChange}
                 errors={errors.shipping}
                 touched={touched.shipping}
                 isBillingSameAsShippingAddress={
@@ -210,7 +298,7 @@ const ShippingForm = ({
             {isBillingSaved ? (
               <AddressList
                 organizationAddresses={organizationAddresses ?? []}
-                selectedAddress={JSON.stringify(values.billing)}
+                selectedAddress={JSON.stringify(addressFormData?.billing)}
                 setSelectedAddress={(address) =>
                   setValues({ ...values, billing: JSON.parse(address) })
                 }
@@ -221,7 +309,6 @@ const ShippingForm = ({
               />
             ) : (
               <AddressForm
-                initialAddress={values.billing}
                 addressType={AddressType.BILLING.toLowerCase()}
                 handleChange={handleChange}
                 errors={errors.billing}
