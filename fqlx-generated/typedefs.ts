@@ -3757,6 +3757,10 @@ export interface Address {
    * type for the Address
    */
   type?: string;
+  /**
+   * default for the Address
+   */
+  default?: boolean;
 }
 
 export interface AddressInput {
@@ -3792,6 +3796,10 @@ export interface AddressInput {
    * type for the Address
    */
   type?: string;
+  /**
+   * default for the Address
+   */
+  default?: boolean;
 }
 
 export interface AddressMethods {
@@ -3821,6 +3829,7 @@ export interface AddressMethods {
    * @param { string } input.state State for the Address
    * @param { string } input.country Country for the Address
    * @param { string } input.type Type for the Address
+   * @param { boolean } input.default Default for the Address
    *
    * @returns {CreateMethods<Address>} return new document.
    *
@@ -3834,6 +3843,7 @@ export interface AddressMethods {
    * state: "Value of the state"
    * country: "Value of the country"
    * type: "Value of the type"
+   * default: "Value of the default"
    * }).exec()
    * OR
    * query.Address.create(`{
@@ -3845,6 +3855,7 @@ export interface AddressMethods {
    * state: "Value of the state"
    * country: "Value of the country"
    * type: "Value of the type"
+   * default: "Value of the default"
    * }`).exec()
    *
    * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}

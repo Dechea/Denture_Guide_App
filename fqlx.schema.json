@@ -243,7 +243,8 @@
       "city": "string",
       "state": "string",
       "country": "string",
-      "type": "string"
+      "type": "string",
+      "default": "boolean"
     }
   }
 }
