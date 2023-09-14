@@ -1,11 +1,10 @@
 import { SignUp } from '@clerk/nextjs';
-import { View } from 'reshaped';
 
 const Page = () => {
   return (
-    <View direction='row' align='center' justify='center' height='100svh'>
+    <div className='flex flex-row items-center justify-center h-screen'>
       <SignUp />
-    </View>
+    </div>
   );
 };
 
