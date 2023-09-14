@@ -53,7 +53,7 @@ export default function FqlxClientProvider({
   useEffect(() => {
     // Redirect to sign-in screen, If clerk token invalid
     if (token === 'invalid') {
-      router.push('/sign-in');
+      router.push('/sign-in/[[...sign-in]]');
     }
   }, [token]);
 
