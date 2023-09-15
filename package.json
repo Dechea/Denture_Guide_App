@@ -1,5 +1,5 @@
 {
-  "name": "mana",
+  "name": "material-planner",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,9 @@
     "generate:initialState": "ts-node utils/generateInitialStateFromTypedefs.ts",
     "fqlx:generate": "ts-node node_modules/fqlx-client/src/converter.ts",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "vercel:link": "vercel link --yes --token $VERCEL_TOKEN --scope dechea",
+    "vercel:pull": "vercel env pull --token $VERCEL_TOKEN --scope dechea"
   },
   "dependencies": {
     "@clerk/nextjs": "4.21.1",
@@ -24,7 +26,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-infinite-scroll-component": "6.1.0",
-    "reshaped": "^2.2.1",
+    "reshaped": "^2.3.1",
     "tailwindcss": "3.3.2",
     "yup": "1.2.0",
     "zustand": "4.3.8"
@@ -39,6 +41,7 @@
     "prettier": "2.8.8",
     "prettier-plugin-tailwindcss": "0.2.8",
     "ts-node": "10.9.1",
-    "typescript": "5.1.3"
+    "typescript": "5.1.3",
+    "vercel": "^32.2.2"
   }
 }
