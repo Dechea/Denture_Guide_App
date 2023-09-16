@@ -10,11 +10,11 @@ const CrispChat = () => {
 
   useEffect(() => {
     if (isSignedIn) {
-      Crisp.configure(process.env.NEXT_PUBLIC_CRISP_WEBSITE_ID);
       Crisp.user.setEmail(user.primaryEmailAddress);
       Crisp.user.setNickname(user.fullName);
+      Crisp.configure(process.env.NEXT_PUBLIC_CRISP_WEBSITE_ID);
     }
-  });
+  }, [isSignedIn]);
 
   return null;
 };
