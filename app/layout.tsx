@@ -1,8 +1,9 @@
 import './globals.css';
-import '../themes/dechea/theme.css';
+import '@/themes/dechea/theme.css';
 import { Reshaped } from 'reshaped';
 import { ClerkProvider } from '@clerk/nextjs';
 import FqlxClientProvider from './FqlxClientProvider';
+import dynamic from 'next/dynamic';
 
 export const metadata = {
   title: 'Material Planner',
@@ -17,6 +18,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const CrispWithNoSSR = dynamic(
+    () => import('@/components/operation/chat/crisp.js')
+  )
+
   return (
     <html lang='en'>
       <ClerkProvider>
@@ -25,6 +30,7 @@ export default function RootLayout({
             <FqlxClientProvider>{children}</FqlxClientProvider>
           </Reshaped>
         </body>
+        <CrispWithNoSSR />
       </ClerkProvider>
     </html>
   );
