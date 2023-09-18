@@ -146,7 +146,7 @@ export default function Cart({ params }: CartProps) {
   return (
     <View
       height={'100%'}
-      className='overflow-y-scroll !max-h-[calc(100svh-53px)] print:block print:overflow-visible'
+      className='overflow-y-scroll !max-h-[calc(100svh-53px)]'
     >
       <CartHeader totalProductsCount={totalProductsInCart} />
       <View
@@ -161,10 +161,15 @@ export default function Cart({ params }: CartProps) {
           value={activeTab}
           onChange={({ value }) => handleTabClick(value)}
         >
-          <View paddingBlock={{ xl: 6 }} width={'96%'} maxWidth={'1280px'}>
+          <View
+            paddingBlock={{ xl: 6 }}
+            width={'96%'}
+            maxWidth={'1280px'}
+            className='print:hidden'
+          >
             <Tabs.List
               className={
-                '[&_[role=presentation]]:max-lg:!grow [&_[role=presentation]]:max-lg:!basis-0 [&_[role=tablist]]:max-lg:!w-full print:!hidden [&_[role=tablist]]:max-[1024px]:overflow-x-auto'
+                '[&_[role=presentation]]:max-lg:!grow [&_[role=presentation]]:max-lg:!basis-0 [&_[role=tablist]]:max-lg:!w-full [&_[role=tablist]]:max-[1024px]:overflow-x-auto'
               }
             >
               {ShippingTabs.map((tab) => (
@@ -197,7 +202,6 @@ export default function Cart({ params }: CartProps) {
               <View
                 direction={{ s: 'column', xl: 'row' }}
                 gap={{ xl: 26 }}
-                className='print:!p-0'
                 height='100%'
                 grow
               >
@@ -219,7 +223,7 @@ export default function Cart({ params }: CartProps) {
             </Tabs.Panel>
 
             <Tabs.Panel value='2'>
-              <ShippingForm setActiveTab={activateTab} />
+              <ShippingForm setActiveTab={activateTab} params={params} />
             </Tabs.Panel>
 
             <Tabs.Panel value='3'>

@@ -7,7 +7,7 @@ import { useUserStore } from '../../zustand/user';
 export default function OrderAddress({
   setActiveTab,
 }: {
-  setActiveTab: (activeTab: string) => void;
+  setActiveTab?: (activeTab: string) => void;
 }) {
   const { addressFormData } = useUserStore();
 
@@ -24,7 +24,8 @@ export default function OrderAddress({
     <View
       direction={{ s: 'column', xl: 'row' }}
       gap={14}
-      className='print:!flex print:!flex-row'
+      width='100%'
+      className='print:!flex print:!flex-row print:!gap-[28px]'
     >
       <View.Item columns={6}>
         <View gap={4}>
@@ -40,7 +41,7 @@ export default function OrderAddress({
               {stringifyAddress(addressFormData?.shipping ?? null)}
             </Text>
           </View>
-          <Link color='inherit' onClick={() => setActiveTab('2')}>
+          <Link color='inherit' onClick={() => setActiveTab?.('2')}>
             Edit
           </Link>
         </View>
@@ -59,7 +60,7 @@ export default function OrderAddress({
               {stringifyAddress(addressFormData?.billing ?? null)}
             </Text>
           </View>
-          <Link color='inherit' onClick={() => setActiveTab('2')}>
+          <Link color='inherit' onClick={() => setActiveTab?.('2')}>
             Edit
           </Link>
         </View>

@@ -10,7 +10,7 @@ interface AddressFormProps {
   isBillingSameAsShippingAddress?: boolean;
   errors: any;
   touched: any;
-  handleChange: (event: any) => void;
+  onChange: (event: any) => void;
 }
 
 const AddressForm = ({
@@ -19,7 +19,7 @@ const AddressForm = ({
   isBillingSameAsShippingAddress,
   errors,
   touched,
-  handleChange,
+  onChange,
 }: AddressFormProps) => {
   return (
     <View gap={6} direction='row'>
@@ -38,7 +38,7 @@ const AddressForm = ({
           className={'!rounded-medium'}
           value={values.name}
           onChange={({ event }) => {
-            handleChange(event);
+            onChange(event);
           }}
         />
         {errors?.name && touched?.name && (
@@ -63,7 +63,7 @@ const AddressForm = ({
           className={'!rounded-medium'}
           value={values.street}
           onChange={({ event }) => {
-            handleChange(event);
+            onChange(event);
           }}
         />
         {errors?.street && touched?.street && (
@@ -88,7 +88,7 @@ const AddressForm = ({
           className={'!rounded-medium'}
           value={values.streetNo}
           onChange={({ event }) => {
-            handleChange(event);
+            onChange(event);
           }}
         />
         {errors?.streetNo && touched?.streetNo && (
@@ -113,7 +113,7 @@ const AddressForm = ({
           className={'!rounded-medium'}
           value={values.zip}
           onChange={({ event }) => {
-            handleChange(event);
+            onChange(event);
           }}
         />
         {errors?.zip && touched?.zip && (
@@ -138,7 +138,7 @@ const AddressForm = ({
           className={'!rounded-medium'}
           value={values.city}
           onChange={({ event }) => {
-            handleChange(event);
+            onChange(event);
           }}
         />
         {errors?.city && touched?.city && (
@@ -163,7 +163,7 @@ const AddressForm = ({
           className={'!rounded-medium'}
           value={values.state}
           onChange={({ event }) => {
-            handleChange(event);
+            onChange(event);
           }}
         />
         {errors?.state && touched?.state && (
@@ -187,7 +187,7 @@ const AddressForm = ({
           className={'!rounded-medium'}
           value={values.country}
           onChange={({ event }) => {
-            handleChange(event);
+            onChange(event);
           }}
         />
         {errors?.country && touched?.country && (
@@ -203,7 +203,7 @@ const AddressForm = ({
             name={`isBillingSameAsShippingAddress`}
             value={`${isBillingSameAsShippingAddress}`}
             checked={isBillingSameAsShippingAddress}
-            onChange={({ event }) => handleChange(event)}
+            onChange={({ event }) => onChange(event)}
           >
             My billing address is same as shipping address
           </Checkbox>

@@ -23,7 +23,7 @@ export default function CartHeader({ totalProductsCount }: CartHeaderProps) {
       paddingBlock={8}
       align='center'
       gap={4}
-      className='border-b border-[--rs-color-border-neutral-faded]'
+      className='border-b border-[--rs-color-border-neutral-faded] print:!hidden'
     >
       <View direction='column' width='100%' align='center'>
         <View
@@ -36,7 +36,6 @@ export default function CartHeader({ totalProductsCount }: CartHeaderProps) {
           paddingInline={6}
         >
           <Button
-            className='print:!hidden'
             icon={<Icon svg={BackwardIcon} size={4} />}
             onClick={() => router.back()}
           />
@@ -48,10 +47,7 @@ export default function CartHeader({ totalProductsCount }: CartHeaderProps) {
                 {' '}
                 Cart
               </Text>
-              <Badge
-                className='!min-w-[30px] print:!border-0 print:!text-[black]'
-                color='critical'
-              >
+              <Badge className='!min-w-[30px]' color='critical'>
                 {totalProductsCount}
               </Badge>
             </View>
