@@ -37,7 +37,12 @@ const AddressModal = ({
   });
 
   return (
-    <Modal active={active} onClose={deactivate} padding={6} className={'!pb-0'}>
+    <Modal
+      active={active}
+      onClose={deactivate}
+      padding={6}
+      className='!pb-0 !cursor-auto'
+    >
       <View width='100%'>
         <View direction='row' className='!justify-between'>
           <Text variant='featured-3' weight='bold'>
@@ -58,7 +63,7 @@ const AddressModal = ({
               addressType='address'
               errors={errors.address}
               touched={touched.address}
-              handleChange={handleChange}
+              onChange={handleChange}
             />
           </View>
           <View

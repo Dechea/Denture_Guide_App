@@ -45,7 +45,7 @@ export default function CartPrint({ params }: CartPrintProps) {
                 Total
               </Text>
               <Text variant='caption-1' weight='regular'>
-                7% Tax Included
+                Tax Included
               </Text>
             </View>
           </View>

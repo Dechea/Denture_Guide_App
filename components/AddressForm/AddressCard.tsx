@@ -6,17 +6,19 @@ import { AddressFormData, AddressType } from './constants';
 import { useUserStore } from '../../zustand/user';
 import AddressModal from './AddressModal';
 
+interface AddressCardProps {
+  address: Address;
+  onEdit: (address: Address) => void;
+  makeDefault: (addressType: string) => void;
+  onDelete: (addressType: string) => void;
+}
+
 const AddressCard = ({
   address,
-  handleEdit,
-  handleDefault,
-  handleDelete,
-}: {
-  address: Address;
-  handleEdit: (address: Address) => void;
-  handleDefault: (addressType: string) => void;
-  handleDelete: (addressType: string) => void;
-}) => {
+  onEdit,
+  makeDefault,
+  onDelete,
+}: AddressCardProps) => {
   const { active, activate, deactivate } = useToggle(false);
   const { addressFormData, setAddressFormData } = useUserStore();
 
@@ -33,15 +35,15 @@ const AddressCard = ({
       } as AddressFormData);
     }
 
-    handleEdit(formAddress);
+    onEdit(formAddress);
     deactivate();
   };
 
   return (
     <View paddingStart={1} direction='column' width={'100%'} gap={11}>
       <View direction='column' gap={1} width={'100%'} className='items-stretch'>
-        <View direction='row' width={'100%'}>
-          <View grow>
+        <View direction='row' width={'100%'} align='center'>
+          <View grow className='py-0.5'>
             <Text variant='body-3' weight='medium'>
               {address.name}
             </Text>
@@ -71,7 +73,7 @@ const AddressCard = ({
           variant='ghost'
           color='neutral'
           size='small'
-          onClick={() => handleDelete(address.type ?? '')}
+          onClick={() => onDelete(address.type as string)}
         >
           Delete
         </Button>
@@ -81,7 +83,7 @@ const AddressCard = ({
             variant='ghost'
             color='neutral'
             size='small'
-            onClick={() => handleDefault(address.type ?? '')}
+            onClick={() => makeDefault(address.type as string)}
           >
             Set as Default
           </Button>

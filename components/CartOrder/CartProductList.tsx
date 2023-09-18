@@ -16,7 +16,6 @@ interface CartProductListProps {
 
 export default function CartProductList({ params }: CartProductListProps) {
   const [uniqueProducts, setUniqueProducts] = useState<UniqueProduct>({});
-
   const { selectedProducts } = useProductCalculations(params.patientFileId);
 
   useEffect(() => {
@@ -41,7 +40,7 @@ export default function CartProductList({ params }: CartProductListProps) {
   return (
     <View gap={8}>
       <Text variant='body-2' weight='medium'>
-        Products list
+        Products
       </Text>
       <View gap={4}>
         <View direction='row' align='stretch'>

@@ -9,9 +9,9 @@ interface AddressListProps {
   addressType: string;
   selectedAddress: string;
   setSelectedAddress: (value: string) => void;
-  handleEdit: (index: number, address: Address) => void;
-  handleDefault: (index: number, addressType: string) => void;
-  handleDelete: (index: number, addressType: string) => void;
+  onEdit: (index: number, address: Address) => void;
+  makeDefault: (index: number, addressType: string) => void;
+  onDelete: (index: number, addressType: string) => void;
 }
 
 const AddressList = ({
@@ -19,9 +19,9 @@ const AddressList = ({
   addressType,
   selectedAddress,
   setSelectedAddress,
-  handleEdit,
-  handleDefault,
-  handleDelete,
+  onEdit,
+  makeDefault,
+  onDelete,
 }: AddressListProps) => {
   return (
     <RadioGroup
@@ -45,13 +45,9 @@ const AddressList = ({
               >
                 <AddressCard
                   address={address}
-                  handleEdit={(address) => handleEdit(index, address)}
-                  handleDefault={(addressType) =>
-                    handleDefault(index, addressType)
-                  }
-                  handleDelete={(addressType) =>
-                    handleDelete(index, addressType)
-                  }
+                  onEdit={(address) => onEdit(index, address)}
+                  makeDefault={(addressType) => makeDefault(index, addressType)}
+                  onDelete={(addressType) => onDelete(index, addressType)}
                 />
               </Radio>
             </View>

@@ -74,7 +74,7 @@ export const CartCostEstimation = ({
       >
         <View paddingBlock={1}>
           <Text variant='body-2' weight='medium'>
-            Place Order
+            Shipping Details
           </Text>
         </View>
       </Button>

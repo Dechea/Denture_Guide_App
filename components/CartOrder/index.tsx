@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { Divider, Text, View } from 'reshaped';
 import OrderAddress from './OrderAddress';
@@ -14,6 +14,15 @@ export default function CartOrder({
   params,
   setActiveTab,
 }: CartProductListProps) {
+  function formatDate(date: Date) {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so we add 1.
+    const year = date.getFullYear();
+
+    return `${day}.${month}.${year}`;
+  }
+  const formattedDate = formatDate(new Date());
+
   return (
     <View
       direction={{ s: 'column', xl: 'row' }}
@@ -34,17 +43,17 @@ export default function CartOrder({
                   Order date:{' '}
                 </Text>
                 <Text variant='body-3' weight='regular' color='neutral-faded'>
-                  08.08.2023
+                  {formattedDate}
                 </Text>
               </View>
-              <View direction='row' gap={1}>
+              {/* <View direction='row' gap={1}>
                 <Text variant='body-3' weight='regular' color='neutral-faded'>
                   Order number:{' '}
                 </Text>
                 <Text variant='body-3' weight='regular' color='neutral-faded'>
                   39240123523123
                 </Text>
-              </View>
+              </View> */}
             </View>
           </View>
 

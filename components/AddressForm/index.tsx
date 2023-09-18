@@ -11,14 +11,20 @@ import { AddressType, initialAddress, initialFormData } from './constants';
 import AddressList from './AddressList';
 import AddressForm from './AddressForm';
 import NewAddressButton from './NewAddressButton';
+import { useProductCalculations } from '../../hooks/useProductCalculations';
 
 const ShippingForm = ({
   setActiveTab,
+  params,
 }: {
   setActiveTab: (activeTab: string) => void;
+  params: { patientFileId: string };
 }) => {
   const { organizationId, addressFormData, setAddressFormData } =
     useUserStore();
+  const { totalCostOfProductsInCart } = useProductCalculations(
+    params.patientFileId
+  );
   const query = useQuery<Query>();
   const { values, handleChange, handleSubmit, errors, touched, setValues } =
     useFormik({
@@ -246,6 +252,8 @@ const ShippingForm = ({
     }
   };
 
+  const subtotal = (100 / 107) * totalCostOfProductsInCart;
+
   return (
     <form onSubmit={handleSubmit}>
       <View
@@ -266,14 +274,14 @@ const ShippingForm = ({
                   setValues({ ...values, shipping: JSON.parse(address) })
                 }
                 addressType={AddressType.SHIPPING}
-                handleEdit={handleEditAddress}
-                handleDefault={handleSetDefaultAddress}
-                handleDelete={handleDeleteAddress}
+                onEdit={handleEditAddress}
+                makeDefault={handleSetDefaultAddress}
+                onDelete={handleDeleteAddress}
               />
             ) : (
               <AddressForm
                 addressType={AddressType.SHIPPING.toLowerCase()}
-                handleChange={handleShippingChange}
+                onChange={handleShippingChange}
                 errors={errors.shipping}
                 touched={touched.shipping}
                 isBillingSameAsShippingAddress={
@@ -301,14 +309,14 @@ const ShippingForm = ({
                   setValues({ ...values, billing: JSON.parse(address) })
                 }
                 addressType={AddressType.BILLING}
-                handleEdit={handleEditAddress}
-                handleDefault={handleSetDefaultAddress}
-                handleDelete={handleDeleteAddress}
+                onEdit={handleEditAddress}
+                makeDefault={handleSetDefaultAddress}
+                onDelete={handleDeleteAddress}
               />
             ) : (
               <AddressForm
                 addressType={AddressType.BILLING.toLowerCase()}
-                handleChange={handleChange}
+                onChange={handleChange}
                 errors={errors.billing}
                 touched={touched.billing}
                 values={values.billing}
@@ -334,7 +342,7 @@ const ShippingForm = ({
             <View gap={4}>
               <View direction='row' className='!justify-between'>
                 <Text variant={'body-3'}>SubTotal</Text>
-                <Text variant={'body-3'}>370 €</Text>
+                <Text variant={'body-3'}>{`${subtotal.toFixed(2)} €`}</Text>
               </View>
               <Divider />
               <View gap={1}>
@@ -343,11 +351,11 @@ const ShippingForm = ({
                     Total Cost estimation
                   </Text>
                   <Text variant={'body-3'} weight={'bold'}>
-                    400 €
+                    {totalCostOfProductsInCart} €
                   </Text>
                 </View>
                 <Text color={'neutral-faded'} variant={'caption-1'}>
-                  7% Tax Included
+                  Tax Included
                 </Text>
               </View>
             </View>
