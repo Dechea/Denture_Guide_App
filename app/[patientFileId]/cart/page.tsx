@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { View } from 'reshaped';
-import { useQuery } from 'fqlx-client';
+import { useQuery } from 'fauna-typed';
 import { CartCostEstimation } from '../../../components/CartCostEstimation';
 import CartHeader from '../../../components/CartHeader';
 import CartItemsList from '../../../components/CartItemsList';
@@ -15,6 +15,7 @@ import {
 import { useProductCalculations } from '../../../hooks/useProductCalculations';
 import { useProductCrudOps } from '../../../hooks/useProductCrudOps';
 import { AREA_TYPE } from '../../../zustand/product/interface';
+import { useUserStore } from '../../../zustand/user';
 
 interface CartProps {
   params: { patientFileId: string };
@@ -29,6 +30,9 @@ export default function Cart({ params }: CartProps) {
   const { addOrUpdateProductInFqlx } = useProductCrudOps({
     patientFileId: params.patientFileId,
   });
+
+  const { organizationId } = useUserStore();
+  console.log(organizationId);
 
   const patientFile = useMemo(
     () =>

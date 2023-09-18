@@ -10,9 +10,9 @@ dependencies:
   dompurify:
     specifier: 3.0.2
     version: 3.0.2
-  fqlx-client:
-    specifier: github:mmailaender/Fauna-Typed
-    version: github.com/mmailaender/Fauna-Typed/a4e8f90f7bad62c45bcc9da008f7bb86bdf3c81c(react@18.2.0)(typescript@5.1.3)
+  fauna-typed:
+    specifier: 0.2.7
+    version: 0.2.7(react@18.2.0)(typescript@5.1.3)
   latest:
     specifier: 0.2.0
     version: 0.2.0
@@ -33,7 +33,7 @@ dependencies:
     version: 6.1.0(react@18.2.0)
   reshaped:
     specifier: ^2.3.1
-    version: 2.3.1(postcss@8.4.29)(react-dom@18.2.0)(react@18.2.0)
+    version: 2.3.2(postcss@8.4.29)(react-dom@18.2.0)(react@18.2.0)
   tailwindcss:
     specifier: 3.3.2
     version: 3.3.2(ts-node@10.9.1)
@@ -74,7 +74,7 @@ devDependencies:
     version: 5.1.3
   vercel:
     specifier: ^32.2.2
-    version: 32.2.2
+    version: 32.2.4
 
 packages:
 
@@ -786,8 +786,8 @@ packages:
       ts-morph: 12.0.0
     dev: true
 
-  /@vercel/next@4.0.4:
-    resolution: {integrity: sha512-XTuo1TWi6rR0UX23Q47goGcVqcHzwBRX6XcOe2FS0HQcAE0WYu2/Hc78JiHQRbd5SgDjAJXfFWl/kQYUhnZ6rw==}
+  /@vercel/next@4.0.5:
+    resolution: {integrity: sha512-wdRiMqfr//KPEzEJYlQ0Ri4SFbPdnoEJdpktdmaxAK7bREvkJeeCjFAkqBDGb1OiqjyKolxF1xwMewRvLj80MQ==}
     dev: true
 
   /@vercel/nft@0.22.5:
@@ -876,8 +876,8 @@ packages:
     resolution: {integrity: sha512-MqFynhtZ905L210DWAbgkiEQEK39LTtp9eL2Nm6PjzhjNzU6hV0UfK8Z24vU9CC6J4mrUTTZx396fH7XTYJWqg==}
     dev: true
 
-  /@vercel/static-build@2.0.5:
-    resolution: {integrity: sha512-8KehbZLUcAX/qGEQmu2PQEgaBA3Ff1MV7vOPE4inMMjnN7GLGxGW8XGygp4qztITsyYBy5v2Me7V0poEdyBwRA==}
+  /@vercel/static-build@2.0.6:
+    resolution: {integrity: sha512-gMqSK+kR8WQupcHXFDnZvpt6z30p1tqRggU68xQP3aI9Spqk6tWT8hXscdPH6OOsQ+fJmis6STc4/4zWZO2WLw==}
     dependencies:
       '@vercel/gatsby-plugin-vercel-analytics': 1.0.10
       '@vercel/gatsby-plugin-vercel-builder': 2.0.5
@@ -2679,6 +2679,35 @@ packages:
     resolution: {integrity: sha512-wBrocU2LCXXa+lWBt8RoIRD89Fi8OdABODa/kEnyeyjS5aZO5/GNvI5sEINADqP/h8M29UHTHUb53sUu5Ihqdw==}
     dependencies:
       reusify: 1.0.4
+
+  /fauna-typed@0.2.7(react@18.2.0)(typescript@5.1.3):
+    resolution: {integrity: sha512-PokL6NuP3FjvOHfNzqs7XRyKrQTY0BMv13WVuvz7JaElMqsL7LtRGzPrdj/bg3j8NHER3tP3O2FoTpwga1iHUA==}
+    engines: {node: '>=10'}
+    requiresBuild: true
+    peerDependencies:
+      react: '>=16'
+    dependencies:
+      '@types/node': 20.5.9
+      buffer: 6.0.3
+      cosmiconfig: 8.1.3
+      eslint: 6.8.0
+      fauna: 0.9.4
+      husky: 8.0.3
+      module: 1.2.5
+      process: 0.11.10
+      react: 18.2.0
+      stream: 0.0.2
+      ts-node: 10.9.1(@types/node@20.5.9)(typescript@5.1.3)
+      typescript-json-schema: 0.55.0
+      uuid: 9.0.0
+      zustand: 4.3.6(react@18.2.0)
+    transitivePeerDependencies:
+      - '@swc/core'
+      - '@swc/wasm'
+      - immer
+      - supports-color
+      - typescript
+    dev: false
 
   /fauna@0.9.4:
     resolution: {integrity: sha512-lQC3K9/KL90D/5wGYbjrPGDbOSMZBPsAwSIWjk06DUZ5b2gMkU2E21FoDxePk573EzdSyJqo837fMQhYCu5IpA==}
@@ -5145,8 +5174,8 @@ packages:
     resolution: {integrity: sha512-IqSUtOVP4ksd1C/ej5zeEh/BIP2ajqpn8c5x+q99gvcIG/Qf0cud5raVnE/Dwd0ua9TXYDoDc0RE5hBSdz22Ug==}
     dev: false
 
-  /reshaped@2.3.1(postcss@8.4.29)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-7j7YmN22zx4ALkBgarJZFYbuyMEIlyOD+mxW5dw2bBdiEnSwpcUgsfV4fihpAhqq581+uBCl4Ewha1+x98YrWA==}
+  /reshaped@2.3.2(postcss@8.4.29)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-tgXkKSWcgl6nhUwtIOlD01pd9uWVjdGvGlbfRc+9yVN3QxSCm2d12M8U61AxqbiT18cMMwylx8befenIVVW75A==}
     engines: {yarn: '>=1.0.0'}
     hasBin: true
     peerDependencies:
@@ -6184,21 +6213,21 @@ packages:
       spdx-expression-parse: 3.0.1
     dev: false
 
-  /vercel@32.2.2:
-    resolution: {integrity: sha512-00k+/ZfGFjOWM/fobVlJcW56+LUnZC/0MyoeEvLncmjq2jMyDW3qI2ol9R9wGo93FwOUJodPtGnfaV/MO6Ufug==}
+  /vercel@32.2.4:
+    resolution: {integrity: sha512-Vdp/kglvpxcmY+yaQ+4/qZm8O8Hu9sn/JTpdfXNaxAcHP4Pt3GmHTZJmY0K6bQ2MoXjE0/Tp0h9BfHLUoNjRIw==}
     engines: {node: '>= 16'}
     hasBin: true
     dependencies:
       '@vercel/build-utils': 7.2.0
       '@vercel/go': 3.0.1
       '@vercel/hydrogen': 1.0.1
-      '@vercel/next': 4.0.4
+      '@vercel/next': 4.0.5
       '@vercel/node': 3.0.5
       '@vercel/python': 4.0.1
       '@vercel/redwood': 2.0.2
       '@vercel/remix-builder': 2.0.5
       '@vercel/ruby': 2.0.2
-      '@vercel/static-build': 2.0.5
+      '@vercel/static-build': 2.0.6
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -6488,37 +6517,4 @@ packages:
     dependencies:
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
-    dev: false
-
-  github.com/mmailaender/Fauna-Typed/a4e8f90f7bad62c45bcc9da008f7bb86bdf3c81c(react@18.2.0)(typescript@5.1.3):
-    resolution: {tarball: https://codeload.github.com/mmailaender/Fauna-Typed/tar.gz/a4e8f90f7bad62c45bcc9da008f7bb86bdf3c81c}
-    id: github.com/mmailaender/Fauna-Typed/a4e8f90f7bad62c45bcc9da008f7bb86bdf3c81c
-    name: fauna-typed
-    version: 0.2.7
-    engines: {node: '>=10'}
-    prepare: true
-    requiresBuild: true
-    peerDependencies:
-      react: '>=16'
-    dependencies:
-      '@types/node': 20.5.9
-      buffer: 6.0.3
-      cosmiconfig: 8.1.3
-      eslint: 6.8.0
-      fauna: 0.9.4
-      husky: 8.0.3
-      module: 1.2.5
-      process: 0.11.10
-      react: 18.2.0
-      stream: 0.0.2
-      ts-node: 10.9.1(@types/node@20.5.9)(typescript@5.1.3)
-      typescript-json-schema: 0.55.0
-      uuid: 9.0.0
-      zustand: 4.3.6(react@18.2.0)
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - immer
-      - supports-color
-      - typescript
     dev: false

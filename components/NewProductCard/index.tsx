@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from 'fqlx-client';
+import { useQuery } from 'fauna-typed';
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Image, Loader, Text, View, Autocomplete } from 'reshaped';
 import { Product, Query } from '../../fqlx-generated/typedefs';

@@ -1,6 +1,6 @@
 'use client';
 
-import { PaginateData, useQuery } from 'fqlx-client';
+import { PaginateData, useQuery } from 'fauna-typed';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
