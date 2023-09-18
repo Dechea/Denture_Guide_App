@@ -261,7 +261,7 @@ const ShippingForm = ({
         gap={{ xl: 26 }}
         width='100%'
       >
-        <View grow gap={16} paddingInline={6} paddingBottom={6}>
+        <View grow gap={16} paddingInline={6} paddingBottom={11}>
           <View width={'100%'} gap={4}>
             <Text variant={'featured-3'} weight={'medium'}>
               Shipping Addresses
@@ -334,6 +334,7 @@ const ShippingForm = ({
           <View
             backgroundColor={'page'}
             padding={4}
+            paddingBottom={{ s: 8, xl: 4 }}
             gap={6}
             borderRadius={{ s: 'none', xl: 'large' }}
             borderColor={'neutral-faded'}

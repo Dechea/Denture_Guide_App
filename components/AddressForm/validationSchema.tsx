@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 
 export const addressValidationSchema = Yup.object().shape({
-  name: Yup.string(),
+  name: Yup.string().required(),
   street: Yup.string().required(),
   zip: Yup.string().required(),
   city: Yup.string().required(),

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { Badge, Tabs, View } from 'reshaped';
+import { Badge, Tabs, View, Text } from 'reshaped';
 import { useQuery } from 'fqlx-client';
 import { CartCostEstimation } from '../../../components/CartCostEstimation';
 import CartHeader from '../../../components/CartHeader';
@@ -144,10 +144,7 @@ export default function Cart({ params }: CartProps) {
   }, []);
 
   return (
-    <View
-      height={'100%'}
-      className='overflow-y-scroll !max-h-[calc(100svh-53px)]'
-    >
+    <View height={'100%'} className='overflow-y-scroll'>
       <CartHeader totalProductsCount={totalProductsInCart} />
       <View
         height={'100%'}
@@ -169,22 +166,25 @@ export default function Cart({ params }: CartProps) {
           >
             <Tabs.List
               className={
-                '[&_[role=presentation]]:max-lg:!grow [&_[role=presentation]]:max-lg:!basis-0 [&_[role=tablist]]:max-lg:!w-full [&_[role=tablist]]:max-[1024px]:overflow-x-auto'
+                '[&_[role=presentation]]:max-lg:!grow [&_[role=presentation]]:max-lg:!basis-0 [&_[role=tablist]]:max-lg:!w-full [&_[role=tablist]]:max-[1280px]:overflow-x-auto [&_[role=tablist]>*]:flex-1'
               }
             >
               {ShippingTabs.map((tab) => (
                 <Tabs.Item key={tab.title} value={tab.id}>
                   <View
-                    direction={{ s: 'column', l: 'row' }}
+                    direction={{ s: 'column', xl: 'row' }}
                     align={'center'}
                     justify={'center'}
                     gap={2}
-                    wrap={false}
+                    className='!flex-nowrap'
                   >
-                    <Badge color={activeTab === tab.id ? 'primary' : undefined}>
+                    <Badge
+                      color={activeTab === tab.id ? 'primary' : undefined}
+                      size='small'
+                    >
                       {tab.id}
                     </Badge>
-                    {tab.title}
+                    <Text variant='body-3'>{tab.title}</Text>
                   </View>
                 </Tabs.Item>
               ))}
@@ -212,7 +212,7 @@ export default function Cart({ params }: CartProps) {
                     onDeleteProduct={handleDeleteProduct}
                   />
                 </View.Item>
-                <View.Item className='sticky bottom-0'>
+                <View.Item className='sticky bottom-0 top-[240px]'>
                   <CartCostEstimation
                     patientFileId={params.patientFileId}
                     totalCostOfProducts={totalCostOfProductsInCart}

@@ -43,7 +43,7 @@ const AddressCard = ({
     <View paddingStart={1} direction='column' width={'100%'} gap={11}>
       <View direction='column' gap={1} width={'100%'} className='items-stretch'>
         <View direction='row' width={'100%'} align='center'>
-          <View grow className='py-0.5'>
+          <View grow paddingBlock={0.5}>
             <Text variant='body-3' weight='medium'>
               {address.name}
             </Text>

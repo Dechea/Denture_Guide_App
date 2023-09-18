@@ -15,12 +15,12 @@ export default function CartPrint({ params }: CartPrintProps) {
   return (
     <View
       backgroundColor='page'
+      padding={4}
+      paddingBottom={{ s: 8, xl: 4 }}
+      gap={6}
       borderRadius={{ s: 'none', xl: 'large' }}
       borderColor={'neutral-faded'}
       width={{ s: '100%', xl: 78 }}
-      gap={6}
-      padding={3}
-      paddingTop={4}
     >
       <View gap={4}>
         <View

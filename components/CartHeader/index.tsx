@@ -20,7 +20,7 @@ export default function CartHeader({ totalProductsCount }: CartHeaderProps) {
       zIndex={55}
       backgroundColor='page-faded'
       direction='row'
-      paddingBlock={8}
+      paddingBlock={{s:4,xl:8}}
       align='center'
       gap={4}
       className='border-b border-[--rs-color-border-neutral-faded] print:!hidden'
