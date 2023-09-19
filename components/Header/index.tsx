@@ -141,5 +141,5 @@ const HidePatientCommonHeader = ({
   children,
   isCartPage,
 }: HidePatientCommonHeaderProps) => {
-  return <Hidden hide={{ s: isCartPage, l: false }}>{children}</Hidden>;
+  return <Hidden hide={{ s: isCartPage, m: false }}>{children}</Hidden>;
 };

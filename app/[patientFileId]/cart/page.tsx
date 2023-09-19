@@ -144,7 +144,10 @@ export default function Cart({ params }: CartProps) {
   }, []);
 
   return (
-    <View height={'100%'} className='overflow-y-scroll print:overflow-visible'>
+    <View
+      height={'100%'}
+      className='overflow-y-scroll print:overflow-visible sm:!max-h-[calc(100svh-53px)]'
+    >
       <CartHeader totalProductsCount={totalProductsInCart} />
       <View
         height={'100%'}
