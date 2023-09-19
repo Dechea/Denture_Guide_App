@@ -41,7 +41,11 @@ export default function OrderAddress({
               {stringifyAddress(addressFormData?.shipping ?? null)}
             </Text>
           </View>
-          <Link color='inherit' onClick={() => setActiveTab?.('2')}>
+          <Link
+            color='inherit'
+            onClick={() => setActiveTab?.('2')}
+            className='print:!hidden'
+          >
             Edit
           </Link>
         </View>
@@ -60,7 +64,11 @@ export default function OrderAddress({
               {stringifyAddress(addressFormData?.billing ?? null)}
             </Text>
           </View>
-          <Link color='inherit' onClick={() => setActiveTab?.('2')}>
+          <Link
+            color='inherit'
+            onClick={() => setActiveTab?.('2')}
+            className='print:!hidden'
+          >
             Edit
           </Link>
         </View>

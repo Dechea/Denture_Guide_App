@@ -330,7 +330,7 @@ const ShippingForm = ({
             )}
           </View>
         </View>
-        <View.Item className={'sticky bottom-0'}>
+        <View.Item className={'sticky bottom-0 top-[240px]'}>
           <View
             backgroundColor={'page'}
             padding={4}

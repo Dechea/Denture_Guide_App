@@ -65,7 +65,7 @@ export default function CartOrder({
             <CartProductList params={params} />
           </View>
         </View.Item>
-        <View.Item className='sticky bottom-0'>
+        <View.Item className='sticky bottom-0 top-[240px]'>
           <CartPrint params={params} />
         </View.Item>
       </View>
@@ -130,7 +130,6 @@ export default function CartOrder({
                 Net amount: 1 240 €
               </Text>
             </View>
-            V
           </View>
           <CartProductList params={params} />
         </View>

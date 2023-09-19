@@ -38,8 +38,8 @@ export default function CartProductList({ params }: CartProductListProps) {
   const uniqueProductList = Object.entries(uniqueProducts);
 
   return (
-    <View gap={8} className='break-inside'>
-      <Text variant='body-2' weight='medium'>
+    <View gap={8}>
+      <Text variant='body-2' weight='medium' className='print:hidden'>
         Products
       </Text>
       <View gap={4}>
