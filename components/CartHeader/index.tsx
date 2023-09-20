@@ -33,7 +33,7 @@ export default function CartHeader({ totalProductsCount }: CartHeaderProps) {
           align="center"
           justify="start"
           width="100%"
-          paddingInline={30}
+          paddingInline={{ l: 30, m: 4, s: 4 }}
         >
           <Button
             icon={<Icon svg={BackwardIcon} size={4} />}

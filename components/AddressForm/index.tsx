@@ -258,7 +258,7 @@ const ShippingForm = ({
       <View
         direction={{ s: 'column', xl: 'row' }}
         gap={{ xl: 26 }}
-        width='100%'
+        width="100%"
       >
         <View grow gap={16} paddingInline={6} paddingBottom={{ s: 11, xl: 32 }}>
           <View width={'100%'} gap={4}>
@@ -330,12 +330,12 @@ const ShippingForm = ({
           </View>
         </View>
 
-        <View.Item className={'sticky bottom-0 top-[240px]'}>
+        <View.Item className={'sticky bottom-0 top-[128px]'}>
           <CartCostCard
             params={params}
-            buttonText='Review Order'
-            color='primary'
-            type='submit'
+            buttonText="Review Order"
+            color="primary"
+            type="submit"
           />
         </View.Item>
       </View>
