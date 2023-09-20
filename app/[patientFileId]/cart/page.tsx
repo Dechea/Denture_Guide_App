@@ -4,10 +4,9 @@ import { useQuery } from 'fqlx-client';
 import { useEffect, useMemo, useState } from 'react';
 import { Badge, Tabs, Text, View } from 'reshaped';
 import ShippingForm from '../../../components/AddressForm';
-import CartCostCard from '../../../components/CartButtonComponent';
 import CartHeader from '../../../components/CartHeader';
-import CartItemsList from '../../../components/CartItemsList';
 import CartOrder from '../../../components/CartOrder';
+import CartProducts from '../../../components/CartProducts';
 import {
   Product,
   Query,
@@ -145,18 +144,20 @@ export default function Cart({ params }: CartProps) {
   return (
     <View
       height={'100%'}
-      className="overflow-y-scroll print:overflow-visible print:mr-x2 sm:!max-h-[calc(100svh-53px)]"
+      className='print:!overflow-visible print:mx-[8px] sm:!max-h-[calc(100svh-53px)]'
     >
       <CartHeader totalProductsCount={totalProductsInCart} />
       <View
         height={'100%'}
-        direction="column"
-        align="center"
+        direction='column'
+        align='center'
         paddingInline={{ xl: 35 }}
-        className={'!max-h-[calc(100svh-153px)]'}
+        className={
+          '!max-h-[calc(100svh-47px)] sm:!max-h-[calc(100svh-112px)] lg:!max-h-[calc(100svh-130px)] '
+        }
       >
         <Tabs
-          variant="pills-elevated"
+          variant='pills-elevated'
           value={activeTab}
           onChange={({ value }) => handleTabClick(value)}
         >
@@ -164,12 +165,12 @@ export default function Cart({ params }: CartProps) {
             paddingBlock={{ xl: 6 }}
             width={'100%'}
             maxWidth={'1280px'}
-            className="print:hidden"
+            className='print:hidden'
             paddingInline={{ xl: 6, l: 6, m: 0, s: 0 }}
           >
             <Tabs.List
               className={
-                '[&_[role=presentation]]:max-lg:!grow [&_[role=presentation]]:max-lg:!basis-0 [&_[role=tablist]]:max-lg:!w-full [&_[role=tablist]]:flex-1 [&_[role=tablist]]:overflow-x-visible [&_[role=tablist]]:min-[1024px]:!min-w-[624px] [&_[role=tablist]>*]:!w-[33%] '
+                '[&_[role=tablist]]:max-lg:!w-full [&_[role=tablist]]:min-[1028px]:!min-w-[726px] [&_[role=tablist]>*]:!w-[33%]'
               }
             >
               {ShippingTabs.map((tab) => (
@@ -179,15 +180,15 @@ export default function Cart({ params }: CartProps) {
                     align={'center'}
                     justify={'center'}
                     gap={2}
-                    className="!flex-nowrap"
+                    className='!flex-nowrap'
                   >
                     <Badge
                       color={activeTab === tab.id ? 'primary' : undefined}
-                      size="small"
+                      size='small'
                     >
                       {tab.id}
                     </Badge>
-                    <Text variant="body-3">{tab.title}</Text>
+                    <Text variant='body-3'>{tab.title}</Text>
                   </View>
                 </Tabs.Item>
               ))}
@@ -195,42 +196,28 @@ export default function Cart({ params }: CartProps) {
           </View>
 
           <View
-            width="100%"
-            maxWidth="1280px"
-            align="center"
+            width='100%'
+            height='100%'
+            maxWidth='1280px'
+            align='center'
             paddingTop={11}
-            className="[&_[role=tabpanel]]:w-full [&_[role=tabpanel]]:h-full"
+            className='[&_[role=tabpanel]]:w-full [&_[role=tabpanel]]:h-full !overflow-y-scroll scrollbar-0 print:!overflow-visible'
           >
-            <Tabs.Panel value="1">
-              <View
-                direction={{ s: 'column', xl: 'row' }}
-                gap={{ xl: 26 }}
-                height="100%"
-                grow
-              >
-                <View.Item grow>
-                  <CartItemsList
-                    teeth={patientFile.teeth}
-                    onProductCountChange={handleProductCountChange}
-                    onDeleteProduct={handleDeleteProduct}
-                  />
-                </View.Item>
-                <View.Item className="sticky bottom-0 top-[128px]">
-                  <CartCostCard
-                    params={params}
-                    onClick={() => setActiveTab('2')}
-                    buttonText="Shipping Details"
-                    color="primary"
-                  />
-                </View.Item>
-              </View>
+            <Tabs.Panel value='1'>
+              <CartProducts
+                teeth={patientFile.teeth}
+                onProductCountChange={handleProductCountChange}
+                onDeleteProduct={handleDeleteProduct}
+                setActiveTab={activateTab}
+                params={params}
+              />
             </Tabs.Panel>
 
-            <Tabs.Panel value="2">
+            <Tabs.Panel value='2'>
               <ShippingForm setActiveTab={activateTab} params={params} />
             </Tabs.Panel>
 
-            <Tabs.Panel value="3">
+            <Tabs.Panel value='3'>
               <CartOrder params={params} setActiveTab={activateTab} />
             </Tabs.Panel>
           </View>

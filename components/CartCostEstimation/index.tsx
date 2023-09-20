@@ -24,6 +24,7 @@ export const CartCostEstimation = ({
       borderRadius={{ s: 'none', xl: 'large' }}
       borderColor={'neutral-faded'}
       width={{ s: '100%', xl: 78 }}
+      height='100%'
     >
       <View gap={4}>
         <View

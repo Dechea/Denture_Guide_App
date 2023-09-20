@@ -5,7 +5,6 @@ import { useQuery } from 'fqlx-client';
 import { useEffect, useState } from 'react';
 import { Text, View } from 'reshaped';
 import { Address, Query } from '../../fqlx-generated/typedefs';
-import { useProductCalculations } from '../../hooks/useProductCalculations';
 import { useUserStore } from '../../zustand/user';
 import CartCostCard from '../CartButtonComponent';
 import AddressForm from './AddressForm';
@@ -23,9 +22,6 @@ const ShippingForm = ({
 }) => {
   const { organizationId, addressFormData, setAddressFormData } =
     useUserStore();
-  const { totalCostOfProductsInCart } = useProductCalculations(
-    params.patientFileId
-  );
   const query = useQuery<Query>();
   const { values, handleChange, handleSubmit, errors, touched, setValues } =
     useFormik({
@@ -258,7 +254,7 @@ const ShippingForm = ({
       <View
         direction={{ s: 'column', xl: 'row' }}
         gap={{ xl: 26 }}
-        width="100%"
+        width='100%'
       >
         <View grow gap={16} paddingInline={6} paddingBottom={{ s: 11, xl: 32 }}>
           <View width={'100%'} gap={4}>
@@ -330,12 +326,12 @@ const ShippingForm = ({
           </View>
         </View>
 
-        <View.Item className={'sticky bottom-0 top-[128px]'}>
+        <View.Item className={'sticky bottom-0 top-0'}>
           <CartCostCard
             params={params}
-            buttonText="Review Order"
-            color="primary"
-            type="submit"
+            buttonText='Review Order'
+            color='primary'
+            type='submit'
           />
         </View.Item>
       </View>

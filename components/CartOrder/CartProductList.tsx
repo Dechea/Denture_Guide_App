@@ -29,6 +29,11 @@ export default function CartProductList({ params }: CartProductListProps) {
           count: product?.quantity as number,
           details: product?.selectedProduct as Product,
         };
+      } else {
+        uniqueProductsData[productId] = {
+          ...uniqueProductsData[productId],
+          count: uniqueProductsData[productId].count + (product?.quantity ?? 0),
+        };
       }
     });
 
