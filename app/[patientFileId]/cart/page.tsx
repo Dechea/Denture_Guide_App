@@ -32,7 +32,7 @@ interface CartProps {
 export default function Cart({ params }: CartProps) {
   const query = useQuery<Query>();
   const [activeTab, setActiveTab] = useState('1');
-  const [unlockedTabs, setUnlockedTabs] = useState<string[]>(['1']);
+  const [unlockedTabs, setUnlockedTabs] = useState<string[]>(['1', '2']);
   const { setAddressFormData } = useUserStore();
 
   const { totalProductsInCart, totalCostOfProductsInCart } =
