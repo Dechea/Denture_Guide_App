@@ -5,6 +5,7 @@ import OrderAddress from './OrderAddress';
 import CartProductList from './CartProductList';
 import CartPrint from './CartPrint';
 import { DecheaLogo } from '../Icons/DecheaLogo';
+import { useProductCalculations } from '../../hooks/useProductCalculations';
 
 interface CartProductListProps {
   params: { patientFileId: string };
@@ -23,6 +24,9 @@ export default function CartOrder({
     return `${day}.${month}.${year}`;
   }
   const formattedDate = formatDate(new Date());
+  const { totalCostOfProductsInCart } = useProductCalculations(
+    params.patientFileId
+  );
 
   return (
     <>
@@ -127,7 +131,7 @@ export default function CartOrder({
                 </Text>
               </View>
               <Text variant='caption-1' weight='regular'>
-                Net amount: 1 240 €
+                Net amount: {totalCostOfProductsInCart} €
               </Text>
             </View>
           </View>
