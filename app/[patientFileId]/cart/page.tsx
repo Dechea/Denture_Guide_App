@@ -145,30 +145,31 @@ export default function Cart({ params }: CartProps) {
   return (
     <View
       height={'100%'}
-      className='overflow-y-scroll print:overflow-visible print:mr-x2 sm:!max-h-[calc(100svh-53px)]'
+      className="overflow-y-scroll print:overflow-visible print:mr-x2 sm:!max-h-[calc(100svh-53px)]"
     >
       <CartHeader totalProductsCount={totalProductsInCart} />
       <View
         height={'100%'}
-        direction='column'
-        align='center'
+        direction="column"
+        align="center"
         paddingInline={{ xl: 35 }}
         className={'!max-h-[calc(100svh-153px)]'}
       >
         <Tabs
-          variant='pills-elevated'
+          variant="pills-elevated"
           value={activeTab}
           onChange={({ value }) => handleTabClick(value)}
         >
           <View
             paddingBlock={{ xl: 6 }}
-            width={'96%'}
+            width={'100%'}
             maxWidth={'1280px'}
-            className='print:hidden'
+            className="print:hidden"
+            paddingInline={{ xl: 6, l: 6, m: 0, s: 0 }}
           >
             <Tabs.List
               className={
-                '[&_[role=presentation]]:max-lg:!grow [&_[role=presentation]]:max-lg:!basis-0 [&_[role=tablist]]:max-lg:!w-full [&_[role=tablist]]:flex-1 [&_[role=tablist]]:overflow-x-clip [&_[role=tablist]]:min-[1024px]:!min-w-[726px] [&_[role=tablist]>*]:!w-[33%]'
+                '[&_[role=presentation]]:max-lg:!grow [&_[role=presentation]]:max-lg:!basis-0 [&_[role=tablist]]:max-lg:!w-full [&_[role=tablist]]:flex-1 [&_[role=tablist]]:overflow-x-visible [&_[role=tablist]]:min-[1024px]:!min-w-[624px] [&_[role=tablist]>*]:!w-[33%]'
               }
             >
               {ShippingTabs.map((tab) => (
@@ -178,15 +179,15 @@ export default function Cart({ params }: CartProps) {
                     align={'center'}
                     justify={'center'}
                     gap={2}
-                    className='!flex-nowrap'
+                    className="!flex-nowrap"
                   >
                     <Badge
                       color={activeTab === tab.id ? 'primary' : undefined}
-                      size='small'
+                      size="small"
                     >
                       {tab.id}
                     </Badge>
-                    <Text variant='body-3'>{tab.title}</Text>
+                    <Text variant="body-3">{tab.title}</Text>
                   </View>
                 </Tabs.Item>
               ))}
@@ -194,17 +195,17 @@ export default function Cart({ params }: CartProps) {
           </View>
 
           <View
-            width='100%'
-            maxWidth='1280px'
-            align='center'
+            width="100%"
+            maxWidth="1280px"
+            align="center"
             paddingTop={11}
-            className='[&_[role=tabpanel]]:w-full [&_[role=tabpanel]]:h-full'
+            className="[&_[role=tabpanel]]:w-full [&_[role=tabpanel]]:h-full"
           >
-            <Tabs.Panel value='1'>
+            <Tabs.Panel value="1">
               <View
                 direction={{ s: 'column', xl: 'row' }}
                 gap={{ xl: 26 }}
-                height='100%'
+                height="100%"
                 grow
               >
                 <View.Item grow>
@@ -214,22 +215,22 @@ export default function Cart({ params }: CartProps) {
                     onDeleteProduct={handleDeleteProduct}
                   />
                 </View.Item>
-                <View.Item className='sticky bottom-0 top-[240px]'>
+                <View.Item className="sticky bottom-0 top-[128px]">
                   <CartCostCard
                     params={params}
                     onClick={() => setActiveTab('2')}
-                    buttonText='Shipping Details'
-                    color='primary'
+                    buttonText="Shipping Details"
+                    color="primary"
                   />
                 </View.Item>
               </View>
             </Tabs.Panel>
 
-            <Tabs.Panel value='2'>
+            <Tabs.Panel value="2">
               <ShippingForm setActiveTab={activateTab} params={params} />
             </Tabs.Panel>
 
-            <Tabs.Panel value='3'>
+            <Tabs.Panel value="3">
               <CartOrder params={params} setActiveTab={activateTab} />
             </Tabs.Panel>
           </View>
