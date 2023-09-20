@@ -37,7 +37,7 @@ export default function CartOrder({
         className='print:!hidden'
       >
         <View.Item grow>
-          <View gap={14} paddingBottom={11} paddingInline={6}>
+          <View gap={14} paddingBottom={{ s: 11, xl: 32 }} paddingInline={6}>
             <View gap={4}>
               <Text variant='body-2' weight='medium'>
                 Order details

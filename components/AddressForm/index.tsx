@@ -261,7 +261,7 @@ const ShippingForm = ({
         gap={{ xl: 26 }}
         width='100%'
       >
-        <View grow gap={16} paddingInline={6} paddingBottom={11}>
+        <View grow gap={16} paddingInline={6} paddingBottom={{ s: 11, xl: 32 }}>
           <View width={'100%'} gap={4}>
             <Text variant={'featured-3'} weight={'medium'}>
               Shipping Addresses
