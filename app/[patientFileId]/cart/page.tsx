@@ -1,11 +1,13 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import { Badge, Tabs, View, Text } from 'reshaped';
 import { useQuery } from 'fqlx-client';
-import { CartCostEstimation } from '../../../components/CartCostEstimation';
+import { useEffect, useMemo, useState } from 'react';
+import { Badge, Tabs, Text, View } from 'reshaped';
+import ShippingForm from '../../../components/AddressForm';
+import CartCostCard from '../../../components/CartButtonComponent';
 import CartHeader from '../../../components/CartHeader';
 import CartItemsList from '../../../components/CartItemsList';
+import CartOrder from '../../../components/CartOrder';
 import {
   Product,
   Query,
@@ -15,8 +17,6 @@ import {
 import { useProductCalculations } from '../../../hooks/useProductCalculations';
 import { useProductCrudOps } from '../../../hooks/useProductCrudOps';
 import { AREA_TYPE } from '../../../zustand/product/interface';
-import CartOrder from '../../../components/CartOrder';
-import ShippingForm from '../../../components/AddressForm';
 import { useUserStore } from '../../../zustand/user';
 
 const ShippingTabs = [
@@ -35,8 +35,7 @@ export default function Cart({ params }: CartProps) {
   const [unlockedTabs, setUnlockedTabs] = useState<string[]>(['1', '2']);
   const { setAddressFormData } = useUserStore();
 
-  const { totalProductsInCart, totalCostOfProductsInCart } =
-    useProductCalculations(params.patientFileId);
+  const { totalProductsInCart } = useProductCalculations(params.patientFileId);
 
   const { addOrUpdateProductInFqlx } = useProductCrudOps({
     patientFileId: params.patientFileId,
@@ -216,10 +215,11 @@ export default function Cart({ params }: CartProps) {
                   />
                 </View.Item>
                 <View.Item className='sticky bottom-0 top-[240px]'>
-                  <CartCostEstimation
-                    patientFileId={params.patientFileId}
-                    totalCostOfProducts={totalCostOfProductsInCart}
-                    setActiveTab={activateTab}
+                  <CartCostCard
+                    params={params}
+                    onClick={() => setActiveTab('2')}
+                    buttonText='Shipping Details'
+                    color='primary'
                   />
                 </View.Item>
               </View>

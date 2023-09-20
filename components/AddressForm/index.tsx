@@ -1,17 +1,18 @@
 'use client';
 
 import { useFormik } from 'formik';
-import { useEffect, useState } from 'react';
-import { View, Divider, Button, Text } from 'reshaped';
-import { useUserStore } from '../../zustand/user';
 import { useQuery } from 'fqlx-client';
-import { Query, Address } from '../../fqlx-generated/typedefs';
-import { addressFormValidationSchema } from './validationSchema';
-import { AddressType, initialAddress, initialFormData } from './constants';
-import AddressList from './AddressList';
-import AddressForm from './AddressForm';
-import NewAddressButton from './NewAddressButton';
+import { useEffect, useState } from 'react';
+import { Text, View } from 'reshaped';
+import { Address, Query } from '../../fqlx-generated/typedefs';
 import { useProductCalculations } from '../../hooks/useProductCalculations';
+import { useUserStore } from '../../zustand/user';
+import CartCostCard from '../CartButtonComponent';
+import AddressForm from './AddressForm';
+import AddressList from './AddressList';
+import NewAddressButton from './NewAddressButton';
+import { AddressType, initialAddress, initialFormData } from './constants';
+import { addressFormValidationSchema } from './validationSchema';
 
 const ShippingForm = ({
   setActiveTab,
@@ -252,8 +253,6 @@ const ShippingForm = ({
     }
   };
 
-  const subtotal = (100 / 107) * totalCostOfProductsInCart;
-
   return (
     <form onSubmit={handleSubmit}>
       <View
@@ -330,44 +329,14 @@ const ShippingForm = ({
             )}
           </View>
         </View>
+
         <View.Item className={'sticky bottom-0 top-[240px]'}>
-          <View
-            backgroundColor={'page'}
-            padding={4}
-            paddingBottom={{ s: 8, xl: 4 }}
-            gap={6}
-            borderRadius={{ s: 'none', xl: 'large' }}
-            borderColor={'neutral-faded'}
-            width={{ s: '100%', xl: 78 }}
-          >
-            <View gap={4}>
-              <View direction='row' className='!justify-between'>
-                <Text variant={'body-3'}>SubTotal</Text>
-                <Text variant={'body-3'}>{`${subtotal.toFixed(2)} €`}</Text>
-              </View>
-              <Divider />
-              <View gap={1}>
-                <View direction='row' className='!justify-between'>
-                  <Text variant={'body-3'} weight={'bold'}>
-                    Total Cost estimation
-                  </Text>
-                  <Text variant={'body-3'} weight={'bold'}>
-                    {totalCostOfProductsInCart} €
-                  </Text>
-                </View>
-                <Text color={'neutral-faded'} variant={'caption-1'}>
-                  Tax Included
-                </Text>
-              </View>
-            </View>
-            <Button type='submit' color='primary' className='!rounded-medium'>
-              <View padding={1}>
-                <Text variant={'body-2'} weight={'medium'}>
-                  Review Order
-                </Text>
-              </View>
-            </Button>
-          </View>
+          <CartCostCard
+            params={params}
+            buttonText='Review Order'
+            color='primary'
+            type='submit'
+          />
         </View.Item>
       </View>
     </form>

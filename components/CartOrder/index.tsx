@@ -1,11 +1,12 @@
 'use client';
 
 import { Divider, Text, View } from 'reshaped';
-import OrderAddress from './OrderAddress';
-import CartProductList from './CartProductList';
-import CartPrint from './CartPrint';
-import { DecheaLogo } from '../Icons/DecheaLogo';
 import { useProductCalculations } from '../../hooks/useProductCalculations';
+import CartCostCard from '../CartButtonComponent';
+import { DecheaLogo } from '../Icons/DecheaLogo';
+import PrintIcon from '../Icons/Print';
+import CartProductList from './CartProductList';
+import OrderAddress from './OrderAddress';
 
 interface CartProductListProps {
   params: { patientFileId: string };
@@ -70,7 +71,12 @@ export default function CartOrder({
           </View>
         </View.Item>
         <View.Item className='sticky bottom-0 top-[240px]'>
-          <CartPrint params={params} />
+          <CartCostCard
+            params={params}
+            onClick={() => window.print()}
+            buttonText='Print'
+            icon={<PrintIcon />}
+          />
         </View.Item>
       </View>
 
