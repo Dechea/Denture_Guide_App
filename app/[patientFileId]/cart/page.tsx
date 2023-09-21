@@ -63,7 +63,7 @@ export default function Cart({ params }: CartProps) {
       ),
   });
 
-  const { values, isValid, handleSubmit } = formik;
+  const { isValid, handleSubmit } = formik;
 
   const patientFile = useMemo(
     () =>
