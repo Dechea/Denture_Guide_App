@@ -210,7 +210,7 @@ export default function Cart({ params }: CartProps) {
         align='center'
         paddingInline={{ xl: 35 }}
         className={
-          '!max-h-[calc(100svh-47px)] sm:!max-h-[calc(100svh-112px)] lg:!max-h-[calc(100svh-130px)] '
+          '!max-h-[calc(100svh-69px)] sm:!max-h-[calc(100svh-122px)] lg:!max-h-[calc(100svh-138px)]'
         }
       >
         <Tabs
