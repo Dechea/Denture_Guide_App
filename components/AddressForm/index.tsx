@@ -14,34 +14,27 @@ import { AddressType, initialAddress, initialFormData } from './constants';
 import { addressFormValidationSchema } from './validationSchema';
 
 const ShippingForm = ({
-  setActiveTab,
   params,
+  formik,
+  organizationAddresses,
 }: {
-  setActiveTab: (activeTab: string) => void;
   params: { patientFileId: string };
+  formik: any;
+  organizationAddresses: Address[];
 }) => {
-  const { organizationId, addressFormData, setAddressFormData } =
-    useUserStore();
+  const {
+    organizationId,
+    addressFormData,
+    setAddressFormData,
+    savedShippingIndex,
+    savedBillingIndex,
+    setSavedShippingIndex,
+    setSavedBillingIndex,
+  } = useUserStore();
   const query = useQuery<Query>();
-  const { values, handleChange, handleSubmit, errors, touched, setValues } =
-    useFormik({
-      validationSchema: addressFormValidationSchema,
-      initialValues: initialFormData,
-      onSubmit: (values) =>
-        submitFormData(
-          values.shipping,
-          values.billing,
-          values.isBillingSameAsShippingAddress
-        ),
-    });
-
-  const [savedShippingIndex, setSavedShippingIndex] = useState(0);
-  const [savedBillingIndex, setSavedBillingIndex] = useState(0);
   const [mount, setMount] = useState(true);
-
-  const organizationAddresses = query.Organization.byId(organizationId)
-    .project({ addresses: true })
-    .exec().addresses;
+  const { values, handleChange, handleSubmit, errors, touched, setValues } =
+    formik;
 
   const setInitialAddressData = async (
     setShipping: boolean,
@@ -113,37 +106,6 @@ const ShippingForm = ({
   useEffect(() => {
     setAddressFormData(values);
   }, [values]);
-
-  const submitFormData = async (
-    shipping: Address,
-    billing: Address,
-    isBillingSameAsShippingAddress: boolean
-  ) => {
-    const localAddresses = [...(organizationAddresses ?? [])];
-
-    if (isBillingSameAsShippingAddress) {
-      billing = {
-        ...shipping,
-        default: !savedBillingIndex,
-        type: AddressType.BILLING,
-      };
-    }
-
-    if (!savedShippingIndex) {
-      localAddresses.push(shipping);
-    }
-    if (!savedBillingIndex || isBillingSameAsShippingAddress) {
-      localAddresses.push(billing);
-    }
-
-    setAddressFormData({ isBillingSameAsShippingAddress, shipping, billing });
-
-    await query.Organization.byId(organizationId)
-      .update(`{addresses: ${JSON.stringify(localAddresses)}}`)
-      .exec();
-
-    setActiveTab('3');
-  };
 
   const handleEditAddress = async (index: number, address: Address) => {
     const localAddresses = [...(organizationAddresses ?? [])];

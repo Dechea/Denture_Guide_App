@@ -2,12 +2,13 @@
 
 import { useQuery } from 'fqlx-client';
 import { useEffect, useMemo, useState } from 'react';
-import { Badge, Tabs, Text, View, useResponsiveClientValue } from 'reshaped';
+import { Badge, Tabs, Text, View } from 'reshaped';
 import ShippingForm from '../../../components/AddressForm';
 import CartHeader from '../../../components/CartHeader';
 import CartOrder from '../../../components/CartOrder';
 import CartProducts from '../../../components/CartProducts';
 import {
+  Address,
   Product,
   Query,
   SelectedProduct,
@@ -17,6 +18,12 @@ import { useProductCalculations } from '../../../hooks/useProductCalculations';
 import { useProductCrudOps } from '../../../hooks/useProductCrudOps';
 import { AREA_TYPE } from '../../../zustand/product/interface';
 import { useUserStore } from '../../../zustand/user';
+import { useFormik } from 'formik';
+import { addressFormValidationSchema } from '../../../components/AddressForm/validationSchema';
+import {
+  AddressType,
+  initialFormData,
+} from '../../../components/AddressForm/constants';
 
 const ShippingTabs = [
   { id: '1', title: 'Selected Products' },
@@ -31,14 +38,33 @@ interface CartProps {
 export default function Cart({ params }: CartProps) {
   const query = useQuery<Query>();
   const [activeTab, setActiveTab] = useState('1');
-  const [unlockedTabs, setUnlockedTabs] = useState<string[]>(['1', '2']);
-  const { setAddressFormData } = useUserStore();
+  const {
+    organizationId,
+    addressFormData,
+    setAddressFormData,
+    savedShippingIndex,
+    savedBillingIndex,
+    setSavedShippingIndex,
+    setSavedBillingIndex,
+  } = useUserStore();
 
   const { totalProductsInCart } = useProductCalculations(params.patientFileId);
-
   const { addOrUpdateProductInFqlx } = useProductCrudOps({
     patientFileId: params.patientFileId,
   });
+
+  const formik = useFormik({
+    validationSchema: addressFormValidationSchema,
+    initialValues: initialFormData,
+    onSubmit: (values) =>
+      submitFormData(
+        values.shipping,
+        values.billing,
+        values.isBillingSameAsShippingAddress
+      ),
+  });
+
+  const { values, validateForm } = formik;
 
   const patientFile = useMemo(
     () =>
@@ -49,6 +75,10 @@ export default function Cart({ params }: CartProps) {
         .exec(),
     [params.patientFileId, query]
   );
+
+  const organizationAddresses = query.Organization.byId(organizationId)
+    .project({ addresses: true })
+    .exec().addresses;
 
   const handleProductCountChange = async (
     updatedQuantity: number,
@@ -124,21 +154,48 @@ export default function Cart({ params }: CartProps) {
   };
 
   const handleTabClick = (tabId: string) => {
-    if (unlockedTabs.includes(tabId)) {
+    if (tabId === '3') {
+      validateForm(values);
+    } else {
       setActiveTab(tabId);
     }
   };
 
-  const activateTab = (tabId: string) => {
-    if (!unlockedTabs.includes(tabId)) {
-      setUnlockedTabs([...unlockedTabs, tabId]);
+  const submitFormData = async (
+    shipping: Address,
+    billing: Address,
+    isBillingSameAsShippingAddress: boolean
+  ) => {
+    const localAddresses = [...(organizationAddresses ?? [])];
+
+    if (isBillingSameAsShippingAddress) {
+      billing = {
+        ...shipping,
+        default: !savedBillingIndex,
+        type: AddressType.BILLING,
+      };
     }
 
-    setActiveTab(tabId);
+    if (!savedShippingIndex) {
+      localAddresses.push(shipping);
+    }
+    if (!savedBillingIndex || isBillingSameAsShippingAddress) {
+      localAddresses.push(billing);
+    }
+
+    setAddressFormData({ isBillingSameAsShippingAddress, shipping, billing });
+
+    await query.Organization.byId(organizationId)
+      .update(`{addresses: ${JSON.stringify(localAddresses)}}`)
+      .exec();
+
+    setActiveTab('3');
   };
 
   useEffect(() => {
     setAddressFormData(null);
+    setSavedShippingIndex(0);
+    setSavedBillingIndex(0);
   }, []);
 
   return (
@@ -170,7 +227,7 @@ export default function Cart({ params }: CartProps) {
           >
             <Tabs.List
               className={
-                'p-0 m-0 [&_[role=tablist]]:max-lg:!w-full [&_[role=tablist]]:min-[1028px]:!min-w-[726px] [&_[role=tablist]>*]:!w-[33%]'
+                '!pr-0 [&_[role=tablist]]:max-lg:!w-full [&_[role=tablist]]:min-[1028px]:!min-w-[726px] [&_[role=tablist]>*]:!w-[33%]'
               }
             >
               {ShippingTabs.map((tab) => (
@@ -208,17 +265,21 @@ export default function Cart({ params }: CartProps) {
                 teeth={patientFile.teeth}
                 onProductCountChange={handleProductCountChange}
                 onDeleteProduct={handleDeleteProduct}
-                setActiveTab={activateTab}
+                setActiveTab={handleTabClick}
                 params={params}
               />
             </Tabs.Panel>
 
             <Tabs.Panel value='2'>
-              <ShippingForm setActiveTab={activateTab} params={params} />
+              <ShippingForm
+                params={params}
+                formik={formik}
+                organizationAddresses={organizationAddresses ?? []}
+              />
             </Tabs.Panel>
 
             <Tabs.Panel value='3'>
-              <CartOrder params={params} setActiveTab={activateTab} />
+              <CartOrder params={params} setActiveTab={handleTabClick} />
             </Tabs.Panel>
           </View>
         </Tabs>
