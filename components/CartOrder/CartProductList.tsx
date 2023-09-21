@@ -43,22 +43,22 @@ export default function CartProductList({ params }: CartProductListProps) {
   const uniqueProductList = Object.entries(uniqueProducts);
 
   return (
-    <View gap={8}>
+    <View gap={8} className='print:w-[100svh]'>
       <Text variant='body-2' weight='medium' className='print:hidden'>
         Products
       </Text>
       <View gap={4}>
         <View direction='row' align='stretch'>
-          <View.Item columns={{ s: 8, xl: 3 }}>
+          <View.Item columns={{ s: 8, xl: 3 }} className='print:!w-1/4'>
             <View justify='start' maxWidth='77px' height='100%'>
               <Text variant='caption-2' weight='regular' color='neutral-faded'>
                 Product
               </Text>
             </View>
           </View.Item>
-          <View.Item columns={{ s: 4, xl: 9 }}>
+          <View.Item columns={{ s: 4, xl: 9 }} className='print:!w-3/4'>
             <View direction='row'>
-              <View.Item columns={{ s: 6, xl: 3 }}>
+              <View.Item columns={{ s: 6, xl: 3 }} className='print:!w-1/5'>
                 <View textAlign='center'>
                   <Text
                     variant='caption-2'
@@ -70,7 +70,7 @@ export default function CartProductList({ params }: CartProductListProps) {
                 </View>
               </View.Item>
 
-              <View.Item columns={{ s: 6, xl: 2 }}>
+              <View.Item columns={{ s: 6, xl: 2 }} className='print:!w-1/5'>
                 <View textAlign='center'>
                   <Text
                     variant='caption-2'
@@ -82,47 +82,50 @@ export default function CartProductList({ params }: CartProductListProps) {
                 </View>
               </View.Item>
 
-              <Hidden hide={{ s: true, xl: false }}>
-                <View.Item columns={2}>
-                  <View textAlign='center'>
-                    <Text
-                      variant='caption-2'
-                      weight='regular'
-                      color='neutral-faded'
-                    >
-                      Price without tax
-                    </Text>
-                  </View>
-                </View.Item>
-              </Hidden>
+              <View.Item
+                columns={2}
+                className='hidden xl:block print:block print:!w-1/5'
+              >
+                <View textAlign='center'>
+                  <Text
+                    variant='caption-2'
+                    weight='regular'
+                    color='neutral-faded'
+                  >
+                    Price without tax
+                  </Text>
+                </View>
+              </View.Item>
 
-              <Hidden hide={{ s: true, xl: false }}>
-                <View.Item columns={3}>
-                  <View textAlign='center'>
-                    <Text
-                      variant='caption-2'
-                      weight='regular'
-                      color='neutral-faded'
-                    >
-                      Taxes
-                    </Text>
-                  </View>
-                </View.Item>
-              </Hidden>
+              <View.Item
+                columns={3}
+                className='hidden xl:block print:block  print:!w-1/5'
+              >
+                <View textAlign='center'>
+                  <Text
+                    variant='caption-2'
+                    weight='regular'
+                    color='neutral-faded'
+                  >
+                    Taxes
+                  </Text>
+                </View>
+              </View.Item>
 
-              <Hidden hide={{ s: true, xl: false }}>
-                <View.Item columns={2}>
-                  <View textAlign='center'>
-                    <Text
-                      variant='caption-2'
-                      weight='regular'
-                      color='neutral-faded'
-                    >
-                      Price with tax
-                    </Text>
-                  </View>
-                </View.Item>
-              </Hidden>
+              <View.Item
+                columns={2}
+                className='hidden xl:block print:block print:!w-1/5'
+              >
+                <View textAlign='center'>
+                  <Text
+                    variant='caption-2'
+                    weight='regular'
+                    color='neutral-faded'
+                  >
+                    Price with tax
+                  </Text>
+                </View>
+              </View.Item>
             </View>
           </View.Item>
         </View>
@@ -149,40 +152,56 @@ export default function CartProductList({ params }: CartProductListProps) {
 
           return (
             <>
-              <View direction='row' key={productId} gap={4}>
-                <View.Item columns={{ s: 8, xl: 3 }}>
-                  <Text variant='caption-1' weight='regular'>
-                    {productName}
-                  </Text>
-                </View.Item>
-                <View.Item columns={{ s: 4, xl: 9 }}>
-                  <View direction='row' className='!justify-between' gap={4}>
-                    <View.Item columns={{ s: 6, xl: 3 }}>
-                      <View textAlign='center'>
-                        <Text
-                          variant='caption-1'
-                          weight='regular'
-                          color='neutral-faded'
-                        >
-                          {`${productPrice} €`}
-                        </Text>
-                      </View>
-                    </View.Item>
+              <View direction='column' key={productId} gap={4}>
+                <View direction='row' gap={4} className='print:!gap-0'>
+                  <View.Item columns={{ s: 8, xl: 3 }} className='print:!w-1/4'>
+                    <Text variant='caption-1' weight='regular'>
+                      {productName}
+                    </Text>
+                  </View.Item>
+                  <View.Item
+                    columns={{ s: 4, xl: 9 }}
+                    className='print:!w-3/4 print:!gap-0'
+                  >
+                    <View
+                      direction='row'
+                      className='!justify-between print:!gap-0'
+                      gap={4}
+                    >
+                      <View.Item
+                        columns={{ s: 6, xl: 3 }}
+                        className='print:!w-1/5'
+                      >
+                        <View textAlign='center'>
+                          <Text
+                            variant='caption-1'
+                            weight='regular'
+                            color='neutral-faded'
+                          >
+                            {`${productPrice} €`}
+                          </Text>
+                        </View>
+                      </View.Item>
 
-                    <View.Item columns={{ s: 6, xl: 2 }}>
-                      <View textAlign='center'>
-                        <Text
-                          variant='caption-1'
-                          weight='regular'
-                          color='neutral-faded'
-                        >
-                          {productInfo.count}
-                        </Text>
-                      </View>
-                    </View.Item>
+                      <View.Item
+                        columns={{ s: 6, xl: 2 }}
+                        className='print:!w-1/5'
+                      >
+                        <View textAlign='center'>
+                          <Text
+                            variant='caption-1'
+                            weight='regular'
+                            color='neutral-faded'
+                          >
+                            {productInfo.count}
+                          </Text>
+                        </View>
+                      </View.Item>
 
-                    <Hidden hide={{ s: true, xl: false }}>
-                      <View.Item columns={2}>
+                      <View.Item
+                        columns={2}
+                        className='hidden xl:block print:block print:!w-1/5'
+                      >
                         <View textAlign='center'>
                           <Text
                             variant='caption-1'
@@ -193,10 +212,11 @@ export default function CartProductList({ params }: CartProductListProps) {
                           </Text>
                         </View>
                       </View.Item>
-                    </Hidden>
 
-                    <Hidden hide={{ s: true, xl: false }}>
-                      <View.Item columns={3}>
+                      <View.Item
+                        columns={3}
+                        className='hidden xl:block print:block print:!w-1/5'
+                      >
                         <View textAlign='center'>
                           <Text
                             variant='caption-1'
@@ -207,19 +227,20 @@ export default function CartProductList({ params }: CartProductListProps) {
                           </Text>
                         </View>
                       </View.Item>
-                    </Hidden>
 
-                    <Hidden hide={{ s: true, xl: false }}>
-                      <View.Item columns={2}>
+                      <View.Item
+                        columns={2}
+                        className='hidden xl:block print:block print:!w-1/5'
+                      >
                         <View textAlign='center'>
                           <Text variant='caption-1' weight='regular'>
                             {`${priceWithTax} €`}
                           </Text>
                         </View>
                       </View.Item>
-                    </Hidden>
-                  </View>
-                </View.Item>
+                    </View>
+                  </View.Item>
+                </View>
                 <View direction='row' align='center' gap={1}>
                   <Icon svg={BarCodeIcon} color='neutral-faded' size={5} />
                   <Text
