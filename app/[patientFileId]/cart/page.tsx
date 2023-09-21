@@ -2,7 +2,7 @@
 
 import { useQuery } from 'fqlx-client';
 import { useEffect, useMemo, useState } from 'react';
-import { Badge, Tabs, Text, View } from 'reshaped';
+import { Badge, Tabs, Text, View, useResponsiveClientValue } from 'reshaped';
 import ShippingForm from '../../../components/AddressForm';
 import CartHeader from '../../../components/CartHeader';
 import CartOrder from '../../../components/CartOrder';
@@ -197,6 +197,7 @@ export default function Cart({ params }: CartProps) {
 
           <View
             width='100%'
+            paddingTop={4}
             height='100%'
             maxWidth='1280px'
             align='center'
