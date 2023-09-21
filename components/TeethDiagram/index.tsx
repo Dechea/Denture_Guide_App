@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { Button, Hidden, Modal, View, useToggle } from 'reshaped';
 import Treatments from '../Treatments';
 import { useTeethDiagramStore } from '../../zustand/teethDiagram';
-import { useQuery } from 'fqlx-client';
+import { useQuery } from 'fauna-typed';
 import {
   PatientFile,
   Query,

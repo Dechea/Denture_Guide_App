@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from 'fqlx-client';
+import { useQuery } from 'fauna-typed';
 import { useEffect, useMemo } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { Badge, Card, Text, View } from 'reshaped';
@@ -162,19 +162,19 @@ const ProductList = ({
 
   return (
     <>
-      <View direction="row" align="center" paddingBottom={3}>
+      <View direction='row' align='center' paddingBottom={3}>
         <View.Item grow>
-          <View direction="row" gap={2} align="end">
-            <Text variant="featured-3" weight="bold">
+          <View direction='row' gap={2} align='end'>
+            <Text variant='featured-3' weight='bold'>
               {convertCamelCaseToTitleCase(productType)}
             </Text>
 
-            <View direction="row" align="center" paddingBottom={0.5}>
+            <View direction='row' align='center' paddingBottom={0.5}>
               <Text
-                variant="body-3"
-                weight="regular"
-                color="neutral-faded"
-                align="end"
+                variant='body-3'
+                weight='regular'
+                color='neutral-faded'
+                align='end'
               >
                 {productsCount}
               </Text>
@@ -194,7 +194,7 @@ const ProductList = ({
       >
         {Object.entries(implicitFilters).map(([key, value]) => {
           return (
-            <Badge key={key} variant="faded">
+            <Badge key={key} variant='faded'>
               {`${key}: ${value}`}
             </Badge>
           );

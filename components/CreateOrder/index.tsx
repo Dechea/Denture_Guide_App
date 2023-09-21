@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { SyntheticEvent, useState } from 'react';
 import { Button, Icon, Modal, Text, TextField, View } from 'reshaped';
 import CrossIcon from '../Icons/Cross';
-import { useQuery } from 'fqlx-client';
+import { useQuery } from 'fauna-typed';
 import { Query } from '../../fqlx-generated/typedefs';
 
 interface CreateOrderProps {

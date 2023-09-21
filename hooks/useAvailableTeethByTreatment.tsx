@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useProductStore } from '../zustand/product';
-import { useQuery } from 'fqlx-client';
+import { useQuery } from 'fauna-typed';
 import { PatientFile, Query } from '../fqlx-generated/typedefs';
 import { AREA_TYPE, TREATMENT_GROUP } from '../zustand/product/interface';
 

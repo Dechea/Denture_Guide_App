@@ -1,4 +1,4 @@
-import { useQuery } from 'fqlx-client';
+import { useQuery } from 'fauna-typed';
 import { useProductStore } from '../zustand/product';
 import { PRODUCT_TYPE, TREATMENT_GROUP } from '../zustand/product/interface';
 import { useTeethDiagramStore } from '../zustand/teethDiagram';

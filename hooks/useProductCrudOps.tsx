@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from 'fqlx-client';
+import { useQuery } from 'fauna-typed';
 import { Query, Tooth } from '../fqlx-generated/typedefs';
 
 interface UseProductCrudOpsProps {
