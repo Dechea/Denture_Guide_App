@@ -24,3 +24,9 @@
 [data-rs-theme='dechea'] > [role='button'] {
   cursor: default;
 }
+
+@media print {
+  @page {
+    size: A4;
+  }
+}

@@ -63,7 +63,7 @@ export default function Cart({ params }: CartProps) {
       ),
   });
 
-  const { values, validateForm } = formik;
+  const { values, isValid } = formik;
 
   const patientFile = useMemo(
     () =>
@@ -152,12 +152,11 @@ export default function Cart({ params }: CartProps) {
     addOrUpdateProductInFqlx(getMappedTeeth);
   };
 
-  const handleTabClick = (tabId: string) => {
-    if (tabId === '3') {
-      validateForm(values);
-    } else {
-      setActiveTab(tabId);
+  const handleTabClick = async (tabId: string) => {
+    if (tabId === '3' && !isValid) {
+      return;
     }
+    setActiveTab(tabId);
   };
 
   const submitFormData = async (
