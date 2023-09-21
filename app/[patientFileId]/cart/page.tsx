@@ -170,7 +170,7 @@ export default function Cart({ params }: CartProps) {
           >
             <Tabs.List
               className={
-                '[&_[role=tablist]]:max-lg:!w-full [&_[role=tablist]]:min-[1028px]:!min-w-[726px] [&_[role=tablist]>*]:!w-[33%]'
+                'p-0 m-0 [&_[role=tablist]]:max-lg:!w-full [&_[role=tablist]]:min-[1028px]:!min-w-[726px] [&_[role=tablist]>*]:!w-[33%]'
               }
             >
               {ShippingTabs.map((tab) => (
