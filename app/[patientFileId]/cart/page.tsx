@@ -200,7 +200,6 @@ export default function Cart({ params }: CartProps) {
             height='100%'
             maxWidth='1280px'
             align='center'
-            paddingTop={11}
             className='[&_[role=tabpanel]]:w-full [&_[role=tabpanel]]:h-full !overflow-y-scroll scrollbar-0 print:!overflow-visible'
           >
             <Tabs.Panel value='1'>

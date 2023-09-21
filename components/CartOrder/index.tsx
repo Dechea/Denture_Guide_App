@@ -35,6 +35,7 @@ export default function CartOrder({
         direction={{ s: 'column', xl: 'row' }}
         width='100%'
         gap={{ xl: 26 }}
+        paddingTop={{ s: 11, l: 0 }}
         className='print:!hidden'
       >
         <View.Item grow>

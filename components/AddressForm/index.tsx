@@ -254,6 +254,7 @@ const ShippingForm = ({
       <View
         direction={{ s: 'column', xl: 'row' }}
         gap={{ xl: 26 }}
+        paddingTop={{ s: 11, l: 0 }}
         width='100%'
       >
         <View grow gap={16} paddingInline={6} paddingBottom={{ s: 11, xl: 32 }}>

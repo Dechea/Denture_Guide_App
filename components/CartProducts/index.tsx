@@ -28,6 +28,7 @@ export default function CartProducts({
     <View
       direction={{ s: 'column', xl: 'row' }}
       gap={{ xl: 26 }}
+      paddingTop={{ s: 11, l: 0 }}
       height='100%'
       grow
       className='overflow-y-scroll scrollbar-0 print:overflow-visible'

@@ -20,3 +20,7 @@
 .background-transparent {
   background: transparent !important;
 }
+
+[data-rs-theme='dechea'] > [role='button'] {
+  cursor: default;
+}
