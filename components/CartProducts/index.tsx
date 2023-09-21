@@ -1,6 +1,6 @@
 import { View } from 'reshaped';
 import CartItemsList from '../CartItemsList';
-import CartCostCard from '../CartButtonComponent';
+import CartCostCard from '../CartCostCard';
 import { Tooth } from '../../fqlx-generated/typedefs';
 
 interface CartProductsProps {

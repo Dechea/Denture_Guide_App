@@ -40,7 +40,6 @@ export default function Cart({ params }: CartProps) {
   const [activeTab, setActiveTab] = useState('1');
   const {
     organizationId,
-    addressFormData,
     setAddressFormData,
     savedShippingIndex,
     savedBillingIndex,

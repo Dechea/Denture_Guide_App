@@ -2,7 +2,7 @@
 
 import { Divider, Text, View } from 'reshaped';
 import { useProductCalculations } from '../../hooks/useProductCalculations';
-import CartCostCard from '../CartButtonComponent';
+import CartCostCard from '../CartCostCard';
 import { DecheaLogo } from '../Icons/DecheaLogo';
 import PrintIcon from '../Icons/Print';
 import CartProductList from './CartProductList';

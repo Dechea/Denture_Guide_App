@@ -6,8 +6,8 @@ interface CartCostCardProps {
   onClick?: any;
   buttonText: string;
   icon?: any;
-  color?: 'primary' | undefined;
-  type?: 'submit' | undefined;
+  color?: 'primary';
+  type?: 'submit';
 }
 
 export default function CartCostCard({

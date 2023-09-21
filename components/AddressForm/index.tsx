@@ -1,17 +1,15 @@
 'use client';
 
-import { useFormik } from 'formik';
 import { useQuery } from 'fqlx-client';
 import { useEffect, useState } from 'react';
 import { Text, View } from 'reshaped';
 import { Address, Query } from '../../fqlx-generated/typedefs';
 import { useUserStore } from '../../zustand/user';
-import CartCostCard from '../CartButtonComponent';
+import CartCostCard from '../CartCostCard';
 import AddressForm from './AddressForm';
 import AddressList from './AddressList';
 import NewAddressButton from './NewAddressButton';
-import { AddressType, initialAddress, initialFormData } from './constants';
-import { addressFormValidationSchema } from './validationSchema';
+import { AddressType, initialAddress } from './constants';
 
 const ShippingForm = ({
   params,
