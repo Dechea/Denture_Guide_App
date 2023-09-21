@@ -63,7 +63,7 @@ export default function Cart({ params }: CartProps) {
       ),
   });
 
-  const { values, isValid } = formik;
+  const { values, isValid, handleSubmit } = formik;
 
   const patientFile = useMemo(
     () =>
@@ -153,8 +153,12 @@ export default function Cart({ params }: CartProps) {
   };
 
   const handleTabClick = async (tabId: string) => {
-    if (tabId === '3' && !isValid) {
-      return;
+    if (tabId === '3') {
+      if (!isValid) {
+        return;
+      } else {
+        handleSubmit();
+      }
     }
     setActiveTab(tabId);
   };
