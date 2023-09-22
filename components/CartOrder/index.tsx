@@ -7,6 +7,7 @@ import { DecheaLogo } from '../Icons/DecheaLogo';
 import PrintIcon from '../Icons/Print';
 import CartProductList from './CartProductList';
 import OrderAddress from './OrderAddress';
+import { useMemo } from 'react';
 
 interface CartProductListProps {
   params: { patientFileId: string };
@@ -17,10 +18,11 @@ export default function CartOrder({
   params,
   setActiveTab,
 }: CartProductListProps) {
-  function formatDate(date: Date) {
-    return date.toLocaleDateString('en-GB').replace(/\//g, '.');
-  }
-  const formattedDate = formatDate(new Date());
+  const formattedDate = useMemo(
+    () => new Date().toLocaleDateString('en-GB').replace(/\//g, '.'),
+    []
+  );
+
   const { totalCostOfProductsInCart, totalCostOfProductsInCartWithTax } =
     useProductCalculations(params.patientFileId);
 
