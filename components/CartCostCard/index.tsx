@@ -18,10 +18,8 @@ export default function CartCostCard({
   color,
   type,
 }: CartCostCardProps) {
-  const { totalCostOfProductsInCart } = useProductCalculations(
-    params.patientFileId
-  );
-  const subtotal = (100 / 107) * totalCostOfProductsInCart;
+  const { totalCostOfProductsInCart, totalCostOfProductsInCartWithTax } =
+    useProductCalculations(params.patientFileId);
 
   return (
     <View
@@ -45,7 +43,7 @@ export default function CartCostCard({
           </Text>
 
           <Text variant='body-3' weight='regular'>
-            {`${subtotal.toFixed(2)} €`}
+            {`${totalCostOfProductsInCart.toFixed(2)} €`}
           </Text>
         </View>
         <Divider />
@@ -61,7 +59,7 @@ export default function CartCostCard({
             </View>
           </View>
           <Text variant='body-3' weight='bold'>
-            {totalCostOfProductsInCart} €
+            {`${totalCostOfProductsInCartWithTax.toFixed(2)}`} €
           </Text>
         </View>
       </View>

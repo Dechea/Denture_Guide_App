@@ -203,7 +203,7 @@ export default function Cart({ params }: CartProps) {
   return (
     <View
       height={'100%'}
-      className='print:!overflow-visible print:mx-[8px] sm:!max-h-[calc(100svh-53px)]'
+      className='print:!overflow-visible sm:!max-h-[calc(100svh-53px)] xl:!max-h-[calc(100svh-53px)]'
     >
       <CartHeader totalProductsCount={totalProductsInCart} />
       <View
@@ -212,7 +212,7 @@ export default function Cart({ params }: CartProps) {
         align='center'
         paddingInline={{ xl: 35 }}
         className={
-          '!max-h-[calc(100svh-69px)] sm:!max-h-[calc(100svh-122px)] lg:!max-h-[calc(100svh-138px)]'
+          '!max-h-[calc(100svh-70px)] sm:!max-h-[calc(100svh-123px)] lg:!max-h-[calc(100svh-125px)] xl:!max-h-[calc(100svh-140px)]'
         }
       >
         <Tabs
@@ -247,7 +247,10 @@ export default function Cart({ params }: CartProps) {
                     >
                       {tab.id}
                     </Badge>
-                    <Text variant='body-3'>{tab.title}</Text>
+
+                    <View paddingInline={4}>
+                      <Text variant='body-3'>{tab.title}</Text>
+                    </View>
                   </View>
                 </Tabs.Item>
               ))}
