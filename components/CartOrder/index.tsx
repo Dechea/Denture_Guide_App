@@ -21,9 +21,8 @@ export default function CartOrder({
     return date.toLocaleDateString('en-GB').replace(/\//g, '.');
   }
   const formattedDate = formatDate(new Date());
-  const { totalCostOfProductsInCart } = useProductCalculations(
-    params.patientFileId
-  );
+  const { totalCostOfProductsInCart, totalCostOfProductsInCartWithTax } =
+    useProductCalculations(params.patientFileId);
 
   return (
     <>
@@ -130,7 +129,7 @@ export default function CartOrder({
                   Total/ Inc. All VAT
                 </Text>
                 <Text variant='featured-2' weight='bold'>
-                  Euro
+                  {totalCostOfProductsInCartWithTax.toFixed(2)} €
                 </Text>
               </View>
               <Text variant='caption-1' weight='regular'>
