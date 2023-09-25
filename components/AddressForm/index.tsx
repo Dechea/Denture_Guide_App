@@ -3,7 +3,7 @@
 import { useQuery } from 'fauna-typed';
 import { useEffect, useState } from 'react';
 import { Text, View } from 'reshaped';
-import { Address, Query } from '../../fqlx-generated/typedefs';
+import { Address, Organization, Query } from '../../fqlx-generated/typedefs';
 import { useUserStore } from '../../zustand/user';
 import CartCostCard from '../CartCostCard';
 import AddressForm from './AddressForm';
@@ -14,14 +14,13 @@ import { AddressType, initialAddress } from './constants';
 const ShippingForm = ({
   params,
   formik,
-  organizationAddresses,
+  organization,
 }: {
   params: { patientFileId: string };
   formik: any;
-  organizationAddresses: Address[];
+  organization: Organization;
 }) => {
   const {
-    organizationId,
     addressFormData,
     setAddressFormData,
     savedShippingIndex,
@@ -52,7 +51,7 @@ const ShippingForm = ({
     setSavedShippingIndex(0);
     setSavedBillingIndex(0);
 
-    organizationAddresses?.forEach((address, index) => {
+    organization?.addresses?.forEach((address, index) => {
       if (address.type === AddressType.SHIPPING && address.default === true) {
         shippingAddress = address;
         setSavedShippingIndex(index + 1);
@@ -83,13 +82,13 @@ const ShippingForm = ({
 
     if (addressFormData?.shipping !== undefined && mount) {
       updatedValues.shipping = addressFormData?.shipping;
-    } else if (organizationId) {
+    } else if (organization?.id ?? '') {
       setShipping = true;
     }
 
     if (addressFormData?.billing !== undefined && mount) {
       updatedValues.billing = addressFormData?.billing;
-    } else if (organizationId) {
+    } else if (organization?.id ?? '') {
       setBilling = true;
     }
 
@@ -99,17 +98,17 @@ const ShippingForm = ({
     }
 
     setInitialAddressData(!mount || setShipping, !mount || setBilling);
-  }, [organizationAddresses]);
+  }, [organization?.addresses]);
 
   useEffect(() => {
     setAddressFormData(values);
   }, [values]);
 
   const handleEditAddress = async (index: number, address: Address) => {
-    const localAddresses = [...(organizationAddresses ?? [])];
+    const localAddresses = [...(organization?.addresses ?? [])];
     localAddresses[index] = address;
 
-    await query.Organization.byId(organizationId)
+    await query.Organization.byId(organization?.id ?? '')
       .update(`{addresses: ${JSON.stringify(localAddresses)}}`)
       .exec();
   };
@@ -118,7 +117,7 @@ const ShippingForm = ({
     defaultIndex: number,
     addressType: string
   ) => {
-    const localAddresses = (organizationAddresses ?? []).map(
+    const localAddresses = (organization?.addresses ?? []).map(
       (address, index) => {
         if (index === defaultIndex) {
           return { ...address, default: true };
@@ -129,7 +128,7 @@ const ShippingForm = ({
       }
     );
 
-    await query.Organization.byId(organizationId)
+    await query.Organization.byId(organization?.id ?? '')
       .update(`{addresses: ${JSON.stringify(localAddresses)}}`)
       .exec();
 
@@ -140,7 +139,7 @@ const ShippingForm = ({
   };
 
   const handleAddNewAddress = async (newAddress: Address) => {
-    const localAddresses = [...(organizationAddresses ?? [])];
+    const localAddresses = [...(organization?.addresses ?? [])];
 
     localAddresses.forEach((address) => {
       if (address.type === newAddress.type) {
@@ -149,13 +148,13 @@ const ShippingForm = ({
       return address;
     });
 
-    await query.Organization.byId(organizationId)
+    await query.Organization.byId(organization?.id ?? '')
       .update(`{addresses: ${JSON.stringify([...localAddresses, newAddress])}}`)
       .exec();
   };
 
   const handleDeleteAddress = async (index: number, addressType: string) => {
-    let localAddresses = [...(organizationAddresses ?? [])];
+    let localAddresses = [...(organization?.addresses ?? [])];
 
     if (localAddresses[index].default === true) {
       let isUpdated = false;
@@ -174,7 +173,7 @@ const ShippingForm = ({
 
     localAddresses.splice(index, 1);
 
-    await query.Organization.byId(organizationId)
+    await query.Organization.byId(organization?.id ?? '')
       .update(`{addresses: ${JSON.stringify(localAddresses)}}`)
       .exec();
   };
@@ -185,7 +184,7 @@ const ShippingForm = ({
       if (event.target.value === 'true' && savedBillingIndex) {
         updatedValues.isBillingSameAsShippingAddress = false;
         updatedValues.billing = {
-          ...organizationAddresses?.[savedBillingIndex - 1],
+          ...organization?.addresses?.[savedBillingIndex - 1],
         };
       } else {
         updatedValues.isBillingSameAsShippingAddress = true;
@@ -224,7 +223,7 @@ const ShippingForm = ({
             </Text>
             {savedShippingIndex ? (
               <AddressList
-                organizationAddresses={organizationAddresses ?? []}
+                organizationAddresses={organization.addresses ?? []}
                 selectedAddress={JSON.stringify(values.shipping)}
                 setSelectedAddress={(address) =>
                   setValues({ ...values, shipping: JSON.parse(address) })
@@ -259,7 +258,7 @@ const ShippingForm = ({
             </Text>
             {savedBillingIndex ? (
               <AddressList
-                organizationAddresses={organizationAddresses ?? []}
+                organizationAddresses={organization.addresses ?? []}
                 selectedAddress={JSON.stringify(addressFormData?.billing)}
                 setSelectedAddress={(address) =>
                   setValues({ ...values, billing: JSON.parse(address) })
