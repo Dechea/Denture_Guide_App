@@ -1175,6 +1175,10 @@ export interface Ts {
 
   export interface Price {
     /**
+ * tax for the Price
+ */
+ tax?: number;
+/**
  * amount for the Price
  */
  amount?: number;
@@ -1188,6 +1192,10 @@ export interface Ts {
 
   export interface PriceInput {
     /**
+ * tax for the Price
+ */
+ tax?: number;
+/**
  * amount for the Price
  */
  amount?: number;
@@ -1218,18 +1226,21 @@ export interface Ts {
        * create method creates a Price document in the collection with the provided property values.
        * 
        * @param {PriceInput | string} input - will be the Price which you want to add.
-         * @param { number } input.amount Amount for the Price
+         * @param { number } input.tax Tax for the Price
+* @param { number } input.amount Amount for the Price
 * @param { string } input.currency Currency for the Price
        *
        * @returns {CreateMethods<Price>} return new document.
        * 
        * @example
        * query.Price.create({  
+ * tax: "Value of the tax"   
  * amount: "Value of the amount"   
  * currency: "Value of the currency"   
        * }).exec()
        * OR
        * query.Price.create(`{  
+ * tax: "Value of the tax"   
  * amount: "Value of the amount"   
  * currency: "Value of the currency"   
        * }`).exec()
@@ -3689,6 +3700,289 @@ export interface Ts {
     }
 
 
+  export interface Organization {
+    /**
+ * name for the Organization
+ */
+ name?: string;
+/**
+ * id for the Organization
+ */
+ id?: string;
+/**
+ * addresses for the Organization
+ */
+ addresses?: Address[];
+
+  }
+
+
+  export interface OrganizationInput {
+    /**
+ * name for the Organization
+ */
+ name?: string;
+/**
+ * id for the Organization
+ */
+ id?: string;
+/**
+ * addresses for the Organization
+ */
+ addresses?: Address[];
+
+  } 
+
+
+  export interface OrganizationMethods {
+      /**
+       * all method get the set of all documents in the Organization collection.
+       * 
+       * @param
+       * 
+       * @returns {AllMethods<Organization>} method returns the set of all documents in Organization collection for the given range.
+       * 
+       * @example
+       * query.Organization.all().exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
+       */
+      all(): AllMethods<Organization>;
+
+      /**
+       * create method creates a Organization document in the collection with the provided property values.
+       * 
+       * @param {OrganizationInput | string} input - will be the Organization which you want to add.
+         * @param { string } input.name Name for the Organization
+* @param { Address[] } input.addresses Addresses for the Organization
+       *
+       * @returns {CreateMethods<Organization>} return new document.
+       * 
+       * @example
+       * query.Organization.create({  
+ * name: "Value of the name"   
+ * addresses: "Value of the addresses"   
+       * }).exec()
+       * OR
+       * query.Organization.create(`{  
+ * name: "Value of the name"   
+ * addresses: "Value of the addresses"   
+       * }`).exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
+       */
+    create(input: (OrganizationInput | string)): CreateMethods<Organization>;
+
+      /**
+       * byId method get a Organization document by its document ID.
+       * This will returns available Fqlx byId methods
+       * 
+       * @param {string} id - The ID of the document to retrieve
+       * 
+       * @returns {ByIdMethods<Organization, OrganizationInput>} return document when it exists and is accessible, else return
+       * null when the document does not exist or is inaccessible.
+       * 
+       * @example
+       * query.Organization.byId("21545645646554").exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
+       */
+       byId(id: string): ByIdMethods<Organization, OrganizationInput>
+
+       /**
+        * first where method get the first matching value from the Set.
+        * 
+        * @param {(inputCondition: ((data: T) => boolean) | string)} function takes in a document of type T and returns a boolean
+        * 
+        * @returns {FirstWhereMethods<T>}  returns the first matching value in the Set, or null if the Set is empty or no values match.
+        * 
+        * @example
+        * query.Address.all().firstWhere((data) => data.country == 'uk').exec();
+        * OR
+        * query.Address.all().firstWhere(`(data) => data.${dynamicKey} == "${dynamicValueToCheck}"`).exec();
+        * 
+        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
+        */
+       firstWhere(inputCondition: ((data: Organization) => boolean) | string): FirstWhereMethods<Organization>;
+    }
+
+
+  export interface Address {
+    /**
+ * name for the Address
+ */
+ name?: string;
+/**
+ * street for the Address
+ */
+ street?: string;
+/**
+ * streetNo for the Address
+ */
+ streetNo?: string;
+/**
+ * zip for the Address
+ */
+ zip?: string;
+/**
+ * city for the Address
+ */
+ city?: string;
+/**
+ * state for the Address
+ */
+ state?: string;
+/**
+ * country for the Address
+ */
+ country?: string;
+/**
+ * type for the Address
+ */
+ type?: string;
+/**
+ * default for the Address
+ */
+ default?: boolean;
+
+  }
+
+
+  export interface AddressInput {
+    /**
+ * name for the Address
+ */
+ name?: string;
+/**
+ * street for the Address
+ */
+ street?: string;
+/**
+ * streetNo for the Address
+ */
+ streetNo?: string;
+/**
+ * zip for the Address
+ */
+ zip?: string;
+/**
+ * city for the Address
+ */
+ city?: string;
+/**
+ * state for the Address
+ */
+ state?: string;
+/**
+ * country for the Address
+ */
+ country?: string;
+/**
+ * type for the Address
+ */
+ type?: string;
+/**
+ * default for the Address
+ */
+ default?: boolean;
+
+  } 
+
+
+  export interface AddressMethods {
+      /**
+       * all method get the set of all documents in the Address collection.
+       * 
+       * @param
+       * 
+       * @returns {AllMethods<Address>} method returns the set of all documents in Address collection for the given range.
+       * 
+       * @example
+       * query.Address.all().exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
+       */
+      all(): AllMethods<Address>;
+
+      /**
+       * create method creates a Address document in the collection with the provided property values.
+       * 
+       * @param {AddressInput | string} input - will be the Address which you want to add.
+         * @param { string } input.name Name for the Address
+* @param { string } input.street Street for the Address
+* @param { string } input.streetNo StreetNo for the Address
+* @param { string } input.zip Zip for the Address
+* @param { string } input.city City for the Address
+* @param { string } input.state State for the Address
+* @param { string } input.country Country for the Address
+* @param { string } input.type Type for the Address
+* @param { boolean } input.default Default for the Address
+       *
+       * @returns {CreateMethods<Address>} return new document.
+       * 
+       * @example
+       * query.Address.create({  
+ * name: "Value of the name"   
+ * street: "Value of the street"   
+ * streetNo: "Value of the streetNo"   
+ * zip: "Value of the zip"   
+ * city: "Value of the city"   
+ * state: "Value of the state"   
+ * country: "Value of the country"   
+ * type: "Value of the type"   
+ * default: "Value of the default"   
+       * }).exec()
+       * OR
+       * query.Address.create(`{  
+ * name: "Value of the name"   
+ * street: "Value of the street"   
+ * streetNo: "Value of the streetNo"   
+ * zip: "Value of the zip"   
+ * city: "Value of the city"   
+ * state: "Value of the state"   
+ * country: "Value of the country"   
+ * type: "Value of the type"   
+ * default: "Value of the default"   
+       * }`).exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
+       */
+    create(input: (AddressInput | string)): CreateMethods<Address>;
+
+      /**
+       * byId method get a Address document by its document ID.
+       * This will returns available Fqlx byId methods
+       * 
+       * @param {string} id - The ID of the document to retrieve
+       * 
+       * @returns {ByIdMethods<Address, AddressInput>} return document when it exists and is accessible, else return
+       * null when the document does not exist or is inaccessible.
+       * 
+       * @example
+       * query.Address.byId("21545645646554").exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
+       */
+       byId(id: string): ByIdMethods<Address, AddressInput>
+
+       /**
+        * first where method get the first matching value from the Set.
+        * 
+        * @param {(inputCondition: ((data: T) => boolean) | string)} function takes in a document of type T and returns a boolean
+        * 
+        * @returns {FirstWhereMethods<T>}  returns the first matching value in the Set, or null if the Set is empty or no values match.
+        * 
+        * @example
+        * query.Address.all().firstWhere((data) => data.country == 'uk').exec();
+        * OR
+        * query.Address.all().firstWhere(`(data) => data.${dynamicKey} == "${dynamicValueToCheck}"`).exec();
+        * 
+        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
+        */
+       firstWhere(inputCondition: ((data: Address) => boolean) | string): FirstWhereMethods<Address>;
+    }
+
+
   export interface Functions {
     
   }; 
@@ -3750,5 +4044,13 @@ Area: AreaMethods;
  * @returns This return fqlx methods for the TreatmentLocalization 
  */ 
 TreatmentLocalization: TreatmentLocalizationMethods;
+/**
+ * @returns This return fqlx methods for the Organization 
+ */ 
+Organization: OrganizationMethods;
+/**
+ * @returns This return fqlx methods for the Address 
+ */ 
+Address: AddressMethods;
 
   }

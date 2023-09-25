@@ -23,11 +23,7 @@ export default function CartItemsList({
   onDeleteProduct,
 }: CartItemsListProps) {
   return (
-    <View
-      gap={20}
-      paddingInline={{ s: 6, l: 0 }}
-      paddingBottom={{ s: 6, l: 10 }}
-    >
+    <View gap={18} paddingBottom={{ s: 11, xl: 32 }} paddingInline={6}>
       {teeth.map((tooth) => {
         const products: SelectedProduct[] = [
           ...(tooth.root.treatmentDoc?.selectedProducts ?? []),

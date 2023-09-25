@@ -90,6 +90,7 @@
       "locale": "string",
       "description": "string",
       "price": {
+        "tax": "number",
         "amount": "number",
         "currency": "string"
       }
@@ -224,6 +225,26 @@
       "name": "string",
       "synonyms": "string[]",
       "locale": "string"
+    }
+  },
+  "Organization": {
+    "fields": {
+      "name": "string",
+      "id": "string",
+      "addresses": "Address[]"
+    }
+  },
+  "Address": {
+    "fields": {
+      "name": "string",
+      "street": "string",
+      "streetNo": "string",
+      "zip": "string",
+      "city": "string",
+      "state": "string",
+      "country": "string",
+      "type": "string",
+      "default": "boolean"
     }
   }
 }
