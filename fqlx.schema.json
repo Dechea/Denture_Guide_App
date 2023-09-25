@@ -225,5 +225,35 @@
       "synonyms": "string[]",
       "locale": "string"
     }
+  },
+  "User": {
+    "fields": {
+      "name": "string",
+      "email": "string",
+      "clerkId": "string",
+      "image": "string",
+      "organizations": "Organization[]",
+      "activeOrganization": "Organization"
+    }
+  },
+  "Organization": {
+    "fields": {
+      "name": "string",
+      "id": "string",
+      "addresses": "Address[]"
+    }
+  },
+  "Address": {
+    "fields": {
+      "name": "string",
+      "street": "string",
+      "streetNo": "string",
+      "zip": "string",
+      "city": "string",
+      "state": "string",
+      "country": "string",
+      "type": "string",
+      "default": "boolean"
+    }
   }
 }
