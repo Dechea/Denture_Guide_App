@@ -24,6 +24,7 @@ import {
   AddressType,
   initialFormData,
 } from '../../../components/AddressForm/constants';
+import { redirect } from 'next/navigation';
 
 const ShippingTabs = [
   { id: '1', title: 'Selected Products' },
@@ -198,6 +199,10 @@ export default function Cart({ params }: CartProps) {
     setAddressFormData(null);
     setSavedShippingIndex(0);
     setSavedBillingIndex(0);
+
+    if (!organizationId) {
+      redirect('/sync');
+    }
   }, []);
 
   return (
