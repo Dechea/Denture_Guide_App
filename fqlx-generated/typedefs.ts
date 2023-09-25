@@ -1175,6 +1175,10 @@ export interface Ts {
 
   export interface Price {
     /**
+ * tax for the Price
+ */
+ tax?: number;
+/**
  * amount for the Price
  */
  amount?: number;
@@ -1188,6 +1192,10 @@ export interface Ts {
 
   export interface PriceInput {
     /**
+ * tax for the Price
+ */
+ tax?: number;
+/**
  * amount for the Price
  */
  amount?: number;
@@ -1218,18 +1226,21 @@ export interface Ts {
        * create method creates a Price document in the collection with the provided property values.
        * 
        * @param {PriceInput | string} input - will be the Price which you want to add.
-         * @param { number } input.amount Amount for the Price
+         * @param { number } input.tax Tax for the Price
+* @param { number } input.amount Amount for the Price
 * @param { string } input.currency Currency for the Price
        *
        * @returns {CreateMethods<Price>} return new document.
        * 
        * @example
        * query.Price.create({  
+ * tax: "Value of the tax"   
  * amount: "Value of the amount"   
  * currency: "Value of the currency"   
        * }).exec()
        * OR
        * query.Price.create(`{  
+ * tax: "Value of the tax"   
  * amount: "Value of the amount"   
  * currency: "Value of the currency"   
        * }`).exec()

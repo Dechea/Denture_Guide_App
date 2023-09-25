@@ -90,6 +90,7 @@
       "locale": "string",
       "description": "string",
       "price": {
+        "tax": "number",
         "amount": "number",
         "currency": "string"
       }
