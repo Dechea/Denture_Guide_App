@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from 'fqlx-client';
+import { useQuery } from 'fauna-typed';
 import { useEffect, useState } from 'react';
 import { Text, View } from 'reshaped';
 import { Address, Query } from '../../fqlx-generated/typedefs';

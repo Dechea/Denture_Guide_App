@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from 'fqlx-client';
+import { useQuery } from 'fauna-typed';
 import { usePathname, useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 
@@ -9,6 +9,7 @@ import { Query } from '../../fqlx-generated/typedefs';
 import MenuIcon from '../Icons/MenuIcon';
 import CartIcon from '../Icons/Cart';
 import { useProductCalculations } from '../../hooks/useProductCalculations';
+import { UserButton } from '@clerk/nextjs';
 
 interface HeaderProps {
   patientFileId: string;
@@ -67,7 +68,7 @@ export default function Header({ patientFileId }: HeaderProps) {
               </Hidden>
             </Button>
           </div>
-          <div className='basis-1/3 '>
+          <div className='basis-1/3'>
             <div className='flex h-full items-center w-full '>
               <Text
                 variant='body-3'
@@ -78,7 +79,7 @@ export default function Header({ patientFileId }: HeaderProps) {
               </Text>
             </div>
           </div>
-          <div className='basis-1/3 '>
+          <div className='basis-1/3'>
             <View
               direction='row'
               align='center'
@@ -123,6 +124,7 @@ export default function Header({ patientFileId }: HeaderProps) {
                   </Hidden>
                 </>
               </Button>
+              <UserButton />
             </View>
           </div>
         </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from 'fqlx-client';
+import { useQuery } from 'fauna-typed';
 import { useEffect, useMemo, useState } from 'react';
 import { Badge, Tabs, Text, View } from 'reshaped';
 import ShippingForm from '../../../components/AddressForm';

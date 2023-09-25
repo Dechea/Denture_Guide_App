@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from 'fqlx-client';
+import { useQuery } from 'fauna-typed';
 import { useMemo } from 'react';
 import { Query } from '../fqlx-generated/typedefs';
 

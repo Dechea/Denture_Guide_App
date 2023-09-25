@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { PaginateData } from 'fqlx-client';
+import { PaginateData } from 'fauna-typed';
 import { product } from '../../__mocks__/initialProductsState';
 import { Product, AbutmentInput } from '../../fqlx-generated/typedefs';
 import { TREATMENT_GROUP } from './interface';

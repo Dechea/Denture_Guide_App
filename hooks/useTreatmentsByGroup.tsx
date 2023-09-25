@@ -3,7 +3,7 @@ import { useProductStore } from '../zustand/product';
 import { TREATMENT_GROUP, PRODUCT_TYPE } from '../zustand/product/interface';
 import { useTeethDiagramStore } from '../zustand/teethDiagram';
 import { TreatmentVisualization } from '../zustand/teethDiagram/interface';
-import { useQuery } from 'fqlx-client';
+import { useQuery } from 'fauna-typed';
 import { Query } from '../fqlx-generated/typedefs';
 
 interface MapProductRequirementsProps {

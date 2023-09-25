@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@clerk/nextjs';
-import { FqlxProvider } from 'fqlx-client';
+import { FqlxProvider } from 'fauna-typed';
 import { useEffect, useState } from 'react';
 import { View } from 'reshaped';
 import { useRouter, usePathname } from 'next/navigation';
@@ -63,7 +63,7 @@ export default function FqlxClientProvider({
       {!token && <Loader />}
 
       {/* Only render children when sign-in route active */}
-      {pathname === '/sign-in' && children}
+      {['/sign-in', '/sign-up'].includes(pathname) && children}
 
       {token && token !== 'invalid' && (
         <FqlxProvider

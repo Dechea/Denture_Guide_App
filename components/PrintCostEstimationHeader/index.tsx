@@ -1,6 +1,6 @@
 import { Divider, Text, View, Image } from 'reshaped';
 import ComposedTeethDiagram from '../TeethDiagram/composedTeethDiagram';
-import { useQuery } from 'fqlx-client';
+import { useQuery } from 'fauna-typed';
 import { Query } from '../../fqlx-generated/typedefs';
 import { useProductCalculations } from '../../hooks/useProductCalculations';
 

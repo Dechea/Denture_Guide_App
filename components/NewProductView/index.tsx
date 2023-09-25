@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from 'fqlx-client';
+import { useQuery } from 'fauna-typed';
 import { Suspense, useEffect, useMemo } from 'react';
 import {
   Badge,

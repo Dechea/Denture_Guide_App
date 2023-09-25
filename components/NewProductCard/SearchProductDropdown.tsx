@@ -1,4 +1,4 @@
-import { useQuery } from 'fqlx-client';
+import { useQuery } from 'fauna-typed';
 import { useMemo } from 'react';
 import { Text, View } from 'reshaped';
 import { Product, Query } from '../../fqlx-generated/typedefs';
@@ -51,10 +51,10 @@ export default function SearchProductDropdown({
       imageAlt={product?.manufacturer?.name ?? ''}
       onClick={() => onClick?.(product)}
     >
-      <Text variant="caption-1" weight="medium">
+      <Text variant='caption-1' weight='medium'>
         {product?.manufacturer?.name ?? ''}
       </Text>
-      <Text variant="body-3" weight="regular">
+      <Text variant='body-3' weight='regular'>
         {product.manufacturerProductId}
       </Text>
     </MenuItemWithImage>
