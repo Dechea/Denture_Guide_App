@@ -20,7 +20,11 @@ export const useProductCalculations = (patientFileId: string) => {
     [patientFile]
   );
 
-  const { totalProductsInCart, totalCostOfProductsInCart } = useMemo(
+  const {
+    totalProductsInCart,
+    totalCostOfProductsInCart,
+    totalCostOfProductsInCartWithTax,
+  } = useMemo(
     () =>
       selectedProducts.reduce(
         (acc, { selectedProduct, quantity }) => {
@@ -32,15 +36,30 @@ export const useProductCalculations = (patientFileId: string) => {
             );
             const price = isNaN(amount) ? 0 : amount;
 
+            const tax = Number(selectedProduct?.localizations[1]?.price?.tax);
+
+            const priceWithoutTax = price * Number(quantity);
+            acc.totalCostOfProductsInCartWithTax +=
+              (priceWithoutTax * tax) / 100 + priceWithoutTax;
+
             acc.totalCostOfProductsInCart += Number(quantity) * price;
           }
 
           return acc;
         },
-        { totalProductsInCart: 0, totalCostOfProductsInCart: 0 }
+        {
+          totalProductsInCart: 0,
+          totalCostOfProductsInCart: 0,
+          totalCostOfProductsInCartWithTax: 0,
+        }
       ),
     [selectedProducts]
   );
 
-  return { selectedProducts, totalProductsInCart, totalCostOfProductsInCart };
+  return {
+    selectedProducts,
+    totalProductsInCart,
+    totalCostOfProductsInCart,
+    totalCostOfProductsInCartWithTax,
+  };
 };

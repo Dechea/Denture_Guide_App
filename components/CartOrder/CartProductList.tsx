@@ -142,10 +142,9 @@ export default function CartProductList({ params }: CartProductListProps) {
 
           const tax = productInfo.details?.localizations?.[1]?.price?.tax ?? 0;
 
-          const priceWithoutTax =
-            (100 / (100 + tax)) * (productPrice * productInfo.count);
+          const priceWithoutTax = productPrice * productInfo.count;
 
-          const priceWithTax = productPrice * productInfo.count;
+          const priceWithTax = (priceWithoutTax * tax) / 100 + priceWithoutTax;
 
           const manufacturerProductId =
             productInfo.details.manufacturerProductId;
