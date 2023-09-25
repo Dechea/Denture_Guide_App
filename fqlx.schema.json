@@ -227,6 +227,16 @@
       "locale": "string"
     }
   },
+  "User": {
+    "fields": {
+      "name": "string",
+      "email": "string",
+      "clerkId": "string",
+      "image": "string",
+      "organizations": "Organization[]",
+      "activeOrganization": "Organization"
+    }
+  },
   "Organization": {
     "fields": {
       "name": "string",

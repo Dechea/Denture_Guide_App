@@ -9,6 +9,7 @@ import CartOrder from '../../../components/CartOrder';
 import CartProducts from '../../../components/CartProducts';
 import {
   Address,
+  Organization,
   Product,
   Query,
   SelectedProduct,
@@ -25,6 +26,7 @@ import {
   initialFormData,
 } from '../../../components/AddressForm/constants';
 import { redirect } from 'next/navigation';
+import { useUser } from '@clerk/nextjs';
 
 const ShippingTabs = [
   { id: '1', title: 'Selected Products' },
@@ -40,13 +42,13 @@ export default function Cart({ params }: CartProps) {
   const query = useQuery<Query>();
   const [activeTab, setActiveTab] = useState('1');
   const {
-    organizationId,
     setAddressFormData,
     savedShippingIndex,
     savedBillingIndex,
     setSavedShippingIndex,
     setSavedBillingIndex,
   } = useUserStore();
+  const { user } = useUser();
 
   const { totalProductsInCart } = useProductCalculations(params.patientFileId);
   const { addOrUpdateProductInFqlx } = useProductCrudOps({
@@ -76,9 +78,11 @@ export default function Cart({ params }: CartProps) {
     [params.patientFileId, query]
   );
 
-  const organizationAddresses = query.Organization.byId(organizationId)
-    .project({ addresses: true })
-    .exec().addresses;
+  const organization = query.User.firstWhere(
+    `user => user.clerkId == "${user?.id}"`
+  )
+    .project({ activeOrganization: true })
+    .exec().activeOrganization;
 
   const handleProductCountChange = async (
     updatedQuantity: number,
@@ -169,7 +173,7 @@ export default function Cart({ params }: CartProps) {
     billing: Address,
     isBillingSameAsShippingAddress: boolean
   ) => {
-    const localAddresses = [...(organizationAddresses ?? [])];
+    const localAddresses = [...(organization?.addresses ?? [])];
 
     if (isBillingSameAsShippingAddress) {
       billing = {
@@ -188,7 +192,7 @@ export default function Cart({ params }: CartProps) {
 
     setAddressFormData({ isBillingSameAsShippingAddress, shipping, billing });
 
-    await query.Organization.byId(organizationId)
+    await query.Organization.byId(organization?.id ?? '')
       .update(`{addresses: ${JSON.stringify(localAddresses)}}`)
       .exec();
 
@@ -200,8 +204,8 @@ export default function Cart({ params }: CartProps) {
     setSavedShippingIndex(0);
     setSavedBillingIndex(0);
 
-    if (!organizationId) {
-      redirect('/sync');
+    if (!organization) {
+      redirect('/users/sync');
     }
   }, []);
 
@@ -284,7 +288,7 @@ export default function Cart({ params }: CartProps) {
               <ShippingForm
                 params={params}
                 formik={formik}
-                organizationAddresses={organizationAddresses ?? []}
+                organization={organization as Organization}
               />
             </Tabs.Panel>
 
