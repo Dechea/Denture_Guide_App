@@ -43,7 +43,7 @@ export default function CartProductList({ params }: CartProductListProps) {
   const uniqueProductList = Object.entries(uniqueProducts);
 
   return (
-    <View gap={8} className='print:w-[100svh]'>
+    <View gap={8} className='print:w-full'>
       <Text variant='body-2' weight='medium' className='print:hidden'>
         Products
       </Text>

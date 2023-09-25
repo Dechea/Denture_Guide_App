@@ -203,7 +203,7 @@ export default function Cart({ params }: CartProps) {
   return (
     <View
       height={'100%'}
-      className='print:!overflow-visible print:mx-[8px] sm:!max-h-[calc(100svh-53px)]'
+      className='print:!overflow-visible sm:!max-h-[calc(100svh-53px)]'
     >
       <CartHeader totalProductsCount={totalProductsInCart} />
       <View
@@ -229,7 +229,7 @@ export default function Cart({ params }: CartProps) {
           >
             <Tabs.List
               className={
-                '!pr-0 [&_[role=tablist]]:max-lg:!w-full [&_[role=tablist]]:min-[1028px]:!min-w-[726px] [&_[role=tablist]>*]:!w-[33%]'
+                '!pr-0 [&_[role=tablist]]:max-lg:!w-full [&_[role=tablist]]:min-[1024px]:!min-w-[726px] [&_[role=tablist]>*]:!w-[33%]'
               }
             >
               {ShippingTabs.map((tab) => (

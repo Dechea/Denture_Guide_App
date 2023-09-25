@@ -128,13 +128,13 @@ export default function CartOrder({
                 Products
               </Text>
             </View>
-            <View direction='column' gap={3}>
-              <View direction='column' gap={1}>
+            <View direction='column' gap={3} align={'end'}>
+              <View direction='column' gap={1} align={'end'}>
                 <Text variant='body-3' weight='medium'>
                   Total/ Inc. All VAT
                 </Text>
                 <Text variant='featured-2' weight='bold'>
-                  Euro
+                  {totalCostOfProductsInCart} €
                 </Text>
               </View>
               <Text variant='caption-1' weight='regular'>

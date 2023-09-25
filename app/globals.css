@@ -12,11 +12,6 @@
   background-color: var(--rs-color-background-neutral);
 }
 
-@page {
-  size: auto;
-  margin-block: 30mm;
-}
-
 .background-transparent {
   background: transparent !important;
 }
@@ -28,5 +23,11 @@
 @media print {
   @page {
     size: A4;
+    margin-top: 14.816mm;
+    margin-bottom: 7.93mm;
+    margin-inline: 27.516mm;
+  }
+  * > * {
+    box-shadow: none !important;
   }
 }
