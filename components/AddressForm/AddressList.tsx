@@ -36,7 +36,7 @@ const AddressList = ({
               borderRadius='medium'
               borderColor='neutral-faded'
               padding={6}
-              key={JSON.stringify(address)}
+              key={`${index}-${JSON.stringify(address)}`}
             >
               <Radio
                 name={JSON.stringify(address)}

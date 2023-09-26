@@ -34,7 +34,7 @@ const Page = () => {
         'Organization.byId("$1")'
       );
 
-      query.User.create(formattedUser).exec();
+      await query.User.create(formattedUser).exec();
     }
     router.push('/');
   };

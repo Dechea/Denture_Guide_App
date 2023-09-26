@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from 'fauna-typed';
+import { revalidateActiveQueries, useQuery } from 'fauna-typed';
 import { useEffect, useState } from 'react';
 import { Text, View } from 'reshaped';
 import { Address, Query } from '../../fqlx-generated/typedefs';
@@ -37,7 +37,7 @@ const ShippingForm = ({
 
   const organizationAddresses = query.Organization.byId(organizationId)
     .project({ addresses: true })
-    .exec().addresses;
+    .exec()?.addresses;
 
   const setInitialAddressData = async (
     setShipping: boolean,
@@ -117,6 +117,8 @@ const ShippingForm = ({
     await query.Organization.byId(organizationId)
       .update(`{addresses: ${JSON.stringify(localAddresses)}}`)
       .exec();
+
+    await revalidateActiveQueries('Organization');
   };
 
   const handleSetDefaultAddress = async (
@@ -138,6 +140,8 @@ const ShippingForm = ({
       .update(`{addresses: ${JSON.stringify(localAddresses)}}`)
       .exec();
 
+    await revalidateActiveQueries('Organization');
+
     setValues({
       ...values,
       [addressType.toLowerCase()]: localAddresses[defaultIndex],
@@ -157,6 +161,8 @@ const ShippingForm = ({
     await query.Organization.byId(organizationId)
       .update(`{addresses: ${JSON.stringify([...localAddresses, newAddress])}}`)
       .exec();
+
+    await revalidateActiveQueries('Organization');
   };
 
   const handleDeleteAddress = async (index: number, addressType: string) => {
@@ -182,6 +188,8 @@ const ShippingForm = ({
     await query.Organization.byId(organizationId)
       .update(`{addresses: ${JSON.stringify(localAddresses)}}`)
       .exec();
+
+    await revalidateActiveQueries('Organization');
   };
 
   const handleShippingChange = (event: any) => {
