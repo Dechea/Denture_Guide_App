@@ -1,15 +1,22 @@
 'use client';
 
+import { useUser } from '@clerk/nextjs';
 import { useQuery } from 'fauna-typed';
+import { useFormik } from 'formik';
+import { redirect } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { Badge, Tabs, Text, View } from 'reshaped';
 import ShippingForm from '../../../components/AddressForm';
+import {
+  AddressType,
+  initialFormData,
+} from '../../../components/AddressForm/constants';
+import { addressFormValidationSchema } from '../../../components/AddressForm/validationSchema';
 import CartHeader from '../../../components/CartHeader';
 import CartOrder from '../../../components/CartOrder';
 import CartProducts from '../../../components/CartProducts';
 import {
   Address,
-  Organization,
   Product,
   Query,
   SelectedProduct,
@@ -19,14 +26,6 @@ import { useProductCalculations } from '../../../hooks/useProductCalculations';
 import { useProductCrudOps } from '../../../hooks/useProductCrudOps';
 import { AREA_TYPE } from '../../../zustand/product/interface';
 import { useUserStore } from '../../../zustand/user';
-import { useFormik } from 'formik';
-import { addressFormValidationSchema } from '../../../components/AddressForm/validationSchema';
-import {
-  AddressType,
-  initialFormData,
-} from '../../../components/AddressForm/constants';
-import { redirect } from 'next/navigation';
-import { useUser } from '@clerk/nextjs';
 
 const ShippingTabs = [
   { id: '1', title: 'Selected Products' },
@@ -82,7 +81,7 @@ export default function Cart({ params }: CartProps) {
     `user => user.clerkId == "${user?.id}"`
   )
     .project({ activeOrganization: true })
-    .exec().activeOrganization;
+    .exec()?.activeOrganization;
 
   const handleProductCountChange = async (
     updatedQuantity: number,
@@ -288,7 +287,7 @@ export default function Cart({ params }: CartProps) {
               <ShippingForm
                 params={params}
                 formik={formik}
-                organization={organization as Organization}
+                organizationId={organization?.id ?? ''}
               />
             </Tabs.Panel>
 
