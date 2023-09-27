@@ -56,7 +56,7 @@ export const CarouselTooth = ({ tooth }: CarouselToothProps) => {
       <Popover.Trigger>
         {(attributes) => {
           return (
-            <Actionable attributes={attributes}>
+            <Actionable attributes={attributes} as="div">
               <View height={30} width={15}>
                 <ToothContainer customStyles='!w-full pointer-events-none'>
                   <Tooth

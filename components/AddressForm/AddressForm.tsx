@@ -198,7 +198,7 @@ const AddressForm = ({
         )}
       </View.Item>
       <Hidden hide={isBillingSameAsShippingAddress === undefined}>
-        <View.Item columns={12}>
+        <View.Item columns={12} key='addressform-checkbox'>
           <Checkbox
             name={`isBillingSameAsShippingAddress`}
             value={`${isBillingSameAsShippingAddress}`}

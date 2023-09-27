@@ -173,9 +173,9 @@ const NewProductView = ({
         paddingStart={6}
         gap={2}
       >
-        {Object.entries(implicitFilters).map(([key, value]) => {
+        {Object.entries(implicitFilters).map(([key, value], index) => {
           return (
-            <Badge key={key} variant='faded'>
+            <Badge key={`${key}-${index}`} variant='faded'>
               {`${key}: ${value}`}
             </Badge>
           );
@@ -200,15 +200,15 @@ const NewProductView = ({
             </View.Item>
 
             <Hidden hide={{ s: true, l: false }}>
-              <View.Item columns={4} grow>
-                {productsCount && (
+              <View.Item columns={4} grow key='productToothList'>
+                {!!productsCount && (
                   <NewProductToothList onClickProduct={handleClickOnProduct} />
                 )}
               </View.Item>
             </Hidden>
 
             <Hidden hide={{ s: false, l: true }}>
-              <View.Item columns={12} grow>
+              <View.Item columns={12} grow key='selectTeeth'>
                 <View padding={6} paddingBottom={13.75}>
                   <Button
                     color='primary'

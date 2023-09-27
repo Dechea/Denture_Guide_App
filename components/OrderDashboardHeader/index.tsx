@@ -14,9 +14,7 @@ export default function OrderDashboardHeader() {
     >
       <Image src='/decheaLogo.svg' alt='Dechea' height={'24px'} />
       <View>
-        <Actionable>
-          <UserButton />
-        </Actionable>
+        <UserButton />
       </View>
     </View>
   );

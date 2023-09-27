@@ -19,10 +19,10 @@ const ToothGroup = ({
   attributes?: TriggerAttributes;
 }) => {
   return (
-    <Actionable attributes={attributes}>
+    <Actionable attributes={attributes} as='div'>
       <View
-        direction="row"
-        borderRadius="small"
+        direction='row'
+        borderRadius='small'
         paddingInline={2}
         gap={1}
         className={cx(
@@ -111,7 +111,7 @@ export const CarouselGroupTabs = () => {
                 />
               ) : (
                 <Tooltip
-                  position="top"
+                  position='top'
                   active={isEmptyFilterGroup ? false : undefined}
                   text={toothGroups[index].tooltipText}
                 >

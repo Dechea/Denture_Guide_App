@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Divider, Icon, Text, View } from 'reshaped';
 import { Product } from '../../fqlx-generated/typedefs';
 import { useProductCalculations } from '../../hooks/useProductCalculations';
@@ -150,8 +150,8 @@ export default function CartProductList({ params }: CartProductListProps) {
             productInfo.details.manufacturerProductId;
 
           return (
-            <>
-              <View direction='column' key={productId} gap={4}>
+            <React.Fragment key={productId}>
+              <View direction='column' gap={4}>
                 <View direction='row' gap={4} className='print:!gap-0'>
                   <View.Item columns={{ s: 8, xl: 3 }} className='print:!w-1/4'>
                     <Text variant='caption-1' weight='regular'>
@@ -256,7 +256,7 @@ export default function CartProductList({ params }: CartProductListProps) {
                   <Divider className='print:!border print:!border-solid print:!border-[--rs-color-border-neutral-faded]' />
                 </View>
               )}
-            </>
+            </React.Fragment>
           );
         })}
       </View>
