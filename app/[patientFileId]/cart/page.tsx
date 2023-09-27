@@ -1,15 +1,22 @@
 'use client';
 
-import { useQuery } from 'fauna-typed';
+import { useUser } from '@clerk/nextjs';
+import { revalidateActiveQueries, useQuery } from 'fauna-typed';
+import { useFormik } from 'formik';
+import { redirect } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { Badge, Tabs, Text, View } from 'reshaped';
 import ShippingForm from '../../../components/AddressForm';
+import {
+  AddressType,
+  initialFormData,
+} from '../../../components/AddressForm/constants';
+import { addressFormValidationSchema } from '../../../components/AddressForm/validationSchema';
 import CartHeader from '../../../components/CartHeader';
 import CartOrder from '../../../components/CartOrder';
 import CartProducts from '../../../components/CartProducts';
 import {
   Address,
-  Organization,
   Product,
   Query,
   SelectedProduct,
@@ -19,14 +26,6 @@ import { useProductCalculations } from '../../../hooks/useProductCalculations';
 import { useProductCrudOps } from '../../../hooks/useProductCrudOps';
 import { AREA_TYPE } from '../../../zustand/product/interface';
 import { useUserStore } from '../../../zustand/user';
-import { useFormik } from 'formik';
-import { addressFormValidationSchema } from '../../../components/AddressForm/validationSchema';
-import {
-  AddressType,
-  initialFormData,
-} from '../../../components/AddressForm/constants';
-import { redirect } from 'next/navigation';
-import { useUser } from '@clerk/nextjs';
 
 const ShippingTabs = [
   { id: '1', title: 'Selected Products' },
@@ -78,11 +77,15 @@ export default function Cart({ params }: CartProps) {
     [params.patientFileId, query]
   );
 
-  const organization = query.User.firstWhere(
+  const userOrganization = query.User.firstWhere(
     `user => user.clerkId == "${user?.id}"`
   )
     .project({ activeOrganization: true })
-    .exec().activeOrganization;
+    .exec()?.activeOrganization;
+
+  const orgAddresses = query.Organization.byId(`${userOrganization?.id}`)
+    .project({ addresses: true })
+    .exec()?.addresses;
 
   const handleProductCountChange = async (
     updatedQuantity: number,
@@ -173,7 +176,7 @@ export default function Cart({ params }: CartProps) {
     billing: Address,
     isBillingSameAsShippingAddress: boolean
   ) => {
-    const localAddresses = [...(organization?.addresses ?? [])];
+    const localAddresses = [...(orgAddresses ?? [])];
 
     if (isBillingSameAsShippingAddress) {
       billing = {
@@ -192,9 +195,11 @@ export default function Cart({ params }: CartProps) {
 
     setAddressFormData({ isBillingSameAsShippingAddress, shipping, billing });
 
-    await query.Organization.byId(organization?.id ?? '')
+    await query.Organization.byId(userOrganization?.id ?? '')
       .update(`{addresses: ${JSON.stringify(localAddresses)}}`)
       .exec();
+
+    await revalidateActiveQueries('Organization');
 
     setActiveTab('3');
   };
@@ -204,7 +209,7 @@ export default function Cart({ params }: CartProps) {
     setSavedShippingIndex(0);
     setSavedBillingIndex(0);
 
-    if (!organization) {
+    if (!userOrganization) {
       redirect('/users/sync');
     }
   }, []);
@@ -288,7 +293,7 @@ export default function Cart({ params }: CartProps) {
               <ShippingForm
                 params={params}
                 formik={formik}
-                organization={organization as Organization}
+                organizationId={userOrganization?.id ?? ''}
               />
             </Tabs.Panel>
 

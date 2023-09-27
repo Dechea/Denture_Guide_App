@@ -1,3 +1,4 @@
+import React from 'react';
 import { Switch, Tabs, Text, View } from 'reshaped';
 
 interface Field {
@@ -17,7 +18,7 @@ export default function Form({ fields, values, onChangeValue }: FormProps) {
   return (
     <View direction='row' width='100%' gap={10} className='!gap-y-[24px]'>
       {fields.map((field) => (
-        <>
+        <React.Fragment key={field.id}>
           {field.type === 'tabs' && (
             <View.Item columns={12} key={field.id}>
               <Tabs
@@ -70,12 +71,12 @@ export default function Form({ fields, values, onChangeValue }: FormProps) {
                 onChange={(event) =>
                   onChangeValue(field.name, event.target.value)
                 }
+                value={values[field.name]}
               >
                 {field.options.map(({ isAvailable, name, value }) => (
                   <option
                     key={value}
                     value={value}
-                    selected={values[field.name] === name}
                     className={`${
                       !isAvailable &&
                       '!text-[var(--rs-color-foreground-disabled)]'
@@ -87,7 +88,7 @@ export default function Form({ fields, values, onChangeValue }: FormProps) {
               </select>
             </View.Item>
           )}
-        </>
+        </React.Fragment>
       ))}
     </View>
   );

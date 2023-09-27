@@ -1,9 +1,9 @@
 'use client';
 
-import { useQuery } from 'fauna-typed';
+import { revalidateActiveQueries, useQuery } from 'fauna-typed';
 import { useEffect, useState } from 'react';
 import { Text, View } from 'reshaped';
-import { Address, Organization, Query } from '../../fqlx-generated/typedefs';
+import { Address, Query } from '../../fqlx-generated/typedefs';
 import { useUserStore } from '../../zustand/user';
 import CartCostCard from '../CartCostCard';
 import AddressForm from './AddressForm';
@@ -11,15 +11,17 @@ import AddressList from './AddressList';
 import NewAddressButton from './NewAddressButton';
 import { AddressType, initialAddress } from './constants';
 
+interface ShippingFormProps {
+  params: { patientFileId: string };
+  formik: any;
+  organizationId: string;
+}
+
 const ShippingForm = ({
   params,
   formik,
-  organization,
-}: {
-  params: { patientFileId: string };
-  formik: any;
-  organization: Organization;
-}) => {
+  organizationId,
+}: ShippingFormProps) => {
   const {
     addressFormData,
     setAddressFormData,
@@ -32,6 +34,10 @@ const ShippingForm = ({
   const [mount, setMount] = useState(true);
   const { values, handleChange, handleSubmit, errors, touched, setValues } =
     formik;
+
+  const organizationAddresses = query.Organization.byId(organizationId)
+    .project({ addresses: true })
+    .exec()?.addresses;
 
   const setInitialAddressData = async (
     setShipping: boolean,
@@ -51,7 +57,7 @@ const ShippingForm = ({
     setSavedShippingIndex(0);
     setSavedBillingIndex(0);
 
-    organization?.addresses?.forEach((address, index) => {
+    organizationAddresses?.forEach((address, index) => {
       if (address.type === AddressType.SHIPPING && address.default === true) {
         shippingAddress = address;
         setSavedShippingIndex(index + 1);
@@ -82,13 +88,13 @@ const ShippingForm = ({
 
     if (addressFormData?.shipping !== undefined && mount) {
       updatedValues.shipping = addressFormData?.shipping;
-    } else if (organization?.id ?? '') {
+    } else if (organizationId) {
       setShipping = true;
     }
 
     if (addressFormData?.billing !== undefined && mount) {
       updatedValues.billing = addressFormData?.billing;
-    } else if (organization?.id ?? '') {
+    } else if (organizationId) {
       setBilling = true;
     }
 
@@ -98,26 +104,28 @@ const ShippingForm = ({
     }
 
     setInitialAddressData(!mount || setShipping, !mount || setBilling);
-  }, [organization?.addresses]);
+  }, [organizationAddresses]);
 
   useEffect(() => {
     setAddressFormData(values);
   }, [values]);
 
   const handleEditAddress = async (index: number, address: Address) => {
-    const localAddresses = [...(organization?.addresses ?? [])];
+    const localAddresses = [...(organizationAddresses ?? [])];
     localAddresses[index] = address;
 
-    await query.Organization.byId(organization?.id ?? '')
+    await query.Organization.byId(organizationId)
       .update(`{addresses: ${JSON.stringify(localAddresses)}}`)
       .exec();
+
+    await revalidateActiveQueries('Organization');
   };
 
   const handleSetDefaultAddress = async (
     defaultIndex: number,
     addressType: string
   ) => {
-    const localAddresses = (organization?.addresses ?? []).map(
+    const localAddresses = (organizationAddresses ?? []).map(
       (address, index) => {
         if (index === defaultIndex) {
           return { ...address, default: true };
@@ -128,9 +136,11 @@ const ShippingForm = ({
       }
     );
 
-    await query.Organization.byId(organization?.id ?? '')
+    await query.Organization.byId(organizationId)
       .update(`{addresses: ${JSON.stringify(localAddresses)}}`)
       .exec();
+
+    await revalidateActiveQueries('Organization');
 
     setValues({
       ...values,
@@ -139,7 +149,7 @@ const ShippingForm = ({
   };
 
   const handleAddNewAddress = async (newAddress: Address) => {
-    const localAddresses = [...(organization?.addresses ?? [])];
+    const localAddresses = [...(organizationAddresses ?? [])];
 
     localAddresses.forEach((address) => {
       if (address.type === newAddress.type) {
@@ -148,13 +158,15 @@ const ShippingForm = ({
       return address;
     });
 
-    await query.Organization.byId(organization?.id ?? '')
+    await query.Organization.byId(organizationId)
       .update(`{addresses: ${JSON.stringify([...localAddresses, newAddress])}}`)
       .exec();
+
+    await revalidateActiveQueries('Organization');
   };
 
   const handleDeleteAddress = async (index: number, addressType: string) => {
-    let localAddresses = [...(organization?.addresses ?? [])];
+    let localAddresses = [...(organizationAddresses ?? [])];
 
     if (localAddresses[index].default === true) {
       let isUpdated = false;
@@ -173,9 +185,11 @@ const ShippingForm = ({
 
     localAddresses.splice(index, 1);
 
-    await query.Organization.byId(organization?.id ?? '')
+    await query.Organization.byId(organizationId)
       .update(`{addresses: ${JSON.stringify(localAddresses)}}`)
       .exec();
+
+    await revalidateActiveQueries('Organization');
   };
 
   const handleShippingChange = (event: any) => {
@@ -184,7 +198,7 @@ const ShippingForm = ({
       if (event.target.value === 'true' && savedBillingIndex) {
         updatedValues.isBillingSameAsShippingAddress = false;
         updatedValues.billing = {
-          ...organization?.addresses?.[savedBillingIndex - 1],
+          ...organizationAddresses?.[savedBillingIndex - 1],
         };
       } else {
         updatedValues.isBillingSameAsShippingAddress = true;
@@ -223,7 +237,7 @@ const ShippingForm = ({
             </Text>
             {savedShippingIndex ? (
               <AddressList
-                organizationAddresses={organization.addresses ?? []}
+                organizationAddresses={organizationAddresses ?? []}
                 selectedAddress={JSON.stringify(values.shipping)}
                 setSelectedAddress={(address) =>
                   setValues({ ...values, shipping: JSON.parse(address) })
@@ -258,7 +272,7 @@ const ShippingForm = ({
             </Text>
             {savedBillingIndex ? (
               <AddressList
-                organizationAddresses={organization.addresses ?? []}
+                organizationAddresses={organizationAddresses ?? []}
                 selectedAddress={JSON.stringify(addressFormData?.billing)}
                 setSelectedAddress={(address) =>
                   setValues({ ...values, billing: JSON.parse(address) })

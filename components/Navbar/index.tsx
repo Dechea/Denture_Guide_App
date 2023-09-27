@@ -31,9 +31,7 @@ export default function Navbar(): JSX.Element {
 
           <View.Item grow>
             <View direction='column' justify='end' height='100%'>
-              <Actionable>
-                <UserButton />
-              </Actionable>
+              <UserButton />
             </View>
           </View.Item>
         </View>

@@ -29,7 +29,7 @@ export default function TreatmentTabsPopover({
     <Popover active={activePopup} padding={0} width='auto'>
       <Popover.Trigger>
         {(attributes) => (
-          <Actionable attributes={attributes}>
+          <Actionable attributes={attributes} as='div'>
             <Text color={activeTab ? 'neutral' : 'disabled'}>{title}</Text>
           </Actionable>
         )}

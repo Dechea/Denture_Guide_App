@@ -35,8 +35,8 @@ dependencies:
     specifier: 6.1.0
     version: 6.1.0(react@18.2.0)
   reshaped:
-    specifier: ^2.3.1
-    version: 2.3.1(postcss@8.4.30)(react-dom@18.2.0)(react@18.2.0)
+    specifier: 2.4.2
+    version: 2.4.2(postcss@8.4.30)(react-dom@18.2.0)(react@18.2.0)
   tailwindcss:
     specifier: 3.3.2
     version: 3.3.2(ts-node@10.9.1)
@@ -5225,8 +5225,8 @@ packages:
     resolution: {integrity: sha512-IqSUtOVP4ksd1C/ej5zeEh/BIP2ajqpn8c5x+q99gvcIG/Qf0cud5raVnE/Dwd0ua9TXYDoDc0RE5hBSdz22Ug==}
     dev: false
 
-  /reshaped@2.3.1(postcss@8.4.30)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-7j7YmN22zx4ALkBgarJZFYbuyMEIlyOD+mxW5dw2bBdiEnSwpcUgsfV4fihpAhqq581+uBCl4Ewha1+x98YrWA==}
+  /reshaped@2.4.2(postcss@8.4.30)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-0lYhgs4NpOw0Zp8eRkl4WGVzwWxPwWKAZzIolpgDdDDV3C6xiiCQMiJADVUk1R7120Lt2P+9DrmDdYlGnUciPA==}
     engines: {yarn: '>=1.0.0'}
     hasBin: true
     peerDependencies:
