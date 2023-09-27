@@ -17,8 +17,8 @@ interface FormProps {
 export default function Form({ fields, values, onChangeValue }: FormProps) {
   return (
     <View direction='row' width='100%' gap={10} className='!gap-y-[24px]'>
-      {fields.map((field, index) => (
-        <React.Fragment key={`${field.id}-${index}`}>
+      {fields.map((field) => (
+        <React.Fragment key={field.id}>
           {field.type === 'tabs' && (
             <View.Item columns={12} key={field.id}>
               <Tabs

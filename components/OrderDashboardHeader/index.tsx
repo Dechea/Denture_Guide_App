@@ -1,7 +1,7 @@
 'use client';
 
 import { UserButton } from '@clerk/nextjs';
-import { Actionable, Image, View } from 'reshaped';
+import { Image, View } from 'reshaped';
 
 export default function OrderDashboardHeader() {
   return (

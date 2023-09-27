@@ -69,11 +69,11 @@ export default function SelectedToothList({
       <View direction='column' gap={2} width='100%'>
         {productId &&
           !!toothGroupsList.length &&
-          toothGroupsList.map(({ toothNumber }, index) => {
+          toothGroupsList.map(({ toothNumber }) => {
             const selected = selectedProducts[toothNumber] === productId;
             return (
               <Card
-                key={`${toothNumber}-${index}`}
+                key={`${toothNumber}`}
                 padding={0}
                 className={cx(
                   '!shadow-[0px_2px_3px_rgba(0,0,0,0.1),_0px_1px_2px_-1px_rgba(0,0,0,0.1)]',

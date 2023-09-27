@@ -173,9 +173,9 @@ const NewProductView = ({
         paddingStart={6}
         gap={2}
       >
-        {Object.entries(implicitFilters).map(([key, value], index) => {
+        {Object.entries(implicitFilters).map(([key, value]) => {
           return (
-            <Badge key={`${key}-${index}`} variant='faded'>
+            <Badge key={key} variant='faded'>
               {`${key}: ${value}`}
             </Badge>
           );
