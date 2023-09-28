@@ -89,7 +89,7 @@ export default function CartOrder({
             <View direction='row' gap={4}>
               <DecheaLogo />
               <Text variant='body-1' weight='medium' color='neutral-faded'>
-                Orders
+                Order
               </Text>
             </View>
           </View.Item>
