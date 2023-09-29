@@ -3074,7 +3074,7 @@ export interface Ts {
 /**
  * status for the Product
  */
- status?: ACTIVE;
+ status?: string;
 /**
  * localizations for the Product
  */
@@ -3147,7 +3147,7 @@ export interface Ts {
 /**
  * status for the Product
  */
- status?: ACTIVE;
+ status?: string;
 /**
  * localizations for the Product
  */
@@ -3222,7 +3222,7 @@ export interface Ts {
          * @param { string } input.manufacturerProductId ManufacturerProductId for the Product
 * @param { Manufacturer } input.manufacturer Manufacturer for the Product
 * @param { string } input.image Image for the Product
-* @param { ACTIVE } input.status Status for the Product
+* @param { string } input.status Status for the Product
 * @param { ProductLocalization[] } input.localizations Localizations for the Product
 * @param { Implant } input.implant Implant for the Product
 * @param { Abutment } input.abutment Abutment for the Product

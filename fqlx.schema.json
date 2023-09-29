@@ -107,7 +107,7 @@
         "name": "string"
       },
       "image": "string",
-      "status": "ACTIVE",
+      "status": "string",
       "localizations": "ProductLocalization[]",
       "implant": {
         "implantLine": "string",
