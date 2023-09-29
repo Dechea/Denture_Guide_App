@@ -24,7 +24,9 @@ export default function FqlxClientProvider({
   const fetchToken = async () => {
     const localToken = await getToken({ template: 'fauna' });
     if (localToken !== token) {
-      setToken(localToken || 'invalid');
+      setToken(
+        localToken ?? process.env.NEXT_PUBLIC_FAUNA_DISCOVERY_TOKEN ?? 'invalid'
+      );
     }
   };
 

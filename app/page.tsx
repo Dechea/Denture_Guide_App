@@ -9,8 +9,12 @@ import { Query } from '../fqlx-generated/typedefs';
 import { redirect } from 'next/navigation';
 
 export default function Home() {
-  const { user } = useUser();
+  const { user, isSignedIn } = useUser();
   const query = useQuery<Query>();
+
+  if (!isSignedIn) {
+    redirect('/discovery-mode/treatments');
+  }
 
   const faunaUser = useMemo(
     () => query.User.firstWhere(`user => user.clerkId == "${user?.id}"`).exec(),
