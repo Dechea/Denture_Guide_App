@@ -9,7 +9,7 @@ import { Query } from '../../fqlx-generated/typedefs';
 import MenuIcon from '../Icons/MenuIcon';
 import CartIcon from '../Icons/Cart';
 import { useProductCalculations } from '../../hooks/useProductCalculations';
-import { UserButton } from '@clerk/nextjs';
+import { UserButton, useUser } from '@clerk/nextjs';
 
 interface HeaderProps {
   patientFileId: string;
@@ -19,6 +19,7 @@ export default function Header({ patientFileId }: HeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const query = useQuery<Query>();
+  const { isSignedIn } = useUser();
 
   const { totalCostOfProductsInCart, totalProductsInCart } =
     useProductCalculations(patientFileId);
@@ -124,7 +125,18 @@ export default function Header({ patientFileId }: HeaderProps) {
                   </Hidden>
                 </>
               </Button>
-              <UserButton />
+              {isSignedIn ? (
+                <UserButton />
+              ) : (
+                <Button
+                  color='primary'
+                  size='medium'
+                  variant='solid'
+                  onClick={() => router.push('/sign-in')}
+                >
+                  Sign in
+                </Button>
+              )}
             </View>
           </div>
         </div>
