@@ -132,6 +132,7 @@ export default function Header({ patientFileId }: HeaderProps) {
                   color='primary'
                   size='medium'
                   variant='solid'
+                  // @ts-ignore
                   onClick={() => router.push('/sign-in')}
                 >
                   Sign in
