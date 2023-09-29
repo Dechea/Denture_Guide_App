@@ -107,6 +107,7 @@
         "name": "string"
       },
       "image": "string",
+      "status": "ACTIVE",
       "localizations": "ProductLocalization[]",
       "implant": {
         "implantLine": "string",
@@ -116,7 +117,8 @@
         "insertionPost": "string",
         "length": "number",
         "lengthNeck": "number",
-        "diameterPlatform": "number"
+        "diameterPlatform": "number",
+        "useCase": "string"
       },
       "abutment": {
         "implantLine": "string",
@@ -127,8 +129,9 @@
         "material": "string",
         "angle": "number",
         "diameterPlatform": "number",
-        "heightsGingiva": "number[]",
-        "indication": "string"
+        "heightGingiva": "string",
+        "indications": "string[]",
+        "type": "string"
       },
       "healingAbutment": {
         "implantLine": "string",

@@ -1525,6 +1525,10 @@ export interface Ts {
  * diameterPlatform for the Implant
  */
  diameterPlatform?: number;
+/**
+ * useCase for the Implant
+ */
+ useCase?: string;
 
   }
 
@@ -1562,6 +1566,10 @@ export interface Ts {
  * diameterPlatform for the Implant
  */
  diameterPlatform?: number;
+/**
+ * useCase for the Implant
+ */
+ useCase?: string;
 
   } 
 
@@ -1593,6 +1601,7 @@ export interface Ts {
 * @param { number } input.length Length for the Implant
 * @param { number } input.lengthNeck LengthNeck for the Implant
 * @param { number } input.diameterPlatform DiameterPlatform for the Implant
+* @param { string } input.useCase UseCase for the Implant
        *
        * @returns {CreateMethods<Implant>} return new document.
        * 
@@ -1606,6 +1615,7 @@ export interface Ts {
  * length: "Value of the length"   
  * lengthNeck: "Value of the lengthNeck"   
  * diameterPlatform: "Value of the diameterPlatform"   
+ * useCase: "Value of the useCase"   
        * }).exec()
        * OR
        * query.Implant.create(`{  
@@ -1617,6 +1627,7 @@ export interface Ts {
  * length: "Value of the length"   
  * lengthNeck: "Value of the lengthNeck"   
  * diameterPlatform: "Value of the diameterPlatform"   
+ * useCase: "Value of the useCase"   
        * }`).exec()
        * 
        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
@@ -1691,13 +1702,17 @@ export interface Ts {
  */
  diameterPlatform?: number;
 /**
- * heightsGingiva for the Abutment
+ * heightGingiva for the Abutment
  */
- heightsGingiva?: number[];
+ heightGingiva?: string;
 /**
- * indication for the Abutment
+ * indications for the Abutment
  */
- indication?: string;
+ indications?: string[];
+/**
+ * type for the Abutment
+ */
+ type?: string;
 
   }
 
@@ -1736,13 +1751,17 @@ export interface Ts {
  */
  diameterPlatform?: number;
 /**
- * heightsGingiva for the Abutment
+ * heightGingiva for the Abutment
  */
- heightsGingiva?: number[];
+ heightGingiva?: string;
 /**
- * indication for the Abutment
+ * indications for the Abutment
  */
- indication?: string;
+ indications?: string[];
+/**
+ * type for the Abutment
+ */
+ type?: string;
 
   } 
 
@@ -1774,8 +1793,9 @@ export interface Ts {
 * @param { string } input.material Material for the Abutment
 * @param { number } input.angle Angle for the Abutment
 * @param { number } input.diameterPlatform DiameterPlatform for the Abutment
-* @param { number[] } input.heightsGingiva HeightsGingiva for the Abutment
-* @param { string } input.indication Indication for the Abutment
+* @param { string } input.heightGingiva HeightGingiva for the Abutment
+* @param { string[] } input.indications Indications for the Abutment
+* @param { string } input.type Type for the Abutment
        *
        * @returns {CreateMethods<Abutment>} return new document.
        * 
@@ -1789,8 +1809,9 @@ export interface Ts {
  * material: "Value of the material"   
  * angle: "Value of the angle"   
  * diameterPlatform: "Value of the diameterPlatform"   
- * heightsGingiva: "Value of the heightsGingiva"   
- * indication: "Value of the indication"   
+ * heightGingiva: "Value of the heightGingiva"   
+ * indications: "Value of the indications"   
+ * type: "Value of the type"   
        * }).exec()
        * OR
        * query.Abutment.create(`{  
@@ -1802,8 +1823,9 @@ export interface Ts {
  * material: "Value of the material"   
  * angle: "Value of the angle"   
  * diameterPlatform: "Value of the diameterPlatform"   
- * heightsGingiva: "Value of the heightsGingiva"   
- * indication: "Value of the indication"   
+ * heightGingiva: "Value of the heightGingiva"   
+ * indications: "Value of the indications"   
+ * type: "Value of the type"   
        * }`).exec()
        * 
        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
@@ -3050,6 +3072,10 @@ export interface Ts {
  */
  image?: string;
 /**
+ * status for the Product
+ */
+ status?: ACTIVE;
+/**
  * localizations for the Product
  */
  localizations: ProductLocalization[];
@@ -3118,6 +3144,10 @@ export interface Ts {
  * image for the Product
  */
  image?: string;
+/**
+ * status for the Product
+ */
+ status?: ACTIVE;
 /**
  * localizations for the Product
  */
@@ -3192,6 +3222,7 @@ export interface Ts {
          * @param { string } input.manufacturerProductId ManufacturerProductId for the Product
 * @param { Manufacturer } input.manufacturer Manufacturer for the Product
 * @param { string } input.image Image for the Product
+* @param { ACTIVE } input.status Status for the Product
 * @param { ProductLocalization[] } input.localizations Localizations for the Product
 * @param { Implant } input.implant Implant for the Product
 * @param { Abutment } input.abutment Abutment for the Product
@@ -3212,6 +3243,7 @@ export interface Ts {
  * manufacturerProductId: "Value of the manufacturerProductId"   
  * manufacturer: "Value of the manufacturer"   
  * image: "Value of the image"   
+ * status: "Value of the status"   
  * localizations: "Value of the localizations"   
  * implant: "Value of the implant"   
  * abutment: "Value of the abutment"   
@@ -3230,6 +3262,7 @@ export interface Ts {
  * manufacturerProductId: "Value of the manufacturerProductId"   
  * manufacturer: "Value of the manufacturer"   
  * image: "Value of the image"   
+ * status: "Value of the status"   
  * localizations: "Value of the localizations"   
  * implant: "Value of the implant"   
  * abutment: "Value of the abutment"   

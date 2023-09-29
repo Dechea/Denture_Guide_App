@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Hidden, Modal, View, useToggle } from 'reshaped';
 import Treatments from '../Treatments';
 import { useTeethDiagramStore } from '../../zustand/teethDiagram';
@@ -30,6 +30,7 @@ import TreatmentOptionCard from '../TreatmentOptionCard';
 import UnionIcon from '../Icons/Union';
 import ComposedTeethDiagram from './composedTeethDiagram';
 import BinIcon from '../Icons/Bin';
+import { patientFileMockData } from '../../__mocks__/discovery';
 
 export default function TeethDiagramWithTreatments({
   patientFileId,
@@ -175,9 +176,13 @@ export default function TeethDiagramWithTreatments({
   };
 
   const fetchPatientFile = async () => {
-    const patientFile: PatientFile = await query.PatientFile.byId(
-      patientFileId
-    ).exec();
+    let patientFile: PatientFile;
+
+    if (patientFileId === 'discovery-mode') {
+      patientFile = patientFileMockData;
+    } else {
+      patientFile = await query.PatientFile.byId(patientFileId).exec();
+    }
 
     // @ts-expect-error
     if (patientFile?.exists === false) {
@@ -202,8 +207,8 @@ export default function TeethDiagramWithTreatments({
   // Filter valid treatments and treatment groups
   useEffect(() => {
     const treatmentAndTreatmentGroups = [
-      ...fqlxTreatmentGroups?.data,
-      ...fqlxTreatments?.data,
+      ...(fqlxTreatmentGroups?.data ?? []),
+      ...(fqlxTreatments?.data ?? []),
     ];
 
     const availableTreatments = validTreatments.map((treatment) => {
