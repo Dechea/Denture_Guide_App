@@ -13,7 +13,7 @@ export const useProductCalculations = (patientFileId: string) => {
 
   const selectedProducts = useMemo(
     () =>
-      patientFile.teeth.flatMap((tooth) => [
+      patientFile.teeth?.flatMap((tooth) => [
         ...(tooth.root?.treatmentDoc?.selectedProducts ?? []),
         ...(tooth.crown?.treatmentDoc?.selectedProducts ?? []),
       ]),
@@ -26,7 +26,7 @@ export const useProductCalculations = (patientFileId: string) => {
     totalCostOfProductsInCartWithTax,
   } = useMemo(
     () =>
-      selectedProducts.reduce(
+      selectedProducts?.reduce(
         (acc, { selectedProduct, quantity }) => {
           acc.totalProductsInCart += Number(quantity);
 
@@ -52,7 +52,11 @@ export const useProductCalculations = (patientFileId: string) => {
           totalCostOfProductsInCart: 0,
           totalCostOfProductsInCartWithTax: 0,
         }
-      ),
+      ) ?? {
+        totalProductsInCart: 0,
+        totalCostOfProductsInCart: 0,
+        totalCostOfProductsInCartWithTax: 0,
+      },
     [selectedProducts]
   );
 
