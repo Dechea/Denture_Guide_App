@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from 'fauna-typed';
-import { Query, Tooth } from '../fqlx-generated/typedefs';
+import { PatientFile, Query, Tooth } from '../fqlx-generated/typedefs';
 
 interface UseProductCrudOpsProps {
   patientFileId: string;
@@ -13,22 +13,41 @@ export const useProductCrudOps = ({
   const query = useQuery<Query>();
 
   const addOrUpdateProductInFqlx = async (
-    manipulateTeeth: (teeth: Tooth[]) => void
+    manipulateTeeth: (teeth: Tooth[]) => Promise<Tooth[]>
   ) => {
-    const fqlxTeeth =
-      (await query.PatientFile.byId(patientFileId).exec()).teeth || [];
-    const teeth = [...fqlxTeeth];
+    let patientFile: PatientFile;
 
-    manipulateTeeth(teeth);
+    if (patientFileId === 'discovery-mode') {
+      const patientFileString = localStorage.getItem('discovery-mode');
 
-    const stringifyTeeth = JSON.stringify(teeth).replaceAll(
-      /"Product.byId\(\\"(\d*)\\"\)"/g,
-      'Product.byId("$1")'
-    );
+      if (patientFileString) {
+        patientFile = JSON.parse(patientFileString) as PatientFile;
+      } else {
+        patientFile = { teeth: [] } as unknown as PatientFile;
+      }
+    } else {
+      patientFile = query.PatientFile.byId(patientFileId)
+        .project({ teeth: true })
+        .exec();
+    }
 
-    await query.PatientFile.byId(patientFileId)
-      .update(`{ teeth: ${stringifyTeeth} }`)
-      .exec();
+    const teeth = await manipulateTeeth([...patientFile.teeth]);
+
+    if (patientFileId === 'discovery-mode') {
+      localStorage.setItem(
+        'discovery-mode',
+        JSON.stringify({ ...patientFile, teeth: teeth })
+      );
+    } else {
+      const stringifyTeeth = JSON.stringify(teeth).replaceAll(
+        /"Product.byId\(\\"(\d*)\\"\)"/g,
+        'Product.byId("$1")'
+      );
+
+      await query.PatientFile.byId(patientFileId)
+        .update(`{ teeth: ${stringifyTeeth} }`)
+        .exec();
+    }
   };
 
   return { addOrUpdateProductInFqlx };

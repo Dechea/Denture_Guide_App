@@ -2,20 +2,34 @@
 
 import { useQuery } from 'fauna-typed';
 import { useMemo } from 'react';
-import { Query } from '../fqlx-generated/typedefs';
+import { PatientFile, Query } from '../fqlx-generated/typedefs';
 
 export const useProductCalculations = (patientFileId: string) => {
   const query = useQuery<Query>();
 
-  const patientFile = query.PatientFile.byId(patientFileId)
-    .project({ teeth: true })
-    .exec();
+  console.log('ls, ', localStorage.getItem('discovery-mode'));
+
+  const patientFile = useMemo(() => {
+    if (patientFileId === 'discovery-mode') {
+      const patientFileString = localStorage.getItem('discovery-mode');
+
+      if (patientFileString) {
+        return JSON.parse(patientFileString) as PatientFile;
+      } else {
+        return { teeth: [] } as unknown as PatientFile;
+      }
+    } else {
+      return query.PatientFile.byId(patientFileId)
+        .project({ teeth: true })
+        .exec();
+    }
+  }, [patientFileId, query, localStorage.getItem('discovery-mode')]);
 
   const selectedProducts = useMemo(
     () =>
       patientFile.teeth?.flatMap((tooth) => [
-        ...(tooth.root?.treatmentDoc?.selectedProducts ?? []),
-        ...(tooth.crown?.treatmentDoc?.selectedProducts ?? []),
+        ...(tooth.root?.treatmentDoc.selectedProducts ?? []),
+        ...(tooth.crown?.treatmentDoc.selectedProducts ?? []),
       ]),
     [patientFile]
   );

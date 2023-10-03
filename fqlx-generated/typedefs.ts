@@ -1173,116 +1173,6 @@ export interface Ts {
     }
 
 
-  export interface Price {
-    /**
- * tax for the Price
- */
- tax?: number;
-/**
- * amount for the Price
- */
- amount?: number;
-/**
- * currency for the Price
- */
- currency?: string;
-
-  }
-
-
-  export interface PriceInput {
-    /**
- * tax for the Price
- */
- tax?: number;
-/**
- * amount for the Price
- */
- amount?: number;
-/**
- * currency for the Price
- */
- currency?: string;
-
-  } 
-
-
-  export interface PriceMethods {
-      /**
-       * all method get the set of all documents in the Price collection.
-       * 
-       * @param
-       * 
-       * @returns {AllMethods<Price>} method returns the set of all documents in Price collection for the given range.
-       * 
-       * @example
-       * query.Price.all().exec()
-       * 
-       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
-       */
-      all(): AllMethods<Price>;
-
-      /**
-       * create method creates a Price document in the collection with the provided property values.
-       * 
-       * @param {PriceInput | string} input - will be the Price which you want to add.
-         * @param { number } input.tax Tax for the Price
-* @param { number } input.amount Amount for the Price
-* @param { string } input.currency Currency for the Price
-       *
-       * @returns {CreateMethods<Price>} return new document.
-       * 
-       * @example
-       * query.Price.create({  
- * tax: "Value of the tax"   
- * amount: "Value of the amount"   
- * currency: "Value of the currency"   
-       * }).exec()
-       * OR
-       * query.Price.create(`{  
- * tax: "Value of the tax"   
- * amount: "Value of the amount"   
- * currency: "Value of the currency"   
-       * }`).exec()
-       * 
-       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
-       */
-    create(input: (PriceInput | string)): CreateMethods<Price>;
-
-      /**
-       * byId method get a Price document by its document ID.
-       * This will returns available Fqlx byId methods
-       * 
-       * @param {string} id - The ID of the document to retrieve
-       * 
-       * @returns {ByIdMethods<Price, PriceInput>} return document when it exists and is accessible, else return
-       * null when the document does not exist or is inaccessible.
-       * 
-       * @example
-       * query.Price.byId("21545645646554").exec()
-       * 
-       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
-       */
-       byId(id: string): ByIdMethods<Price, PriceInput>
-
-       /**
-        * first where method get the first matching value from the Set.
-        * 
-        * @param {(inputCondition: ((data: T) => boolean) | string)} function takes in a document of type T and returns a boolean
-        * 
-        * @returns {FirstWhereMethods<T>}  returns the first matching value in the Set, or null if the Set is empty or no values match.
-        * 
-        * @example
-        * query.Address.all().firstWhere((data) => data.country == 'uk').exec();
-        * OR
-        * query.Address.all().firstWhere(`(data) => data.${dynamicKey} == "${dynamicValueToCheck}"`).exec();
-        * 
-        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
-        */
-       firstWhere(inputCondition: ((data: Price) => boolean) | string): FirstWhereMethods<Price>;
-    }
-
-
   export interface ProductLocalization {
     /**
  * name for the ProductLocalization
@@ -1401,6 +1291,116 @@ export interface Ts {
         * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
         */
        firstWhere(inputCondition: ((data: ProductLocalization) => boolean) | string): FirstWhereMethods<ProductLocalization>;
+    }
+
+
+  export interface Price {
+    /**
+ * tax for the Price
+ */
+ tax?: number;
+/**
+ * amount for the Price
+ */
+ amount?: number;
+/**
+ * currency for the Price
+ */
+ currency?: string;
+
+  }
+
+
+  export interface PriceInput {
+    /**
+ * tax for the Price
+ */
+ tax?: number;
+/**
+ * amount for the Price
+ */
+ amount?: number;
+/**
+ * currency for the Price
+ */
+ currency?: string;
+
+  } 
+
+
+  export interface PriceMethods {
+      /**
+       * all method get the set of all documents in the Price collection.
+       * 
+       * @param
+       * 
+       * @returns {AllMethods<Price>} method returns the set of all documents in Price collection for the given range.
+       * 
+       * @example
+       * query.Price.all().exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
+       */
+      all(): AllMethods<Price>;
+
+      /**
+       * create method creates a Price document in the collection with the provided property values.
+       * 
+       * @param {PriceInput | string} input - will be the Price which you want to add.
+         * @param { number } input.tax Tax for the Price
+* @param { number } input.amount Amount for the Price
+* @param { string } input.currency Currency for the Price
+       *
+       * @returns {CreateMethods<Price>} return new document.
+       * 
+       * @example
+       * query.Price.create({  
+ * tax: "Value of the tax"   
+ * amount: "Value of the amount"   
+ * currency: "Value of the currency"   
+       * }).exec()
+       * OR
+       * query.Price.create(`{  
+ * tax: "Value of the tax"   
+ * amount: "Value of the amount"   
+ * currency: "Value of the currency"   
+       * }`).exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
+       */
+    create(input: (PriceInput | string)): CreateMethods<Price>;
+
+      /**
+       * byId method get a Price document by its document ID.
+       * This will returns available Fqlx byId methods
+       * 
+       * @param {string} id - The ID of the document to retrieve
+       * 
+       * @returns {ByIdMethods<Price, PriceInput>} return document when it exists and is accessible, else return
+       * null when the document does not exist or is inaccessible.
+       * 
+       * @example
+       * query.Price.byId("21545645646554").exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
+       */
+       byId(id: string): ByIdMethods<Price, PriceInput>
+
+       /**
+        * first where method get the first matching value from the Set.
+        * 
+        * @param {(inputCondition: ((data: T) => boolean) | string)} function takes in a document of type T and returns a boolean
+        * 
+        * @returns {FirstWhereMethods<T>}  returns the first matching value in the Set, or null if the Set is empty or no values match.
+        * 
+        * @example
+        * query.Address.all().firstWhere((data) => data.country == 'uk').exec();
+        * OR
+        * query.Address.all().firstWhere(`(data) => data.${dynamicKey} == "${dynamicValueToCheck}"`).exec();
+        * 
+        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
+        */
+       firstWhere(inputCondition: ((data: Price) => boolean) | string): FirstWhereMethods<Price>;
     }
 
 
@@ -1880,9 +1880,9 @@ export interface Ts {
  */
  platformSwitch?: boolean;
 /**
- * wprkflows for the HealingAbutment
+ * workflows for the HealingAbutment
  */
- wprkflows?: string[];
+ workflows?: string[];
 /**
  * material for the HealingAbutment
  */
@@ -1913,9 +1913,9 @@ export interface Ts {
  */
  platformSwitch?: boolean;
 /**
- * wprkflows for the HealingAbutment
+ * workflows for the HealingAbutment
  */
- wprkflows?: string[];
+ workflows?: string[];
 /**
  * material for the HealingAbutment
  */
@@ -1954,7 +1954,7 @@ export interface Ts {
          * @param { string } input.implantLine ImplantLine for the HealingAbutment
 * @param { string } input.shape Shape for the HealingAbutment
 * @param { boolean } input.platformSwitch PlatformSwitch for the HealingAbutment
-* @param { string[] } input.wprkflows Wprkflows for the HealingAbutment
+* @param { string[] } input.workflows Workflows for the HealingAbutment
 * @param { string } input.material Material for the HealingAbutment
 * @param { number } input.diameterPlatform DiameterPlatform for the HealingAbutment
 * @param { number } input.heightGingiva HeightGingiva for the HealingAbutment
@@ -1966,7 +1966,7 @@ export interface Ts {
  * implantLine: "Value of the implantLine"   
  * shape: "Value of the shape"   
  * platformSwitch: "Value of the platformSwitch"   
- * wprkflows: "Value of the wprkflows"   
+ * workflows: "Value of the workflows"   
  * material: "Value of the material"   
  * diameterPlatform: "Value of the diameterPlatform"   
  * heightGingiva: "Value of the heightGingiva"   
@@ -1976,7 +1976,7 @@ export interface Ts {
  * implantLine: "Value of the implantLine"   
  * shape: "Value of the shape"   
  * platformSwitch: "Value of the platformSwitch"   
- * wprkflows: "Value of the wprkflows"   
+ * workflows: "Value of the workflows"   
  * material: "Value of the material"   
  * diameterPlatform: "Value of the diameterPlatform"   
  * heightGingiva: "Value of the heightGingiva"   
@@ -4200,6 +4200,10 @@ SelectedProduct: SelectedProductMethods;
  * @returns This return fqlx methods for the ProductLocalization 
  */ 
 ProductLocalization: ProductLocalizationMethods;
+/**
+ * @returns This return fqlx methods for the Price 
+ */ 
+Price: PriceMethods;
 /**
  * @returns This return fqlx methods for the Product 
  */ 

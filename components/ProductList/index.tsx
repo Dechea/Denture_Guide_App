@@ -44,13 +44,15 @@ const ProductList = ({
   const query = useQuery<Query>();
   const { addOrUpdateProductInFqlx } = useProductCrudOps({ patientFileId });
 
-  const getMappedTeeth = (
+  const getMappedTeeth = async (
     teeth: Tooth[],
     productToDelete: string,
     toothNumber: number,
     selectedProducts: SelectedProducts
   ) => {
-    teeth.forEach((tooth: Tooth) => {
+    const mappedTeeth: Tooth[] = [];
+
+    for (const tooth of teeth) {
       const localToothNumber = Number(tooth.name);
 
       for (const area of Object.values(AREA_TYPE)) {
@@ -85,7 +87,9 @@ const ProductList = ({
           });
         }
       }
-    });
+      mappedTeeth.push(tooth);
+    }
+    return mappedTeeth;
   };
 
   const handleClickOnProduct = (
@@ -93,9 +97,9 @@ const ProductList = ({
     toothNumber: number,
     selectedProducts: SelectedProducts
   ) => {
-    addOrUpdateProductInFqlx((teeth) => {
-      getMappedTeeth(teeth, productToDelete, toothNumber, selectedProducts);
-    });
+    addOrUpdateProductInFqlx((teeth) =>
+      getMappedTeeth(teeth, productToDelete, toothNumber, selectedProducts)
+    );
 
     const activeTreatmentGroupIndex = Number(activeTreatmentGroup);
 

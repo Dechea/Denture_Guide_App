@@ -2,7 +2,7 @@ import { useQuery } from 'fauna-typed';
 import { useProductStore } from '../zustand/product';
 import { PRODUCT_TYPE, TREATMENT_GROUP } from '../zustand/product/interface';
 import { useTeethDiagramStore } from '../zustand/teethDiagram';
-import { Query } from '../fqlx-generated/typedefs';
+import { PatientFile, Query } from '../fqlx-generated/typedefs';
 import { useMemo, useState } from 'react';
 
 interface TabRequirementsProps {
@@ -53,15 +53,23 @@ export function useTabsStatus() {
   const [tabsStatus, setTabsStatus] = useState(defaultActiveTabs);
   const query = useQuery<Query>();
 
-  const patientFile = useMemo(
-    () =>
-      activePatientFileId
+  const patientFile = useMemo(() => {
+    if (activePatientFileId === 'discovery-mode') {
+      const patientFileString = localStorage.getItem('discovery-mode');
+
+      if (patientFileString) {
+        return JSON.parse(patientFileString) as PatientFile;
+      } else {
+        return { teeth: [] };
+      }
+    } else {
+      return activePatientFileId
         ? query.PatientFile.byId(activePatientFileId)
             .project({ teeth: true })
             .exec()
-        : { teeth: [] },
-    [activePatientFileId, query.PatientFile]
-  );
+        : { teeth: [] };
+    }
+  }, [activePatientFileId, query, localStorage.getItem('discovery-mode')]);
 
   const getTabsStatus = () => {
     const localTabsStatus: TabsStatusProps = { ...defaultActiveTabs };

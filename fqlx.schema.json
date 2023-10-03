@@ -89,14 +89,17 @@
       "name": "string",
       "locale": "string",
       "description": "string",
-      "price": {
-        "tax": "number",
-        "amount": "number",
-        "currency": "string"
-      }
+      "price": "Price"
     },
     "constraints": {
       "required": ["locale", "price"]
+    }
+  },
+  "Price": {
+    "fields": {
+      "tax": "number",
+      "amount": "number",
+      "currency": "string"
     }
   },
   "Product": {
@@ -137,7 +140,7 @@
         "implantLine": "string",
         "shape": "string",
         "platformSwitch": "boolean",
-        "wprkflows": "string[]",
+        "workflows": "string[]",
         "material": "string",
         "diameterPlatform": "number",
         "heightGingiva": "number"

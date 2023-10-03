@@ -24,9 +24,21 @@ export function useAvailableTeethByTreatment({
   } = useProductStore();
   const query = useQuery<Query>();
 
-  const patientFile: PatientFile = query.PatientFile.byId(patientFileId)
-    .project({ teeth: true })
-    .exec();
+  let patientFile: PatientFile;
+
+  if (patientFileId === 'discovery-mode') {
+    const patientFileString = localStorage.getItem('discovery-mode');
+
+    if (patientFileString) {
+      patientFile = JSON.parse(patientFileString) as PatientFile;
+    } else {
+      patientFile = { teeth: [] } as unknown as PatientFile;
+    }
+  } else {
+    patientFile = query.PatientFile.byId(patientFileId)
+      .project({ teeth: true })
+      .exec();
+  }
 
   const patientFileTeeth = [...(patientFile.teeth || [])];
 

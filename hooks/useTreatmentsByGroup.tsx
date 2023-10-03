@@ -4,7 +4,7 @@ import { TREATMENT_GROUP, PRODUCT_TYPE } from '../zustand/product/interface';
 import { useTeethDiagramStore } from '../zustand/teethDiagram';
 import { TreatmentVisualization } from '../zustand/teethDiagram/interface';
 import { useQuery } from 'fauna-typed';
-import { Query } from '../fqlx-generated/typedefs';
+import { PatientFile, Query } from '../fqlx-generated/typedefs';
 
 interface MapProductRequirementsProps {
   [key: string]: {
@@ -113,15 +113,23 @@ export function useTreatmentsByGroup() {
   const query = useQuery<Query>();
   const [toothGroups, setToothGroups] = useState<Group[]>([]);
 
-  const patientFile = useMemo(
-    () =>
-      activePatientFileId
+  const patientFile = useMemo(() => {
+    if (activePatientFileId === 'discovery-mode') {
+      const patientFileString = localStorage.getItem('discovery-mode');
+
+      if (patientFileString) {
+        return JSON.parse(patientFileString) as PatientFile;
+      } else {
+        return { teeth: [] };
+      }
+    } else {
+      return activePatientFileId
         ? query.PatientFile.byId(activePatientFileId)
             .project({ teeth: true })
             .exec()
-        : { teeth: [] },
-    [activePatientFileId, query.PatientFile]
-  );
+        : { teeth: [] };
+    }
+  }, [activePatientFileId, query, localStorage.getItem('discovery-mode')]);
 
   const mappingToApply = mapProductRequirements[activeProductTab];
   const unLockedTeethGroup: TreatmentVisualization[] = [];
