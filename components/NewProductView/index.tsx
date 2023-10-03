@@ -55,13 +55,15 @@ const NewProductView = ({
 
   const query = useQuery<Query>();
 
-  const getMappedTeeth = (
+  const getMappedTeeth = async (
     teeth: Tooth[],
     productToDelete: string,
     toothNumber: number,
     selectedProducts: SelectedProducts
   ) => {
-    teeth.forEach((tooth: Tooth) => {
+    const mappedTeeth: Tooth[] = [];
+
+    for (const tooth of teeth) {
       const localToothNumber = Number(tooth.name);
 
       for (const area of Object.values(AREA_TYPE)) {
@@ -70,33 +72,43 @@ const NewProductView = ({
 
         // remove old, unselected product
         if (toothInArea) {
-          tooth[area].treatmentDoc.selectedProducts = tooth[
-            area
-          ].treatmentDoc.selectedProducts?.filter(
-            ({ selectedProduct }) => selectedProduct?.id !== productToDelete
-          );
+          tooth[area].treatmentDoc.selectedProducts =
+            tooth[area].treatmentDoc.selectedProducts?.filter(
+              ({ selectedProduct }) => selectedProduct?.id !== productToDelete
+            ) ?? [];
         }
 
         // convert existing products from object to ref
-        if (tooth[area].treatmentDoc.selectedProducts?.length) {
-          tooth[area].treatmentDoc.selectedProducts?.forEach((product) => {
-            // @ts-expect-error
-            product.selectedProduct = `Product.byId("${product.selectedProduct?.id}")`;
-          });
-        } else {
-          tooth[area].treatmentDoc.selectedProducts = [];
+        if (patientFileId !== 'discovery-mode') {
+          if (tooth[area].treatmentDoc.selectedProducts?.length) {
+            tooth[area].treatmentDoc.selectedProducts?.forEach((product) => {
+              // @ts-expect-error
+              product.selectedProduct = `Product.byId("${product.selectedProduct?.id}")`;
+            });
+          }
         }
 
         // add new product
         if (toothInArea && selectedProducts[toothNumber]) {
+          let newProduct;
+          if (patientFileId === 'discovery-mode') {
+            newProduct = await query.Product.byId(
+              selectedProducts[toothNumber]
+            ).exec();
+          } else {
+            newProduct = `Product.byId("${selectedProducts[toothNumber]}")`;
+          }
           tooth[area].treatmentDoc.selectedProducts?.push({
-            // @ts-expect-error
-            selectedProduct: `Product.byId("${selectedProducts[toothNumber]}")`,
+            // @ts-ignore
+            selectedProduct: newProduct,
             quantity: 1,
           });
         }
       }
-    });
+      mappedTeeth.push(tooth);
+    }
+
+    return mappedTeeth;
   };
 
   const productsCount = useMemo(
@@ -113,9 +125,9 @@ const NewProductView = ({
     toothNumber: number,
     selectedProducts: SelectedProducts
   ) => {
-    addOrUpdateProductInFqlx((teeth) => {
-      getMappedTeeth(teeth, productToDelete, toothNumber, selectedProducts);
-    });
+    addOrUpdateProductInFqlx((teeth) =>
+      getMappedTeeth(teeth, productToDelete, toothNumber, selectedProducts)
+    );
 
     const activeTreatmentGroupIndex = Number(activeTreatmentGroup);
 

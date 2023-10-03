@@ -17,6 +17,7 @@ import CartOrder from '../../../components/CartOrder';
 import CartProducts from '../../../components/CartProducts';
 import {
   Address,
+  PatientFile,
   Product,
   Query,
   SelectedProduct,
@@ -67,15 +68,22 @@ export default function Cart({ params }: CartProps) {
 
   const { isValid, handleSubmit } = formik;
 
-  const patientFile = useMemo(
-    () =>
-      query.PatientFile.firstWhere(
-        `(product) => product.id == "${params.patientFileId}"`
-      )
-        .project({ patient: true, teeth: true })
-        .exec(),
-    [params.patientFileId, query]
-  );
+  const patientFile = useMemo(() => {
+    if (params.patientFileId === 'discovery-mode') {
+      const localPatientFile = localStorage.getItem('discovery-mode');
+
+      if (localPatientFile) {
+        return JSON.parse(localPatientFile) as PatientFile;
+      } else {
+        return { teeth: [] };
+      }
+    }
+    return query.PatientFile.firstWhere(
+      `(file) => file.id == "${params.patientFileId}"`
+    )
+      .project({ patient: true, teeth: true })
+      .exec();
+  }, [params.patientFileId, query, localStorage.getItem('discovery-mode')]);
 
   const userOrganization = query.User.firstWhere(
     `user => user.clerkId == "${user?.id}"`
@@ -92,8 +100,10 @@ export default function Cart({ params }: CartProps) {
     toothNumber: number,
     productId: string
   ) => {
-    const getMappedTeeth = (teeth: Tooth[]) => {
-      teeth.forEach((tooth: Tooth) => {
+    const getMappedTeeth = async (teeth: Tooth[]) => {
+      const mappedTeeth: Tooth[] = [];
+
+      for (const tooth of teeth) {
         const localToothNumber = Number(tooth.name);
 
         Object.values(AREA_TYPE).forEach((area) => {
@@ -104,14 +114,14 @@ export default function Cart({ params }: CartProps) {
 
           // @ts-expect-error
           tooth[area].treatmentDoc.selectedProducts = selectedProducts.map(
-            ({ selectedProduct, quantity, ...args }) => {
+            ({ selectedProduct, quantity }) => {
               const isProductMatched = selectedProduct?.id === productId;
 
               return {
-                ...args,
-                selectedProduct: `Product.byId("${
-                  selectedProduct?.id as string
-                }")`,
+                selectedProduct:
+                  params.patientFileId === 'discovery-mode'
+                    ? selectedProduct
+                    : `Product.byId("${selectedProduct?.id as string}")`,
                 quantity:
                   isToothMatched && isProductMatched
                     ? updatedQuantity
@@ -120,7 +130,10 @@ export default function Cart({ params }: CartProps) {
             }
           );
         });
-      });
+        mappedTeeth.push(tooth);
+      }
+
+      return mappedTeeth;
     };
 
     addOrUpdateProductInFqlx(getMappedTeeth);
@@ -130,31 +143,38 @@ export default function Cart({ params }: CartProps) {
     toothNumber: number,
     productId: string
   ) => {
-    const getMappedTeeth = (teeth: Tooth[]) => {
-      teeth.forEach((tooth: Tooth) => {
+    const getMappedTeeth = async (teeth: Tooth[]) => {
+      const mappedTeeth: Tooth[] = [];
+
+      for (const tooth of teeth) {
         const localToothNumber = Number(tooth.name);
 
         Object.values(AREA_TYPE).forEach((area) => {
           const selectedProducts = [
-            ...(tooth[area].treatmentDoc.selectedProducts ?? []),
+            ...(tooth[area].treatmentDoc?.selectedProducts ?? []),
           ];
           const filteredSelectedProducts: SelectedProduct[] = [];
           const isToothMatched = localToothNumber === toothNumber;
 
-          selectedProducts.forEach(({ quantity, selectedProduct, ...args }) => {
+          selectedProducts.forEach(({ quantity, selectedProduct }) => {
             if (!(selectedProduct?.id === productId && isToothMatched)) {
               filteredSelectedProducts.push({
-                ...args,
                 selectedProduct:
-                  `Product.byId("${selectedProduct?.id}")` as unknown as Product,
+                  params.patientFileId === 'discovery-mode'
+                    ? selectedProduct
+                    : (`Product.byId("${selectedProduct?.id}")` as unknown as Product),
                 quantity: quantity,
               });
             }
           });
 
+          // @ts-ignore
           tooth[area].treatmentDoc.selectedProducts = filteredSelectedProducts;
         });
-      });
+        mappedTeeth.push(tooth);
+      }
+
+      return mappedTeeth;
     };
 
     addOrUpdateProductInFqlx(getMappedTeeth);
@@ -209,7 +229,7 @@ export default function Cart({ params }: CartProps) {
     setSavedShippingIndex(0);
     setSavedBillingIndex(0);
 
-    if (!userOrganization) {
+    if (params.patientFileId !== 'discovery-mode' && !userOrganization) {
       redirect('/users/sync');
     }
   }, []);

@@ -39,6 +39,14 @@ export default function TeethDiagramWithTreatments({
 }) {
   const query = useQuery<Query>();
   const { activate, deactivate, active } = useToggle(false);
+  const [discoveryModePatientFile, setDiscoveryModePatientFile] =
+    useState<PatientFile>(patientFileMockData);
+
+  useEffect(() => {
+    const patientFile = JSON.stringify(discoveryModePatientFile);
+
+    localStorage.setItem('discovery-mode', patientFile);
+  }, [discoveryModePatientFile]);
 
   const {
     treatments,
@@ -67,6 +75,15 @@ export default function TeethDiagramWithTreatments({
   const fqlxTreatments = query.Treatment.all().exec();
 
   const callPatientFileAPI = async (teeth: Tooth[]) => {
+    if (patientFileId === 'discovery-mode') {
+      setDiscoveryModePatientFile({
+        ...discoveryModePatientFile,
+        teeth: teeth,
+      });
+
+      return;
+    }
+
     const stringifyTeeth = JSON.stringify(teeth).replaceAll(
       /"Product.byId\(\\"(\d*)\\"\)"/g,
       'Product.byId("$1")'
@@ -81,7 +98,13 @@ export default function TeethDiagramWithTreatments({
 
   const handleTreatmentsClick = async (treatment: TreatmentProps) => {
     setRecentAddedTreatment(treatment.visualization);
-    const patientFileData = await query.PatientFile.byId(patientFileId).exec();
+    let patientFileData: PatientFile;
+
+    if (patientFileId === 'discovery-mode') {
+      patientFileData = { ...discoveryModePatientFile };
+    } else {
+      patientFileData = await query.PatientFile.byId(patientFileId).exec();
+    }
 
     // @ts-expect-error
     if (!patientFileData?.exists === false) {
@@ -93,7 +116,8 @@ export default function TeethDiagramWithTreatments({
       'treatments' in treatment ? treatment.treatments : [treatment];
     const mappedPatientFile = getMappedPatientFileData(
       patientFileData,
-      treatmentsToApply as TreatmentProps[]
+      treatmentsToApply as TreatmentProps[],
+      patientFileId === 'discovery-mode'
     );
     const newTreatments: { [key: string]: TreatmentVisualization } = {
       ...treatments,
@@ -134,9 +158,13 @@ export default function TeethDiagramWithTreatments({
       return;
     }
 
-    const patientFile: PatientFile = await query.PatientFile.byId(
-      patientFileId
-    ).exec();
+    let patientFile: PatientFile;
+
+    if (patientFileId === 'discovery-mode') {
+      patientFile = discoveryModePatientFile;
+    } else {
+      patientFile = await query.PatientFile.byId(patientFileId).exec();
+    }
 
     const activeToothNames = activeToothParts.map(
       (active) => active.split('-')[0]
@@ -179,7 +207,7 @@ export default function TeethDiagramWithTreatments({
     let patientFile: PatientFile;
 
     if (patientFileId === 'discovery-mode') {
-      patientFile = patientFileMockData;
+      patientFile = discoveryModePatientFile;
     } else {
       patientFile = await query.PatientFile.byId(patientFileId).exec();
     }

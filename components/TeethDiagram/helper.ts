@@ -246,7 +246,8 @@ export const replaceSelectedProductWithRef = (teeth: Tooth[]) => {
 
 export const getMappedPatientFileData = (
   patientFile: PatientFile,
-  selectedTreatments: TreatmentProps[]
+  selectedTreatments: TreatmentProps[],
+  isDiscovery?: boolean
 ) => {
   const store = useTeethDiagramStore.getState();
   const patientFileData = { ...patientFile };
@@ -312,8 +313,14 @@ export const getMappedPatientFileData = (
   });
 
   // Storing ref for selected products for each area
-  const teethWithSelectedProductRef =
-    replaceSelectedProductWithRef(patientFileTeeth);
+  let teethWithSelectedProductRef;
+
+  if (isDiscovery) {
+    teethWithSelectedProductRef = [...patientFileTeeth];
+  } else {
+    teethWithSelectedProductRef =
+      replaceSelectedProductWithRef(patientFileTeeth);
+  }
 
   return {
     teeth: [...teethWithSelectedProductRef],
