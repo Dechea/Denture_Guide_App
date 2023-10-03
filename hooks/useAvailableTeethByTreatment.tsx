@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useProductStore } from '../zustand/product';
-import { useQuery } from 'fauna-typed';
+import { useLocalStorage, useQuery } from 'fauna-typed';
 import { PatientFile, Query } from '../fqlx-generated/typedefs';
 import { AREA_TYPE, TREATMENT_GROUP } from '../zustand/product/interface';
 
@@ -23,17 +23,15 @@ export function useAvailableTeethByTreatment({
     setAcceptedTreatmentGroups,
   } = useProductStore();
   const query = useQuery<Query>();
+  const { value: discoveryModePatientFile } = useLocalStorage(
+    'discovery-mode',
+    'PatientFile'
+  );
 
   let patientFile: PatientFile;
 
   if (patientFileId === 'discovery-mode') {
-    const patientFileString = localStorage.getItem('discovery-mode');
-
-    if (patientFileString) {
-      patientFile = JSON.parse(patientFileString) as PatientFile;
-    } else {
-      patientFile = { teeth: [] } as unknown as PatientFile;
-    }
+    patientFile = discoveryModePatientFile as PatientFile;
   } else {
     patientFile = query.PatientFile.byId(patientFileId)
       .project({ teeth: true })

@@ -3,7 +3,7 @@ import { useProductStore } from '../zustand/product';
 import { TREATMENT_GROUP, PRODUCT_TYPE } from '../zustand/product/interface';
 import { useTeethDiagramStore } from '../zustand/teethDiagram';
 import { TreatmentVisualization } from '../zustand/teethDiagram/interface';
-import { useQuery } from 'fauna-typed';
+import { useLocalStorage, useQuery } from 'fauna-typed';
 import { PatientFile, Query } from '../fqlx-generated/typedefs';
 
 interface MapProductRequirementsProps {
@@ -112,16 +112,14 @@ export function useTreatmentsByGroup() {
   const { treatments } = useTeethDiagramStore((state) => state);
   const query = useQuery<Query>();
   const [toothGroups, setToothGroups] = useState<Group[]>([]);
+  const { value: discoveryModePatientFile } = useLocalStorage(
+    'discovery-mode',
+    'PatientFile'
+  );
 
   const patientFile = useMemo(() => {
     if (activePatientFileId === 'discovery-mode') {
-      const patientFileString = localStorage.getItem('discovery-mode');
-
-      if (patientFileString) {
-        return JSON.parse(patientFileString) as PatientFile;
-      } else {
-        return { teeth: [] };
-      }
+      return discoveryModePatientFile as PatientFile;
     } else {
       return activePatientFileId
         ? query.PatientFile.byId(activePatientFileId)
@@ -129,7 +127,7 @@ export function useTreatmentsByGroup() {
             .exec()
         : { teeth: [] };
     }
-  }, [activePatientFileId, query, localStorage.getItem('discovery-mode')]);
+  }, [activePatientFileId, query, discoveryModePatientFile]);
 
   const mappingToApply = mapProductRequirements[activeProductTab];
   const unLockedTeethGroup: TreatmentVisualization[] = [];
@@ -215,8 +213,10 @@ export function useTreatmentsByGroup() {
   const getToothGroups = () => {
     const groupwiseTeethWithTreatments = teethWithTreatments.reduce(
       (acc, treatment) => {
-        acc[treatment.treatmentgroup] = acc[treatment.treatmentgroup] || [];
-        acc[treatment.treatmentgroup].push(treatment);
+        if (treatment) {
+          acc[treatment.treatmentgroup] = acc[treatment.treatmentgroup] || [];
+          acc[treatment.treatmentgroup].push(treatment);
+        }
         return acc;
       },
       {} as { [key: string]: TreatmentVisualization[] }

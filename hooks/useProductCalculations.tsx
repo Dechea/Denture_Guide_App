@@ -1,29 +1,26 @@
 'use client';
 
-import { useQuery } from 'fauna-typed';
+import { useLocalStorage, useQuery } from 'fauna-typed';
 import { useMemo } from 'react';
 import { PatientFile, Query } from '../fqlx-generated/typedefs';
 
 export const useProductCalculations = (patientFileId: string) => {
   const query = useQuery<Query>();
 
-  console.log('ls, ', localStorage.getItem('discovery-mode'));
+  const { value: discoveryModePatientFile } = useLocalStorage(
+    'discovery-mode',
+    'PatientFile'
+  );
 
   const patientFile = useMemo(() => {
     if (patientFileId === 'discovery-mode') {
-      const patientFileString = localStorage.getItem('discovery-mode');
-
-      if (patientFileString) {
-        return JSON.parse(patientFileString) as PatientFile;
-      } else {
-        return { teeth: [] } as unknown as PatientFile;
-      }
+      return discoveryModePatientFile as PatientFile;
     } else {
       return query.PatientFile.byId(patientFileId)
         .project({ teeth: true })
         .exec();
     }
-  }, [patientFileId, query, localStorage.getItem('discovery-mode')]);
+  }, [patientFileId, query, discoveryModePatientFile]);
 
   const selectedProducts = useMemo(
     () =>

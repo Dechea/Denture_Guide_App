@@ -326,6 +326,116 @@ export interface Ts {
     }
 
 
+  export interface Tooth {
+    /**
+ * name for the Tooth
+ */
+ name: string;
+/**
+ * root for the Tooth
+ */
+ root: Root;
+/**
+ * crown for the Tooth
+ */
+ crown: Crown;
+
+  }
+
+
+  export interface ToothInput {
+    /**
+ * name for the Tooth
+ */
+ name: string;
+/**
+ * root for the Tooth
+ */
+ root: Root;
+/**
+ * crown for the Tooth
+ */
+ crown: Crown;
+
+  } 
+
+
+  export interface ToothMethods {
+      /**
+       * all method get the set of all documents in the Tooth collection.
+       * 
+       * @param
+       * 
+       * @returns {AllMethods<Tooth>} method returns the set of all documents in Tooth collection for the given range.
+       * 
+       * @example
+       * query.Tooth.all().exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
+       */
+      all(): AllMethods<Tooth>;
+
+      /**
+       * create method creates a Tooth document in the collection with the provided property values.
+       * 
+       * @param {ToothInput | string} input - will be the Tooth which you want to add.
+         * @param { string } input.name Name for the Tooth
+* @param { Root } input.root Root for the Tooth
+* @param { Crown } input.crown Crown for the Tooth
+       *
+       * @returns {CreateMethods<Tooth>} return new document.
+       * 
+       * @example
+       * query.Tooth.create({  
+ * name: "Value of the name"   
+ * root: "Value of the root"   
+ * crown: "Value of the crown"   
+       * }).exec()
+       * OR
+       * query.Tooth.create(`{  
+ * name: "Value of the name"   
+ * root: "Value of the root"   
+ * crown: "Value of the crown"   
+       * }`).exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
+       */
+    create(input: (ToothInput | string)): CreateMethods<Tooth>;
+
+      /**
+       * byId method get a Tooth document by its document ID.
+       * This will returns available Fqlx byId methods
+       * 
+       * @param {string} id - The ID of the document to retrieve
+       * 
+       * @returns {ByIdMethods<Tooth, ToothInput>} return document when it exists and is accessible, else return
+       * null when the document does not exist or is inaccessible.
+       * 
+       * @example
+       * query.Tooth.byId("21545645646554").exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
+       */
+       byId(id: string): ByIdMethods<Tooth, ToothInput>
+
+       /**
+        * first where method get the first matching value from the Set.
+        * 
+        * @param {(inputCondition: ((data: T) => boolean) | string)} function takes in a document of type T and returns a boolean
+        * 
+        * @returns {FirstWhereMethods<T>}  returns the first matching value in the Set, or null if the Set is empty or no values match.
+        * 
+        * @example
+        * query.Address.all().firstWhere((data) => data.country == 'uk').exec();
+        * OR
+        * query.Address.all().firstWhere(`(data) => data.${dynamicKey} == "${dynamicValueToCheck}"`).exec();
+        * 
+        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
+        */
+       firstWhere(inputCondition: ((data: Tooth) => boolean) | string): FirstWhereMethods<Tooth>;
+    }
+
+
   export interface Root {
     /**
  * findings for the Root
@@ -642,116 +752,6 @@ export interface Ts {
         * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
         */
        firstWhere(inputCondition: ((data: Crown) => boolean) | string): FirstWhereMethods<Crown>;
-    }
-
-
-  export interface Tooth {
-    /**
- * name for the Tooth
- */
- name: string;
-/**
- * root for the Tooth
- */
- root: Root;
-/**
- * crown for the Tooth
- */
- crown: Crown;
-
-  }
-
-
-  export interface ToothInput {
-    /**
- * name for the Tooth
- */
- name: string;
-/**
- * root for the Tooth
- */
- root: Root;
-/**
- * crown for the Tooth
- */
- crown: Crown;
-
-  } 
-
-
-  export interface ToothMethods {
-      /**
-       * all method get the set of all documents in the Tooth collection.
-       * 
-       * @param
-       * 
-       * @returns {AllMethods<Tooth>} method returns the set of all documents in Tooth collection for the given range.
-       * 
-       * @example
-       * query.Tooth.all().exec()
-       * 
-       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
-       */
-      all(): AllMethods<Tooth>;
-
-      /**
-       * create method creates a Tooth document in the collection with the provided property values.
-       * 
-       * @param {ToothInput | string} input - will be the Tooth which you want to add.
-         * @param { string } input.name Name for the Tooth
-* @param { Root } input.root Root for the Tooth
-* @param { Crown } input.crown Crown for the Tooth
-       *
-       * @returns {CreateMethods<Tooth>} return new document.
-       * 
-       * @example
-       * query.Tooth.create({  
- * name: "Value of the name"   
- * root: "Value of the root"   
- * crown: "Value of the crown"   
-       * }).exec()
-       * OR
-       * query.Tooth.create(`{  
- * name: "Value of the name"   
- * root: "Value of the root"   
- * crown: "Value of the crown"   
-       * }`).exec()
-       * 
-       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
-       */
-    create(input: (ToothInput | string)): CreateMethods<Tooth>;
-
-      /**
-       * byId method get a Tooth document by its document ID.
-       * This will returns available Fqlx byId methods
-       * 
-       * @param {string} id - The ID of the document to retrieve
-       * 
-       * @returns {ByIdMethods<Tooth, ToothInput>} return document when it exists and is accessible, else return
-       * null when the document does not exist or is inaccessible.
-       * 
-       * @example
-       * query.Tooth.byId("21545645646554").exec()
-       * 
-       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
-       */
-       byId(id: string): ByIdMethods<Tooth, ToothInput>
-
-       /**
-        * first where method get the first matching value from the Set.
-        * 
-        * @param {(inputCondition: ((data: T) => boolean) | string)} function takes in a document of type T and returns a boolean
-        * 
-        * @returns {FirstWhereMethods<T>}  returns the first matching value in the Set, or null if the Set is empty or no values match.
-        * 
-        * @example
-        * query.Address.all().firstWhere((data) => data.country == 'uk').exec();
-        * OR
-        * query.Address.all().firstWhere(`(data) => data.${dynamicKey} == "${dynamicValueToCheck}"`).exec();
-        * 
-        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
-        */
-       firstWhere(inputCondition: ((data: Tooth) => boolean) | string): FirstWhereMethods<Tooth>;
     }
 
 
@@ -4180,6 +4180,14 @@ Patient: PatientMethods;
  * @returns This return fqlx methods for the Tooth 
  */ 
 Tooth: ToothMethods;
+/**
+ * @returns This return fqlx methods for the Root 
+ */ 
+Root: RootMethods;
+/**
+ * @returns This return fqlx methods for the Crown 
+ */ 
+Crown: CrownMethods;
 /**
  * @returns This return fqlx methods for the BodyPartLeaf 
  */ 

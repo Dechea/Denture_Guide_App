@@ -25,34 +25,40 @@
   "Tooth": {
     "fields": {
       "name": "string",
-      "root": {
-        "findings": "Finding[]",
-        "treatmentDoc": "TreatmentDoc",
-        "addon": "BodyPartLeaf",
-        "leftRoot": "BodyPartLeaf",
-        "middleRoot": "BodyPartLeaf",
-        "rightRoot": "BodyPartLeaf"
-      },
-      "crown": {
-        "findings": "Finding[]",
-        "treatmentDoc": "TreatmentDoc",
-        "addon": "BodyPartLeaf",
-        "toothNeck": "BodyPartLeaf",
-        "left": "BodyPartLeaf",
-        "right": "BodyPartLeaf",
-        "center": "BodyPartLeaf",
-        "outside": "BodyPartLeaf",
-        "inside": "BodyPartLeaf"
-      }
+      "root": "Root",
+      "crown": "Crown"
     },
     "constraints": {
-      "required": [
-        "name",
-        "root",
-        "crown",
-        "root.treatmentDoc",
-        "crown.treatmentDoc"
-      ]
+      "required": ["name", "root", "crown"]
+    }
+  },
+  "Root": {
+    "fields": {
+      "findings": "Finding[]",
+      "treatmentDoc": "TreatmentDoc",
+      "addon": "BodyPartLeaf",
+      "leftRoot": "BodyPartLeaf",
+      "middleRoot": "BodyPartLeaf",
+      "rightRoot": "BodyPartLeaf"
+    },
+    "constraints": {
+      "required": ["treatmentDoc"]
+    }
+  },
+  "Crown": {
+    "fields": {
+      "findings": "Finding[]",
+      "treatmentDoc": "TreatmentDoc",
+      "addon": "BodyPartLeaf",
+      "toothNeck": "BodyPartLeaf",
+      "left": "BodyPartLeaf",
+      "right": "BodyPartLeaf",
+      "center": "BodyPartLeaf",
+      "outside": "BodyPartLeaf",
+      "inside": "BodyPartLeaf"
+    },
+    "constraints": {
+      "required": ["treatmentDoc"]
     }
   },
   "BodyPartLeaf": {

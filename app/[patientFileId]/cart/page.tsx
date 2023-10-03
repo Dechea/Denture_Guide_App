@@ -1,7 +1,11 @@
 'use client';
 
 import { useUser } from '@clerk/nextjs';
-import { revalidateActiveQueries, useQuery } from 'fauna-typed';
+import {
+  revalidateActiveQueries,
+  useLocalStorage,
+  useQuery,
+} from 'fauna-typed';
 import { useFormik } from 'formik';
 import { redirect } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
@@ -54,6 +58,10 @@ export default function Cart({ params }: CartProps) {
   const { addOrUpdateProductInFqlx } = useProductCrudOps({
     patientFileId: params.patientFileId,
   });
+  const { value: discoveryModePatientFile } = useLocalStorage(
+    'discovery-mode',
+    'PatientFile'
+  );
 
   const formik = useFormik({
     validationSchema: addressFormValidationSchema,
@@ -70,20 +78,14 @@ export default function Cart({ params }: CartProps) {
 
   const patientFile = useMemo(() => {
     if (params.patientFileId === 'discovery-mode') {
-      const localPatientFile = localStorage.getItem('discovery-mode');
-
-      if (localPatientFile) {
-        return JSON.parse(localPatientFile) as PatientFile;
-      } else {
-        return { teeth: [] };
-      }
+      return discoveryModePatientFile as PatientFile;
     }
     return query.PatientFile.firstWhere(
       `(file) => file.id == "${params.patientFileId}"`
     )
       .project({ patient: true, teeth: true })
       .exec();
-  }, [params.patientFileId, query, localStorage.getItem('discovery-mode')]);
+  }, [params.patientFileId, query, discoveryModePatientFile]);
 
   const userOrganization = query.User.firstWhere(
     `user => user.clerkId == "${user?.id}"`

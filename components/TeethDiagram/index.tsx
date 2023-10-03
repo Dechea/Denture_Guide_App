@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Button, Hidden, Modal, View, useToggle } from 'reshaped';
 import Treatments from '../Treatments';
 import { useTeethDiagramStore } from '../../zustand/teethDiagram';
-import { useQuery } from 'fauna-typed';
+import { useLocalStorage, useQuery } from 'fauna-typed';
 import {
   PatientFile,
   Query,
@@ -30,7 +30,6 @@ import TreatmentOptionCard from '../TreatmentOptionCard';
 import UnionIcon from '../Icons/Union';
 import ComposedTeethDiagram from './composedTeethDiagram';
 import BinIcon from '../Icons/Bin';
-import { patientFileMockData } from '../../__mocks__/discovery';
 
 export default function TeethDiagramWithTreatments({
   patientFileId,
@@ -39,14 +38,10 @@ export default function TeethDiagramWithTreatments({
 }) {
   const query = useQuery<Query>();
   const { activate, deactivate, active } = useToggle(false);
-  const [discoveryModePatientFile, setDiscoveryModePatientFile] =
-    useState<PatientFile>(patientFileMockData);
-
-  useEffect(() => {
-    const patientFile = JSON.stringify(discoveryModePatientFile);
-
-    localStorage.setItem('discovery-mode', patientFile);
-  }, [discoveryModePatientFile]);
+  const {
+    value: discoveryModePatientFile,
+    setValue: setDiscoveryModePatientFile,
+  } = useLocalStorage('discovery-mode', 'PatientFile');
 
   const {
     treatments,

@@ -1,4 +1,4 @@
-import { useQuery } from 'fauna-typed';
+import { useLocalStorage, useQuery } from 'fauna-typed';
 import { useProductStore } from '../zustand/product';
 import { PRODUCT_TYPE, TREATMENT_GROUP } from '../zustand/product/interface';
 import { useTeethDiagramStore } from '../zustand/teethDiagram';
@@ -52,13 +52,17 @@ export function useTabsStatus() {
   const { activePatientFileId } = useProductStore();
   const [tabsStatus, setTabsStatus] = useState(defaultActiveTabs);
   const query = useQuery<Query>();
+  const { value: discoveryModePatientFile } = useLocalStorage(
+    'discovery-mode',
+    'PatientFile'
+  );
 
   const patientFile = useMemo(() => {
     if (activePatientFileId === 'discovery-mode') {
-      const patientFileString = localStorage.getItem('discovery-mode');
+      const patientFileString = discoveryModePatientFile;
 
       if (patientFileString) {
-        return JSON.parse(patientFileString) as PatientFile;
+        return patientFileString as PatientFile;
       } else {
         return { teeth: [] };
       }
@@ -69,7 +73,7 @@ export function useTabsStatus() {
             .exec()
         : { teeth: [] };
     }
-  }, [activePatientFileId, query, localStorage.getItem('discovery-mode')]);
+  }, [activePatientFileId, query, JSON.stringify(discoveryModePatientFile)]);
 
   const getTabsStatus = () => {
     const localTabsStatus: TabsStatusProps = { ...defaultActiveTabs };
@@ -104,6 +108,7 @@ export function useTabsStatus() {
           });
       });
     });
+
     setTabsStatus(localTabsStatus);
   };
 
