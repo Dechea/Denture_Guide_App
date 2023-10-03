@@ -30,7 +30,7 @@ export default function CartItemsList({
           ...(tooth.crown.treatmentDoc?.selectedProducts ?? []),
         ];
 
-        if (products.length == 0) {
+        if (products.length == 0 || tooth.name === '') {
           return;
         }
 
