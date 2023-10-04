@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "preinstall": "npx only-allow pnpm",
+    "postinstall": "pnpm fqlx:generate",
     "dev": "doppler run -- next dev",
     "build": "next build",
     "build:themes": "reshaped theming --output themes",
