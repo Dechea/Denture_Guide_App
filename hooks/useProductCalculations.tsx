@@ -46,14 +46,15 @@ export const useProductCalculations = (patientFileId: string) => {
               selectedProduct?.localizations[1]?.price?.amount
             );
             const price = isNaN(amount) ? 0 : amount;
-
-            const tax = Number(selectedProduct?.localizations[1]?.price?.tax);
-
+            const localTax = Number(
+              selectedProduct?.localizations[1]?.price?.tax
+            );
+            const tax = isNaN(localTax) ? 0 : localTax;
             const priceWithoutTax = price * Number(quantity);
-            acc.totalCostOfProductsInCartWithTax +=
-              (priceWithoutTax * tax) / 100 + priceWithoutTax;
 
-            acc.totalCostOfProductsInCart += Number(quantity) * price;
+            acc.totalCostOfProductsInCartWithTax +=
+              (priceWithoutTax * Number(tax ?? 0)) / 100 + priceWithoutTax;
+            acc.totalCostOfProductsInCart += priceWithoutTax;
           }
 
           return acc;
