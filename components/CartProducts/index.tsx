@@ -41,7 +41,7 @@ export default function CartProducts({
       <View.Item className='sticky bottom-0 top-0'>
         <CartCostCard
           params={params}
-          onClick={() => setActiveTab('2')}
+          onClick={() => setActiveTab('shippingdetails')}
           buttonText='Shipping Details'
           color='primary'
         />

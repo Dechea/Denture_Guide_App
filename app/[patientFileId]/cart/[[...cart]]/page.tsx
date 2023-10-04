@@ -7,18 +7,18 @@ import {
   useQuery,
 } from 'fauna-typed';
 import { useFormik } from 'formik';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { Badge, Tabs, Text, View } from 'reshaped';
-import ShippingForm from '../../../components/AddressForm';
+import ShippingForm from '../../../../components/AddressForm';
 import {
   AddressType,
   initialFormData,
-} from '../../../components/AddressForm/constants';
-import { addressFormValidationSchema } from '../../../components/AddressForm/validationSchema';
-import CartHeader from '../../../components/CartHeader';
-import CartOrder from '../../../components/CartOrder';
-import CartProducts from '../../../components/CartProducts';
+} from '../../../../components/AddressForm/constants';
+import { addressFormValidationSchema } from '../../../../components/AddressForm/validationSchema';
+import CartHeader from '../../../../components/CartHeader';
+import CartOrder from '../../../../components/CartOrder';
+import CartProducts from '../../../../components/CartProducts';
 import {
   Address,
   PatientFile,
@@ -26,31 +26,33 @@ import {
   Query,
   SelectedProduct,
   Tooth,
-} from '../../../fqlx-generated/typedefs';
-import { useProductCalculations } from '../../../hooks/useProductCalculations';
-import { useProductCrudOps } from '../../../hooks/useProductCrudOps';
-import { AREA_TYPE } from '../../../zustand/product/interface';
-import { useUserStore } from '../../../zustand/user';
+} from '../../../../fqlx-generated/typedefs';
+import { useProductCalculations } from '../../../../hooks/useProductCalculations';
+import { useProductCrudOps } from '../../../../hooks/useProductCrudOps';
+import { AREA_TYPE } from '../../../../zustand/product/interface';
+import { useUserStore } from '../../../../zustand/user';
 
 const ShippingTabs = [
-  { id: '1', title: 'Selected Products' },
-  { id: '2', title: 'Shipping Details' },
-  { id: '3', title: 'Order' },
+  { id: '1', title: 'Selected Products', route: 'selectedproducts' },
+  { id: '2', title: 'Shipping Details', route: 'shippingdetails' },
+  { id: '3', title: 'Order', route: 'orders' },
 ];
 
 interface CartProps {
-  params: { patientFileId: string };
+  params: { patientFileId: string; cart?: string[] };
 }
 
 export default function Cart({ params }: CartProps) {
   const query = useQuery<Query>();
-  const [activeTab, setActiveTab] = useState('1');
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState(
+    params.cart?.[0] ?? 'selectedproducts'
+  );
   const {
+    addressFormData,
     setAddressFormData,
     savedShippingIndex,
     savedBillingIndex,
-    setSavedShippingIndex,
-    setSavedBillingIndex,
   } = useUserStore();
   const { user } = useUser();
 
@@ -65,7 +67,7 @@ export default function Cart({ params }: CartProps) {
 
   const formik = useFormik({
     validationSchema: addressFormValidationSchema,
-    initialValues: initialFormData,
+    initialValues: addressFormData ?? initialFormData,
     onSubmit: (values) =>
       submitFormData(
         values.shipping,
@@ -183,7 +185,7 @@ export default function Cart({ params }: CartProps) {
   };
 
   const handleTabClick = async (tabId: string) => {
-    if (tabId === '3') {
+    if (tabId === 'orders') {
       if (!isValid) {
         return;
       } else {
@@ -191,6 +193,8 @@ export default function Cart({ params }: CartProps) {
       }
     }
     setActiveTab(tabId);
+    // @ts-ignore
+    router.push(`/${params.patientFileId}/cart/${tabId}`);
   };
 
   const submitFormData = async (
@@ -223,13 +227,14 @@ export default function Cart({ params }: CartProps) {
 
     await revalidateActiveQueries('Organization');
 
-    setActiveTab('3');
+    setActiveTab('orders');
   };
 
   useEffect(() => {
-    setAddressFormData(null);
-    setSavedShippingIndex(0);
-    setSavedBillingIndex(0);
+    if (!isValid && activeTab === 'orders') {
+      // @ts-ignore
+      router.push(`/${params.patientFileId}/cart/shippingdetails`);
+    }
 
     if (params.patientFileId !== 'discovery-mode' && !userOrganization) {
       redirect('/users/sync');
@@ -269,7 +274,7 @@ export default function Cart({ params }: CartProps) {
               }
             >
               {ShippingTabs.map((tab) => (
-                <Tabs.Item key={tab.title} value={tab.id}>
+                <Tabs.Item key={tab.title} value={tab.route}>
                   <View
                     direction={{ s: 'column', xl: 'row' }}
                     align={'center'}
@@ -278,10 +283,10 @@ export default function Cart({ params }: CartProps) {
                     className='!flex-nowrap'
                   >
                     <Badge
-                      color={activeTab === tab.id ? 'primary' : undefined}
+                      color={activeTab === tab.route ? 'primary' : undefined}
                       size='small'
                     >
-                      {tab.id}
+                      <View align='center'>{tab.id}</View>
                     </Badge>
 
                     <View paddingInline={4}>
@@ -301,7 +306,7 @@ export default function Cart({ params }: CartProps) {
             align='center'
             className='[&_[role=tabpanel]]:w-full [&_[role=tabpanel]]:h-full !overflow-y-scroll scrollbar-0 print:!overflow-visible'
           >
-            <Tabs.Panel value='1'>
+            <Tabs.Panel value={'selectedproducts'}>
               <CartProducts
                 teeth={patientFile.teeth}
                 onProductCountChange={handleProductCountChange}
@@ -311,7 +316,7 @@ export default function Cart({ params }: CartProps) {
               />
             </Tabs.Panel>
 
-            <Tabs.Panel value='2'>
+            <Tabs.Panel value={'shippingdetails'}>
               <ShippingForm
                 params={params}
                 formik={formik}
@@ -319,7 +324,7 @@ export default function Cart({ params }: CartProps) {
               />
             </Tabs.Panel>
 
-            <Tabs.Panel value='3'>
+            <Tabs.Panel value={'orders'}>
               <CartOrder params={params} setActiveTab={handleTabClick} />
             </Tabs.Panel>
           </View>

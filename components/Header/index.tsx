@@ -103,6 +103,7 @@ export default function Header({ patientFileId }: HeaderProps) {
                   </Badge.Container>
                 }
                 highlighted={pathname === `/${patientFileId}/cart`}
+                // @ts-ignore
                 onClick={() => router.push(`/${patientFileId}/cart`)}
               >
                 <>

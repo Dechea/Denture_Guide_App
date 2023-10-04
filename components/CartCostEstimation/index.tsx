@@ -71,7 +71,7 @@ export const CartCostEstimation = ({
       <Button
         color='primary'
         className='!rounded-medium'
-        onClick={() => setActiveTab('2')}
+        onClick={() => setActiveTab('shippingdetails')}
       >
         <View paddingBlock={1}>
           <Text variant='body-2' weight='medium'>

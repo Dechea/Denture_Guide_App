@@ -43,7 +43,7 @@ export default function OrderAddress({
           </View>
           <Link
             color='inherit'
-            onClick={() => setActiveTab?.('2')}
+            onClick={() => setActiveTab?.('shippingdetails')}
             className='print:!hidden'
           >
             Edit
@@ -66,7 +66,7 @@ export default function OrderAddress({
           </View>
           <Link
             color='inherit'
-            onClick={() => setActiveTab?.('2')}
+            onClick={() => setActiveTab?.('shippingdetails')}
             className='print:!hidden'
           >
             Edit
