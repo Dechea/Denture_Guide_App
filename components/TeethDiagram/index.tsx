@@ -42,6 +42,7 @@ export default function TeethDiagramWithTreatments({
     value: discoveryModePatientFile,
     setValue: setDiscoveryModePatientFile,
   } = useLocalStorage('discovery-mode', 'PatientFile');
+  const isDiscoveryModeEnabled = patientFileId === 'discovery-mode';
 
   const {
     treatments,
@@ -70,7 +71,7 @@ export default function TeethDiagramWithTreatments({
   const fqlxTreatments = query.Treatment.all().exec();
 
   const callPatientFileAPI = async (teeth: Tooth[]) => {
-    if (patientFileId === 'discovery-mode') {
+    if (isDiscoveryModeEnabled) {
       setDiscoveryModePatientFile({
         ...discoveryModePatientFile,
         teeth: teeth,
@@ -95,7 +96,7 @@ export default function TeethDiagramWithTreatments({
     setRecentAddedTreatment(treatment.visualization);
     let patientFileData: PatientFile;
 
-    if (patientFileId === 'discovery-mode') {
+    if (isDiscoveryModeEnabled) {
       patientFileData = { ...discoveryModePatientFile };
     } else {
       patientFileData = await query.PatientFile.byId(patientFileId).exec();
@@ -112,7 +113,7 @@ export default function TeethDiagramWithTreatments({
     const mappedPatientFile = getMappedPatientFileData(
       patientFileData,
       treatmentsToApply as TreatmentProps[],
-      patientFileId === 'discovery-mode'
+      isDiscoveryModeEnabled
     );
     const newTreatments: { [key: string]: TreatmentVisualization } = {
       ...treatments,
@@ -155,7 +156,7 @@ export default function TeethDiagramWithTreatments({
 
     let patientFile: PatientFile;
 
-    if (patientFileId === 'discovery-mode') {
+    if (isDiscoveryModeEnabled) {
       patientFile = discoveryModePatientFile;
     } else {
       patientFile = await query.PatientFile.byId(patientFileId).exec();
@@ -201,7 +202,7 @@ export default function TeethDiagramWithTreatments({
   const fetchPatientFile = async () => {
     let patientFile: PatientFile;
 
-    if (patientFileId === 'discovery-mode') {
+    if (isDiscoveryModeEnabled) {
       patientFile = discoveryModePatientFile;
     } else {
       patientFile = await query.PatientFile.byId(patientFileId).exec();
@@ -261,6 +262,7 @@ export default function TeethDiagramWithTreatments({
     resetHistory();
     setActiveTooth(0);
     setActiveToothParts([]);
+
     return () => {
       setActiveTooth(0);
       setActiveToothParts([]);
@@ -268,7 +270,7 @@ export default function TeethDiagramWithTreatments({
   }, []);
 
   useEffect(() => {
-    !!activeToothParts.length ? activate() : deactivate();
+    activeToothParts.length ? activate() : deactivate();
   }, [activeToothParts]);
 
   return (

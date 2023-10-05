@@ -41,6 +41,7 @@ const NewProductView = ({
   areaType,
   patientFileId,
 }: NewProductViewProps) => {
+  const isDiscoveryModeEnabled = patientFileId === 'discovery-mode';
   const {
     activeProductTab,
     availableTeethByProductType,
@@ -79,7 +80,7 @@ const NewProductView = ({
         }
 
         // convert existing products from object to ref
-        if (patientFileId !== 'discovery-mode') {
+        if (!isDiscoveryModeEnabled) {
           if (tooth[area].treatmentDoc.selectedProducts?.length) {
             tooth[area].treatmentDoc.selectedProducts?.forEach((product) => {
               // @ts-expect-error
@@ -91,7 +92,7 @@ const NewProductView = ({
         // add new product
         if (toothInArea && selectedProducts[toothNumber]) {
           let newProduct;
-          if (patientFileId === 'discovery-mode') {
+          if (isDiscoveryModeEnabled) {
             newProduct = await query.Product.byId(
               selectedProducts[toothNumber]
             ).exec();

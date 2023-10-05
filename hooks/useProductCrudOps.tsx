@@ -10,6 +10,7 @@ interface UseProductCrudOpsProps {
 export const useProductCrudOps = ({
   patientFileId,
 }: UseProductCrudOpsProps) => {
+  const isDiscoveryModeEnabled = patientFileId === 'discovery-mode';
   const query = useQuery<Query>();
   const {
     value: discoveryModePatientFile,
@@ -21,7 +22,7 @@ export const useProductCrudOps = ({
   ) => {
     let patientFile: PatientFile;
 
-    if (patientFileId === 'discovery-mode') {
+    if (isDiscoveryModeEnabled) {
       patientFile = discoveryModePatientFile as PatientFile;
     } else {
       patientFile = query.PatientFile.byId(patientFileId)
@@ -31,7 +32,7 @@ export const useProductCrudOps = ({
 
     const teeth = await manipulateTeeth([...patientFile.teeth]);
 
-    if (patientFileId === 'discovery-mode') {
+    if (isDiscoveryModeEnabled) {
       setDiscoveryModePatientFile({ ...patientFile, teeth: teeth });
     } else {
       const stringifyTeeth = JSON.stringify(teeth).replaceAll(

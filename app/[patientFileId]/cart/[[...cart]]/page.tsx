@@ -43,10 +43,13 @@ interface CartProps {
 }
 
 export default function Cart({ params }: CartProps) {
+  const isDiscoveryModeEnabled = params.patientFileId === 'discovery-mode';
   const query = useQuery<Query>();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState(
-    params.cart?.[0] ?? 'selectedproducts'
+    isDiscoveryModeEnabled
+      ? 'selectedproducts'
+      : params.cart?.[0] ?? 'selectedproducts'
   );
   const {
     addressFormData,
@@ -79,7 +82,7 @@ export default function Cart({ params }: CartProps) {
   const { isValid, handleSubmit } = formik;
 
   const patientFile = useMemo(() => {
-    if (params.patientFileId === 'discovery-mode') {
+    if (isDiscoveryModeEnabled) {
       return discoveryModePatientFile as PatientFile;
     }
     return query.PatientFile.firstWhere(
@@ -122,10 +125,9 @@ export default function Cart({ params }: CartProps) {
               const isProductMatched = selectedProduct?.id === productId;
 
               return {
-                selectedProduct:
-                  params.patientFileId === 'discovery-mode'
-                    ? selectedProduct
-                    : `Product.byId("${selectedProduct?.id as string}")`,
+                selectedProduct: isDiscoveryModeEnabled
+                  ? selectedProduct
+                  : `Product.byId("${selectedProduct?.id as string}")`,
                 quantity:
                   isToothMatched && isProductMatched
                     ? updatedQuantity
@@ -163,10 +165,9 @@ export default function Cart({ params }: CartProps) {
           selectedProducts.forEach(({ quantity, selectedProduct }) => {
             if (!(selectedProduct?.id === productId && isToothMatched)) {
               filteredSelectedProducts.push({
-                selectedProduct:
-                  params.patientFileId === 'discovery-mode'
-                    ? selectedProduct
-                    : (`Product.byId("${selectedProduct?.id}")` as unknown as Product),
+                selectedProduct: isDiscoveryModeEnabled
+                  ? selectedProduct
+                  : (`Product.byId("${selectedProduct?.id}")` as unknown as Product),
                 quantity: quantity,
               });
             }
@@ -185,6 +186,10 @@ export default function Cart({ params }: CartProps) {
   };
 
   const handleTabClick = async (tabId: string) => {
+    if (isDiscoveryModeEnabled) {
+      return;
+    }
+
     if (tabId === 'orders') {
       if (!isValid) {
         return;
@@ -236,7 +241,7 @@ export default function Cart({ params }: CartProps) {
       router.push(`/${params.patientFileId}/cart/shippingdetails`);
     }
 
-    if (params.patientFileId !== 'discovery-mode' && !userOrganization) {
+    if (!isDiscoveryModeEnabled && !userOrganization) {
       redirect('/users/sync');
     }
   }, []);

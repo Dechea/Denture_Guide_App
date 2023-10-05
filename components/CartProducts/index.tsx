@@ -2,6 +2,7 @@ import { View } from 'reshaped';
 import CartItemsList from '../CartItemsList';
 import CartCostCard from '../CartCostCard';
 import { Tooth } from '../../fqlx-generated/typedefs';
+import { useRouter } from 'next/navigation';
 
 interface CartProductsProps {
   teeth: Tooth[];
@@ -24,6 +25,18 @@ export default function CartProducts({
   setActiveTab,
   params,
 }: CartProductsProps) {
+  const isDiscoveryModeEnabled = params.patientFileId === 'discovery-mode';
+  const router = useRouter();
+
+  const handleClick = () => {
+    if (isDiscoveryModeEnabled) {
+      // @ts-ignore
+      router.push('/sign-in');
+    } else {
+      setActiveTab('shippingdetails');
+    }
+  };
+
   return (
     <View
       direction={{ s: 'column', xl: 'row' }}
@@ -41,8 +54,10 @@ export default function CartProducts({
       <View.Item className='sticky bottom-0 top-0'>
         <CartCostCard
           params={params}
-          onClick={() => setActiveTab('shippingdetails')}
-          buttonText='Shipping Details'
+          onClick={handleClick}
+          buttonText={
+            isDiscoveryModeEnabled ? 'Sign in to Order' : 'Shipping Details'
+          }
           color='primary'
         />
       </View.Item>
