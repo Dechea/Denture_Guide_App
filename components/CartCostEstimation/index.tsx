@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Button, Divider, Icon, Text, View } from 'reshaped';
 import CostEstimationIcon from '../Icons/CostEstimation';
+import { CARTTABROUTES } from '../../__mocks__/flow';
 
 interface CartCostEstimationProps {
   patientFileId: string;
@@ -71,7 +72,7 @@ export const CartCostEstimation = ({
       <Button
         color='primary'
         className='!rounded-medium'
-        onClick={() => setActiveTab('shippingdetails')}
+        onClick={() => setActiveTab(CARTTABROUTES.shippingdetails)}
       >
         <View paddingBlock={1}>
           <Text variant='body-2' weight='medium'>

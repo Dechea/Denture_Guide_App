@@ -3,6 +3,7 @@
 import { Link, Text, View } from 'reshaped';
 import { Address } from '../../fqlx-generated/typedefs';
 import { useUserStore } from '../../zustand/user';
+import { CARTTABROUTES } from '../../__mocks__/flow';
 
 export default function OrderAddress({
   setActiveTab,
@@ -43,7 +44,7 @@ export default function OrderAddress({
           </View>
           <Link
             color='inherit'
-            onClick={() => setActiveTab?.('shippingdetails')}
+            onClick={() => setActiveTab?.(CARTTABROUTES.shippingdetails)}
             className='print:!hidden'
           >
             Edit
@@ -66,7 +67,7 @@ export default function OrderAddress({
           </View>
           <Link
             color='inherit'
-            onClick={() => setActiveTab?.('shippingdetails')}
+            onClick={() => setActiveTab?.(CARTTABROUTES.shippingdetails)}
             className='print:!hidden'
           >
             Edit

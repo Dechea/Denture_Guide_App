@@ -22,6 +22,7 @@ import { formWhereCondition } from './helper';
 import NewProductToothList from '../NewProductToothList';
 import NewProductCard from '../NewProductCard';
 import ProductCardSkeleton from './ProductCardSkeleton';
+import { DISCOVERYMODE } from '../../__mocks__/flow';
 
 interface Field {
   id: string;
@@ -41,7 +42,7 @@ const NewProductView = ({
   areaType,
   patientFileId,
 }: NewProductViewProps) => {
-  const isDiscoveryModeEnabled = patientFileId === 'discovery-mode';
+  const isDiscoveryModeEnabled = patientFileId === `${DISCOVERYMODE}`;
   const {
     activeProductTab,
     availableTeethByProductType,

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Hidden, Popover, Text, View } from 'reshaped';
+import { Route } from 'next';
 
 interface SignInPopoverProps {
   description: string;
@@ -28,8 +29,7 @@ export default function SignInPopover({ description }: SignInPopoverProps) {
             color='primary'
             size='medium'
             variant='solid'
-            // @ts-ignore
-            onClick={() => router.push('/sign-in')}
+            onClick={() => router.push('/sign-in' as Route)}
             attributes={attributes}
           >
             Sign in

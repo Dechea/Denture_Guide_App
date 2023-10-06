@@ -2,6 +2,7 @@
 
 import { useLocalStorage, useQuery } from 'fauna-typed';
 import { PatientFile, Query, Tooth } from '../fqlx-generated/typedefs';
+import { DISCOVERYMODE } from '../__mocks__/flow';
 
 interface UseProductCrudOpsProps {
   patientFileId: string;
@@ -10,12 +11,12 @@ interface UseProductCrudOpsProps {
 export const useProductCrudOps = ({
   patientFileId,
 }: UseProductCrudOpsProps) => {
-  const isDiscoveryModeEnabled = patientFileId === 'discovery-mode';
+  const isDiscoveryModeEnabled = patientFileId === `${DISCOVERYMODE}`;
   const query = useQuery<Query>();
   const {
     value: discoveryModePatientFile,
     setValue: setDiscoveryModePatientFile,
-  } = useLocalStorage('discovery-mode', 'PatientFile');
+  } = useLocalStorage(`${DISCOVERYMODE}`, 'PatientFile');
 
   const addOrUpdateProductInFqlx = async (
     manipulateTeeth: (teeth: Tooth[]) => Promise<Tooth[]>

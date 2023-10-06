@@ -6,6 +6,8 @@ import CrossIcon from '../Icons/Cross';
 import { useLocalStorage, useQuery } from 'fauna-typed';
 import { PatientFile, Query } from '../../fqlx-generated/typedefs';
 import { useRouter } from 'next/navigation';
+import { DISCOVERYMODE, FLOW } from '../../__mocks__/flow';
+import { Route } from 'next';
 
 interface CreateOrderProps {
   activeModal: boolean;
@@ -28,12 +30,45 @@ export default function CreateOrder({
   const router = useRouter();
   const query = useQuery<Query>();
   const { value: discoveryModePatientFile } = useLocalStorage(
-    'discovery-mode',
+    `${DISCOVERYMODE}`,
     'PatientFile'
   );
 
+  const lastTab = localStorage.getItem('lastTab');
+
   const handlePatientNameChange = ({ value }: onChangeEventHandler): void => {
     setPatientName(value);
+  };
+
+  const syncDiscoveryModeData = async (patient: PatientFile) => {
+    const createdPatient = await query.PatientFile.create(patient).exec();
+
+    let redirectTo = `/${createdPatient.id}`;
+
+    const updatedLocalLastTab =
+      Number(lastTab) < Number(FLOW.cart.id)
+        ? `${Number(lastTab) + 1}`
+        : `${lastTab}`;
+
+    Object.values(FLOW).forEach(({ id, path }) => {
+      if (id === updatedLocalLastTab) {
+        redirectTo += path;
+      }
+    });
+
+    localStorage.removeItem(`${DISCOVERYMODE}`);
+    return redirectTo;
+  };
+
+  const handleCrossButton = async () => {
+    if (isDiscoveryMode) {
+      await syncDiscoveryModeData({
+        patient: discoveryModePatientFile.patient,
+        teeth: discoveryModePatientFile.teeth.slice(1),
+      });
+    }
+
+    deactivateModal();
   };
 
   const onCreatePatientFileButtonClick = async () => {
@@ -52,13 +87,16 @@ export default function CreateOrder({
         };
       }
 
-      const createdPatient = await query.PatientFile.create(patient).exec();
+      let redirectTo;
 
       if (isDiscoveryMode) {
-        localStorage.removeItem('discovery-mode');
+        redirectTo = await syncDiscoveryModeData(patient);
+      } else {
+        const createdPatient = await query.PatientFile.create(patient).exec();
+        redirectTo = `/${createdPatient.id}/treatments`;
       }
 
-      router.push(`/${createdPatient.id}/treatments`);
+      router.push(redirectTo as Route);
     } catch (err) {
       console.log('Failed to create PatientFile; Error: ', err);
     } finally {
@@ -77,12 +115,14 @@ export default function CreateOrder({
         <View gap={2} direction='row' align='center'>
           <View.Item grow>
             <Text variant='featured-2' weight='bold' color='neutral'>
-              Create Order for...
+              {isDiscoveryMode
+                ? 'Store Discovery mode order for...'
+                : 'Create Order for...'}
             </Text>
           </View.Item>
 
           <Button
-            onClick={deactivateModal}
+            onClick={handleCrossButton}
             icon={<Icon svg={CrossIcon} size={6} />}
             variant='ghost'
             size='large'

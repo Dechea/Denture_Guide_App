@@ -13,6 +13,7 @@ import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeet
 import { useProductStore } from '../../../../zustand/product';
 import { healingProductFields } from './filterFields';
 import NewProductView from '../../../../components/NewProductView';
+import { FLOW } from '../../../../__mocks__/flow';
 
 export default function Healing({
   params,
@@ -31,6 +32,8 @@ export default function Healing({
     setActiveProductTab(PRODUCT_TYPE.HEALING_ABUTMENT);
     setActivePatientFileId(params.patientFileId);
   }, []);
+
+  localStorage.setItem('lastTab', FLOW.healing.id);
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/healing`}>

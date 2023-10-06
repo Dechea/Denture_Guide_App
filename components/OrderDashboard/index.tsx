@@ -6,6 +6,7 @@ import PatientList from '../PatientList';
 import CreateOrder from '../CreateOrder';
 import { useLocalStorage } from 'fauna-typed';
 import { useEffect } from 'react';
+import { DISCOVERYMODE } from '../../__mocks__/flow';
 
 export default function OrderDashboard(): React.JSX.Element {
   const {
@@ -14,7 +15,7 @@ export default function OrderDashboard(): React.JSX.Element {
     deactivate: deactivateNewOrderModal,
   } = useToggle();
   const { value: discoveryModePatientFile } = useLocalStorage(
-    'discovery-mode',
+    `${DISCOVERYMODE}`,
     'PatientFile'
   );
 

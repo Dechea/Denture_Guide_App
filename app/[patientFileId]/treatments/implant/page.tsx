@@ -13,6 +13,7 @@ import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeet
 import { useProductStore } from '../../../../zustand/product';
 import { implantProductFields } from './filterFields';
 import NewProductView from '../../../../components/NewProductView';
+import { FLOW } from '../../../../__mocks__/flow';
 
 export default function Implant({
   params,
@@ -31,6 +32,8 @@ export default function Implant({
     setActiveProductTab(PRODUCT_TYPE.IMPLANT);
     setActivePatientFileId(params.patientFileId);
   }, []);
+
+  localStorage.setItem('lastTab', FLOW.implant.id);
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/implant`}>

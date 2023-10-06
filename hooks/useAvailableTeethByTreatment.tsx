@@ -5,6 +5,7 @@ import { useProductStore } from '../zustand/product';
 import { useLocalStorage, useQuery } from 'fauna-typed';
 import { PatientFile, Query } from '../fqlx-generated/typedefs';
 import { AREA_TYPE, TREATMENT_GROUP } from '../zustand/product/interface';
+import { DISCOVERYMODE } from '../__mocks__/flow';
 
 interface UseAvailableTeethByTreatmentProps {
   patientFileId: string;
@@ -24,13 +25,13 @@ export function useAvailableTeethByTreatment({
   } = useProductStore();
   const query = useQuery<Query>();
   const { value: discoveryModePatientFile } = useLocalStorage(
-    'discovery-mode',
+    `${DISCOVERYMODE}`,
     'PatientFile'
   );
 
   let patientFile: PatientFile;
 
-  if (patientFileId === 'discovery-mode') {
+  if (patientFileId === `${DISCOVERYMODE}`) {
     patientFile = discoveryModePatientFile as PatientFile;
   } else {
     patientFile = query.PatientFile.byId(patientFileId)

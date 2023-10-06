@@ -5,6 +5,7 @@ import { useTeethDiagramStore } from '../zustand/teethDiagram';
 import { TreatmentVisualization } from '../zustand/teethDiagram/interface';
 import { useLocalStorage, useQuery } from 'fauna-typed';
 import { PatientFile, Query } from '../fqlx-generated/typedefs';
+import { DISCOVERYMODE } from '../__mocks__/flow';
 
 interface MapProductRequirementsProps {
   [key: string]: {
@@ -113,12 +114,12 @@ export function useTreatmentsByGroup() {
   const query = useQuery<Query>();
   const [toothGroups, setToothGroups] = useState<Group[]>([]);
   const { value: discoveryModePatientFile } = useLocalStorage(
-    'discovery-mode',
+    `${DISCOVERYMODE}`,
     'PatientFile'
   );
 
   const patientFile = useMemo(() => {
-    if (activePatientFileId === 'discovery-mode') {
+    if (activePatientFileId === `${DISCOVERYMODE}`) {
       return discoveryModePatientFile as PatientFile;
     } else {
       return activePatientFileId

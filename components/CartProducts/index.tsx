@@ -3,6 +3,8 @@ import CartItemsList from '../CartItemsList';
 import CartCostCard from '../CartCostCard';
 import { Tooth } from '../../fqlx-generated/typedefs';
 import { useRouter } from 'next/navigation';
+import { Route } from 'next';
+import { DISCOVERYMODE, CARTTABROUTES } from '../../__mocks__/flow';
 
 interface CartProductsProps {
   teeth: Tooth[];
@@ -25,15 +27,14 @@ export default function CartProducts({
   setActiveTab,
   params,
 }: CartProductsProps) {
-  const isDiscoveryModeEnabled = params.patientFileId === 'discovery-mode';
+  const isDiscoveryModeEnabled = params.patientFileId === `${DISCOVERYMODE}`;
   const router = useRouter();
 
   const handleClick = () => {
     if (isDiscoveryModeEnabled) {
-      // @ts-ignore
-      router.push('/sign-in');
+      router.push('/sign-in' as Route);
     } else {
-      setActiveTab('shippingdetails');
+      setActiveTab(CARTTABROUTES.shippingdetails);
     }
   };
 

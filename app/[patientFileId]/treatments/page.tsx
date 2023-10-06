@@ -4,6 +4,7 @@ import { Tabs, View } from 'reshaped';
 import TeethDiagramWithTreatments from '../../../components/TeethDiagram';
 import { useProductStore } from '../../../zustand/product';
 import { useEffect } from 'react';
+import { FLOW } from '../../../__mocks__/flow';
 
 export default function Treatment({
   params,
@@ -15,6 +16,8 @@ export default function Treatment({
   useEffect(() => {
     setActivePatientFileId(params.patientFileId);
   }, []);
+
+  localStorage.setItem('lastTab', FLOW.treatments.id);
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments`}>

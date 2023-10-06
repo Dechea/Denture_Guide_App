@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { View } from 'reshaped';
 import { useRouter, usePathname } from 'next/navigation';
 import Loader from '../components/Loader';
+import { DISCOVERYMODE } from '../__mocks__/flow';
 
 const FAUNA_ENDPOINT = 'https://db.fauna.com';
 
@@ -55,8 +56,7 @@ export default function FqlxClientProvider({
   useEffect(() => {
     // Redirect to sign-in screen, If clerk token invalid
     if (token === 'invalid') {
-      // @ts-ignore
-      router.push('/discovery-mode/treatments');
+      router.push(`/${DISCOVERYMODE}/treatments`);
     }
   }, [token]);
 

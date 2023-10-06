@@ -13,6 +13,7 @@ import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeet
 import { useProductStore } from '../../../../zustand/product';
 import { impressionProductFields } from './filterFields';
 import NewProductView from '../../../../components/NewProductView';
+import { FLOW } from '../../../../__mocks__/flow';
 
 export default function Impression({
   params,
@@ -31,6 +32,8 @@ export default function Impression({
     setActiveProductTab(PRODUCT_TYPE.IMPRESSION);
     setActivePatientFileId(params.patientFileId);
   }, []);
+
+  localStorage.setItem('lastTab', FLOW.impression.id);
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/impression`}>

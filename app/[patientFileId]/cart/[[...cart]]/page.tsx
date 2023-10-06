@@ -31,11 +31,16 @@ import { useProductCalculations } from '../../../../hooks/useProductCalculations
 import { useProductCrudOps } from '../../../../hooks/useProductCrudOps';
 import { AREA_TYPE } from '../../../../zustand/product/interface';
 import { useUserStore } from '../../../../zustand/user';
+import { CARTTABROUTES, DISCOVERYMODE, FLOW } from '../../../../__mocks__/flow';
 
-const ShippingTabs = [
-  { id: '1', title: 'Selected Products', route: 'selectedproducts' },
-  { id: '2', title: 'Shipping Details', route: 'shippingdetails' },
-  { id: '3', title: 'Order', route: 'orders' },
+const CartTabs = [
+  {
+    id: '1',
+    title: 'Selected Products',
+    route: CARTTABROUTES.selectedproducts,
+  },
+  { id: '2', title: 'Shipping Details', route: CARTTABROUTES.shippingdetails },
+  { id: '3', title: 'Order', route: CARTTABROUTES.orders },
 ];
 
 interface CartProps {
@@ -43,13 +48,13 @@ interface CartProps {
 }
 
 export default function Cart({ params }: CartProps) {
-  const isDiscoveryModeEnabled = params.patientFileId === 'discovery-mode';
+  const isDiscoveryModeEnabled = params.patientFileId === `${DISCOVERYMODE}`;
   const query = useQuery<Query>();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState(
     isDiscoveryModeEnabled
-      ? 'selectedproducts'
-      : params.cart?.[0] ?? 'selectedproducts'
+      ? CARTTABROUTES.selectedproducts
+      : params.cart?.[0] ?? CARTTABROUTES.selectedproducts
   );
   const {
     addressFormData,
@@ -64,7 +69,7 @@ export default function Cart({ params }: CartProps) {
     patientFileId: params.patientFileId,
   });
   const { value: discoveryModePatientFile } = useLocalStorage(
-    'discovery-mode',
+    `${DISCOVERYMODE}`,
     'PatientFile'
   );
   const formik = useFormik({
@@ -77,6 +82,8 @@ export default function Cart({ params }: CartProps) {
         values.isBillingSameAsShippingAddress
       ),
   });
+
+  localStorage.setItem('lastTab', FLOW.cart.id);
 
   const { isValid, handleSubmit } = formik;
 
@@ -189,7 +196,7 @@ export default function Cart({ params }: CartProps) {
       return;
     }
 
-    if (tabId === 'orders') {
+    if (tabId === CARTTABROUTES.orders) {
       if (isValid) {
         handleSubmit();
       }
@@ -197,7 +204,7 @@ export default function Cart({ params }: CartProps) {
     }
 
     setActiveTab(tabId);
-    // @ts-ignore
+
     router.push(`/${params.patientFileId}/cart/${tabId}`);
   };
 
@@ -231,14 +238,13 @@ export default function Cart({ params }: CartProps) {
 
     await revalidateActiveQueries('Organization');
 
-    setActiveTab('orders');
-    // @ts-ignore
+    setActiveTab(CARTTABROUTES.orders);
+
     router.push(`/${params.patientFileId}/cart/orders`);
   };
 
   useEffect(() => {
-    if (!isValid && activeTab === 'orders') {
-      // @ts-ignore
+    if (!isValid && activeTab === CARTTABROUTES.orders) {
       router.push(`/${params.patientFileId}/cart/shippingdetails`);
     }
 
@@ -279,7 +285,7 @@ export default function Cart({ params }: CartProps) {
                 '!pr-0 [&_[role=tablist]]:max-lg:!w-full [&_[role=tablist]]:min-[1024px]:!min-w-[726px] [&_[role=tablist]>*]:!w-[33%]'
               }
             >
-              {ShippingTabs.map((tab) => (
+              {CartTabs.map((tab) => (
                 <Tabs.Item key={tab.title} value={tab.route}>
                   <View
                     direction={{ s: 'column', xl: 'row' }}
@@ -312,7 +318,7 @@ export default function Cart({ params }: CartProps) {
             align='center'
             className='[&_[role=tabpanel]]:w-full [&_[role=tabpanel]]:h-full !overflow-y-scroll scrollbar-0 print:!overflow-visible'
           >
-            <Tabs.Panel value={'selectedproducts'}>
+            <Tabs.Panel value={CARTTABROUTES.selectedproducts}>
               <CartProducts
                 teeth={patientFile.teeth}
                 onProductCountChange={handleProductCountChange}
@@ -322,7 +328,7 @@ export default function Cart({ params }: CartProps) {
               />
             </Tabs.Panel>
 
-            <Tabs.Panel value={'shippingdetails'}>
+            <Tabs.Panel value={CARTTABROUTES.shippingdetails}>
               <ShippingForm
                 params={params}
                 formik={formik}
@@ -330,7 +336,7 @@ export default function Cart({ params }: CartProps) {
               />
             </Tabs.Panel>
 
-            <Tabs.Panel value={'orders'}>
+            <Tabs.Panel value={CARTTABROUTES.orders}>
               <CartOrder params={params} setActiveTab={handleTabClick} />
             </Tabs.Panel>
           </View>

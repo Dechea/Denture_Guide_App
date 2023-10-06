@@ -7,6 +7,7 @@ import { useUser } from '@clerk/nextjs';
 import { useQuery } from 'fauna-typed';
 import { Query } from '../fqlx-generated/typedefs';
 import { redirect } from 'next/navigation';
+import { DISCOVERYMODE } from '../__mocks__/flow';
 
 export default function Home() {
   const { user, isSignedIn } = useUser();
@@ -19,15 +20,15 @@ export default function Home() {
 
   useEffect(() => {
     if (isSignedIn !== undefined && !isSignedIn) {
-      redirect('/discovery-mode/treatments');
+      redirect(`/${DISCOVERYMODE}/treatments`);
     }
   }, [isSignedIn]);
 
-  useEffect(() => {
-    if (user !== undefined && faunaUser === null) {
-      redirect('/users/sync');
-    }
-  }, [faunaUser]);
+  // useEffect(() => {
+  //   if (user !== undefined && faunaUser === null) {
+  //     redirect('/users/sync');
+  //   }
+  // }, [faunaUser]);
 
   return (
     <Suspense fallback={<Loader />}>

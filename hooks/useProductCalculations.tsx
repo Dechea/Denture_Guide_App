@@ -3,17 +3,18 @@
 import { useLocalStorage, useQuery } from 'fauna-typed';
 import { useMemo } from 'react';
 import { PatientFile, Query } from '../fqlx-generated/typedefs';
+import { DISCOVERYMODE } from '../__mocks__/flow';
 
 export const useProductCalculations = (patientFileId: string) => {
   const query = useQuery<Query>();
 
   const { value: discoveryModePatientFile } = useLocalStorage(
-    'discovery-mode',
+    `${DISCOVERYMODE}`,
     'PatientFile'
   );
 
   const patientFile = useMemo(() => {
-    if (patientFileId === 'discovery-mode') {
+    if (patientFileId === `${DISCOVERYMODE}`) {
       return discoveryModePatientFile as PatientFile;
     } else {
       return query.PatientFile.byId(patientFileId)

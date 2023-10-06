@@ -11,6 +11,8 @@ import CartIcon from '../Icons/Cart';
 import { useProductCalculations } from '../../hooks/useProductCalculations';
 import { UserButton, useUser } from '@clerk/nextjs';
 import SignInPopover from '../SignInPopover';
+import { Route } from 'next';
+import { DISCOVERYMODE } from '../../__mocks__/flow';
 
 interface HeaderProps {
   patientFileId: string;
@@ -22,10 +24,10 @@ export default function Header({ patientFileId }: HeaderProps) {
   const query = useQuery<Query>();
   const { isSignedIn } = useUser();
   const { value: discoveryModePatientFile } = useLocalStorage(
-    'discovery-mode',
+    `${DISCOVERYMODE}`,
     'PatientFile'
   );
-  const isDiscoveryModeEnabled = patientFileId === 'discovery-mode';
+  const isDiscoveryModeEnabled = patientFileId === `${DISCOVERYMODE}`;
 
   const { totalCostOfProductsInCart, totalProductsInCart } =
     useProductCalculations(patientFileId);
@@ -129,8 +131,7 @@ export default function Header({ patientFileId }: HeaderProps) {
                   </Badge.Container>
                 }
                 highlighted={pathname === `/${patientFileId}/cart`}
-                // @ts-ignore
-                onClick={() => router.push(`/${patientFileId}/cart`)}
+                onClick={() => router.push(`/${patientFileId}/cart` as Route)}
               >
                 <>
                   <Hidden hide={{ s: true, m: false }}>

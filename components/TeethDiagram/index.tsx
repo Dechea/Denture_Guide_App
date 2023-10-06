@@ -30,6 +30,7 @@ import TreatmentOptionCard from '../TreatmentOptionCard';
 import UnionIcon from '../Icons/Union';
 import ComposedTeethDiagram from './composedTeethDiagram';
 import BinIcon from '../Icons/Bin';
+import { DISCOVERYMODE } from '../../__mocks__/flow';
 
 export default function TeethDiagramWithTreatments({
   patientFileId,
@@ -41,8 +42,8 @@ export default function TeethDiagramWithTreatments({
   const {
     value: discoveryModePatientFile,
     setValue: setDiscoveryModePatientFile,
-  } = useLocalStorage('discovery-mode', 'PatientFile');
-  const isDiscoveryModeEnabled = patientFileId === 'discovery-mode';
+  } = useLocalStorage(`${DISCOVERYMODE}`, 'PatientFile');
+  const isDiscoveryModeEnabled = patientFileId === `${DISCOVERYMODE}`;
 
   const {
     treatments,

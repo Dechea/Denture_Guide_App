@@ -4,6 +4,7 @@ import { PRODUCT_TYPE, TREATMENT_GROUP } from '../zustand/product/interface';
 import { useTeethDiagramStore } from '../zustand/teethDiagram';
 import { PatientFile, Query } from '../fqlx-generated/typedefs';
 import { useMemo, useState } from 'react';
+import { DISCOVERYMODE } from '../__mocks__/flow';
 
 interface TabRequirementsProps {
   [key: string]: {
@@ -53,12 +54,12 @@ export function useTabsStatus() {
   const [tabsStatus, setTabsStatus] = useState(defaultActiveTabs);
   const query = useQuery<Query>();
   const { value: discoveryModePatientFile } = useLocalStorage(
-    'discovery-mode',
+    `${DISCOVERYMODE}`,
     'PatientFile'
   );
 
   const patientFile = useMemo(() => {
-    if (activePatientFileId === 'discovery-mode') {
+    if (activePatientFileId === `${DISCOVERYMODE}`) {
       const patientFileString = discoveryModePatientFile;
 
       if (patientFileString) {
@@ -73,7 +74,7 @@ export function useTabsStatus() {
             .exec()
         : { teeth: [] };
     }
-  }, [activePatientFileId, query, JSON.stringify(discoveryModePatientFile)]);
+  }, [activePatientFileId, query, discoveryModePatientFile]);
 
   const getTabsStatus = () => {
     const localTabsStatus: TabsStatusProps = { ...defaultActiveTabs };
