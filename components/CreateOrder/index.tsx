@@ -1,15 +1,16 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { SyntheticEvent, useState } from 'react';
 import { Button, Icon, Modal, Text, TextField, View } from 'reshaped';
 import CrossIcon from '../Icons/Cross';
-import { useQuery } from 'fauna-typed';
-import { Query } from '../../fqlx-generated/typedefs';
+import { useLocalStorage, useQuery } from 'fauna-typed';
+import { PatientFile, Query } from '../../fqlx-generated/typedefs';
+import { useRouter } from 'next/navigation';
 
 interface CreateOrderProps {
   activeModal: boolean;
   deactivateModal: () => void;
+  isDiscoveryMode?: boolean;
 }
 
 interface onChangeEventHandler {
@@ -21,10 +22,15 @@ interface onChangeEventHandler {
 export default function CreateOrder({
   activeModal,
   deactivateModal,
+  isDiscoveryMode,
 }: CreateOrderProps) {
   const [patientName, setPatientName] = useState('');
   const router = useRouter();
   const query = useQuery<Query>();
+  const { value: discoveryModePatientFile } = useLocalStorage(
+    'discovery-mode',
+    'PatientFile'
+  );
 
   const handlePatientNameChange = ({ value }: onChangeEventHandler): void => {
     setPatientName(value);
@@ -32,12 +38,27 @@ export default function CreateOrder({
 
   const onCreatePatientFileButtonClick = async () => {
     try {
-      const patient = await query.PatientFile.create({
-        patient: { name: patientName, status: '', avatar: '' },
-        teeth: [],
-      }).exec();
+      let patient: PatientFile;
 
-      router.push(`/${patient.id}/treatments`);
+      if (isDiscoveryMode) {
+        patient = {
+          patient: { ...discoveryModePatientFile.patient, name: patientName },
+          teeth: discoveryModePatientFile.teeth.slice(1),
+        };
+      } else {
+        patient = {
+          patient: { name: patientName, status: '', avatar: '' },
+          teeth: [],
+        };
+      }
+
+      const createdPatient = await query.PatientFile.create(patient).exec();
+
+      if (isDiscoveryMode) {
+        localStorage.removeItem('discovery-mode');
+      }
+
+      router.push(`/${createdPatient.id}/treatments`);
     } catch (err) {
       console.log('Failed to create PatientFile; Error: ', err);
     } finally {

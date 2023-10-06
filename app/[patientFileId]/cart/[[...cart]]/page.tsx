@@ -7,7 +7,7 @@ import {
   useQuery,
 } from 'fauna-typed';
 import { useFormik } from 'formik';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { Badge, Tabs, Text, View } from 'reshaped';
 import ShippingForm from '../../../../components/AddressForm';
@@ -67,7 +67,6 @@ export default function Cart({ params }: CartProps) {
     'discovery-mode',
     'PatientFile'
   );
-
   const formik = useFormik({
     validationSchema: addressFormValidationSchema,
     initialValues: addressFormData ?? initialFormData,
@@ -191,12 +190,12 @@ export default function Cart({ params }: CartProps) {
     }
 
     if (tabId === 'orders') {
-      if (!isValid) {
-        return;
-      } else {
+      if (isValid) {
         handleSubmit();
       }
+      return;
     }
+
     setActiveTab(tabId);
     // @ts-ignore
     router.push(`/${params.patientFileId}/cart/${tabId}`);
@@ -233,6 +232,8 @@ export default function Cart({ params }: CartProps) {
     await revalidateActiveQueries('Organization');
 
     setActiveTab('orders');
+    // @ts-ignore
+    router.push(`/${params.patientFileId}/cart/orders`);
   };
 
   useEffect(() => {
@@ -241,9 +242,9 @@ export default function Cart({ params }: CartProps) {
       router.push(`/${params.patientFileId}/cart/shippingdetails`);
     }
 
-    if (!isDiscoveryModeEnabled && !userOrganization) {
-      redirect('/users/sync');
-    }
+    // if (!isDiscoveryModeEnabled && !userOrganization) {
+    //   redirect('/users/sync');
+    // }
   }, []);
 
   return (

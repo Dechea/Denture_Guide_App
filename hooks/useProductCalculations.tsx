@@ -24,7 +24,7 @@ export const useProductCalculations = (patientFileId: string) => {
 
   const selectedProducts = useMemo(
     () =>
-      patientFile.teeth?.flatMap((tooth) => [
+      patientFile?.teeth?.flatMap((tooth) => [
         ...(tooth.root?.treatmentDoc.selectedProducts ?? []),
         ...(tooth.crown?.treatmentDoc.selectedProducts ?? []),
       ]),

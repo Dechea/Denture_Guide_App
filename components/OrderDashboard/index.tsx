@@ -4,13 +4,25 @@ import { useToggle, View } from 'reshaped';
 import OrderDashboardHeader from '../OrderDashboardHeader';
 import PatientList from '../PatientList';
 import CreateOrder from '../CreateOrder';
+import { useLocalStorage } from 'fauna-typed';
+import { useEffect } from 'react';
 
-export default function OrderDashboard(): JSX.Element {
+export default function OrderDashboard(): React.JSX.Element {
   const {
     active: activeNewOrderModal,
     activate: activateNewOrderModal,
     deactivate: deactivateNewOrderModal,
   } = useToggle();
+  const { value: discoveryModePatientFile } = useLocalStorage(
+    'discovery-mode',
+    'PatientFile'
+  );
+
+  useEffect(() => {
+    if (discoveryModePatientFile.teeth.length > 1) {
+      activateNewOrderModal();
+    }
+  }, []);
 
   return (
     <View direction='column' width='100%' height='100%' divided>
@@ -29,6 +41,7 @@ export default function OrderDashboard(): JSX.Element {
       <CreateOrder
         activeModal={activeNewOrderModal}
         deactivateModal={deactivateNewOrderModal}
+        isDiscoveryMode={discoveryModePatientFile != null}
       />
     </View>
   );

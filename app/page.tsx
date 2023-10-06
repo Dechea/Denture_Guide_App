@@ -18,13 +18,13 @@ export default function Home() {
   );
 
   useEffect(() => {
-    if (!isSignedIn) {
+    if (isSignedIn !== undefined && !isSignedIn) {
       redirect('/discovery-mode/treatments');
     }
   }, [isSignedIn]);
 
   useEffect(() => {
-    if (faunaUser === null) {
+    if (user !== undefined && faunaUser === null) {
       redirect('/users/sync');
     }
   }, [faunaUser]);
