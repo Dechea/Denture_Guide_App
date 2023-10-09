@@ -6,7 +6,7 @@ import BackwardIcon from '../Icons/Backward';
 import CartIcon from '../Icons/Cart';
 
 interface CartHeaderProps {
-  totalProductsCount: number;
+  readonly totalProductsCount: number;
 }
 
 export default function CartHeader({ totalProductsCount }: CartHeaderProps) {

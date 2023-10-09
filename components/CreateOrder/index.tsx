@@ -10,9 +10,9 @@ import { DISCOVERYMODE } from '../../__mocks__/flow';
 import { Route } from 'next';
 
 interface CreateOrderProps {
-  activeModal: boolean;
-  deactivateModal: () => void;
-  isDiscoveryMode?: boolean;
+  readonly activeModal: boolean;
+  readonly deactivateModal: () => void;
+  readonly isDiscoveryMode?: boolean;
 }
 
 interface onChangeEventHandler {

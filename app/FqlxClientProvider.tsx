@@ -11,7 +11,7 @@ import { DISCOVERYMODE } from '../__mocks__/flow';
 const FAUNA_ENDPOINT = 'https://db.fauna.com';
 
 interface FqlxClientProviderProps {
-  children: React.ReactNode;
+  readonly children: React.ReactNode;
 }
 
 export default function FqlxClientProvider({

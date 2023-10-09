@@ -15,7 +15,7 @@ import { Route } from 'next';
 import { DISCOVERYMODE } from '../../__mocks__/flow';
 
 interface HeaderProps {
-  patientFileId: string;
+  readonly patientFileId: string;
 }
 
 export default function Header({ patientFileId }: HeaderProps) {

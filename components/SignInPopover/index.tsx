@@ -6,7 +6,7 @@ import { Button, Hidden, Popover, Text, View } from 'reshaped';
 import { Route } from 'next';
 
 interface SignInPopoverProps {
-  description: string;
+  readonly description: string;
 }
 
 export default function SignInPopover({ description }: SignInPopoverProps) {

@@ -9,7 +9,7 @@ import { DISCOVERYMODE, FLOW } from '../../../__mocks__/flow';
 export default function Treatment({
   params,
 }: {
-  params: { patientFileId: string };
+  readonly params: { patientFileId: string };
 }) {
   const { setActivePatientFileId } = useProductStore();
 

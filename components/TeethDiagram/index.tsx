@@ -35,7 +35,7 @@ import { DISCOVERYMODE } from '../../__mocks__/flow';
 export default function TeethDiagramWithTreatments({
   patientFileId,
 }: {
-  patientFileId: string;
+  readonly patientFileId: string;
 }) {
   const query = useQuery<Query>();
   const { activate, deactivate, active } = useToggle(false);

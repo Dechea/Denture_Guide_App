@@ -8,7 +8,7 @@ import { CARTTABROUTES } from '../../__mocks__/flow';
 export default function OrderAddress({
   setActiveTab,
 }: {
-  setActiveTab?: (activeTab: string) => void;
+  readonly setActiveTab?: (activeTab: string) => void;
 }) {
   const { addressFormData } = useUserStore();
 

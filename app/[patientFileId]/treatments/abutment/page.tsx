@@ -18,7 +18,7 @@ import { DISCOVERYMODE, FLOW } from '../../../../__mocks__/flow';
 export default function Abutment({
   params,
 }: {
-  params: { patientFileId: string };
+  readonly params: { patientFileId: string };
 }) {
   const { setActiveProductTab, setActivePatientFileId, filterFields } =
     useProductStore();

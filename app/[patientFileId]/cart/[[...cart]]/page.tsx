@@ -44,7 +44,7 @@ const CartTabs = [
 ];
 
 interface CartProps {
-  params: { patientFileId: string; cart?: string[] };
+  readonly params: { patientFileId: string; cart?: string[] };
 }
 
 export default function Cart({ params }: CartProps) {

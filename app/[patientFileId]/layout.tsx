@@ -5,8 +5,8 @@ import Loader from '../../components/Loader';
 import TreatmentsContainer from '../../components/TreatmentsContainer';
 
 interface RootLayoutProps {
-  children: React.ReactNode;
-  params: { patientFileId: string };
+  readonly children: React.ReactNode;
+  readonly params: { patientFileId: string };
 }
 
 export default function RootLayout({ children, params }: RootLayoutProps) {
