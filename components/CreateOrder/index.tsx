@@ -6,7 +6,7 @@ import CrossIcon from '../Icons/Cross';
 import { useLocalStorage, useQuery } from 'fauna-typed';
 import { PatientFile, Query } from '../../fqlx-generated/typedefs';
 import { useRouter } from 'next/navigation';
-import { DISCOVERYMODE, FLOW } from '../../__mocks__/flow';
+import { DISCOVERYMODE } from '../../__mocks__/flow';
 import { Route } from 'next';
 
 interface CreateOrderProps {
@@ -34,40 +34,19 @@ export default function CreateOrder({
     'PatientFile'
   );
 
-  const lastTab = localStorage.getItem('lastTab');
-
   const handlePatientNameChange = ({ value }: onChangeEventHandler): void => {
     setPatientName(value);
   };
 
-  const syncDiscoveryModeData = async (patient: PatientFile) => {
-    const createdPatient = await query.PatientFile.create(patient).exec();
-
-    let redirectTo = `/${createdPatient.id}`;
-
-    const updatedLocalLastTab =
-      Number(lastTab) < Number(FLOW.cart.id)
-        ? `${Number(lastTab) + 1}`
-        : `${lastTab}`;
-
-    Object.values(FLOW).forEach(({ id, path }) => {
-      if (id === updatedLocalLastTab) {
-        redirectTo += path;
-      }
-    });
-
-    localStorage.removeItem(`${DISCOVERYMODE}`);
-    return redirectTo;
-  };
-
   const handleCrossButton = async () => {
     if (isDiscoveryMode) {
-      await syncDiscoveryModeData({
+      await query.PatientFile.create({
         patient: discoveryModePatientFile.patient,
         teeth: discoveryModePatientFile.teeth.slice(1),
-      });
+      }).exec();
     }
 
+    localStorage.removeItem('lastTab');
     deactivateModal();
   };
 
@@ -87,14 +66,8 @@ export default function CreateOrder({
         };
       }
 
-      let redirectTo;
-
-      if (isDiscoveryMode) {
-        redirectTo = await syncDiscoveryModeData(patient);
-      } else {
-        const createdPatient = await query.PatientFile.create(patient).exec();
-        redirectTo = `/${createdPatient.id}/treatments`;
-      }
+      const createdPatient = await query.PatientFile.create(patient).exec();
+      const redirectTo = `/${createdPatient.id}/treatments`;
 
       router.push(redirectTo as Route);
     } catch (err) {

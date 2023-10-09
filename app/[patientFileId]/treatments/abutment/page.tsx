@@ -13,7 +13,7 @@ import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeet
 import { useProductStore } from '../../../../zustand/product';
 import { abutmentProductFields } from './filterFields';
 import NewProductView from '../../../../components/NewProductView';
-import { FLOW } from '../../../../__mocks__/flow';
+import { DISCOVERYMODE, FLOW } from '../../../../__mocks__/flow';
 
 export default function Abutment({
   params,
@@ -42,7 +42,11 @@ export default function Abutment({
       ? abutmentProductFields.filter((field) => field.name !== 'type')
       : abutmentProductFields;
 
-  localStorage.setItem('lastTab', FLOW.abutment.id);
+  useEffect(() => {
+    if (params.patientFileId === DISCOVERYMODE) {
+      localStorage.setItem('lastTab', FLOW.abutment.id);
+    }
+  }, []);
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/abutment`}>

@@ -4,7 +4,7 @@ import { Tabs, View } from 'reshaped';
 import TeethDiagramWithTreatments from '../../../components/TeethDiagram';
 import { useProductStore } from '../../../zustand/product';
 import { useEffect } from 'react';
-import { FLOW } from '../../../__mocks__/flow';
+import { DISCOVERYMODE, FLOW } from '../../../__mocks__/flow';
 
 export default function Treatment({
   params,
@@ -17,7 +17,11 @@ export default function Treatment({
     setActivePatientFileId(params.patientFileId);
   }, []);
 
-  localStorage.setItem('lastTab', FLOW.treatments.id);
+  useEffect(() => {
+    if (params.patientFileId === DISCOVERYMODE) {
+      localStorage.setItem('lastTab', FLOW.treatments.id);
+    }
+  }, []);
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments`}>

@@ -8,6 +8,8 @@ import TreatmentTabsPopover from '../TreatmentTabsPopover';
 import { PRODUCT_TYPE } from '../../zustand/product/interface';
 import { useTabsStatus } from '../../hooks/useTabsStatus';
 import { useProductStore } from '../../zustand/product';
+import { FLOW, DISCOVERYMODE } from '../../__mocks__/flow';
+import { Route } from 'next';
 
 const TreatmentTabs = ({
   children,
@@ -24,6 +26,8 @@ const TreatmentTabs = ({
   const { treatments, recentAddedTreatment, setRecentAddedTreatment } =
     useTeethDiagramStore((state) => state);
   const { setImplicitFilters } = useProductStore();
+  const isDiscoveryModeEnabled = patientFileId === DISCOVERYMODE;
+  const lastTab = localStorage.getItem('lastTab');
 
   const onChangeTab = ({ value }: { value: string }) => {
     const splitedRoute = value.split('/');
@@ -57,6 +61,37 @@ const TreatmentTabs = ({
   useEffect(() => {
     getTabsStatus();
   }, [patientFile, treatments]);
+
+  useEffect(() => {
+    if (!isDiscoveryModeEnabled && lastTab) {
+      let redirectTo = `/${patientFileId}`;
+      let prevPath = '';
+
+      const updatedLocalLastTab =
+        Number(lastTab) < Number(FLOW.shipping.id)
+          ? `${Number(lastTab) + 1}`
+          : `${lastTab}`;
+
+      Object.values(FLOW).forEach(({ id, path, tab }) => {
+        if (id === updatedLocalLastTab) {
+          if (tab !== undefined && !tabsStatus[tab]) {
+            redirectTo += prevPath;
+          } else {
+            redirectTo += path;
+          }
+        }
+        prevPath = path;
+      });
+
+      localStorage.removeItem(`${DISCOVERYMODE}`);
+
+      router.push(redirectTo as Route);
+
+      return () => {
+        localStorage.removeItem('lastTab');
+      };
+    }
+  }, [tabsStatus]);
 
   return (
     <View

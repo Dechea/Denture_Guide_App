@@ -13,7 +13,7 @@ import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeet
 import { useProductStore } from '../../../../zustand/product';
 import { healingProductFields } from './filterFields';
 import NewProductView from '../../../../components/NewProductView';
-import { FLOW } from '../../../../__mocks__/flow';
+import { DISCOVERYMODE, FLOW } from '../../../../__mocks__/flow';
 
 export default function Healing({
   params,
@@ -33,7 +33,11 @@ export default function Healing({
     setActivePatientFileId(params.patientFileId);
   }, []);
 
-  localStorage.setItem('lastTab', FLOW.healing.id);
+  useEffect(() => {
+    if (params.patientFileId === DISCOVERYMODE) {
+      localStorage.setItem('lastTab', FLOW.healing.id);
+    }
+  }, []);
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/healing`}>

@@ -9,7 +9,7 @@ import { Query } from '../../fqlx-generated/typedefs';
 import MenuIcon from '../Icons/MenuIcon';
 import CartIcon from '../Icons/Cart';
 import { useProductCalculations } from '../../hooks/useProductCalculations';
-import { UserButton, useUser } from '@clerk/nextjs';
+import { UserButton } from '@clerk/nextjs';
 import SignInPopover from '../SignInPopover';
 import { Route } from 'next';
 import { DISCOVERYMODE } from '../../__mocks__/flow';

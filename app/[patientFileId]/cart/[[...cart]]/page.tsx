@@ -83,7 +83,11 @@ export default function Cart({ params }: CartProps) {
       ),
   });
 
-  localStorage.setItem('lastTab', FLOW.cart.id);
+  useEffect(() => {
+    if (params.patientFileId === DISCOVERYMODE) {
+      localStorage.setItem('lastTab', FLOW.cart.id);
+    }
+  }, []);
 
   const { isValid, handleSubmit } = formik;
 
