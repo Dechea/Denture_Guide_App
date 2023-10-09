@@ -99,7 +99,7 @@ export default function CreateOrder({
           <View.Item grow>
             <Text variant='featured-2' weight='bold' color='neutral'>
               {isDiscoveryMode
-                ? 'Store Discovery mode order for...'
+                ? 'Give your order a name...'
                 : 'Create Order for...'}
             </Text>
           </View.Item>
@@ -114,7 +114,7 @@ export default function CreateOrder({
 
         <View gap={1}>
           <Text variant='body-3' weight='medium' color='neutral'>
-            Patient’s Name
+            Order Name
           </Text>
           <View direction='column' gap={3} align='center'>
             <View width='100%'>
