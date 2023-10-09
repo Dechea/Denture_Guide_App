@@ -22,7 +22,6 @@ export default function Header({ patientFileId }: HeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const query = useQuery<Query>();
-  const { isSignedIn } = useUser();
   const { value: discoveryModePatientFile } = useLocalStorage(
     `${DISCOVERYMODE}`,
     'PatientFile'
@@ -133,27 +132,20 @@ export default function Header({ patientFileId }: HeaderProps) {
                 highlighted={pathname === `/${patientFileId}/cart`}
                 onClick={() => router.push(`/${patientFileId}/cart` as Route)}
               >
-                <>
-                  <Hidden hide={{ s: true, m: false }}>
-                    <View
-                      direction='row'
-                      align='center'
-                      justify='center'
-                      gap={3}
-                    >
-                      <Text variant='body-3' weight='medium'>
-                        {totalCostOfProductsInCart} €
+                <Hidden hide={{ s: true, m: false }}>
+                  <View direction='row' align='center' justify='center' gap={3}>
+                    <Text variant='body-3' weight='medium'>
+                      {totalCostOfProductsInCart} €
+                    </Text>
+                    <Badge className='!bg-neutral' size='small'>
+                      <Text className='!text-neutral text-center'>
+                        {totalProductsInCart}
                       </Text>
-                      <Badge className='!bg-neutral' size='small'>
-                        <Text className='!text-neutral'>
-                          {totalProductsInCart}
-                        </Text>
-                      </Badge>
-                    </View>
-                  </Hidden>
-                </>
+                    </Badge>
+                  </View>
+                </Hidden>
               </Button>
-              {isSignedIn ? (
+              {!isDiscoveryModeEnabled ? (
                 <UserButton />
               ) : (
                 <SignInPopover description='Already have an Account? Sign in to view your order history.' />

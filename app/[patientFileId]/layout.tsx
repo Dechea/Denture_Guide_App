@@ -11,17 +11,25 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children, params }: RootLayoutProps) {
   return (
-    <TreatmentsContainer patientFileId={params.patientFileId}>
-      <Suspense
-        fallback={
-          <View height='56px' width='100%' justify='center' align='center'>
-            <Loader />
-          </View>
-        }
-      >
-        <Header patientFileId={params.patientFileId} />
-      </Suspense>
-      {children}
-    </TreatmentsContainer>
+    <Suspense
+      fallback={
+        <View height='100%' width='100%' justify='center' align='center'>
+          <Loader />
+        </View>
+      }
+    >
+      <TreatmentsContainer patientFileId={params.patientFileId}>
+        <Suspense
+          fallback={
+            <View height='56px' width='100%' justify='center' align='center'>
+              <Loader />
+            </View>
+          }
+        >
+          <Header patientFileId={params.patientFileId} />
+        </Suspense>
+        {children}
+      </TreatmentsContainer>
+    </Suspense>
   );
 }

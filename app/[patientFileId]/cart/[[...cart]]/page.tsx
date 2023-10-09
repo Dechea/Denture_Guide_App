@@ -7,7 +7,7 @@ import {
   useQuery,
 } from 'fauna-typed';
 import { useFormik } from 'formik';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { Badge, Tabs, Text, View } from 'reshaped';
 import ShippingForm from '../../../../components/AddressForm';
@@ -248,9 +248,9 @@ export default function Cart({ params }: CartProps) {
       router.push(`/${params.patientFileId}/cart/shippingdetails`);
     }
 
-    // if (!isDiscoveryModeEnabled && !userOrganization) {
-    //   redirect('/users/sync');
-    // }
+    if (!isDiscoveryModeEnabled && !userOrganization) {
+      redirect('/users/sync');
+    }
   }, []);
 
   return (

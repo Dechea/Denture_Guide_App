@@ -24,11 +24,11 @@ export default function Home() {
     }
   }, [isSignedIn]);
 
-  // useEffect(() => {
-  //   if (user !== undefined && faunaUser === null) {
-  //     redirect('/users/sync');
-  //   }
-  // }, [faunaUser]);
+  useEffect(() => {
+    if (user !== undefined && faunaUser === null) {
+      redirect('/users/sync');
+    }
+  }, [faunaUser]);
 
   return (
     <Suspense fallback={<Loader />}>
