@@ -35,7 +35,7 @@ export default function Header({ patientFileId }: HeaderProps) {
     if (isDiscoveryModeEnabled) {
       return discoveryModePatientFile;
     } else {
-      query.PatientFile.firstWhere(
+      return query.PatientFile.firstWhere(
         `(patientFile) => patientFile.id == "${patientFileId}"`
       )
         .project({ patient: { name: true, avatar: true } })

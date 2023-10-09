@@ -18,9 +18,10 @@ export default function OrderDashboard(): React.JSX.Element {
     `${DISCOVERYMODE}`,
     'PatientFile'
   );
+  const isDiscoveryMode = discoveryModePatientFile?.teeth.length > 1;
 
   useEffect(() => {
-    if (discoveryModePatientFile.teeth.length > 1) {
+    if (isDiscoveryMode) {
       activateNewOrderModal();
     }
   }, []);
@@ -42,7 +43,7 @@ export default function OrderDashboard(): React.JSX.Element {
       <CreateOrder
         activeModal={activeNewOrderModal}
         deactivateModal={deactivateNewOrderModal}
-        isDiscoveryMode={discoveryModePatientFile != null}
+        isDiscoveryMode={isDiscoveryMode}
       />
     </View>
   );

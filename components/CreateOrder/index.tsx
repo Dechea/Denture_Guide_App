@@ -1,6 +1,6 @@
 'use client';
 
-import { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useRef, useState } from 'react';
 import { Button, Icon, Modal, Text, TextField, View } from 'reshaped';
 import CrossIcon from '../Icons/Cross';
 import { useLocalStorage, useQuery } from 'fauna-typed';
@@ -8,6 +8,7 @@ import { PatientFile, Query } from '../../fqlx-generated/typedefs';
 import { useRouter } from 'next/navigation';
 import { DISCOVERYMODE } from '../../__mocks__/flow';
 import { Route } from 'next';
+import useOutsideClick from '../../hooks/useOutsideClick';
 
 interface CreateOrderProps {
   readonly activeModal: boolean;
@@ -29,10 +30,13 @@ export default function CreateOrder({
   const [patientName, setPatientName] = useState('');
   const router = useRouter();
   const query = useQuery<Query>();
-  const { value: discoveryModePatientFile } = useLocalStorage(
-    `${DISCOVERYMODE}`,
-    'PatientFile'
-  );
+  const {
+    value: discoveryModePatientFile,
+    setValue: setDiscoveryModePatientFile,
+  } = useLocalStorage(`${DISCOVERYMODE}`, 'PatientFile');
+  const modalRef = useRef(null);
+
+  useOutsideClick(modalRef, () => handleCrossButton());
 
   const handlePatientNameChange = ({ value }: onChangeEventHandler): void => {
     setPatientName(value);
@@ -44,6 +48,9 @@ export default function CreateOrder({
         patient: discoveryModePatientFile.patient,
         teeth: discoveryModePatientFile.teeth.slice(1),
       }).exec();
+
+      setDiscoveryModePatientFile(null);
+      localStorage.removeItem(DISCOVERYMODE);
     }
 
     localStorage.removeItem('lastTab');
@@ -68,6 +75,8 @@ export default function CreateOrder({
 
       const createdPatient = await query.PatientFile.create(patient).exec();
       const redirectTo = `/${createdPatient.id}/treatments`;
+      setDiscoveryModePatientFile(null);
+      localStorage.removeItem(DISCOVERYMODE);
 
       router.push(redirectTo as Route);
     } catch (err) {
@@ -83,6 +92,7 @@ export default function CreateOrder({
       onClose={deactivateModal}
       padding={6}
       size='400px'
+      attributes={{ ref: modalRef }}
     >
       <View gap={12} className='cursor-default'>
         <View gap={2} direction='row' align='center'>

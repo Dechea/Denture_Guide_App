@@ -87,8 +87,8 @@ export function useTabsStatus() {
       });
 
       const products = [
-        ...(tooth?.crown.treatmentDoc.selectedProducts ?? []),
-        ...(tooth?.root.treatmentDoc.selectedProducts ?? []),
+        ...(tooth?.crown?.treatmentDoc.selectedProducts ?? []),
+        ...(tooth?.root?.treatmentDoc.selectedProducts ?? []),
       ];
 
       const conditionsToUnlockTabs = tabRequirements[treatment?.treatmentgroup];
