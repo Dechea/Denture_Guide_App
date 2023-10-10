@@ -36,7 +36,9 @@ export default function CreateOrder({
   } = useLocalStorage(`${DISCOVERYMODE}`, 'PatientFile');
   const modalRef = useRef(null);
 
-  useOutsideClick(modalRef, () => handleCrossButton());
+  useOutsideClick(modalRef, () => {
+    handleCrossButton();
+  });
 
   const handlePatientNameChange = ({ value }: onChangeEventHandler): void => {
     setPatientName(value);
