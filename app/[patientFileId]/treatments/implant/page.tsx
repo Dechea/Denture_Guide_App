@@ -13,11 +13,12 @@ import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeet
 import { useProductStore } from '../../../../zustand/product';
 import { implantProductFields } from './filterFields';
 import NewProductView from '../../../../components/NewProductView';
+import { DISCOVERYMODE, FLOW } from '../../../../__mocks__/flow';
 
 export default function Implant({
   params,
 }: {
-  params: { patientFileId: string };
+  readonly params: { patientFileId: string };
 }) {
   const { setActiveProductTab, setActivePatientFileId } = useProductStore();
 
@@ -30,6 +31,12 @@ export default function Implant({
   useEffect(() => {
     setActiveProductTab(PRODUCT_TYPE.IMPLANT);
     setActivePatientFileId(params.patientFileId);
+  }, []);
+
+  useEffect(() => {
+    if (params.patientFileId === DISCOVERYMODE) {
+      localStorage.setItem('lastTab', FLOW.implant.id);
+    }
   }, []);
 
   return (

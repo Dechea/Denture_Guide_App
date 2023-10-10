@@ -25,34 +25,40 @@
   "Tooth": {
     "fields": {
       "name": "string",
-      "root": {
-        "findings": "Finding[]",
-        "treatmentDoc": "TreatmentDoc",
-        "addon": "BodyPartLeaf",
-        "leftRoot": "BodyPartLeaf",
-        "middleRoot": "BodyPartLeaf",
-        "rightRoot": "BodyPartLeaf"
-      },
-      "crown": {
-        "findings": "Finding[]",
-        "treatmentDoc": "TreatmentDoc",
-        "addon": "BodyPartLeaf",
-        "toothNeck": "BodyPartLeaf",
-        "left": "BodyPartLeaf",
-        "right": "BodyPartLeaf",
-        "center": "BodyPartLeaf",
-        "outside": "BodyPartLeaf",
-        "inside": "BodyPartLeaf"
-      }
+      "root": "Root",
+      "crown": "Crown"
     },
     "constraints": {
-      "required": [
-        "name",
-        "root",
-        "crown",
-        "root.treatmentDoc",
-        "crown.treatmentDoc"
-      ]
+      "required": ["name", "root", "crown"]
+    }
+  },
+  "Root": {
+    "fields": {
+      "findings": "Finding[]",
+      "treatmentDoc": "TreatmentDoc",
+      "addon": "BodyPartLeaf",
+      "leftRoot": "BodyPartLeaf",
+      "middleRoot": "BodyPartLeaf",
+      "rightRoot": "BodyPartLeaf"
+    },
+    "constraints": {
+      "required": ["treatmentDoc"]
+    }
+  },
+  "Crown": {
+    "fields": {
+      "findings": "Finding[]",
+      "treatmentDoc": "TreatmentDoc",
+      "addon": "BodyPartLeaf",
+      "toothNeck": "BodyPartLeaf",
+      "left": "BodyPartLeaf",
+      "right": "BodyPartLeaf",
+      "center": "BodyPartLeaf",
+      "outside": "BodyPartLeaf",
+      "inside": "BodyPartLeaf"
+    },
+    "constraints": {
+      "required": ["treatmentDoc"]
     }
   },
   "BodyPartLeaf": {
@@ -89,14 +95,17 @@
       "name": "string",
       "locale": "string",
       "description": "string",
-      "price": {
-        "tax": "number",
-        "amount": "number",
-        "currency": "string"
-      }
+      "price": "Price"
     },
     "constraints": {
       "required": ["locale", "price"]
+    }
+  },
+  "Price": {
+    "fields": {
+      "tax": "number",
+      "amount": "number",
+      "currency": "string"
     }
   },
   "Product": {
@@ -107,6 +116,7 @@
         "name": "string"
       },
       "image": "string",
+      "status": "string",
       "localizations": "ProductLocalization[]",
       "implant": {
         "implantLine": "string",
@@ -116,7 +126,8 @@
         "insertionPost": "string",
         "length": "number",
         "lengthNeck": "number",
-        "diameterPlatform": "number"
+        "diameterPlatform": "number",
+        "useCase": "string"
       },
       "abutment": {
         "implantLine": "string",
@@ -127,14 +138,15 @@
         "material": "string",
         "angle": "number",
         "diameterPlatform": "number",
-        "heightsGingiva": "number[]",
-        "indication": "string"
+        "heightGingiva": "string",
+        "indications": "string[]",
+        "type": "string"
       },
       "healingAbutment": {
         "implantLine": "string",
         "shape": "string",
         "platformSwitch": "boolean",
-        "wprkflows": "string[]",
+        "workflows": "string[]",
         "material": "string",
         "diameterPlatform": "number",
         "heightGingiva": "number"

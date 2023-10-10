@@ -1,21 +1,33 @@
 'use client';
 
-import { useQuery } from 'fauna-typed';
+import { useLocalStorage, useQuery } from 'fauna-typed';
 import { useMemo } from 'react';
-import { Query } from '../fqlx-generated/typedefs';
+import { PatientFile, Query } from '../fqlx-generated/typedefs';
+import { DISCOVERYMODE } from '../__mocks__/flow';
 
 export const useProductCalculations = (patientFileId: string) => {
   const query = useQuery<Query>();
 
-  const patientFile = query.PatientFile.byId(patientFileId)
-    .project({ teeth: true })
-    .exec();
+  const { value: discoveryModePatientFile } = useLocalStorage(
+    `${DISCOVERYMODE}`,
+    'PatientFile'
+  );
+
+  const patientFile = useMemo(() => {
+    if (patientFileId === `${DISCOVERYMODE}`) {
+      return discoveryModePatientFile as PatientFile;
+    } else {
+      return query.PatientFile.byId(patientFileId)
+        .project({ teeth: true })
+        .exec();
+    }
+  }, [patientFileId, query, discoveryModePatientFile]);
 
   const selectedProducts = useMemo(
     () =>
-      patientFile.teeth.flatMap((tooth) => [
-        ...(tooth.root?.treatmentDoc?.selectedProducts ?? []),
-        ...(tooth.crown?.treatmentDoc?.selectedProducts ?? []),
+      patientFile?.teeth?.flatMap((tooth) => [
+        ...(tooth.root?.treatmentDoc.selectedProducts ?? []),
+        ...(tooth.crown?.treatmentDoc.selectedProducts ?? []),
       ]),
     [patientFile]
   );
@@ -26,7 +38,7 @@ export const useProductCalculations = (patientFileId: string) => {
     totalCostOfProductsInCartWithTax,
   } = useMemo(
     () =>
-      selectedProducts.reduce(
+      selectedProducts?.reduce(
         (acc, { selectedProduct, quantity }) => {
           acc.totalProductsInCart += Number(quantity);
 
@@ -35,14 +47,15 @@ export const useProductCalculations = (patientFileId: string) => {
               selectedProduct?.localizations[1]?.price?.amount
             );
             const price = isNaN(amount) ? 0 : amount;
-
-            const tax = Number(selectedProduct?.localizations[1]?.price?.tax);
-
+            const localTax = Number(
+              selectedProduct?.localizations[1]?.price?.tax
+            );
+            const tax = isNaN(localTax) ? 0 : localTax;
             const priceWithoutTax = price * Number(quantity);
-            acc.totalCostOfProductsInCartWithTax +=
-              (priceWithoutTax * tax) / 100 + priceWithoutTax;
 
-            acc.totalCostOfProductsInCart += Number(quantity) * price;
+            acc.totalCostOfProductsInCartWithTax +=
+              (priceWithoutTax * Number(tax ?? 0)) / 100 + priceWithoutTax;
+            acc.totalCostOfProductsInCart += priceWithoutTax;
           }
 
           return acc;
@@ -52,7 +65,11 @@ export const useProductCalculations = (patientFileId: string) => {
           totalCostOfProductsInCart: 0,
           totalCostOfProductsInCartWithTax: 0,
         }
-      ),
+      ) ?? {
+        totalProductsInCart: 0,
+        totalCostOfProductsInCart: 0,
+        totalCostOfProductsInCartWithTax: 0,
+      },
     [selectedProducts]
   );
 

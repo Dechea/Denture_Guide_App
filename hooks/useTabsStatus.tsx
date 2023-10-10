@@ -1,9 +1,10 @@
-import { useQuery } from 'fauna-typed';
+import { useLocalStorage, useQuery } from 'fauna-typed';
 import { useProductStore } from '../zustand/product';
 import { PRODUCT_TYPE, TREATMENT_GROUP } from '../zustand/product/interface';
 import { useTeethDiagramStore } from '../zustand/teethDiagram';
-import { Query } from '../fqlx-generated/typedefs';
+import { PatientFile, Query } from '../fqlx-generated/typedefs';
 import { useMemo, useState } from 'react';
+import { DISCOVERYMODE } from '../__mocks__/flow';
 
 interface TabRequirementsProps {
   [key: string]: {
@@ -52,16 +53,28 @@ export function useTabsStatus() {
   const { activePatientFileId } = useProductStore();
   const [tabsStatus, setTabsStatus] = useState(defaultActiveTabs);
   const query = useQuery<Query>();
+  const { value: discoveryModePatientFile } = useLocalStorage(
+    `${DISCOVERYMODE}`,
+    'PatientFile'
+  );
 
-  const patientFile = useMemo(
-    () =>
-      activePatientFileId
+  const patientFile = useMemo(() => {
+    if (activePatientFileId === `${DISCOVERYMODE}`) {
+      const patientFileString = discoveryModePatientFile;
+
+      if (patientFileString) {
+        return patientFileString as PatientFile;
+      } else {
+        return { teeth: [] };
+      }
+    } else {
+      return activePatientFileId
         ? query.PatientFile.byId(activePatientFileId)
             .project({ teeth: true })
             .exec()
-        : { teeth: [] },
-    [activePatientFileId, query.PatientFile]
-  );
+        : { teeth: [] };
+    }
+  }, [activePatientFileId, query, discoveryModePatientFile]);
 
   const getTabsStatus = () => {
     const localTabsStatus: TabsStatusProps = { ...defaultActiveTabs };
@@ -74,8 +87,8 @@ export function useTabsStatus() {
       });
 
       const products = [
-        ...(tooth?.crown.treatmentDoc.selectedProducts ?? []),
-        ...(tooth?.root.treatmentDoc.selectedProducts ?? []),
+        ...(tooth?.crown?.treatmentDoc.selectedProducts ?? []),
+        ...(tooth?.root?.treatmentDoc.selectedProducts ?? []),
       ];
 
       const conditionsToUnlockTabs = tabRequirements[treatment?.treatmentgroup];
@@ -96,6 +109,7 @@ export function useTabsStatus() {
           });
       });
     });
+
     setTabsStatus(localTabsStatus);
   };
 

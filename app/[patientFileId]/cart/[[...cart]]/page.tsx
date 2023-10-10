@@ -1,51 +1,66 @@
 'use client';
 
 import { useUser } from '@clerk/nextjs';
-import { revalidateActiveQueries, useQuery } from 'fauna-typed';
+import {
+  revalidateActiveQueries,
+  useLocalStorage,
+  useQuery,
+} from 'fauna-typed';
 import { useFormik } from 'formik';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { Badge, Tabs, Text, View } from 'reshaped';
-import ShippingForm from '../../../components/AddressForm';
+import ShippingForm from '../../../../components/AddressForm';
 import {
   AddressType,
   initialFormData,
-} from '../../../components/AddressForm/constants';
-import { addressFormValidationSchema } from '../../../components/AddressForm/validationSchema';
-import CartHeader from '../../../components/CartHeader';
-import CartOrder from '../../../components/CartOrder';
-import CartProducts from '../../../components/CartProducts';
+} from '../../../../components/AddressForm/constants';
+import { addressFormValidationSchema } from '../../../../components/AddressForm/validationSchema';
+import CartHeader from '../../../../components/CartHeader';
+import CartOrder from '../../../../components/CartOrder';
+import CartProducts from '../../../../components/CartProducts';
 import {
   Address,
+  PatientFile,
   Product,
   Query,
   SelectedProduct,
   Tooth,
-} from '../../../fqlx-generated/typedefs';
-import { useProductCalculations } from '../../../hooks/useProductCalculations';
-import { useProductCrudOps } from '../../../hooks/useProductCrudOps';
-import { AREA_TYPE } from '../../../zustand/product/interface';
-import { useUserStore } from '../../../zustand/user';
+} from '../../../../fqlx-generated/typedefs';
+import { useProductCalculations } from '../../../../hooks/useProductCalculations';
+import { useProductCrudOps } from '../../../../hooks/useProductCrudOps';
+import { AREA_TYPE } from '../../../../zustand/product/interface';
+import { useUserStore } from '../../../../zustand/user';
+import { CARTTABROUTES, DISCOVERYMODE, FLOW } from '../../../../__mocks__/flow';
 
-const ShippingTabs = [
-  { id: '1', title: 'Selected Products' },
-  { id: '2', title: 'Shipping Details' },
-  { id: '3', title: 'Order' },
+const CartTabs = [
+  {
+    id: '1',
+    title: 'Selected Products',
+    route: CARTTABROUTES.selectedproducts,
+  },
+  { id: '2', title: 'Shipping Details', route: CARTTABROUTES.shippingdetails },
+  { id: '3', title: 'Order', route: CARTTABROUTES.orders },
 ];
 
 interface CartProps {
-  params: { patientFileId: string };
+  readonly params: { patientFileId: string; cart?: string[] };
 }
 
 export default function Cart({ params }: CartProps) {
+  const isDiscoveryModeEnabled = params.patientFileId === `${DISCOVERYMODE}`;
   const query = useQuery<Query>();
-  const [activeTab, setActiveTab] = useState('1');
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState(
+    isDiscoveryModeEnabled
+      ? CARTTABROUTES.selectedproducts
+      : params.cart?.[0] ?? CARTTABROUTES.selectedproducts
+  );
   const {
+    addressFormData,
     setAddressFormData,
     savedShippingIndex,
     savedBillingIndex,
-    setSavedShippingIndex,
-    setSavedBillingIndex,
   } = useUserStore();
   const { user } = useUser();
 
@@ -53,10 +68,13 @@ export default function Cart({ params }: CartProps) {
   const { addOrUpdateProductInFqlx } = useProductCrudOps({
     patientFileId: params.patientFileId,
   });
-
+  const { value: discoveryModePatientFile } = useLocalStorage(
+    `${DISCOVERYMODE}`,
+    'PatientFile'
+  );
   const formik = useFormik({
     validationSchema: addressFormValidationSchema,
-    initialValues: initialFormData,
+    initialValues: addressFormData ?? initialFormData,
     onSubmit: (values) =>
       submitFormData(
         values.shipping,
@@ -65,17 +83,24 @@ export default function Cart({ params }: CartProps) {
       ),
   });
 
+  useEffect(() => {
+    if (params.patientFileId === DISCOVERYMODE) {
+      localStorage.setItem('lastTab', FLOW.cart.id);
+    }
+  }, []);
+
   const { isValid, handleSubmit } = formik;
 
-  const patientFile = useMemo(
-    () =>
-      query.PatientFile.firstWhere(
-        `(product) => product.id == "${params.patientFileId}"`
-      )
-        .project({ patient: true, teeth: true })
-        .exec(),
-    [params.patientFileId, query]
-  );
+  const patientFile = useMemo(() => {
+    if (isDiscoveryModeEnabled) {
+      return discoveryModePatientFile as PatientFile;
+    }
+    return query.PatientFile.firstWhere(
+      `(file) => file.id == "${params.patientFileId}"`
+    )
+      .project({ patient: true, teeth: true })
+      .exec();
+  }, [params.patientFileId, query, discoveryModePatientFile]);
 
   const userOrganization = query.User.firstWhere(
     `user => user.clerkId == "${user?.id}"`
@@ -92,8 +117,10 @@ export default function Cart({ params }: CartProps) {
     toothNumber: number,
     productId: string
   ) => {
-    const getMappedTeeth = (teeth: Tooth[]) => {
-      teeth.forEach((tooth: Tooth) => {
+    const getMappedTeeth = async (teeth: Tooth[]) => {
+      const mappedTeeth: Tooth[] = [];
+
+      for (const tooth of teeth) {
         const localToothNumber = Number(tooth.name);
 
         Object.values(AREA_TYPE).forEach((area) => {
@@ -104,14 +131,13 @@ export default function Cart({ params }: CartProps) {
 
           // @ts-expect-error
           tooth[area].treatmentDoc.selectedProducts = selectedProducts.map(
-            ({ selectedProduct, quantity, ...args }) => {
+            ({ selectedProduct, quantity }) => {
               const isProductMatched = selectedProduct?.id === productId;
 
               return {
-                ...args,
-                selectedProduct: `Product.byId("${
-                  selectedProduct?.id as string
-                }")`,
+                selectedProduct: isDiscoveryModeEnabled
+                  ? selectedProduct
+                  : `Product.byId("${selectedProduct?.id as string}")`,
                 quantity:
                   isToothMatched && isProductMatched
                     ? updatedQuantity
@@ -120,7 +146,10 @@ export default function Cart({ params }: CartProps) {
             }
           );
         });
-      });
+        mappedTeeth.push(tooth);
+      }
+
+      return mappedTeeth;
     };
 
     addOrUpdateProductInFqlx(getMappedTeeth);
@@ -130,45 +159,57 @@ export default function Cart({ params }: CartProps) {
     toothNumber: number,
     productId: string
   ) => {
-    const getMappedTeeth = (teeth: Tooth[]) => {
-      teeth.forEach((tooth: Tooth) => {
+    const getMappedTeeth = async (teeth: Tooth[]) => {
+      const mappedTeeth: Tooth[] = [];
+
+      for (const tooth of teeth) {
         const localToothNumber = Number(tooth.name);
 
         Object.values(AREA_TYPE).forEach((area) => {
           const selectedProducts = [
-            ...(tooth[area].treatmentDoc.selectedProducts ?? []),
+            ...(tooth[area].treatmentDoc?.selectedProducts ?? []),
           ];
           const filteredSelectedProducts: SelectedProduct[] = [];
           const isToothMatched = localToothNumber === toothNumber;
 
-          selectedProducts.forEach(({ quantity, selectedProduct, ...args }) => {
+          selectedProducts.forEach(({ quantity, selectedProduct }) => {
             if (!(selectedProduct?.id === productId && isToothMatched)) {
               filteredSelectedProducts.push({
-                ...args,
-                selectedProduct:
-                  `Product.byId("${selectedProduct?.id}")` as unknown as Product,
+                selectedProduct: isDiscoveryModeEnabled
+                  ? selectedProduct
+                  : (`Product.byId("${selectedProduct?.id}")` as unknown as Product),
                 quantity: quantity,
               });
             }
           });
 
+          // @ts-ignore
           tooth[area].treatmentDoc.selectedProducts = filteredSelectedProducts;
         });
-      });
+        mappedTeeth.push(tooth);
+      }
+
+      return mappedTeeth;
     };
 
     addOrUpdateProductInFqlx(getMappedTeeth);
   };
 
   const handleTabClick = async (tabId: string) => {
-    if (tabId === '3') {
-      if (!isValid) {
-        return;
-      } else {
+    if (isDiscoveryModeEnabled) {
+      return;
+    }
+
+    if (tabId === CARTTABROUTES.orders) {
+      if (isValid) {
         handleSubmit();
       }
+      return;
     }
+
     setActiveTab(tabId);
+
+    router.push(`/${params.patientFileId}/cart/${tabId}`);
   };
 
   const submitFormData = async (
@@ -201,15 +242,17 @@ export default function Cart({ params }: CartProps) {
 
     await revalidateActiveQueries('Organization');
 
-    setActiveTab('3');
+    setActiveTab(CARTTABROUTES.orders);
+
+    router.push(`/${params.patientFileId}/cart/orders`);
   };
 
   useEffect(() => {
-    setAddressFormData(null);
-    setSavedShippingIndex(0);
-    setSavedBillingIndex(0);
+    if (!isValid && activeTab === CARTTABROUTES.orders) {
+      router.push(`/${params.patientFileId}/cart/shippingdetails`);
+    }
 
-    if (!userOrganization) {
+    if (!isDiscoveryModeEnabled && !userOrganization) {
       redirect('/users/sync');
     }
   }, []);
@@ -246,8 +289,8 @@ export default function Cart({ params }: CartProps) {
                 '!pr-0 [&_[role=tablist]]:max-lg:!w-full [&_[role=tablist]]:min-[1024px]:!min-w-[726px] [&_[role=tablist]>*]:!w-[33%]'
               }
             >
-              {ShippingTabs.map((tab) => (
-                <Tabs.Item key={tab.title} value={tab.id}>
+              {CartTabs.map((tab) => (
+                <Tabs.Item key={tab.title} value={tab.route}>
                   <View
                     direction={{ s: 'column', xl: 'row' }}
                     align={'center'}
@@ -256,10 +299,10 @@ export default function Cart({ params }: CartProps) {
                     className='!flex-nowrap'
                   >
                     <Badge
-                      color={activeTab === tab.id ? 'primary' : undefined}
+                      color={activeTab === tab.route ? 'primary' : undefined}
                       size='small'
                     >
-                      {tab.id}
+                      <View align='center'>{tab.id}</View>
                     </Badge>
 
                     <View paddingInline={4}>
@@ -279,7 +322,7 @@ export default function Cart({ params }: CartProps) {
             align='center'
             className='[&_[role=tabpanel]]:w-full [&_[role=tabpanel]]:h-full !overflow-y-scroll scrollbar-0 print:!overflow-visible'
           >
-            <Tabs.Panel value='1'>
+            <Tabs.Panel value={CARTTABROUTES.selectedproducts}>
               <CartProducts
                 teeth={patientFile.teeth}
                 onProductCountChange={handleProductCountChange}
@@ -289,7 +332,7 @@ export default function Cart({ params }: CartProps) {
               />
             </Tabs.Panel>
 
-            <Tabs.Panel value='2'>
+            <Tabs.Panel value={CARTTABROUTES.shippingdetails}>
               <ShippingForm
                 params={params}
                 formik={formik}
@@ -297,7 +340,7 @@ export default function Cart({ params }: CartProps) {
               />
             </Tabs.Panel>
 
-            <Tabs.Panel value='3'>
+            <Tabs.Panel value={CARTTABROUTES.orders}>
               <CartOrder params={params} setActiveTab={handleTabClick} />
             </Tabs.Panel>
           </View>

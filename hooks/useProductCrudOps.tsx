@@ -1,7 +1,8 @@
 'use client';
 
-import { useQuery } from 'fauna-typed';
-import { Query, Tooth } from '../fqlx-generated/typedefs';
+import { useLocalStorage, useQuery } from 'fauna-typed';
+import { PatientFile, Query, Tooth } from '../fqlx-generated/typedefs';
+import { DISCOVERYMODE } from '../__mocks__/flow';
 
 interface UseProductCrudOpsProps {
   patientFileId: string;
@@ -10,25 +11,40 @@ interface UseProductCrudOpsProps {
 export const useProductCrudOps = ({
   patientFileId,
 }: UseProductCrudOpsProps) => {
+  const isDiscoveryModeEnabled = patientFileId === `${DISCOVERYMODE}`;
   const query = useQuery<Query>();
+  const {
+    value: discoveryModePatientFile,
+    setValue: setDiscoveryModePatientFile,
+  } = useLocalStorage(`${DISCOVERYMODE}`, 'PatientFile');
 
   const addOrUpdateProductInFqlx = async (
-    manipulateTeeth: (teeth: Tooth[]) => void
+    manipulateTeeth: (teeth: Tooth[]) => Promise<Tooth[]>
   ) => {
-    const fqlxTeeth =
-      (await query.PatientFile.byId(patientFileId).exec()).teeth || [];
-    const teeth = [...fqlxTeeth];
+    let patientFile: PatientFile;
 
-    manipulateTeeth(teeth);
+    if (isDiscoveryModeEnabled) {
+      patientFile = discoveryModePatientFile as PatientFile;
+    } else {
+      patientFile = query.PatientFile.byId(patientFileId)
+        .project({ teeth: true })
+        .exec();
+    }
 
-    const stringifyTeeth = JSON.stringify(teeth).replaceAll(
-      /"Product.byId\(\\"(\d*)\\"\)"/g,
-      'Product.byId("$1")'
-    );
+    const teeth = await manipulateTeeth([...patientFile.teeth]);
 
-    await query.PatientFile.byId(patientFileId)
-      .update(`{ teeth: ${stringifyTeeth} }`)
-      .exec();
+    if (isDiscoveryModeEnabled) {
+      setDiscoveryModePatientFile({ ...patientFile, teeth: teeth });
+    } else {
+      const stringifyTeeth = JSON.stringify(teeth).replaceAll(
+        /"Product.byId\(\\"(\d*)\\"\)"/g,
+        'Product.byId("$1")'
+      );
+
+      await query.PatientFile.byId(patientFileId)
+        .update(`{ teeth: ${stringifyTeeth} }`)
+        .exec();
+    }
   };
 
   return { addOrUpdateProductInFqlx };

@@ -326,6 +326,116 @@ export interface Ts {
     }
 
 
+  export interface Tooth {
+    /**
+ * name for the Tooth
+ */
+ name: string;
+/**
+ * root for the Tooth
+ */
+ root: Root;
+/**
+ * crown for the Tooth
+ */
+ crown: Crown;
+
+  }
+
+
+  export interface ToothInput {
+    /**
+ * name for the Tooth
+ */
+ name: string;
+/**
+ * root for the Tooth
+ */
+ root: Root;
+/**
+ * crown for the Tooth
+ */
+ crown: Crown;
+
+  } 
+
+
+  export interface ToothMethods {
+      /**
+       * all method get the set of all documents in the Tooth collection.
+       * 
+       * @param
+       * 
+       * @returns {AllMethods<Tooth>} method returns the set of all documents in Tooth collection for the given range.
+       * 
+       * @example
+       * query.Tooth.all().exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
+       */
+      all(): AllMethods<Tooth>;
+
+      /**
+       * create method creates a Tooth document in the collection with the provided property values.
+       * 
+       * @param {ToothInput | string} input - will be the Tooth which you want to add.
+         * @param { string } input.name Name for the Tooth
+* @param { Root } input.root Root for the Tooth
+* @param { Crown } input.crown Crown for the Tooth
+       *
+       * @returns {CreateMethods<Tooth>} return new document.
+       * 
+       * @example
+       * query.Tooth.create({  
+ * name: "Value of the name"   
+ * root: "Value of the root"   
+ * crown: "Value of the crown"   
+       * }).exec()
+       * OR
+       * query.Tooth.create(`{  
+ * name: "Value of the name"   
+ * root: "Value of the root"   
+ * crown: "Value of the crown"   
+       * }`).exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
+       */
+    create(input: (ToothInput | string)): CreateMethods<Tooth>;
+
+      /**
+       * byId method get a Tooth document by its document ID.
+       * This will returns available Fqlx byId methods
+       * 
+       * @param {string} id - The ID of the document to retrieve
+       * 
+       * @returns {ByIdMethods<Tooth, ToothInput>} return document when it exists and is accessible, else return
+       * null when the document does not exist or is inaccessible.
+       * 
+       * @example
+       * query.Tooth.byId("21545645646554").exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
+       */
+       byId(id: string): ByIdMethods<Tooth, ToothInput>
+
+       /**
+        * first where method get the first matching value from the Set.
+        * 
+        * @param {(inputCondition: ((data: T) => boolean) | string)} function takes in a document of type T and returns a boolean
+        * 
+        * @returns {FirstWhereMethods<T>}  returns the first matching value in the Set, or null if the Set is empty or no values match.
+        * 
+        * @example
+        * query.Address.all().firstWhere((data) => data.country == 'uk').exec();
+        * OR
+        * query.Address.all().firstWhere(`(data) => data.${dynamicKey} == "${dynamicValueToCheck}"`).exec();
+        * 
+        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
+        */
+       firstWhere(inputCondition: ((data: Tooth) => boolean) | string): FirstWhereMethods<Tooth>;
+    }
+
+
   export interface Root {
     /**
  * findings for the Root
@@ -642,116 +752,6 @@ export interface Ts {
         * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
         */
        firstWhere(inputCondition: ((data: Crown) => boolean) | string): FirstWhereMethods<Crown>;
-    }
-
-
-  export interface Tooth {
-    /**
- * name for the Tooth
- */
- name: string;
-/**
- * root for the Tooth
- */
- root: Root;
-/**
- * crown for the Tooth
- */
- crown: Crown;
-
-  }
-
-
-  export interface ToothInput {
-    /**
- * name for the Tooth
- */
- name: string;
-/**
- * root for the Tooth
- */
- root: Root;
-/**
- * crown for the Tooth
- */
- crown: Crown;
-
-  } 
-
-
-  export interface ToothMethods {
-      /**
-       * all method get the set of all documents in the Tooth collection.
-       * 
-       * @param
-       * 
-       * @returns {AllMethods<Tooth>} method returns the set of all documents in Tooth collection for the given range.
-       * 
-       * @example
-       * query.Tooth.all().exec()
-       * 
-       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
-       */
-      all(): AllMethods<Tooth>;
-
-      /**
-       * create method creates a Tooth document in the collection with the provided property values.
-       * 
-       * @param {ToothInput | string} input - will be the Tooth which you want to add.
-         * @param { string } input.name Name for the Tooth
-* @param { Root } input.root Root for the Tooth
-* @param { Crown } input.crown Crown for the Tooth
-       *
-       * @returns {CreateMethods<Tooth>} return new document.
-       * 
-       * @example
-       * query.Tooth.create({  
- * name: "Value of the name"   
- * root: "Value of the root"   
- * crown: "Value of the crown"   
-       * }).exec()
-       * OR
-       * query.Tooth.create(`{  
- * name: "Value of the name"   
- * root: "Value of the root"   
- * crown: "Value of the crown"   
-       * }`).exec()
-       * 
-       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
-       */
-    create(input: (ToothInput | string)): CreateMethods<Tooth>;
-
-      /**
-       * byId method get a Tooth document by its document ID.
-       * This will returns available Fqlx byId methods
-       * 
-       * @param {string} id - The ID of the document to retrieve
-       * 
-       * @returns {ByIdMethods<Tooth, ToothInput>} return document when it exists and is accessible, else return
-       * null when the document does not exist or is inaccessible.
-       * 
-       * @example
-       * query.Tooth.byId("21545645646554").exec()
-       * 
-       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
-       */
-       byId(id: string): ByIdMethods<Tooth, ToothInput>
-
-       /**
-        * first where method get the first matching value from the Set.
-        * 
-        * @param {(inputCondition: ((data: T) => boolean) | string)} function takes in a document of type T and returns a boolean
-        * 
-        * @returns {FirstWhereMethods<T>}  returns the first matching value in the Set, or null if the Set is empty or no values match.
-        * 
-        * @example
-        * query.Address.all().firstWhere((data) => data.country == 'uk').exec();
-        * OR
-        * query.Address.all().firstWhere(`(data) => data.${dynamicKey} == "${dynamicValueToCheck}"`).exec();
-        * 
-        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
-        */
-       firstWhere(inputCondition: ((data: Tooth) => boolean) | string): FirstWhereMethods<Tooth>;
     }
 
 
@@ -1173,116 +1173,6 @@ export interface Ts {
     }
 
 
-  export interface Price {
-    /**
- * tax for the Price
- */
- tax?: number;
-/**
- * amount for the Price
- */
- amount?: number;
-/**
- * currency for the Price
- */
- currency?: string;
-
-  }
-
-
-  export interface PriceInput {
-    /**
- * tax for the Price
- */
- tax?: number;
-/**
- * amount for the Price
- */
- amount?: number;
-/**
- * currency for the Price
- */
- currency?: string;
-
-  } 
-
-
-  export interface PriceMethods {
-      /**
-       * all method get the set of all documents in the Price collection.
-       * 
-       * @param
-       * 
-       * @returns {AllMethods<Price>} method returns the set of all documents in Price collection for the given range.
-       * 
-       * @example
-       * query.Price.all().exec()
-       * 
-       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
-       */
-      all(): AllMethods<Price>;
-
-      /**
-       * create method creates a Price document in the collection with the provided property values.
-       * 
-       * @param {PriceInput | string} input - will be the Price which you want to add.
-         * @param { number } input.tax Tax for the Price
-* @param { number } input.amount Amount for the Price
-* @param { string } input.currency Currency for the Price
-       *
-       * @returns {CreateMethods<Price>} return new document.
-       * 
-       * @example
-       * query.Price.create({  
- * tax: "Value of the tax"   
- * amount: "Value of the amount"   
- * currency: "Value of the currency"   
-       * }).exec()
-       * OR
-       * query.Price.create(`{  
- * tax: "Value of the tax"   
- * amount: "Value of the amount"   
- * currency: "Value of the currency"   
-       * }`).exec()
-       * 
-       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
-       */
-    create(input: (PriceInput | string)): CreateMethods<Price>;
-
-      /**
-       * byId method get a Price document by its document ID.
-       * This will returns available Fqlx byId methods
-       * 
-       * @param {string} id - The ID of the document to retrieve
-       * 
-       * @returns {ByIdMethods<Price, PriceInput>} return document when it exists and is accessible, else return
-       * null when the document does not exist or is inaccessible.
-       * 
-       * @example
-       * query.Price.byId("21545645646554").exec()
-       * 
-       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
-       */
-       byId(id: string): ByIdMethods<Price, PriceInput>
-
-       /**
-        * first where method get the first matching value from the Set.
-        * 
-        * @param {(inputCondition: ((data: T) => boolean) | string)} function takes in a document of type T and returns a boolean
-        * 
-        * @returns {FirstWhereMethods<T>}  returns the first matching value in the Set, or null if the Set is empty or no values match.
-        * 
-        * @example
-        * query.Address.all().firstWhere((data) => data.country == 'uk').exec();
-        * OR
-        * query.Address.all().firstWhere(`(data) => data.${dynamicKey} == "${dynamicValueToCheck}"`).exec();
-        * 
-        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
-        */
-       firstWhere(inputCondition: ((data: Price) => boolean) | string): FirstWhereMethods<Price>;
-    }
-
-
   export interface ProductLocalization {
     /**
  * name for the ProductLocalization
@@ -1401,6 +1291,116 @@ export interface Ts {
         * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
         */
        firstWhere(inputCondition: ((data: ProductLocalization) => boolean) | string): FirstWhereMethods<ProductLocalization>;
+    }
+
+
+  export interface Price {
+    /**
+ * tax for the Price
+ */
+ tax?: number;
+/**
+ * amount for the Price
+ */
+ amount?: number;
+/**
+ * currency for the Price
+ */
+ currency?: string;
+
+  }
+
+
+  export interface PriceInput {
+    /**
+ * tax for the Price
+ */
+ tax?: number;
+/**
+ * amount for the Price
+ */
+ amount?: number;
+/**
+ * currency for the Price
+ */
+ currency?: string;
+
+  } 
+
+
+  export interface PriceMethods {
+      /**
+       * all method get the set of all documents in the Price collection.
+       * 
+       * @param
+       * 
+       * @returns {AllMethods<Price>} method returns the set of all documents in Price collection for the given range.
+       * 
+       * @example
+       * query.Price.all().exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-all#signature See more...}
+       */
+      all(): AllMethods<Price>;
+
+      /**
+       * create method creates a Price document in the collection with the provided property values.
+       * 
+       * @param {PriceInput | string} input - will be the Price which you want to add.
+         * @param { number } input.tax Tax for the Price
+* @param { number } input.amount Amount for the Price
+* @param { string } input.currency Currency for the Price
+       *
+       * @returns {CreateMethods<Price>} return new document.
+       * 
+       * @example
+       * query.Price.create({  
+ * tax: "Value of the tax"   
+ * amount: "Value of the amount"   
+ * currency: "Value of the currency"   
+       * }).exec()
+       * OR
+       * query.Price.create(`{  
+ * tax: "Value of the tax"   
+ * amount: "Value of the amount"   
+ * currency: "Value of the currency"   
+       * }`).exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
+       */
+    create(input: (PriceInput | string)): CreateMethods<Price>;
+
+      /**
+       * byId method get a Price document by its document ID.
+       * This will returns available Fqlx byId methods
+       * 
+       * @param {string} id - The ID of the document to retrieve
+       * 
+       * @returns {ByIdMethods<Price, PriceInput>} return document when it exists and is accessible, else return
+       * null when the document does not exist or is inaccessible.
+       * 
+       * @example
+       * query.Price.byId("21545645646554").exec()
+       * 
+       * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-byid#signature See more...}
+       */
+       byId(id: string): ByIdMethods<Price, PriceInput>
+
+       /**
+        * first where method get the first matching value from the Set.
+        * 
+        * @param {(inputCondition: ((data: T) => boolean) | string)} function takes in a document of type T and returns a boolean
+        * 
+        * @returns {FirstWhereMethods<T>}  returns the first matching value in the Set, or null if the Set is empty or no values match.
+        * 
+        * @example
+        * query.Address.all().firstWhere((data) => data.country == 'uk').exec();
+        * OR
+        * query.Address.all().firstWhere(`(data) => data.${dynamicKey} == "${dynamicValueToCheck}"`).exec();
+        * 
+        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/set/firstwhere#description See more...}
+        */
+       firstWhere(inputCondition: ((data: Price) => boolean) | string): FirstWhereMethods<Price>;
     }
 
 
@@ -1525,6 +1525,10 @@ export interface Ts {
  * diameterPlatform for the Implant
  */
  diameterPlatform?: number;
+/**
+ * useCase for the Implant
+ */
+ useCase?: string;
 
   }
 
@@ -1562,6 +1566,10 @@ export interface Ts {
  * diameterPlatform for the Implant
  */
  diameterPlatform?: number;
+/**
+ * useCase for the Implant
+ */
+ useCase?: string;
 
   } 
 
@@ -1593,6 +1601,7 @@ export interface Ts {
 * @param { number } input.length Length for the Implant
 * @param { number } input.lengthNeck LengthNeck for the Implant
 * @param { number } input.diameterPlatform DiameterPlatform for the Implant
+* @param { string } input.useCase UseCase for the Implant
        *
        * @returns {CreateMethods<Implant>} return new document.
        * 
@@ -1606,6 +1615,7 @@ export interface Ts {
  * length: "Value of the length"   
  * lengthNeck: "Value of the lengthNeck"   
  * diameterPlatform: "Value of the diameterPlatform"   
+ * useCase: "Value of the useCase"   
        * }).exec()
        * OR
        * query.Implant.create(`{  
@@ -1617,6 +1627,7 @@ export interface Ts {
  * length: "Value of the length"   
  * lengthNeck: "Value of the lengthNeck"   
  * diameterPlatform: "Value of the diameterPlatform"   
+ * useCase: "Value of the useCase"   
        * }`).exec()
        * 
        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
@@ -1691,13 +1702,17 @@ export interface Ts {
  */
  diameterPlatform?: number;
 /**
- * heightsGingiva for the Abutment
+ * heightGingiva for the Abutment
  */
- heightsGingiva?: number[];
+ heightGingiva?: string;
 /**
- * indication for the Abutment
+ * indications for the Abutment
  */
- indication?: string;
+ indications?: string[];
+/**
+ * type for the Abutment
+ */
+ type?: string;
 
   }
 
@@ -1736,13 +1751,17 @@ export interface Ts {
  */
  diameterPlatform?: number;
 /**
- * heightsGingiva for the Abutment
+ * heightGingiva for the Abutment
  */
- heightsGingiva?: number[];
+ heightGingiva?: string;
 /**
- * indication for the Abutment
+ * indications for the Abutment
  */
- indication?: string;
+ indications?: string[];
+/**
+ * type for the Abutment
+ */
+ type?: string;
 
   } 
 
@@ -1774,8 +1793,9 @@ export interface Ts {
 * @param { string } input.material Material for the Abutment
 * @param { number } input.angle Angle for the Abutment
 * @param { number } input.diameterPlatform DiameterPlatform for the Abutment
-* @param { number[] } input.heightsGingiva HeightsGingiva for the Abutment
-* @param { string } input.indication Indication for the Abutment
+* @param { string } input.heightGingiva HeightGingiva for the Abutment
+* @param { string[] } input.indications Indications for the Abutment
+* @param { string } input.type Type for the Abutment
        *
        * @returns {CreateMethods<Abutment>} return new document.
        * 
@@ -1789,8 +1809,9 @@ export interface Ts {
  * material: "Value of the material"   
  * angle: "Value of the angle"   
  * diameterPlatform: "Value of the diameterPlatform"   
- * heightsGingiva: "Value of the heightsGingiva"   
- * indication: "Value of the indication"   
+ * heightGingiva: "Value of the heightGingiva"   
+ * indications: "Value of the indications"   
+ * type: "Value of the type"   
        * }).exec()
        * OR
        * query.Abutment.create(`{  
@@ -1802,8 +1823,9 @@ export interface Ts {
  * material: "Value of the material"   
  * angle: "Value of the angle"   
  * diameterPlatform: "Value of the diameterPlatform"   
- * heightsGingiva: "Value of the heightsGingiva"   
- * indication: "Value of the indication"   
+ * heightGingiva: "Value of the heightGingiva"   
+ * indications: "Value of the indications"   
+ * type: "Value of the type"   
        * }`).exec()
        * 
        * @see {@link https://fqlx-beta--fauna-docs.netlify.app/fqlx/beta/reference/schema_entities/collection/instance-create#signature See more...}
@@ -1858,9 +1880,9 @@ export interface Ts {
  */
  platformSwitch?: boolean;
 /**
- * wprkflows for the HealingAbutment
+ * workflows for the HealingAbutment
  */
- wprkflows?: string[];
+ workflows?: string[];
 /**
  * material for the HealingAbutment
  */
@@ -1891,9 +1913,9 @@ export interface Ts {
  */
  platformSwitch?: boolean;
 /**
- * wprkflows for the HealingAbutment
+ * workflows for the HealingAbutment
  */
- wprkflows?: string[];
+ workflows?: string[];
 /**
  * material for the HealingAbutment
  */
@@ -1932,7 +1954,7 @@ export interface Ts {
          * @param { string } input.implantLine ImplantLine for the HealingAbutment
 * @param { string } input.shape Shape for the HealingAbutment
 * @param { boolean } input.platformSwitch PlatformSwitch for the HealingAbutment
-* @param { string[] } input.wprkflows Wprkflows for the HealingAbutment
+* @param { string[] } input.workflows Workflows for the HealingAbutment
 * @param { string } input.material Material for the HealingAbutment
 * @param { number } input.diameterPlatform DiameterPlatform for the HealingAbutment
 * @param { number } input.heightGingiva HeightGingiva for the HealingAbutment
@@ -1944,7 +1966,7 @@ export interface Ts {
  * implantLine: "Value of the implantLine"   
  * shape: "Value of the shape"   
  * platformSwitch: "Value of the platformSwitch"   
- * wprkflows: "Value of the wprkflows"   
+ * workflows: "Value of the workflows"   
  * material: "Value of the material"   
  * diameterPlatform: "Value of the diameterPlatform"   
  * heightGingiva: "Value of the heightGingiva"   
@@ -1954,7 +1976,7 @@ export interface Ts {
  * implantLine: "Value of the implantLine"   
  * shape: "Value of the shape"   
  * platformSwitch: "Value of the platformSwitch"   
- * wprkflows: "Value of the wprkflows"   
+ * workflows: "Value of the workflows"   
  * material: "Value of the material"   
  * diameterPlatform: "Value of the diameterPlatform"   
  * heightGingiva: "Value of the heightGingiva"   
@@ -3050,6 +3072,10 @@ export interface Ts {
  */
  image?: string;
 /**
+ * status for the Product
+ */
+ status?: string;
+/**
  * localizations for the Product
  */
  localizations: ProductLocalization[];
@@ -3118,6 +3144,10 @@ export interface Ts {
  * image for the Product
  */
  image?: string;
+/**
+ * status for the Product
+ */
+ status?: string;
 /**
  * localizations for the Product
  */
@@ -3192,6 +3222,7 @@ export interface Ts {
          * @param { string } input.manufacturerProductId ManufacturerProductId for the Product
 * @param { Manufacturer } input.manufacturer Manufacturer for the Product
 * @param { string } input.image Image for the Product
+* @param { string } input.status Status for the Product
 * @param { ProductLocalization[] } input.localizations Localizations for the Product
 * @param { Implant } input.implant Implant for the Product
 * @param { Abutment } input.abutment Abutment for the Product
@@ -3212,6 +3243,7 @@ export interface Ts {
  * manufacturerProductId: "Value of the manufacturerProductId"   
  * manufacturer: "Value of the manufacturer"   
  * image: "Value of the image"   
+ * status: "Value of the status"   
  * localizations: "Value of the localizations"   
  * implant: "Value of the implant"   
  * abutment: "Value of the abutment"   
@@ -3230,6 +3262,7 @@ export interface Ts {
  * manufacturerProductId: "Value of the manufacturerProductId"   
  * manufacturer: "Value of the manufacturer"   
  * image: "Value of the image"   
+ * status: "Value of the status"   
  * localizations: "Value of the localizations"   
  * implant: "Value of the implant"   
  * abutment: "Value of the abutment"   
@@ -4148,6 +4181,14 @@ Patient: PatientMethods;
  */ 
 Tooth: ToothMethods;
 /**
+ * @returns This return fqlx methods for the Root 
+ */ 
+Root: RootMethods;
+/**
+ * @returns This return fqlx methods for the Crown 
+ */ 
+Crown: CrownMethods;
+/**
  * @returns This return fqlx methods for the BodyPartLeaf 
  */ 
 BodyPartLeaf: BodyPartLeafMethods;
@@ -4167,6 +4208,10 @@ SelectedProduct: SelectedProductMethods;
  * @returns This return fqlx methods for the ProductLocalization 
  */ 
 ProductLocalization: ProductLocalizationMethods;
+/**
+ * @returns This return fqlx methods for the Price 
+ */ 
+Price: PriceMethods;
 /**
  * @returns This return fqlx methods for the Product 
  */ 

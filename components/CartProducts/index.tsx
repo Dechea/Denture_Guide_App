@@ -2,17 +2,23 @@ import { View } from 'reshaped';
 import CartItemsList from '../CartItemsList';
 import CartCostCard from '../CartCostCard';
 import { Tooth } from '../../fqlx-generated/typedefs';
+import { useRouter } from 'next/navigation';
+import { Route } from 'next';
+import { DISCOVERYMODE, CARTTABROUTES } from '../../__mocks__/flow';
 
 interface CartProductsProps {
-  teeth: Tooth[];
-  onProductCountChange: (
+  readonly teeth: Tooth[];
+  readonly onProductCountChange: (
     updatedQuantity: number,
     toothNumber: number,
     productId: string
   ) => Promise<void>;
-  onDeleteProduct: (toothNumber: number, productId: string) => Promise<void>;
-  setActiveTab: (tabId: string) => void;
-  params: {
+  readonly onDeleteProduct: (
+    toothNumber: number,
+    productId: string
+  ) => Promise<void>;
+  readonly setActiveTab: (tabId: string) => void;
+  readonly params: {
     patientFileId: string;
   };
 }
@@ -24,6 +30,17 @@ export default function CartProducts({
   setActiveTab,
   params,
 }: CartProductsProps) {
+  const isDiscoveryModeEnabled = params.patientFileId === `${DISCOVERYMODE}`;
+  const router = useRouter();
+
+  const handleClick = () => {
+    if (isDiscoveryModeEnabled) {
+      router.push('/sign-in' as Route);
+    } else {
+      setActiveTab(CARTTABROUTES.shippingdetails);
+    }
+  };
+
   return (
     <View
       direction={{ s: 'column', xl: 'row' }}
@@ -41,8 +58,10 @@ export default function CartProducts({
       <View.Item className='sticky bottom-0 top-0'>
         <CartCostCard
           params={params}
-          onClick={() => setActiveTab('2')}
-          buttonText='Shipping Details'
+          onClick={handleClick}
+          buttonText={
+            isDiscoveryModeEnabled ? 'Sign in to Order' : 'Shipping Details'
+          }
           color='primary'
         />
       </View.Item>
