@@ -3,6 +3,7 @@ import '../themes/dechea/theme.css';
 import { Reshaped } from 'reshaped';
 import { ClerkProvider } from '@clerk/nextjs';
 import FqlxClientProvider from './FqlxClientProvider';
+import { Analytics } from '@vercel/analytics/react';
 
 export const metadata = {
   title: 'Material Planner',
@@ -22,7 +23,10 @@ export default function RootLayout({
       <ClerkProvider>
         <body>
           <Reshaped theme='dechea'>
-            <FqlxClientProvider>{children}</FqlxClientProvider>
+            <FqlxClientProvider>
+              {children}
+              <Analytics />
+            </FqlxClientProvider>
           </Reshaped>
         </body>
       </ClerkProvider>
