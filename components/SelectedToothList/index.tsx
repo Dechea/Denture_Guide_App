@@ -55,6 +55,8 @@ export default function SelectedToothList({
   };
 
   if (groupIndex === null) return;
+
+  const toothGroupsList = toothGroups[groupIndex]?.teeth;
   return (
     <View gap={3} width='100%' height='100%' padding={6} paddingBottom={10}>
       <View direction='row' align='center' width='100%' gap={1}>
@@ -66,11 +68,12 @@ export default function SelectedToothList({
 
       <View direction='column' gap={2} width='100%'>
         {productId &&
-          toothGroups[groupIndex]?.teeth.map(({ toothNumber }) => {
+          !!toothGroupsList.length &&
+          toothGroupsList.map(({ toothNumber }) => {
             const selected = selectedProducts[toothNumber] === productId;
             return (
               <Card
-                key={toothNumber}
+                key={`${toothNumber}`}
                 padding={0}
                 className={cx(
                   '!shadow-[0px_2px_3px_rgba(0,0,0,0.1),_0px_1px_2px_-1px_rgba(0,0,0,0.1)]',

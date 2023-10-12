@@ -8,6 +8,8 @@ import TreatmentTabsPopover from '../TreatmentTabsPopover';
 import { PRODUCT_TYPE } from '../../zustand/product/interface';
 import { useTabsStatus } from '../../hooks/useTabsStatus';
 import { useProductStore } from '../../zustand/product';
+import { FLOW, DISCOVERYMODE } from '../../__mocks__/flow';
+import { Route } from 'next';
 
 const TreatmentTabs = ({
   children,
@@ -24,6 +26,8 @@ const TreatmentTabs = ({
   const { treatments, recentAddedTreatment, setRecentAddedTreatment } =
     useTeethDiagramStore((state) => state);
   const { setImplicitFilters } = useProductStore();
+  const isDiscoveryModeEnabled = patientFileId === DISCOVERYMODE;
+  const lastTab = localStorage.getItem('lastTab');
 
   const onChangeTab = ({ value }: { value: string }) => {
     const splitedRoute = value.split('/');
@@ -58,27 +62,59 @@ const TreatmentTabs = ({
     getTabsStatus();
   }, [patientFile, treatments]);
 
+  useEffect(() => {
+    if (!isDiscoveryModeEnabled && lastTab) {
+      let redirectTo = `/${patientFileId}`;
+      let prevPath = '';
+
+      const updatedLocalLastTab =
+        Number(lastTab) < Number(FLOW.shipping.id)
+          ? `${Number(lastTab) + 1}`
+          : `${lastTab}`;
+
+      Object.values(FLOW).forEach(({ id, path, tab }) => {
+        if (id === updatedLocalLastTab) {
+          if (tab !== undefined && !tabsStatus[tab]) {
+            redirectTo += prevPath;
+          } else {
+            redirectTo += path;
+          }
+        }
+        prevPath = path;
+      });
+
+      localStorage.removeItem(`${DISCOVERYMODE}`);
+
+      router.push(redirectTo as Route);
+
+      return () => {
+        localStorage.removeItem('lastTab');
+      };
+    }
+  }, [tabsStatus]);
+
   return (
     <View
       paddingBlock={0}
-      className="overflow-y-scroll max-h-[calc(100svh-60px)]"
+      className='overflow-y-scroll overflow-x-clip max-h-[calc(100svh-60px)]'
       attributes={{ id: 'scrollableProductList' }}
     >
       <Tabs
         onChange={onChangeTab}
-        itemWidth="equal"
-        variant="pills-elevated"
+        itemWidth='equal'
+        variant='pills-elevated'
         value={path}
       >
         <View
-          position="sticky"
+          position='sticky'
           insetTop={0}
-          backgroundColor="neutral-faded"
+          backgroundColor='neutral-faded'
           zIndex={50}
+          width={'99%'}
         >
-          <Tabs.List className="[&_[role=tablist]]:overflow-x-visible">
+          <Tabs.List className='[&_[role=tablist]]:overflow-x-auto'>
             <Tabs.Item value={`/${patientFileId}/treatments`}>
-              <View width={'100%'} align="start">
+              <View width={'100%'} align='start'>
                 <Text>Treatments</Text>
               </View>
             </Tabs.Item>
@@ -89,8 +125,8 @@ const TreatmentTabs = ({
                 image={'/TreatmentTabsImplantsPopover.svg'}
                 activePopup={activePopupFor === PRODUCT_TYPE.IMPLANT}
                 onClosePopover={handleClosePopover}
-                title="Implants"
-                description="You can select implants for each tooth in ‘Implants’ tab"
+                title='Implants'
+                description='You can select implants for each tooth in ‘Implants’ tab'
               />
             </Tabs.Item>
 
@@ -100,35 +136,35 @@ const TreatmentTabs = ({
                 image={'/TreatmentTabsAbutmentsPopover.svg'}
                 activePopup={activePopupFor === PRODUCT_TYPE.ABUTMENT}
                 onClosePopover={handleClosePopover}
-                title="Abutments"
-                description="You can select abutments for each tooth in ‘Abutments’ tab"
+                title='Abutments'
+                description='You can select abutments for each tooth in ‘Abutments’ tab'
               />
             </Tabs.Item>
 
             <Tabs.Item value={`/${patientFileId}/treatments/healing`}>
               <TreatmentTabsPopover
                 activeTab={tabsStatus.healingAbutment}
-                title="Healing Abutment"
+                title='Healing Abutment'
               />
             </Tabs.Item>
 
             <Tabs.Item value={`/${patientFileId}/treatments/temporary`}>
               <TreatmentTabsPopover
                 activeTab={tabsStatus.temporaryAbutment}
-                title="Temporary Abutments"
+                title='Temporary Abutments'
               />
             </Tabs.Item>
 
             <Tabs.Item value={`/${patientFileId}/treatments/impression`}>
               <TreatmentTabsPopover
                 activeTab={tabsStatus.impression}
-                title="Impression"
+                title='Impression'
               />
             </Tabs.Item>
             <Tabs.Item value={`/${patientFileId}/treatments/tools`}>
               <TreatmentTabsPopover
                 activeTab={tabsStatus.tools}
-                title="Tools"
+                title='Tools'
               />
             </Tabs.Item>
           </Tabs.List>

@@ -8,13 +8,13 @@ import { SelectedProduct, Tooth } from '../../fqlx-generated/typedefs';
 import ToothIcon from '../Icons/Tooth';
 
 interface CartItemsListProps {
-  teeth: Tooth[];
-  onProductCountChange: (
+  readonly teeth: Tooth[];
+  readonly onProductCountChange: (
     quantity: number,
     toothNumber: number,
     productId: string
   ) => void;
-  onDeleteProduct: (toothNumber: number, productId: string) => void;
+  readonly onDeleteProduct: (toothNumber: number, productId: string) => void;
 }
 
 export default function CartItemsList({
@@ -23,18 +23,14 @@ export default function CartItemsList({
   onDeleteProduct,
 }: CartItemsListProps) {
   return (
-    <View
-      gap={20}
-      paddingInline={{ s: 6, l: 0 }}
-      paddingBottom={{ s: 6, l: 10 }}
-    >
+    <View gap={18} paddingBottom={{ s: 11, xl: 32 }} paddingInline={6}>
       {teeth.map((tooth) => {
         const products: SelectedProduct[] = [
           ...(tooth.root.treatmentDoc?.selectedProducts ?? []),
           ...(tooth.crown.treatmentDoc?.selectedProducts ?? []),
         ];
 
-        if (products.length == 0) {
+        if (products.length == 0 || tooth.name === '') {
           return;
         }
 

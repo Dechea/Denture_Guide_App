@@ -13,11 +13,12 @@ import { useAvailableTeethByTreatment } from '../../../../hooks/useAvailableTeet
 import { useProductStore } from '../../../../zustand/product';
 import { temporaryProductFields } from './filterFields';
 import NewProductView from '../../../../components/NewProductView';
+import { FLOW } from '../../../../__mocks__/flow';
 
 export default function Temporary({
   params,
 }: {
-  params: { patientFileId: string };
+  readonly params: { patientFileId: string };
 }) {
   const { setActiveProductTab, setActivePatientFileId } = useProductStore();
 
@@ -31,6 +32,8 @@ export default function Temporary({
     setActiveProductTab(PRODUCT_TYPE.TEMPORARY_ABUTMENT);
     setActivePatientFileId(params.patientFileId);
   }, []);
+
+  localStorage.setItem('lastTab', FLOW.temporary.id);
 
   return (
     <Tabs.Panel value={`/${params.patientFileId}/treatments/temporary`}>

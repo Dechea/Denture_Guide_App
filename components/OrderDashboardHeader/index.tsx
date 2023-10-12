@@ -1,7 +1,7 @@
 'use client';
 
 import { UserButton } from '@clerk/nextjs';
-import { Actionable, Image, View } from 'reshaped';
+import { Image, View } from 'reshaped';
 
 export default function OrderDashboardHeader() {
   return (
@@ -14,9 +14,7 @@ export default function OrderDashboardHeader() {
     >
       <Image src='/decheaLogo.svg' alt='Dechea' height={'24px'} />
       <View>
-        <Actionable>
-          <UserButton />
-        </Actionable>
+        <UserButton />
       </View>
     </View>
   );

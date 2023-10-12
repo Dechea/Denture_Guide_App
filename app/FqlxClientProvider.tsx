@@ -1,16 +1,17 @@
 'use client';
 
 import { useAuth } from '@clerk/nextjs';
-import { FqlxProvider } from 'fqlx-client';
+import { FqlxProvider } from 'fauna-typed';
 import { useEffect, useState } from 'react';
 import { View } from 'reshaped';
 import { useRouter, usePathname } from 'next/navigation';
 import Loader from '../components/Loader';
+import { DISCOVERYMODE } from '../__mocks__/flow';
 
 const FAUNA_ENDPOINT = 'https://db.fauna.com';
 
 interface FqlxClientProviderProps {
-  children: React.ReactNode;
+  readonly children: React.ReactNode;
 }
 
 export default function FqlxClientProvider({
@@ -24,7 +25,9 @@ export default function FqlxClientProvider({
   const fetchToken = async () => {
     const localToken = await getToken({ template: 'fauna' });
     if (localToken !== token) {
-      setToken(localToken || 'invalid');
+      setToken(
+        localToken ?? process.env.NEXT_PUBLIC_FAUNA_DISCOVERY_TOKEN ?? 'invalid'
+      );
     }
   };
 
@@ -53,7 +56,7 @@ export default function FqlxClientProvider({
   useEffect(() => {
     // Redirect to sign-in screen, If clerk token invalid
     if (token === 'invalid') {
-      router.push('/sign-in/[[...sign-in]]');
+      router.push(`/${DISCOVERYMODE}/treatments`);
     }
   }, [token]);
 
@@ -62,7 +65,7 @@ export default function FqlxClientProvider({
       {!token && <Loader />}
 
       {/* Only render children when sign-in route active */}
-      {pathname === '/sign-in' && children}
+      {['/sign-in', '/sign-up'].includes(pathname) && children}
 
       {token && token !== 'invalid' && (
         <FqlxProvider

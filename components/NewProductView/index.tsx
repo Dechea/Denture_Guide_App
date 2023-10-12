@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from 'fqlx-client';
+import { useQuery } from 'fauna-typed';
 import { Suspense, useEffect, useMemo } from 'react';
 import {
   Badge,
@@ -22,6 +22,7 @@ import { formWhereCondition } from './helper';
 import NewProductToothList from '../NewProductToothList';
 import NewProductCard from '../NewProductCard';
 import ProductCardSkeleton from './ProductCardSkeleton';
+import { DISCOVERYMODE } from '../../__mocks__/flow';
 
 interface Field {
   id: string;
@@ -41,6 +42,7 @@ const NewProductView = ({
   areaType,
   patientFileId,
 }: NewProductViewProps) => {
+  const isDiscoveryModeEnabled = patientFileId === `${DISCOVERYMODE}`;
   const {
     activeProductTab,
     availableTeethByProductType,
@@ -55,13 +57,15 @@ const NewProductView = ({
 
   const query = useQuery<Query>();
 
-  const getMappedTeeth = (
+  const getMappedTeeth = async (
     teeth: Tooth[],
     productToDelete: string,
     toothNumber: number,
     selectedProducts: SelectedProducts
   ) => {
-    teeth.forEach((tooth: Tooth) => {
+    const mappedTeeth: Tooth[] = [];
+
+    for (const tooth of teeth) {
       const localToothNumber = Number(tooth.name);
 
       for (const area of Object.values(AREA_TYPE)) {
@@ -70,33 +74,43 @@ const NewProductView = ({
 
         // remove old, unselected product
         if (toothInArea) {
-          tooth[area].treatmentDoc.selectedProducts = tooth[
-            area
-          ].treatmentDoc.selectedProducts?.filter(
-            ({ selectedProduct }) => selectedProduct?.id !== productToDelete
-          );
+          tooth[area].treatmentDoc.selectedProducts =
+            tooth[area].treatmentDoc.selectedProducts?.filter(
+              ({ selectedProduct }) => selectedProduct?.id !== productToDelete
+            ) ?? [];
         }
 
         // convert existing products from object to ref
-        if (tooth[area].treatmentDoc.selectedProducts?.length) {
-          tooth[area].treatmentDoc.selectedProducts?.forEach((product) => {
-            // @ts-expect-error
-            product.selectedProduct = `Product.byId("${product.selectedProduct?.id}")`;
-          });
-        } else {
-          tooth[area].treatmentDoc.selectedProducts = [];
+        if (!isDiscoveryModeEnabled) {
+          if (tooth[area].treatmentDoc.selectedProducts?.length) {
+            tooth[area].treatmentDoc.selectedProducts?.forEach((product) => {
+              // @ts-expect-error
+              product.selectedProduct = `Product.byId("${product.selectedProduct?.id}")`;
+            });
+          }
         }
 
         // add new product
         if (toothInArea && selectedProducts[toothNumber]) {
+          let newProduct;
+          if (isDiscoveryModeEnabled) {
+            newProduct = await query.Product.byId(
+              selectedProducts[toothNumber]
+            ).exec();
+          } else {
+            newProduct = `Product.byId("${selectedProducts[toothNumber]}")`;
+          }
           tooth[area].treatmentDoc.selectedProducts?.push({
-            // @ts-expect-error
-            selectedProduct: `Product.byId("${selectedProducts[toothNumber]}")`,
+            // @ts-ignore
+            selectedProduct: newProduct,
             quantity: 1,
           });
         }
       }
-    });
+      mappedTeeth.push(tooth);
+    }
+
+    return mappedTeeth;
   };
 
   const productsCount = useMemo(
@@ -113,9 +127,9 @@ const NewProductView = ({
     toothNumber: number,
     selectedProducts: SelectedProducts
   ) => {
-    addOrUpdateProductInFqlx((teeth) => {
-      getMappedTeeth(teeth, productToDelete, toothNumber, selectedProducts);
-    });
+    addOrUpdateProductInFqlx((teeth) =>
+      getMappedTeeth(teeth, productToDelete, toothNumber, selectedProducts)
+    );
 
     const activeTreatmentGroupIndex = Number(activeTreatmentGroup);
 
@@ -200,15 +214,15 @@ const NewProductView = ({
             </View.Item>
 
             <Hidden hide={{ s: true, l: false }}>
-              <View.Item columns={4} grow>
-                {productsCount && (
+              <View.Item columns={4} grow key='productToothList'>
+                {!!productsCount && (
                   <NewProductToothList onClickProduct={handleClickOnProduct} />
                 )}
               </View.Item>
             </Hidden>
 
             <Hidden hide={{ s: false, l: true }}>
-              <View.Item columns={12} grow>
+              <View.Item columns={12} grow key='selectTeeth'>
                 <View padding={6} paddingBottom={13.75}>
                   <Button
                     color='primary'

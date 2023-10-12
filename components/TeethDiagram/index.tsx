@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { Button, Hidden, Modal, View, useToggle } from 'reshaped';
 import Treatments from '../Treatments';
 import { useTeethDiagramStore } from '../../zustand/teethDiagram';
-import { useQuery } from 'fqlx-client';
+import { useLocalStorage, useQuery } from 'fauna-typed';
 import {
   PatientFile,
   Query,
@@ -30,14 +30,20 @@ import TreatmentOptionCard from '../TreatmentOptionCard';
 import UnionIcon from '../Icons/Union';
 import ComposedTeethDiagram from './composedTeethDiagram';
 import BinIcon from '../Icons/Bin';
+import { DISCOVERYMODE } from '../../__mocks__/flow';
 
 export default function TeethDiagramWithTreatments({
   patientFileId,
 }: {
-  patientFileId: string;
+  readonly patientFileId: string;
 }) {
   const query = useQuery<Query>();
   const { activate, deactivate, active } = useToggle(false);
+  const {
+    value: discoveryModePatientFile,
+    setValue: setDiscoveryModePatientFile,
+  } = useLocalStorage(`${DISCOVERYMODE}`, 'PatientFile');
+  const isDiscoveryModeEnabled = patientFileId === `${DISCOVERYMODE}`;
 
   const {
     treatments,
@@ -66,6 +72,15 @@ export default function TeethDiagramWithTreatments({
   const fqlxTreatments = query.Treatment.all().exec();
 
   const callPatientFileAPI = async (teeth: Tooth[]) => {
+    if (isDiscoveryModeEnabled) {
+      setDiscoveryModePatientFile({
+        ...discoveryModePatientFile,
+        teeth: teeth,
+      });
+
+      return;
+    }
+
     const stringifyTeeth = JSON.stringify(teeth).replaceAll(
       /"Product.byId\(\\"(\d*)\\"\)"/g,
       'Product.byId("$1")'
@@ -80,7 +95,13 @@ export default function TeethDiagramWithTreatments({
 
   const handleTreatmentsClick = async (treatment: TreatmentProps) => {
     setRecentAddedTreatment(treatment.visualization);
-    const patientFileData = await query.PatientFile.byId(patientFileId).exec();
+    let patientFileData: PatientFile;
+
+    if (isDiscoveryModeEnabled) {
+      patientFileData = { ...discoveryModePatientFile };
+    } else {
+      patientFileData = await query.PatientFile.byId(patientFileId).exec();
+    }
 
     // @ts-expect-error
     if (!patientFileData?.exists === false) {
@@ -92,7 +113,8 @@ export default function TeethDiagramWithTreatments({
       'treatments' in treatment ? treatment.treatments : [treatment];
     const mappedPatientFile = getMappedPatientFileData(
       patientFileData,
-      treatmentsToApply as TreatmentProps[]
+      treatmentsToApply as TreatmentProps[],
+      isDiscoveryModeEnabled
     );
     const newTreatments: { [key: string]: TreatmentVisualization } = {
       ...treatments,
@@ -133,9 +155,13 @@ export default function TeethDiagramWithTreatments({
       return;
     }
 
-    const patientFile: PatientFile = await query.PatientFile.byId(
-      patientFileId
-    ).exec();
+    let patientFile: PatientFile;
+
+    if (isDiscoveryModeEnabled) {
+      patientFile = discoveryModePatientFile;
+    } else {
+      patientFile = await query.PatientFile.byId(patientFileId).exec();
+    }
 
     const activeToothNames = activeToothParts.map(
       (active) => active.split('-')[0]
@@ -175,9 +201,13 @@ export default function TeethDiagramWithTreatments({
   };
 
   const fetchPatientFile = async () => {
-    const patientFile: PatientFile = await query.PatientFile.byId(
-      patientFileId
-    ).exec();
+    let patientFile: PatientFile;
+
+    if (isDiscoveryModeEnabled) {
+      patientFile = discoveryModePatientFile;
+    } else {
+      patientFile = await query.PatientFile.byId(patientFileId).exec();
+    }
 
     // @ts-expect-error
     if (patientFile?.exists === false) {
@@ -202,8 +232,8 @@ export default function TeethDiagramWithTreatments({
   // Filter valid treatments and treatment groups
   useEffect(() => {
     const treatmentAndTreatmentGroups = [
-      ...fqlxTreatmentGroups?.data,
-      ...fqlxTreatments?.data,
+      ...(fqlxTreatmentGroups?.data ?? []),
+      ...(fqlxTreatments?.data ?? []),
     ];
 
     const availableTreatments = validTreatments.map((treatment) => {
@@ -233,6 +263,7 @@ export default function TeethDiagramWithTreatments({
     resetHistory();
     setActiveTooth(0);
     setActiveToothParts([]);
+
     return () => {
       setActiveTooth(0);
       setActiveToothParts([]);
@@ -240,7 +271,7 @@ export default function TeethDiagramWithTreatments({
   }, []);
 
   useEffect(() => {
-    !!activeToothParts.length ? activate() : deactivate();
+    activeToothParts.length ? activate() : deactivate();
   }, [activeToothParts]);
 
   return (

@@ -2,9 +2,10 @@
 
 import { useEffect } from 'react';
 import { useProductStore } from '../zustand/product';
-import { useQuery } from 'fqlx-client';
+import { useLocalStorage, useQuery } from 'fauna-typed';
 import { PatientFile, Query } from '../fqlx-generated/typedefs';
 import { AREA_TYPE, TREATMENT_GROUP } from '../zustand/product/interface';
+import { DISCOVERYMODE } from '../__mocks__/flow';
 
 interface UseAvailableTeethByTreatmentProps {
   patientFileId: string;
@@ -23,10 +24,20 @@ export function useAvailableTeethByTreatment({
     setAcceptedTreatmentGroups,
   } = useProductStore();
   const query = useQuery<Query>();
+  const { value: discoveryModePatientFile } = useLocalStorage(
+    `${DISCOVERYMODE}`,
+    'PatientFile'
+  );
 
-  const patientFile: PatientFile = query.PatientFile.byId(patientFileId)
-    .project({ teeth: true })
-    .exec();
+  let patientFile: PatientFile;
+
+  if (patientFileId === `${DISCOVERYMODE}`) {
+    patientFile = discoveryModePatientFile as PatientFile;
+  } else {
+    patientFile = query.PatientFile.byId(patientFileId)
+      .project({ teeth: true })
+      .exec();
+  }
 
   const patientFileTeeth = [...(patientFile.teeth || [])];
 

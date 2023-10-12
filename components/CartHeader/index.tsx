@@ -6,7 +6,7 @@ import BackwardIcon from '../Icons/Backward';
 import CartIcon from '../Icons/Cart';
 
 interface CartHeaderProps {
-  totalProductsCount: number;
+  readonly totalProductsCount: number;
 }
 
 export default function CartHeader({ totalProductsCount }: CartHeaderProps) {
@@ -20,22 +20,22 @@ export default function CartHeader({ totalProductsCount }: CartHeaderProps) {
       zIndex={55}
       backgroundColor='page-faded'
       direction='row'
-      paddingBlock={4}
-      paddingInline={{ s: 6, xl: 35 }}
+      paddingBlock={{ s: 4, xl: 6 }}
       align='center'
       gap={4}
-      className='border-b border-[--rs-color-border-neutral-faded]'
+      className='border-b border-[--rs-color-border-neutral-faded] print:!hidden'
     >
       <View direction='column' width='100%' align='center'>
         <View
           direction='row'
-          gap={4}
+          maxWidth='1280px'
+          gap={3}
           align='center'
+          justify='start'
           width='100%'
-          maxWidth='1000px'
+          paddingInline={{ l: 30, m: 4, s: 4 }}
         >
           <Button
-            variant='outline'
             icon={<Icon svg={BackwardIcon} size={4} />}
             onClick={() => router.back()}
           />
@@ -47,7 +47,7 @@ export default function CartHeader({ totalProductsCount }: CartHeaderProps) {
                 {' '}
                 Cart
               </Text>
-              <Badge className='!min-w-[30px]' color='critical'>
+              <Badge className='!min-w-[30px] !text-center' color='critical'>
                 {totalProductsCount}
               </Badge>
             </View>

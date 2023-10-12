@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { View, Text, Checkbox, Icon, TextField, Button } from 'reshaped';
-import { useQuery } from 'fqlx-client';
+import { useQuery } from 'fauna-typed';
 import { debounce } from 'reshaped/utilities/helpers';
 import FilterIcon from '../Icons/Filter';
 import BarCodeIcon from '../Icons/Barcode';
@@ -106,20 +106,20 @@ export const ProductFilterForm = ({
   }, []);
 
   return (
-    <View gap={5.5} maxWidth="306px">
-      <View direction="row" align="center" paddingBlock={2.5} gap={1}>
-        <Icon svg={FilterIcon} size={4} color="neutral-faded" />
-        <Text variant="body-3" color="neutral-faded">
+    <View gap={5.5} maxWidth='306px'>
+      <View direction='row' align='center' paddingBlock={2.5} gap={1}>
+        <Icon svg={FilterIcon} size={4} color='neutral-faded' />
+        <Text variant='body-3' color='neutral-faded'>
           Filters
         </Text>
       </View>
 
       <TextField
-        size="large"
-        variant="faded"
-        name="manufacturerProductId"
-        placeholder="Search by code e.g K1043.XXXX "
-        startSlot={<Icon svg={BarCodeIcon} color="neutral-faded" size={5} />}
+        size='large'
+        variant='faded'
+        name='manufacturerProductId'
+        placeholder='Search by code e.g K1043.XXXX '
+        startSlot={<Icon svg={BarCodeIcon} color='neutral-faded' size={5} />}
         onChange={({ value }: { value: string }) =>
           handleManufacturerIdChange(value)
         }
@@ -141,12 +141,12 @@ export const ProductFilterForm = ({
           return (
             <View
               gap={4}
-              direction="column"
+              direction='column'
               key={category.fqlxKey}
               paddingStart={0}
             >
               {!showOptionsWithoutTitle && (
-                <Text variant="body-3" weight="medium">
+                <Text variant='body-3' weight='medium'>
                   {category.displayName}
                 </Text>
               )}
@@ -170,7 +170,7 @@ export const ProductFilterForm = ({
                             handleCategoryFieldClick(category.fqlxKey, value)
                           }
                         >
-                          <Text variant="body-3" weight="regular">
+                          <Text variant='body-3' weight='regular'>
                             {`${category.prefix} ${option} ${category.suffix}`}
                           </Text>
                         </Checkbox>
@@ -181,21 +181,21 @@ export const ProductFilterForm = ({
               </View>
 
               {optionsLength > 5 && (
-                <View direction="row" align="center">
+                <View direction='row' align='center'>
                   <Button
                     onClick={() => toggleCategoryOptions(category.fqlxKey)}
                     size={'small'}
-                    variant="ghost"
+                    variant='ghost'
                     endIcon={
                       <Icon
                         svg={EndIcon}
-                        color="primary"
+                        color='primary'
                         size={4}
                         className={`ps-[1px] ${isExpanded && 'rotate-180'}`}
                       />
                     }
                   >
-                    <Text variant="body-3" weight="medium" color="primary">
+                    <Text variant='body-3' weight='medium' color='primary'>
                       {expandedCategories.includes(category.fqlxKey)
                         ? 'Show Less'
                         : 'Show More'}
