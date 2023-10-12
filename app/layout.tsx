@@ -3,6 +3,7 @@ import '@/themes/dechea/theme.css';
 import { Reshaped } from 'reshaped';
 import { ClerkProvider } from '@clerk/nextjs';
 import FqlxClientProvider from './FqlxClientProvider';
+import { Analytics } from '@vercel/analytics/react';
 import dynamic from 'next/dynamic';
 
 export const metadata = {
@@ -20,14 +21,17 @@ export default function RootLayout({
 }) {
   const CrispWithNoSSR = dynamic(
     () => import('@/components/operation/chat/crisp.js')
-  )
+  );
 
   return (
     <html lang='en'>
       <ClerkProvider>
         <body>
           <Reshaped theme='dechea'>
-            <FqlxClientProvider>{children}</FqlxClientProvider>
+            <FqlxClientProvider>
+              {children}
+              <Analytics />
+            </FqlxClientProvider>
           </Reshaped>
         </body>
         <CrispWithNoSSR />
