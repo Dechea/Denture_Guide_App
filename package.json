@@ -21,7 +21,7 @@
     "classnames": "2.3.2",
     "crisp-sdk-web": "^1.0.21",
     "dompurify": "3.0.2",
-    "fauna-typed": "0.2.10",
+    "fauna-typed": "0.2.11",
     "formik": "2.4.3",
     "latest": "0.2.0",
     "moment": "2.29.4",
